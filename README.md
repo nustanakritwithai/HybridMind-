@@ -23,9 +23,11 @@ Help Thai readers understand advances in AI and modern technology and make infor
 - Site is **Coming Soon**, not launched.
 - WordPress home page draft: page ID **16** (`hybrid-mind-home`).
 - WordPress Smart Glasses Hub draft: page ID **17** (`smart-glasses`).
+- Explainer article draft: post ID **18** (`audio-glasses-vs-ai-glasses`).
 - Categories created: `ai-news`, `explained`, `future-lifestyle`, `smart-buying`.
 - No affiliate tracking links have been configured; no products claimed hands-on tested.
 - GitHub Pages is intended as a **separate design preview**, not the publishing system of record.
+- Project Control in Drive: https://docs.google.com/document/d/1fQj8Yd7nVYL8WY5qkZGs-n1lgeWgHfWetKudbS5JXW4/edit
 
 ## Release rules
 
