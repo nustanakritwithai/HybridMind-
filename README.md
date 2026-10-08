@@ -17,6 +17,10 @@ Help Thai readers understand advances in AI and modern technology and make infor
 3. Future Lifestyle — Smart Wear, Smart Work, Smart Living, Smart Everyday.
 4. Smart Buying — buyer guides, independent comparisons and clear limitations.
 
+## Agent handoff
+
+**Continue here:** [Verified Handoff V0.2 (2026-10-09)](docs/HANDOFF_2026-10-09.md). Start at R1 mobile visual QA; homepage #16 is published/assigned but site remains Coming Soon.
+
 ## Current operational status (2026-10-09)
 
 - WordPress site: `hybridmind.online`; WordPress.com Atomic; theme **Assembler**.
