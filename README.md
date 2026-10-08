@@ -20,12 +20,13 @@ Help Thai readers understand advances in AI and modern technology and make infor
 ## Current operational status (2026-10-09)
 
 - WordPress site: `hybridmind.online`; WordPress.com Atomic; theme **Assembler**.
-- Site is **Coming Soon**, not launched.
-- WordPress home page draft: page ID **16** (`hybrid-mind-home`).
+- Site remains **Coming Soon** and is not publicly launched. Static homepage is now published and assigned; authenticated editors can preview it.
+- WordPress homepage page ID **16** (`hybrid-mind-home`) is **published** and assigned as the site's static front page.
 - WordPress Smart Glasses Hub draft: page ID **17** (`smart-glasses`).
 - Explainer article draft: post ID **18** (`audio-glasses-vs-ai-glasses`).
 - Categories created: `ai-news`, `explained`, `future-lifestyle`, `smart-buying`.
 - No affiliate tracking links have been configured; no products claimed hands-on tested.
+- Gutenberg Header/Footer and navigation are branded HYBRID MIND, theme Assembler unchanged. A pre-change Gutenberg snapshot is stored at `docs/wordpress/ASSEMBLER_PRECHANGE_2026-10-09.md`.
 - GitHub Pages is intended as a **separate design preview**, not the publishing system of record.
 - Project Control in Drive: https://docs.google.com/document/d/1fQj8Yd7nVYL8WY5qkZGs-n1lgeWgHfWetKudbS5JXW4/edit
 
