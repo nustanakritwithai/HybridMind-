@@ -23,10 +23,12 @@
   - Explained: `explained` ID 26694708
   - Future Lifestyle: `future-lifestyle` ID 26694709
   - Smart Buying: `smart-buying` ID 26694710
-- New homepage concept: draft page **#16**, slug `hybrid-mind-home`.
+- **Published static homepage:** WordPress page **#16**; front-page reading setting points to ID 16.
 - New Smart Glasses Hub: draft page **#17**, slug `smart-glasses`.
 - New explainer draft: post **#18**, slug `audio-glasses-vs-ai-glasses`.
-- Theme, homepage settings, navigation and public visibility **unchanged**.
+- WordPress site title = **HYBRID MIND**, tagline = **Live Smarter. Live Future. — เข้าใจ AI และใช้ชีวิตให้ทันอนาคต**.
+- Navigation post **#4** and Assembler `header` / `footer` parts updated and read back; original markup preserved in `docs/wordpress/ASSEMBLER_PRECHANGE_2026-10-09.md`.
+- Theme Assembler unchanged; **Coming Soon remains enabled**; public launch still blocked pending owner approval.
 - Existing plugins include AI Engine, Uncanny Automator, Gutenberg, Jetpack, Akismet, WordPress Agent and Page Optimize. Connector did not verify their internal automation settings.
 - Latest backup at read time: 2026-10-08 18:15:15; backup succeeded, restore not tested.
 
@@ -35,11 +37,11 @@
 **P0 — Editorial foundation**
 - [x] Confirm WordPress credentials via connected WordPress.com tools.
 - [x] Create four core editorial categories.
-- [x] Save homepage and Smart Glasses drafts; no publication.
+- [x] Created homepage #16, Smart Glasses #17 and explainer #18; published only homepage #16 with owner approval.
 - [ ] Review actual Gutenberg rendering in authenticated preview.
 - [ ] Create original brand imagery and site logo with rights cleared.
 - [ ] Create editorial policy, About, Contact, Privacy and Affiliate Disclosure.
-- [ ] Configure homepage and navigation only after owner approval.
+- [x] Configure static homepage, navigation and brand header/footer after explicit approval.
 - [ ] Enable public launch only after approval and QA.
 
 **P1 — Content readiness**
@@ -65,4 +67,4 @@
 
 ## Next step
 
-Compare GitHub Pages preview design with the WordPress drafts, then perform authenticated WordPress visual QA. The final public launch is a separate deliberate approval.
+Inspect the WordPress static homepage in an authenticated browser on mobile and compare with the GitHub design prototype. Smart Glasses Hub and explainer remain drafts. The final public launch is a separate deliberate approval.
