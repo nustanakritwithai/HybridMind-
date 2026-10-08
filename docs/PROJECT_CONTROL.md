@@ -9,7 +9,7 @@
 |---|---|---|---|
 | WordPress | https://hybridmind.online | Production content and CMS | Coming Soon / unlaunched |
 | GitHub | https://github.com/nustanakritwithai/HybridMind- | Specs, versioned frontend previews, non-secret code | Initialized |
-| Google Drive | https://drive.google.com/drive/folders/1r4Lqzr3KXhqLQvGjzMys0y-jtn0gTFXr | Project asset workspace | Folder created |
+| Google Drive | https://drive.google.com/drive/folders/1r4Lqzr3KXhqLQvGjzMys0y-jtn0gTFXr | Project asset workspace | Folder and Project Control Google Doc created |
 
 **Do not treat GitHub Pages preview as WordPress production.**
 
@@ -25,6 +25,7 @@
   - Smart Buying: `smart-buying` ID 26694710
 - New homepage concept: draft page **#16**, slug `hybrid-mind-home`.
 - New Smart Glasses Hub: draft page **#17**, slug `smart-glasses`.
+- New explainer draft: post **#18**, slug `audio-glasses-vs-ai-glasses`.
 - Theme, homepage settings, navigation and public visibility **unchanged**.
 - Existing plugins include AI Engine, Uncanny Automator, Gutenberg, Jetpack, Akismet, WordPress Agent and Page Optimize. Connector did not verify their internal automation settings.
 - Latest backup at read time: 2026-10-08 18:15:15; backup succeeded, restore not tested.
