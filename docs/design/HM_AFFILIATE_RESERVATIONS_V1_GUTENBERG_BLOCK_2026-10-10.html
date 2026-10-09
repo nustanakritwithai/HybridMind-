@@ -1,0 +1,78 @@
+<!-- wp:html -->
+<style id="hm-aff-reserved-css">
+
+/* HYBRID MIND — reserved ad locations, NEVER show an empty ad */
+.hm-aff-slot[hidden]{display:none!important}
+.hm-v3 .hm-aff-slot:not([hidden]),body.single-post .hm-aff-slot:not([hidden]){
+ box-sizing:border-box;width:min(1100px,calc(100% - 32px));margin:22px auto;
+ display:flex;flex-wrap:wrap;gap:16px;justify-content:space-between;align-items:center;
+ padding:20px 24px;border:1px solid #cbded8;border-radius:18px;
+ background:#eef7f3;color:#183b42;font-family:system-ui,"Noto Sans Thai",Tahoma,sans-serif;
+}
+body.single-post .entry-content .hm-aff-slot:not([hidden]){
+ width:100%;margin:28px 0;border-radius:16px;
+}
+.hm-aff-slot__label{font-size:12px;font-weight:800;letter-spacing:.035em;color:#126c5c}
+.hm-aff-slot__description{font-size:13px;line-height:1.6;color:#52676d}
+@media(max-width:640px){
+ .hm-v3 .hm-aff-slot:not([hidden]),body.single-post .hm-aff-slot:not([hidden]){
+  width:calc(100% - 24px);margin:16px auto;display:block;padding:16px;border-radius:14px;
+ }
+ body.single-post .entry-content .hm-aff-slot:not([hidden]){width:100%;margin:24px 0}
+ .hm-aff-slot__description{display:block;margin-top:6px}
+}
+</style>
+<script id="hm-aff-reserved-js">
+(function(){
+'use strict';
+/* Inactive reservations only: no affiliate URL, ad content, trackers or paid APIs. */
+const RESERVED = Object.freeze({
+ home_after_feature:'หน้าแรก — หลังเรื่องเด่น',
+ home_in_feed:'หน้าแรก — ในรายการบทความ',
+ article_after_intro:'บทความ — หลังบทนำ',
+ article_near_end:'บทความ — หลังเนื้อหา'
+});
+function reserve(id){
+ if(document.querySelector('[data-hm-aff-slot="'+id+'"]'))return null;
+ const node=document.createElement('aside');
+ node.className='hm-aff-slot';node.id='hm-aff-'+id;
+ node.dataset.hmAffSlot=id;node.dataset.hmAffState='reserved';
+ node.dataset.hmAffEnabled='false';node.hidden=true;
+ node.setAttribute('aria-hidden','true');
+ node.setAttribute('aria-label','พื้นที่โฆษณา Affiliate');
+ const label=document.createElement('span');label.className='hm-aff-slot__label';
+ label.textContent='พื้นที่โฆษณา • Affiliate';
+ const note=document.createElement('span');note.className='hm-aff-slot__description';
+ note.textContent='ตำแหน่งสำรอง — ยังไม่มีแคมเปญหรือลิงก์ Affiliate ที่เปิดใช้งาน';
+ node.append(label,note);
+ return node;
+}
+function after(anchor,id){
+ if(!anchor)return;
+ const node=reserve(id);if(node)anchor.insertAdjacentElement('afterend',node);
+}
+function init(){
+ const page=document.body;
+ if(page.classList.contains('home')&&document.querySelector('.hm-v3')){
+  after(document.querySelector('.hm-v3 .hero'),'home_after_feature');
+  after(document.querySelector('.hm-v3 #latest .story-layout'),'home_in_feed');
+  return;
+ }
+ if(!page.classList.contains('single-post')||
+  page.classList.contains('postid-55')||
+  page.classList.contains('postid-57'))return;
+ const content=document.querySelector('.entry-content.wp-block-post-content');
+ if(!content)return;
+ const ps=Array.from(content.children).filter(e=>e.tagName==='P');
+ if(ps.length){
+  const first=reserve('article_after_intro');
+  if(first)ps[Math.min(2,ps.length-1)].insertAdjacentElement('afterend',first);
+ }
+ const last=reserve('article_near_end');
+ if(last)content.appendChild(last);
+}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});
+else init();
+})();
+</script>
+<!-- /wp:html -->
