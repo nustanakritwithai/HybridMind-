@@ -12,6 +12,17 @@
 - Browser/screenshots after CSS and v0.2.2 installation **UNKNOWN**; **R1.2-D = PARTIAL / HOLD**. Keep Coming Soon / unlaunched and public guest gate unchanged.
 - Evidence: [R1.2-D Mobile Long Reply / Single Scroll Report](wordpress/R1_2_D_MOBILE_LONG_REPLY_SINGLE_SCROLL_2026-10-09.md) and [CSS Prechange Backup](wordpress/R1_2_E_CHAT_SINGLE_SCROLL_CSS_BACKUP_2026-10-09.md).
 
+## Post #52 featured infographic crop fix — 2026-10-09 (LATEST)
+
+- The owner shared an actual Android screenshot of the post #52 AI game-development infographic with its top banner text cropped.
+- Root cause identified at **source-template level**: Assembler `assembler//single` forces the shared featured image block's aspect ratio to **4/3**, while image #51 is **1536×1280 (6:5)**.
+- With owner authorization, backed up exact WordPress Global Styles ID 2 custom CSS (4,246 characters) in [Prechange Backup](wordpress/POST52_FEATURED_IMAGE_PRECHANGE_2026-10-09.md); reread and verified the backup matches before writing.
+- Appended **post-specific** `body.single-post.postid-52 figure.wp-block-post-featured-image` and `img` CSS to restore `aspect-ratio:auto`, `object-fit:contain`, `height:auto`, `max-width:100%`. No other posts, theme templates or post content altered.
+- **Readback PASS:** Global CSS 4,888 characters; original 4,246 bytes preserved as exact prefix and only 642-character focused patch appended. Public HTML `<head>` includes CSS, although unauthenticated page body remains Coming Soon.
+- Post #52 remains Published with featured image #51; post #31 GS20 unchanged; Assembler still active; Coming Soon `coming_soon/unlaunched` unchanged.
+- **Visual after screenshot: UNKNOWN.** Must collect signed-in new Android screenshot showing complete infographic title and bottom, or inspect authenticated computed aspect ratio before closing repair. Do not call R1.2-D finished based on CSS readback alone.
+- [Repair and QA Evidence](wordpress/POST52_FEATURED_IMAGE_QA_2026-10-09.md). UNKNOWN ≠ PASS.
+
 ## Editorial publication — AI Game Development Tools (2026-10-09 LATEST)
 
 - Owner supplied an original long-form Thai essay and infographic on using the right AI development tools for games (plain code, Godot, Unreal Engine, Blender); approved direct addition to Hybrid Mind.
