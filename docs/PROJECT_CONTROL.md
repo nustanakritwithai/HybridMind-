@@ -11,6 +11,18 @@
 
 
 
+
+## V3.3 Article Reading Template — PRODUCTION LIVE (2026-10-09)
+
+- Owner requested “ทำเลย” after V3 Homepage deployment, authorizing V3.3 article reading implementation. **Assembler Single Post Template `assembler//single` is now a Published custom override** (14,295-char exact candidate, WordPress independent readback PASS). Theme activation unchanged.
+- **Scope:** enhanced only the common article template, leaving Post bodies/Featured Media, Page #16 V3, global-style settings, navigation, Draft #57, and Typhoon disabled state unchanged. The original 3,479-character theme template is backed up at [Pre-V3.3 Single Template](backups/WORDPRESS_SINGLE_TEMPLATE_PRE_V33_2026-10-09.html); candidate at [V3.3 Single Template](design/HYBRID_MIND_V33_SINGLE_TEMPLATE_CANDIDATE_2026-10-09.html).
+- **V3.3 features:** true H1 `core/post-title`, cream/white V3 magazine reading shell on regular #31/#52, featured images display natural aspect via scoped CSS `object-fit:contain!important`, accessible auto-generated table of contents and scrolling reading progress. #55 and Draft #57 immersive iframe layouts are excluded from regular paper-card CSS.
+- **QA:** local Chromium fixture at 320/375/390/768/1280/1440 CSS px PASS (no overflow/JS errors, TOC open/close, H1, progress 100). WordPress public-page reader confirms #31 auto TOC 8 links, #52 7 links, all matching targets; #55 still retains original interactive iframe; Homepage V3 remains intact. **Actual real production Android screenshots, click/touch/visual crop/iframe interaction UNKNOWN.**
+- Staging test template `assembler//hm-v33-qa-staging` was unassigned, had exact Gutenberg/script readback, then removed; template deletion returned Trash/no matching active template.
+- **Rollback:** since `assembler//single` has `has_theme_file=true`, deleting its custom override restores original Assembler theme Single Post template (or update original content from exact GitHub backup) with fresh owner approval and readbacks.
+- Current website `launched / discourage_search`, published post IDs #55/#52/#31; Draft #57 unchanged; Typhoon v0.2.2 inactive; WordPress Global Styles unchanged (7,682 chars). SEO Privacy, AI News empty, guest-chat, full-site backup/restore and real-browser QA remain HOLD/UNKNOWN.
+- [V3.3 Production Release / QA / Rollback](releases/HYBRID_MIND_V33_ARTICLE_READING_PRODUCTION_DEPLOY_2026-10-09.md). **UNKNOWN ≠ PASS.**
+
 ## V3 Homepage — PRODUCTION LIVE (2026-10-09 22:08 ICT)
 
 - **Owner authorized deploying the latest UI V3 to the live WordPress site** (“เอาเวอร์ชั่นล่าสุดขึ้นเว็บจริงก่อนดีกว่า”). Target `https://hybridmind.online/`, WordPress Atomic Site ID `257844857`, static Homepage **Page #16**. **V3 is now LIVE** (Published modified `2026-10-09T22:08:28`).
