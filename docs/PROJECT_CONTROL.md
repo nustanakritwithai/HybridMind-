@@ -5,6 +5,17 @@
 
 
 
+
+## L2-C Fix Round 1 — Scoped WordPress edits (2026-10-09)
+
+- **Owner authorized** L2-C Round 1 only: correct #57 Thai AiPASS figure's unit, add official docs to #52, research vendor source for #31, prepare interaction QA #55. No publication or Public Launch approval.
+- **Post #57 DRAFT exact narrow repair PASS:** changed five textual phrases in existing `core/html` block to distinguish AiPASS original target **at least 5 million Thai people** from reported **500,000 Gemini Enterprise seats**. Modified `2026-10-09T18:31:53`; exact expected full body readback matched, unchanged reference/disclaimer paragraph blocks and Featured Image #63 preserved.
+- **Post #52 PUBLISHED references PASS:** inserted **one Gutenberg paragraph** at index 69 with six official links (Godot Scenes/Physics; Unreal Lumen/Nanite/Licensing; Blender Python API) plus personal-experience qualifier. Modified `2026-10-09T18:33:16`; all **70 previous Gutenberg blocks** retained identical block hashes; Featured Image #51 unchanged.
+- **Post #31 vendor traceability still UNKNOWN / citation gap:** exact original GS20 seller/variant at 602 THB not recovered from WordPress article, available indexed repo search or generic Shopee discovery. No product link substituted and no post change made.
+- **Post #55 runtime QA PENDING / UNKNOWN:** interactive QA checklist prepared; no change to article. #55 remains Published in Explained, modified `2026-10-09T17:47:46`.
+- **After-readback site PASS:** `coming_soon / unlaunched`; #57 Draft; #3 Trash; #16 homepage unchanged; AI News empty archive B3 HOLD. Existing Jetpack backup active but full restore rehearsal/current same-day backup UNKNOWN. **Public Launch NO GO.**
+- [Full execution evidence](releases/L2_C_EDITORIAL_FIX_ROUND1_EXECUTION_2026-10-09.md) · [L3 Browser/Interactive QA matrix](releases/L3_INTERACTIVE_RESPONSIVE_TEST_MATRIX_2026-10-09.md). Next: authenticated device QA and exact #31 seller evidence. **UNKNOWN != PASS.**
+
 ## L2-C Editorial Verification — READ-ONLY AUDIT (2026-10-09)
 
 - Audited live WordPress Post #31, #52, #55 and Draft #57 against official references, media metadata, embedded HTML/JS source and prior photography provenance report; **no Production content or site setting was modified**.
