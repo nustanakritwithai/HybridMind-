@@ -1,6 +1,6 @@
 # Hybrid Mind — Project Control V0.1
 
-**As of:** 2026-10-09 (Asia/Bangkok)  
+**As of:** 2026-10-10 (Asia/Bangkok)  
 **Project:** Hybrid Mind · Modern AI Lifestyle Media / Shopee Affiliate
 
 
@@ -11,6 +11,16 @@
 
 
 
+
+
+## Business Model Owner Correction — Affiliate Ad Slots, NO STORE (2026-10-10)
+
+- **Authoritative new instruction:** “เราไม่มีสินค้านะเราใช้ลิงก์ affiliate ตามจุดที่เป็นพื้นที่โฆษณา”. HYBRID MIND is a **publisher / AI media and learning platform**. It **owns no products**, holds no stock, does not act as seller, and monetizes via **third-party affiliate outbound links placed into clearly marked AD SPACE SLOTS** on editorial pages. Third-party marketplaces/sellers handle checkout, pricing, fulfillment and returns.
+- **This supersedes earlier proposals** for a Smart Buying storefront, product catalog, shopping carts, payment, stock, seller inventory, or orders. `Smart Buying` stays an informational **editorial category**, not HYBRID MIND merchandise.
+- **Replace Roadmap R6 “Smart Buying Commerce Experience” with “Affiliate Ad Placement System”:** standalone reusable slots on Homepage V3 and Article V3.3 (e.g. `home_after_feature`, `home_in_feed`, `article_after_intro`, `article_near_end`), default empty; independent of WordPress article body and Typhoon Chat. Inline sponsor disclosure, safe external URL validation, campaign on/off, labels, responsive view and optional privacy-safe aggregate click reports. No actual affiliate link/creative may be invented or activated.
+- **SEO/Transparency:** qualify affiliate links as `rel="sponsored"` (and safe external-target rel) and disclose possible commission clearly in/near the slot. Ads do not imply actual product testing, owned goods or direct sponsor contract.
+- **Website not modified in this clarification round.** Existing V3/V3.3 remains public content-only, Typhoon inactive, #57 Draft; no ad placements activated. Continue R1 stability QA and R2 trust/SEO before any ad launch.
+- [Complete owner-corrected ad-slot architecture and revision to R1–R7 roadmap](strategy/HYBRID_MIND_AFFILIATE_AD_SLOTS_V1_2026-10-10.md). **UNKNOWN ≠ PASS.**
 
 ## V3.3 Article Reading Template — PRODUCTION LIVE (2026-10-09)
 
