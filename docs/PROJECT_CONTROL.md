@@ -3,6 +3,15 @@
 **As of:** 2026-10-09 (Asia/Bangkok)  
 **Project:** Hybrid Mind · Modern AI Lifestyle Media / Shopee Affiliate
 
+## TH-AI Passport 2.0 — Real photography added to Draft #57 (2026-10-09)
+
+- Owner requested **real photographic work** inside the existing TH-AI Passport 2.0 interactive WordPress Draft #57 (not publication).
+- Chose **three licensed Pexels photographs** instead of AI-generated imitation press-conference images; all source photos credited and labeled as contextual illustrations, not real AiPASS event/participants. Source/license details in [Photography QA](wordpress/TH_AI_PASSPORT_2_REAL_PHOTOGRAPHY_QA_2026-10-09.md).
+- Uploaded WordPress Media **#58** (Bangkok professional with laptop), **#59** (office teamwork), **#60** (adult learning). Used WordPress-resized images in: Hero, AiPASS 1.0 vs 2.0 discussion, and AI skills-development section.
+- WordPress `post-sections.replace` changed **only Post #57 index 0 `core/html`** with optimistic-lock tokens; two trailing Gutenberg paragraphs retained exact block hashes. Inside its `iframe srcdoc` changed visual nodes and only the `img-src` CSP directive to WordPress/Jetpack allowlist; no interaction script changes.
+- **Independent readback PASS**: Post #57 `Draft`, modified `2026-10-09T13:55:00`, 3 `<img>` tags, alt/credit, calculator and quiz markup, source links intact; new Revision #61 exists. Coming Soon `coming_soon/unlaunched` unchanged; no other articles/templates/visibility changed.
+- **Browser visual and real interactions still UNKNOWN**: need user-signed-in preview/mobile screenshots to verify image loading, positioning, quiz and calculator. UNKNOWN ≠ PASS. **Do not publish or launch yet.**
+
 ## AiPASS 2.0 — Visual Interactive Draft #57 checkpoint (2026-10-09)
 
 - **News Visual Interactive built** for `TH-AI Passport 2.0 — จาก AI Chatbot สู่ AI Agent` using the approved approach: GPT builds complete isolated HTML/CSS/JS, WordPress stores a Draft. **This is NOT a deployed A2A Visualize Engine or Widget-level Typhoon worker.**
