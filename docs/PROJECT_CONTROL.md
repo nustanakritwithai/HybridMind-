@@ -3,6 +3,17 @@
 **As of:** 2026-10-09 (Asia/Bangkok)  
 **Project:** Hybrid Mind · Modern AI Lifestyle Media / Shopee Affiliate
 
+## AiPASS 2.0 — Visual Interactive Draft #57 checkpoint (2026-10-09)
+
+- **News Visual Interactive built** for `TH-AI Passport 2.0 — จาก AI Chatbot สู่ AI Agent` using the approved approach: GPT builds complete isolated HTML/CSS/JS, WordPress stores a Draft. **This is NOT a deployed A2A Visualize Engine or Widget-level Typhoon worker.**
+- WordPress **Post #57 DRAFT**, slug `th-ai-passport-2-gemini-enterprise-visual-guide`, preview [login required](https://hybridmind.online/?p=57&preview=true). Categories AI News + Explained.
+- Interactions: 1.0-vs-2.0 toggle, original-program vs press-conference metrics, timeline, seven-activity 1,000-point calculator, four-item eligibility self-check, 3-question quiz and source cards.
+- **News fact split (sources reviewed Oct 9):** TH-AI Passport official `aipass.go.th` confirms **5 million original-program registration target** and learning points; [Bangkokbiznews Oct 9 press report](https://www.bangkokbiznews.com/tech/ai/1255683) gives **500k Gemini Enterprise rights, 1,000-point threshold, Oct 9–Nov 2 applications, Nov 9 activation, up to ten months**. Edition, actual quota remaining and individual eligibility NOT confirmed. Metrics reported from press: **1.57m registered, 745k active, 17.3m prompts**.
+- **Readback PASS:** WordPress `posts.get(edit/view)` returns full **55,892-char** Custom HTML block with `iframe srcdoc`, script controller, sources, calculator and quiz. Local source/static checks PASS (JS syntax, CSS parse, anchor uniqueness, no app network code); **Chromium visual runtime testing blocked by environment administrator**, therefore signed-in mobile/desktop responsive/interactions **UNKNOWN**, not PASS.
+- No edits to Published Post #55 (AI ERA), Post #52 (game lessons), theme or homepage. **Coming Soon / unlaunched preserved.**
+- **Release Gate:** Await actual signed-in Android preview and QA on real inputs; do not publish Post #57 without explicit separate owner approval; Published and Public Launch HOLD.
+- [Full QA and next steps](wordpress/TH_AI_PASSPORT_2_VISUAL_DRAFT_QA_2026-10-09.md). UNKNOWN ≠ PASS.
+
 ## HYBRID MIND VISUALIZE ENGINE — strict Widget Worker boundary (owner clarification)
 
 - **Highest design constraint:** the Website Agent/Typhoon does **not** have independently verified planning or autonomous error-prevention criteria. **Do NOT delegate planning, risk assessment, editorial decisions or scope expansion to it**.
