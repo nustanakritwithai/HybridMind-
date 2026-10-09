@@ -12,6 +12,16 @@
 - Browser/screenshots after CSS and v0.2.2 installation **UNKNOWN**; **R1.2-D = PARTIAL / HOLD**. Keep Coming Soon / unlaunched and public guest gate unchanged.
 - Evidence: [R1.2-D Mobile Long Reply / Single Scroll Report](wordpress/R1_2_D_MOBILE_LONG_REPLY_SINGLE_SCROLL_2026-10-09.md) and [CSS Prechange Backup](wordpress/R1_2_E_CHAT_SINGLE_SCROLL_CSS_BACKUP_2026-10-09.md).
 
+## Editorial publication — AI Game Development Tools (2026-10-09 LATEST)
+
+- Owner supplied an original long-form Thai essay and infographic on using the right AI development tools for games (plain code, Godot, Unreal Engine, Blender); approved direct addition to Hybrid Mind.
+- **WordPress Post #52 PUBLISHED**: [บทเรียนจากการสร้างเกมด้วย AI: AI เก่งแค่ไหน ก็ต้องใช้เครื่องมือให้ถูกงาน](https://hybridmind.online/2026/10/09/ai-game-development-right-tools-godot-unreal-blender/).
+- Assigned the existing **Explained** category (`26694708`). Text preserved with 6 numbered H2 sections plus conclusion (7 H2 in total), 63 paragraphs, source hashtags retained, and no affiliate links added.
+- **Featured Image #51** uploaded from owner's infographic, using the correct JPEG MIME despite the incoming attachment's `.png` filename. WordPress image ID and URL: `51`, `https://hybridmind.online/wp-content/uploads/2026/10/hybridmind-ai-game-development-tools-lessons.jpg`. Set descriptive Thai alt text. Single-post Assembler template displays featured media; image not duplicated inside the article body.
+- Post creation and independent readback **PASS**: Published, title/sections/conclusion preserved, image 51 attached, server-side rendered content present. Homepage #16 query now includes the article.
+- **Typhoon Chat v0.2.2 ACTIVE** verified after user's plugin update. Admin-only Website Knowledge Preview for related Godot/AI game development queries returns published Post #52 as a source. A real end-to-end bot answer to these prompts remains UNKNOWN until independently observed. Search sometimes also returns GS20 as a less-relevant source; relevance improvements remain backlog.
+- **Coming Soon remains enabled**; WordPress Published does not imply the page is available to logged-out visitors. No Public Launch or theme changes.
+
 ## R1.2-E long-answer scrolling / Typhoon v0.2.2 candidate (2026-10-09 LATEST)
 
 - Owner reports that long Typhoon answers are clipped inside a separately scrollable chat feed. Previous request: shorten the disclaimer to `คำตอบอาจผิดพลาดได้` and make the initial mobile chat fit naturally.
