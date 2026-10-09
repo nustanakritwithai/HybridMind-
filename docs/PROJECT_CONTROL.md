@@ -6,6 +6,15 @@
 
 
 
+
+## L3-A Structural / L3-B-C Static QA — READ ONLY (2026-10-09)
+
+- **WordPress site still `coming_soon / unlaunched`.** Anonymous `hybridmind.online` and anonymous Draft #57 Preview returned WordPress Coming Soon HTML (`wpcom-coming-soon-body`), as intended. This blocks public DOM/click QA without a signed-in browser, not a site failure.
+- **L3-A CMS & rendered HTML PASS:** Static homepage Page #16, Query Loop filters include Explained `26694708`; WordPress server-rendered homepage output contains cards `#55, #52, #31` in order and no Hello World #3. Header uses Navigation #4, Footer About link exists, local homepage anchor targets valid. **AI News Published=0** despite Homepage/Nav/Footer links: editorial FAIL/HOLD (B3).
+- **L3-B source-only PASS / physical viewport UNKNOWN:** Global Styles contains scoped post #52 full-infographic crop fix and Draft #57 cover-only CSS; media #26/#51/#63/#58-60 exist with alt texts. Homepage cards use 16:9 crop, and #55 has no Featured Image; review visually before changes. No verified 320/375/390/768/1280 screenshots.
+- **L3-C static PASS / runtime UNKNOWN:** `#55` iframe source 34 unique IDs / 8 anchors / 27 DOM references with no unresolved targets; `#57` iframe source 37 unique IDs / 9 anchors / 3 alt-tagged photos; switching, quiz and calculator code present. Buttons, scroll, keyboard, image loads not actually tested under authenticated browser.
+- **No Production changes**. [L3-A/B/C audit evidence](releases/L3_ABC_STRUCTURAL_AND_STATIC_QA_2026-10-09.md) · [Existing L3 browser QA checklist](releases/L3_INTERACTIVE_RESPONSIVE_TEST_MATRIX_2026-10-09.md). L3 release HOLD; next obtain signed-in WordPress preview/browser viewport evidence without changing site visibility. **UNKNOWN != PASS.**
+
 ## L2-C Fix Round 1 — Scoped WordPress edits (2026-10-09)
 
 - **Owner authorized** L2-C Round 1 only: correct #57 Thai AiPASS figure's unit, add official docs to #52, research vendor source for #31, prepare interaction QA #55. No publication or Public Launch approval.
