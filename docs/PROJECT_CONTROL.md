@@ -14,6 +14,16 @@
 - Evidence: [R1.2 Mobile Visual QA](wordpress/R1_2_MOBILE_VISUAL_QA_2026-10-09.md) and [Hero Prechange Snapshot](wordpress/R1_2_HERO_PRECHANGE_2026-10-09.md).
 - Do not proceed to public launch or claim R1.2 PASS without actual postchange browser screenshots and interaction checks.
 
+## Latest plugin build — Typhoon Website Knowledge v0.2.0 (2026-10-09)
+
+- A new **installable ZIP** for Hybrid Mind — Typhoon Chat **v0.2.0** was built in the project conversation. It is **NOT INSTALLED ON WORDPRESS YET**; the site still reported **v0.1.0 active** at the last connector read.
+- V0.2 includes read-only published WordPress site-content retrieval at question time, explicit Hybrid Mind brand identity, verified same-site source links under AI answers, and safe DOM-only Markdown formatting.
+- PHP lint, JS syntax check, WordPress retrieval mocks, Typhoon HTTP mocks, DOM rendering mocks and ZIP integrity: **PASS locally**. Live provider behavior: **UNKNOWN** until ZIP replacement and authenticated smoke testing.
+- SHA256 ZIP: `04ec7a50374d64c545cbdbefb5520a75ee0c13f116c1ad2bd37a949cd0915c5a`; retain the existing slug `hybridmind-typhoon-chat` and site settings option. No API credentials are in the package.
+- [V0.2 implementation and installation gate](wordpress/TYPHOON_WEBSITE_KNOWLEDGE_V0.2_2026-10-09.md). User must upgrade via WordPress Plugin Upload → **Replace current with uploaded**; do not delete v0.1 first. Preserve Typhoon API Key and leave public chat disabled while testing.
+- This feature reads the **site's already published content**, **not** external live news/internet sources, drafts or private pages. External search is a separate future milestone.
+- Do not mark v0.2 production PASS or open Coming Soon until live tests and the separate release approval.
+
 ## Assets and roles
 
 | Surface | Verified link | Role | State |
