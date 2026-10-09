@@ -34,6 +34,17 @@
 - **Gate:** v0.2 install/search PASS; model-response-grounding, Markdown UI, mobile UX and guest/security QA HOLD/UNKNOWN. Site stays Coming Soon.
 - Evidence: [Typhoon V0.2 Production QA](wordpress/TYPHOON_V0_2_PRODUCTION_QA_2026-10-09.md).
 
+## Typhoon Chat v0.2.1 Thai retrieval patch — 2026-10-09
+
+- Owner screenshot QA 09:29–09:31: `Hybrid Mind คืออะไร` correctly recognizes brand, `Gs20` finds evidence and uses [1], `G20` does not incorrectly match, but **`หาแว่น` failed** and `แว่น` lacked grounded results.
+- Live v0.2 WordPress knowledge-preview reproduced `แว่น` / `หาแว่น` = zero results, while `แว่นตา` and `GS20` matched. `ข่าว AI ล่าสุดวันนี้` incorrectly returned GS20/homepage instead of dated news.
+- Root cause VERIFIED in plugin code: old tokenizer `/[^\\p{L}\\p{N}]+/u` drops Unicode category **Mark (M)** and splits Thai tone-marked words incorrectly.
+- Built **v0.2.1 plugin ZIP** with corrected Thai Unicode tokenization, natural-language request prefixes, news category/freshness filter, safe on-site Markdown hyperlinks and stricter seller-claim instructions. SHA256: `a96f195e6a447217f7b159d9f56844da2b15cfed31ea2014c7450ee6cfdf1505`.
+- **Local PHP, mock Typhoon, JS, ZIP integrity tests PASS.** WordPress still reported **v0.2.0 ACTIVE** at last check: **V0.2.1 NOT DEPLOYED; production QA UNKNOWN**.
+- Upgrade by plugin ZIP **Replace current with uploaded**, preserving `hybridmind_typhoon_settings` (contains API key). Never delete plugin first or share API Key. Then run search/admin and real-chat tests before PASS.
+- Evidence: [Typhoon v0.2.1 bugfix / test report](wordpress/TYPHOON_V0_2_1_THAI_SEARCH_PATCH_2026-10-09.md).
+- No theme or site launch change. External live-web search remains unimplemented; Coming Soon remains HOLD.
+
 ## Assets and roles
 
 | Surface | Verified link | Role | State |
