@@ -3,6 +3,15 @@
 **As of:** 2026-10-09 (Asia/Bangkok)  
 **Project:** Hybrid Mind · Modern AI Lifestyle Media / Shopee Affiliate
 
+## R1.2-D-01 CSS fix applied — 2026-10-09 (LATEST)
+
+- **Explicit owner approval** received to fix exactly two AI Hero typography declarations with `!important`: submit button 16px; chat note 13px. No theme or plugin code changes.
+- **Original Global Styles ID 2** CSS was 3,798 characters, saved exactly to [Prechange Backup](wordpress/R1_2_D_01_CSS_PRECHANGE_BACKUP_2026-10-09.md) before write; verified against WordPress before saving.
+- Targeted `global-styles.update` succeeded. **Independent readback PASS**: WordPress CSS 3,820 characters, changes reversible to identical original by undoing exactly two declarations; updated CSS is present in the public HTML `<head>`.
+- Page #16 still Published with 18 Gutenberg sections, Typhoon shortcode present, Assembler unchanged, Coming Soon `coming_soon / unlaunched` unchanged.
+- **R1.2-D-01 fixed at code/config level; actual computed CSS and viewport appearance UNKNOWN**, because external browser gets Coming Soon and no signed-in five-width screenshot test is available. **R1.2-D remains PARTIAL / HOLD**; do not advance Release Gate.
+- Evidence: [R1.2-D Responsive/Visual QA — latest fix](wordpress/R1_2_D_RESPONSIVE_VISUAL_QA_2026-10-09.md). Historical “fix not applied” lines in older sections remain background, superseded by this checkpoint.
+
 ## R1.2-D QA checkpoint — 2026-10-09
 
 - **R1.2-D = PARTIAL / HOLD**, not release-ready. Actual Android screenshots show chat works and text/bubbles/button fit the sampled viewport, but no verified five-width signed-in viewport/keyboard/menu/footer matrix yet.
