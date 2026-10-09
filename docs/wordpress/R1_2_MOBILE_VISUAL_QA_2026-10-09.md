@@ -27,7 +27,7 @@ Owner approved R1.2-A/B/C/D to improve mobile typography and responsive card lay
 - Mobile breakpoint <= 781px: reduced Hero padding; input and Send button stack; responsive H1 sizing; buttons wrap.
 - Card breakpoint <= 680px: two topic sections switch to one-column stacking; card padding and typography improved.
 - Narrow mobile breakpoint <= 380px: further padding reduction, readable message bubbles.
-- CSS text passed balanced-braces check and was independently read back as **3404 characters** under global-styles ID 2.
+- CSS text passed balanced-braces check and was independently read back as **3404 characters** under global-styles ID 2 initially, then **3798 characters** after the Android 08:55 follow-up.
 - **Status: PASS for stored stylesheet and selector coverage; browser-applied responsive behavior UNKNOWN.**
 
 ## D — Post-change WordPress readback
@@ -209,6 +209,30 @@ Latest WordPress homepage: `#16` / `2026-10-09T08:49:54` / `b04c4cb5a97067bf86e8
   }
 }
 ```
+
+## Android 08:55 follow-up (owner screenshot) — R1.2 incremental QA
+
+The owner supplied a new Android browser screenshot taken after the R1.2 wrapper/typography/card edits, while signed in on the existing WordPress homepage. The screenshot supports these **visual observations**:
+
+- The extra nested Gutenberg white panel is absent; the Typhoon chat widget itself is the primary chat card.
+- H1, message bubble, typing field and send button are visibly larger and more legible compared with earlier screenshot.
+- The send button is stacked full width below the input field; no obvious horizontal overflow in the visible crop.
+- The initial chat feed still has excess blank space beneath the greeting, making the first screen unusually tall.
+- The screenshot shows a greeting **but not a newly sent user message or response**. Post-change chat completion remains **UNKNOWN**, and screenshots across other viewport widths remain untested.
+
+### Targeted follow-up CSS (same day)
+
+To resolve the observed empty-feed issue, append a narrow CSS override under `@media (max-width: 781px)`, scoped to `.hm-ai-hero .hm-typhoon-chat__feed`:
+
+- `height: auto !important;`
+- `min-height: 0 !important;`
+- `max-height: 44vh;`
+- `overflow-y: auto;` and `overscroll-behavior: contain;`
+- Keep readable bubble line-height, input text and 48px send button.
+
+WordPress Global Styles `styles.css` readback grew from **3404 to 3798 characters**. The new rule was read back and the template still renders `hm-typhoon-chat__feed` and the form. Homepage retained its original 18 sections, published status, 4 editorial category cards, recent GS20 entry and both anchor links. Theme stays `assembler`, site remains `coming_soon / unlaunched`. No plugin/key/network code changed.
+
+**Gate:** This CSS is saved but actual new mobile visual result must still be verified with one more screenshot after refresh. Do not claim that the empty-feed problem is resolved on the device until observed.
 
 ## Release gate / next action
 **R1.2 is PARTIAL.** User must open the actual signed-in homepage in Android and Desktop, refresh, inspect Hero/chat/cards/footer, send a question, and share mobile screenshot evidence after the change. Do not call R1.2 final PASS on the basis of WordPress HTML readback. Browser rendering is particularly important because WordPress is Coming Soon, and unauthenticated HTML fetches do not represent the signed-in experience.
