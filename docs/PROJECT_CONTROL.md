@@ -3,6 +3,16 @@
 **As of:** 2026-10-09 (Asia/Bangkok)  
 **Project:** Hybrid Mind · Modern AI Lifestyle Media / Shopee Affiliate
 
+## Public Launch Readiness V1.0 — PRE-LAUNCH HOLD (2026-10-09)
+
+- **Owner requested planning only.** New [Public Launch Readiness V1.0](releases/HYBRID_MIND_PUBLIC_LAUNCH_READINESS_V1_2026-10-09.md) created. **No WordPress public launch or post publication action performed.**
+- Live CMS/Jetpack snapshot: Site `coming_soon / unlaunched`, homepage #16 Published, Assembler, Typhoon Chat v0.2.2 active, `blog_public=0`. AI News category 0 Published; TH-AI Passport Visual Post #57 remains Draft with Featured Image #63. Published #31, #52, #55 plus placeholder `Hello World!` #3.
+- **Launch blockers [FAIL]:** Published About #1 still default WordPress sample text; no Contact/Privacy/Editorial Policy/Affiliate Disclosure pages; footer lacks corresponding links; `Hello World!` is publicly publish-status; AI News archive empty despite primary navigation.
+- **Unknown/hold:** authenticated responsive matrix on #16/#52/#55/#57; public guest Typhoon safety/privacy/cost, real calculator/quiz interaction, precise source/review of #57 before any publish; backup restore test.
+- **Partial technical positives:** Jetpack Backup active, last success Oct 8 18:15; Jetpack Scan latest Oct 8 shows no threats, Jetpack Account Protection on. **Monitor disabled** and `site_icon=0`, `site_logo=0`; comments default open with moderation settings to decide.
+- Sequence: L1 trust pages → L2 clean editorial content → L3 browser/mobile Visual QA → L4 guest AI safety or tested content-only fallback → L5 current backup, recovery, SEO and monitoring → L6 owner explicit go/no-go and public cutover. **Recommend no new Visualize Engine features during release preparation.**
+- **Owner decision required:** desired public contact channel, whether visitors may use Typhoon on Day 1, whether Draft #57 should publish after content/visual checks, and explicit separate approval before turning off Coming Soon. **UNKNOWN ≠ PASS.**
+
 ## Post #57 Cover-Only landing (owner option 2, 2026-10-09)
 
 - Owner chose **Option 2**: on AiPASS 2.0 Visual Draft #57, remove visible white WordPress title panel/gaps and show **full-width original-cover image immediately after Hybrid Mind header**, before the dark interactive lesson. Preserve post title metadata/accessible H1, full image ratio and other posts.
