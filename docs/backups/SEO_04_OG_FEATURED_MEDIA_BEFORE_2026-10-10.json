@@ -1,0 +1,38 @@
+{
+  "date": "2026-10-10",
+  "site": "hybridmind.online",
+  "siteID": 257844857,
+  "baseline": {
+    "homepage": {
+      "id": 16,
+      "status": "publish",
+      "modified": "2026-10-10T01:32:38",
+      "featured_media": 0,
+      "hide_featured_image": false,
+      "body_chars": 57728
+    },
+    "ai_era": {
+      "id": 55,
+      "status": "publish",
+      "modified": "2026-10-10T02:07:48",
+      "featured_media": 0,
+      "hide_featured_image": false,
+      "body_chars": 55274
+    },
+    "visibility": "public",
+    "blog_public": 1
+  },
+  "media": {
+    "homepage": {
+      "id": 104,
+      "bytes": 147472,
+      "src": "https://hybridmind.online/wp-content/uploads/2026/10/hybridmind-og-upload-1-verify.jpg"
+    },
+    "ai_era": {
+      "id": 105,
+      "bytes": 218734,
+      "src": "https://hybridmind.online/wp-content/uploads/2026/10/hybridmind-og-upload-2-verify.jpg"
+    }
+  },
+  "rollback": "Restore Page #16 featured_media=0 and Post #55 featured_media=0, _jetpack_hide_featured_image=false; check template and rendered OG again; do not overwrite Gutenberg body or other posts."
+}
