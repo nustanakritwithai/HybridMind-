@@ -12,6 +12,16 @@
 - Browser/screenshots after CSS and v0.2.2 installation **UNKNOWN**; **R1.2-D = PARTIAL / HOLD**. Keep Coming Soon / unlaunched and public guest gate unchanged.
 - Evidence: [R1.2-D Mobile Long Reply / Single Scroll Report](wordpress/R1_2_D_MOBILE_LONG_REPLY_SINGLE_SCROLL_2026-10-09.md) and [CSS Prechange Backup](wordpress/R1_2_E_CHAT_SINGLE_SCROLL_CSS_BACKUP_2026-10-09.md).
 
+## R1.2-E long-answer scrolling / Typhoon v0.2.2 candidate (2026-10-09 LATEST)
+
+- Owner reports that long Typhoon answers are clipped inside a separately scrollable chat feed. Previous request: shorten the disclaimer to `คำตอบอาจผิดพลาดได้` and make the initial mobile chat fit naturally.
+- An existing CSS read from WordPress Global Styles ID 2 contained a **concurrent `R1.2-E-01` mobile fix** (`max-height:none!important; overflow:visible!important`; most recent breakpoint 781px). Original 3,820-character CSS was snapshotted BEFORE the concurrent change. **This agent ABORTED its live CSS write on mismatch and did not overwrite the new change.** CSS on site most recently 4,246 characters; signed-in mobile visual retest UNKNOWN.
+- Built `hybridmind-typhoon-chat-v0.2.2.zip` as an **optional manual plugin update** that permanently makes the message feed auto-height with one normal page scrollbar at all sizes, avoids autofocus jumps after long answers on mobile, uses a compact first-visit feed and sets the visible note to exactly `คำตอบอาจผิดพลาดได้`.
+- v0.2.2 **LOCAL QA PASS** (PHP, JS, WordPress/knowledge mocks, Chromium fixture at 320/375/390/768/1280 CSS px, ZIP integrity). SHA256: `f8b49165f00bd0257e3d5b768ea069cab17874fd8f3a0e36d753c1c811f90c8d`.
+- Latest WordPress plugin check still reports **v0.2.1 ACTIVE**, so **V0.2.2 PRODUCTION INSTALL and END-TO-END VISUAL QA UNKNOWN**. Keep existing API key and site settings, do not delete plugin before replacement.
+- **Privacy release gate:** single-line note is not a substitute for a clear website Privacy Policy disclosing transmission to Typhoon. Public Launch/guest chat remain HOLD and `coming_soon/unlaunched` must stay unchanged.
+- Evidence and upgrade guide: [Typhoon v0.2.2 Long Answer UX](wordpress/TYPHOON_V0_2_2_LONG_ANSWER_UX_2026-10-09.md) and [R1.2-E CSS prechange backup](wordpress/R1_2_D_03_CHAT_SCROLL_PRECHANGE_2026-10-09.md). UNKNOWN ≠ PASS.
+
 ## R1.2-D-01 CSS fix applied — 2026-10-09 (LATEST)
 
 - **Explicit owner approval** received to fix exactly two AI Hero typography declarations with `!important`: submit button 16px; chat note 13px. No theme or plugin code changes.
