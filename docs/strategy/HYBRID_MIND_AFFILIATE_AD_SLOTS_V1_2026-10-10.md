@@ -20,7 +20,7 @@ The **Smart Buying** editorial section may review or explain externally sold pro
 - Clicking navigates **outbound** to the retailer/marketplace, not to an HYBRID MIND purchase flow.
 - Keep the ad system operationally independent from temporarily disabled Typhoon Chat; it uses no LLM provider runtime or token spend.
 
-## Proposed placement inventory (planning; NOT installed)
+## Placement inventory (reservations installed 2026-10-10; campaigns INACTIVE)
 
 | Slot | Context | User experience |
 |---|---|---|
@@ -74,6 +74,6 @@ Do not fill in unverified brand names, prices, promotions, approval status, comm
 
 ## Change control
 
-This document records the owner's correction. **No live WordPress content, theme, navigation, plugins, posts, pricing, or ad links changed.** Future placement implementation requires a separately reviewed design and owner approval. Existing site remains live content-only, while Typhoon guest security and browser QA are independent gates.
+This document records the owner's correction and the first owner-directed implementation round. **Four inactive, hidden reservation positions are now installed** in WordPress Homepage V3 and Single Post V3.3 Template (Home: `home_after_feature`, `home_in_feed`; Standard articles: `article_after_intro`, `article_near_end`; mobile uses these responsive slots). **No actual affiliate link, creative, URL, tracking, product, or merchant feature is enabled.** The original editorial V3/V3.3 code and article bodies were preserved; reversible backups are in GitHub. Evidence: [R1 / ad-slot deployment report](../releases/HM_R1_STABILITY_AND_INACTIVE_AFFILIATE_SLOTS_2026-10-10.md). **Activation of any campaign requires an approved specific destination link/creative, user-visible commercial disclosure, and separate controlled QA.** Typhoon Guest, real mobile browser QA, Contact/Privacy and SEO gates remain independent. UNKNOWN != PASS.
 
 **UNKNOWN != PASS.**
