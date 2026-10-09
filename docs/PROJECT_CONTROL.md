@@ -10,6 +10,18 @@
 
 
 
+
+## V3 Homepage — PRODUCTION LIVE (2026-10-09 22:08 ICT)
+
+- **Owner authorized deploying the latest UI V3 to the live WordPress site** (“เอาเวอร์ชั่นล่าสุดขึ้นเว็บจริงก่อนดีกว่า”). Target `https://hybridmind.online/`, WordPress Atomic Site ID `257844857`, static Homepage **Page #16**. **V3 is now LIVE** (Published modified `2026-10-09T22:08:28`).
+- **Exact rollback artifact**: [full pre-V3 Page #16 Gutenberg source](backups/WORDPRESS_PAGE_16_PRE_V3_2026-10-09.html), 14,159 chars / original modified `2026-10-09T20:39:52`. [V3 WordPress-ready core/html candidate](design/HYBRID_MIND_V3_WORDPRESS_HOME_CANDIDATE_2026-10-09.html), 54,342 chars. GitHub readbacks matched both content versions exactly.
+- **Safe deployment:** staged candidate as WordPress **Draft Page #79** and read back byte-identical source/rendered CSS+JS (remains Draft/noindex). Updated only existing **Published Page #16 content.raw** with V3. Did **not** change theme Assembler, global styles, Navigation #4, Header/Footer template sources, published post bodies, Typhoon plugin status, DNS or site visibility.
+- **Production PASS (source/HTTP):** WordPress raw Page #16 readback exactly equals candidate; real anonymous Homepage HTML shows V3 Hero, nav, Reading Room, Visual Lab, V3 footer, CSS and script byte-identical to candidate. Three article cards IDs **#55/#52/#31** are Published; no #57 Draft card. One H1; zero duplicate HTML IDs; 17 anchor links have valid targets.
+- **Local Browser wrapper QA PASS only:** isolated WP shell under Chromium at 320/375/390/768/1280/1440 CSS px has no horizontal overflow or JS errors; filters/search, mobile menu and Hero/Lab switches work. **Actual Production device screenshots/computed CSS/real clicks remain UNKNOWN** until a live browser test.
+- **Current operational posture:** site `launched / discourage_search` (`blog_public=0`); Typhoon Chat **inactive** (content-only); #57 Draft. Original WP Header/Footer remain stored for article pages and are hidden by CSS **only on Page #16**.
+- **Outstanding:** L3 real-world viewport QA, SEO/robots mismatch, L1 public Privacy/Contact/Affiliate trust pages, L4 guest chat security, newest Jetpack Backup/restore UNKNOWN. V3 manual WordPress public GET updates only 3 known cards; fully dynamic article discovery is a later enhancement.
+- [Full V3 deploy report / rollback / QA](releases/HYBRID_MIND_V3_UI_PRODUCTION_DEPLOY_2026-10-09.md). **UNKNOWN ≠ PASS**.
+
 ## L6 — CONTENT-ONLY SOFT PUBLIC LAUNCH LIVE (2026-10-09)
 
 - **Owner explicitly directed to get the site online now** (“ตอนนี้เอาแค่ให้มันออนไลน์ก่อน”), without publishing Draft #57 or completing unapproved advanced features. **WordPress `manage-site.launch` SUCCESS**, `launch_status=launched`; actual anonymous homepage HTML no longer Coming Soon. Website **LIVE**.
