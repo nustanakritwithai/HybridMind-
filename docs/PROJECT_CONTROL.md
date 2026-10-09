@@ -3,6 +3,16 @@
 **As of:** 2026-10-09 (Asia/Bangkok)  
 **Project:** Hybrid Mind · Modern AI Lifestyle Media / Shopee Affiliate
 
+## Latest V0.2.1 production verification — 2026-10-09
+
+- **Typhoon Chat v0.2.1 ACTIVE in WordPress production** (verified independently from WordPress.com and WPVibe; supersedes historical V0.1/V0.2 checkpoints below).
+- Android screenshots at ~09:54 show `หาแว่น` now receives a Thai answer and displays **home + GS20 source links**; safe headings/bold/bullets render. Tap-through of links not yet tested.
+- WordPress Knowledge API **12/12 tests PASS**: `แว่น`, `หาแว่น`, `ช่วยหาแว่น`, `แว่นฟังเพลง`, `อยากได้แว่นราคาถูก`, `Gs20`, `GS20` all return GS20; `G20`, two external breaking-news phrasings, draft-only `HUAWEI Eyewear 2`, and `Hello World!` yield no false content.
+- **Known follow-up:** for broad `หาแว่น`, generic homepage ranks above specialist GS20 article. Improve retrieval score ordering later. Do not mark live-news search as available.
+- **Gate:** Installation / basic Thai retrieval / one mobile answering screenshot PASS. Public guest abuse and rate/cost QA, clickable source click-through, product claim verification and full responsive/browser matrix UNKNOWN/HOLD.
+- Site remains **Coming Soon/unlaunched**; separate Public Launch authorization still required.
+- Evidence: [Typhoon v0.2.1 report (latest production section)](wordpress/TYPHOON_V0_2_1_THAI_SEARCH_PATCH_2026-10-09.md).
+
 ## Latest execution checkpoint — 2026-10-09 (R1.2)
 
 - WordPress site 257844857 / https://hybridmind.online remains **Coming Soon / unlaunched**; Assembler theme still active.
