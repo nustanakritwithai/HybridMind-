@@ -5,6 +5,27 @@
 **Release rule:** **UNKNOWN ≠ PASS.**  
 **Result:** **R1.2-D = PARTIAL / HOLD.** One Android real-device view has been sampled, production content/markup and responsive CSS have been inspected, and a real CSS-priority problem was found. Authenticated actual page render at specified 320 / 375 / 390 / 768 / 1280 CSS px has **not** been recorded.
 
+## Approved CSS Typography Correction — 2026-10-09 (LATEST UPDATE)
+
+**Owner explicitly approved the narrowly scoped Global Styles change** to resolve `R1.2-D-01` only. Historical pre-fix references below are retained for audit history; this section supersedes their “not yet applied” status.
+
+**Backup verified BEFORE write:** exact original WordPress Global Styles ID `2` `styles.css` content, 3,798 characters, committed to [R1.2-D-01 CSS Prechange Backup](R1_2_D_01_CSS_PRECHANGE_BACKUP_2026-10-09.md) (commit `3f3eb92abb09fd5e52b59c9f8991aad2e1572123`). WordPress CSS was read again immediately before write and matched the backup character-for-character.
+
+**Changes — exactly two scoped declarations:**
+- `.hm-ai-hero .hm-typhoon-chat__send`: `font-size: 16px;` → `font-size: 16px !important;`
+- `.hm-ai-hero .hm-typhoon-chat__note`: `font-size: 13px;` → `font-size: 13px !important;`
+
+No additional selectors, properties, plugin sources, theme files, API keys, pages or site settings were intentionally changed. Adding `!important` in a **more-specific** AI Hero selector is designed to supersede the plugin's previous 14px/12px `!important` rules.
+
+**Independent WordPress readback AFTER write:**
+- WordPress Global Styles ID `2` contains new CSS of **3,820 characters**; both corrected selector blocks occur exactly once.
+- Reversing just those two declarations reproduces the backed-up 3,798-character CSS **exactly**. No other changes detected in the stored CSS.
+- The public HTML response `<head>` includes both updated CSS rules. However the unauthenticated `<body>` remains the WordPress.com **Coming Soon splash**, so that HTML is **not** a production chatbot viewport screenshot.
+- Homepage #16 still Published, modified `2026-10-09T08:49:54`, 18 sections, with Typhoon shortcode intact and AI Engine shortcode absent. Assembler theme unchanged.
+- Coming Soon remains `coming_soon` and site `unlaunched`.
+
+**Current gate:** **R1.2-D-01 CSS code/configuration defect FIXED — READBACK PASS.** Actual computed font sizes for an authenticated user's production homepage and screenshots at 320/375/390/768/1280 CSS px remain **UNKNOWN**. Overall **R1.2-D = PARTIAL / HOLD** until real responsive/keyboard/menu/footer evidence passes. No site launch authorization inferred.
+
 ## Evidence types and limits
 
 - **E1 — Live WordPress.com authenticated readback:** `pages.get (edit/view)`, `page-sections.list`, `global-styles.get`, `templates.get`, `template-parts.get`, `navigation.get`, `categories.list`, `theme.active`, launch status.
