@@ -3,6 +3,16 @@
 **As of:** 2026-10-09 (Asia/Bangkok)  
 **Project:** Hybrid Mind · Modern AI Lifestyle Media / Shopee Affiliate
 
+## L1 Trust Pages & Footer — 2026-10-09 (PRE-LAUNCH)
+
+- Owner said `ทำเลย` to begin Public Launch **L1 — Trust Pages**. **No Public Launch** or draft article publication authorized.
+- **Published About #1 fixed**: old 415-character default WordPress sample paragraph replaced with 4,803-character original HYBRID MIND brand intro, Visual Interactive editorial pillars, source transparency and links to real published posts #52/#55. Readback PASS. Backup: [L1 About original](wordpress/L1_ABOUT_PRECHANGE_BACKUP_2026-10-09.md).
+- **Created four standalone WordPress Draft pages** with matching theme blocks, editorial owner-review notes and no invented public contacts: **Contact #67**, **Privacy Policy #68**, **Editorial Policy #69**, **Affiliate Disclosure #70**. WordPress independent edit/view readback PASS, each Draft, comments closed; **not published**.
+- **Footer updated** after exact original backup (2,655 chars → 2,843 chars) with **only one link to the corrected Published About page**. Existing four topic links and footer text preserved; no links to unpublished policy Drafts. Readback PASS. Backup: [L1 Footer previous](wordpress/L1_FOOTER_ABOUT_LINK_PRECHANGE_2026-10-09.md).
+- **L1 PARTIAL / HOLD:** owner has not supplied authorized Facebook Page URL or public email; user-facing Privacy #68 still requires review of actual Typhoon provider prompt/retention, WordPress/Jetpack/Akismet cookies and data controller contact; policy publication/Footer links require separate editorial authorization. Actual signed-in browser QA still UNKNOWN.
+- **Site status independent readback:** `coming_soon / unlaunched`; no posts were published or removed; Header/AI-chat/plugin/SEO settings unchanged.
+- [L1 Implementation QA and next gates](releases/L1_TRUST_PAGES_IMPLEMENTATION_2026-10-09.md). Highest rule **UNKNOWN ≠ PASS**.
+
 ## Public Launch Readiness V1.0 — PRE-LAUNCH HOLD (2026-10-09)
 
 - **Owner requested planning only.** New [Public Launch Readiness V1.0](releases/HYBRID_MIND_PUBLIC_LAUNCH_READINESS_V1_2026-10-09.md) created. **No WordPress public launch or post publication action performed.**
