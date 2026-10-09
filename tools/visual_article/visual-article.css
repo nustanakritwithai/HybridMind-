@@ -1,0 +1,177 @@
+/*
+ * HYBRID MIND — Visual Article V0.1 Style Kit
+ * Scoped exclusively to Gutenberg content with .hm-visual-article.
+ * Add through an explicitly approved plugin or theme style pipeline.
+ * DO NOT apply this stylesheet sitewide without visual QA.
+ */
+.hm-visual-article {
+  --hm-va-navy: #14243b;
+  --hm-va-cyan: #0693e3;
+  --hm-va-shadow: 0 10px 30px rgba(9, 25, 41, .075);
+  max-width: 100%;
+  line-height: 1.7;
+  overflow-wrap: anywhere;
+}
+.hm-visual-article *,
+.hm-visual-article *::before,
+.hm-visual-article *::after { box-sizing: border-box; }
+
+.hm-visual-article > * { max-width: 100%; }
+
+.hm-visual-article .hm-va-kicker {
+  font-size: 13px;
+  font-weight: 750;
+  letter-spacing: .09em;
+  line-height: 1.35;
+  color: #0964a0;
+  text-transform: uppercase;
+}
+.hm-visual-article .hm-va-dek,
+.hm-visual-article > .wp-block-paragraph:nth-child(2) {
+  font-size: clamp(18px, 2.15vw, 23px);
+  line-height: 1.55;
+  font-weight: 450;
+  letter-spacing: -.012em;
+  max-width: 66ch;
+}
+
+.hm-visual-article h2.wp-block-heading {
+  font-size: clamp(25px, 3.35vw, 38px);
+  font-weight: 750;
+  line-height: 1.24;
+  margin-block: 30px 14px;
+  letter-spacing: -.026em;
+}
+.hm-visual-article h3.wp-block-heading {
+  font-size: clamp(20px, 2.25vw, 24px);
+  font-weight: 700;
+  line-height: 1.27;
+  margin-block: 4px 12px;
+}
+
+.hm-visual-article p {
+  line-height: 1.75;
+  overflow-wrap: anywhere;
+}
+
+.hm-visual-article .hm-va-full-image {
+  width: 100%;
+  max-width: 100%;
+  margin-inline: auto;
+  overflow: visible;
+}
+.hm-visual-article .hm-va-full-image img {
+  display: block;
+  width: 100% !important;
+  height: auto !important;
+  max-width: 100% !important;
+  aspect-ratio: auto !important;
+  object-fit: contain !important;
+  border-radius: 14px;
+}
+.hm-visual-article .hm-va-full-image figcaption {
+  font-size: 13px;
+  line-height: 1.45;
+  color: #536274;
+  margin-block-start: 10px;
+}
+
+.hm-visual-article .hm-va-panel {
+  max-width: 100%;
+  border: 1px solid rgba(65, 99, 130, .11);
+  border-radius: 18px;
+  box-shadow: var(--hm-va-shadow);
+  overflow: visible;
+  margin-block: 18px 24px;
+}
+.hm-visual-article .hm-va-summary {
+  border-color: rgba(255, 255, 255, .16);
+}
+.hm-visual-article .hm-va-summary h2 { color: #fff; margin-top: 0; }
+.hm-visual-article .hm-va-summary li { color: #fff; }
+
+.hm-visual-article .hm-va-card-grid.wp-block-columns {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  gap: 16px;
+  margin-block: 16px;
+}
+.hm-visual-article .hm-va-card-grid > .wp-block-column {
+  min-width: 0;
+  flex: 1 1 calc(50% - 8px);
+  max-width: 100%;
+}
+.hm-visual-article .hm-va-card-grid > .wp-block-column > .hm-va-panel {
+  height: 100%;
+  margin-block: 0;
+}
+.hm-visual-article .hm-va-compare-card p,
+.hm-visual-article .hm-va-process-card p,
+.hm-visual-article .hm-va-decision-card p {
+  font-size: 16px;
+  line-height: 1.57;
+}
+.hm-visual-article .hm-va-decision-card {
+  border-top: 4px solid var(--hm-va-cyan);
+}
+.hm-visual-article .hm-va-pullquote {
+  border-inline-start: 5px solid var(--hm-va-cyan);
+  padding: 22px clamp(18px, 3.4vw, 30px);
+  background: #e8f4fb;
+  color: #14243b;
+  border-radius: 0 18px 18px 0;
+  margin-block: 20px 30px;
+}
+.hm-visual-article .hm-va-pullquote p {
+  font-weight: 650;
+  line-height: 1.45;
+  font-size: clamp(20px, 2.6vw, 28px);
+}
+.hm-visual-article .hm-va-pullquote cite {
+  font-size: 14px;
+  font-style: normal;
+}
+.hm-visual-article .hm-va-checklist li {
+  padding-block: 6px;
+  line-height: 1.55;
+}
+.hm-visual-article a {
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
+@media (max-width: 781px) {
+  .hm-visual-article h2.wp-block-heading {
+    font-size: clamp(24px, 6.2vw, 31px);
+    line-height: 1.27;
+  }
+  .hm-visual-article .hm-va-card-grid {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 14px !important;
+  }
+  .hm-visual-article .hm-va-card-grid > .wp-block-column {
+    width: 100% !important;
+    flex: 0 0 auto !important;
+    max-width: 100% !important;
+  }
+  .hm-visual-article .hm-va-panel {
+    padding: 18px !important;
+    border-radius: 15px !important;
+  }
+  .hm-visual-article .hm-va-dek,
+  .hm-visual-article > .wp-block-paragraph:nth-child(2) {
+    font-size: 18px;
+  }
+}
+@media (max-width: 360px) {
+  .hm-visual-article .hm-va-panel { padding: 14px !important; }
+  .hm-visual-article h3.wp-block-heading { font-size: 19px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hm-visual-article * {
+    scroll-behavior: auto !important;
+    transition-duration: .01ms !important;
+  }
+}
