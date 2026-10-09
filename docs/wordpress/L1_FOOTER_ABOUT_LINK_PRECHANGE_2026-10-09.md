@@ -1,0 +1,35 @@
+# HYBRID MIND — L1 Footer Current Prechange Backup
+
+**Date:** 2026-10-09 Asia/Bangkok  
+**Target:** WordPress.com Atomic Site `257844857`, Assembler template part `assembler//footer`
+**Content length:** 2655 characters, `status=publish`
+**Owner authorization:** `ทำเลย` in the context of Public Launch L1 trust pages; adding a **single link to the now-correct Published About page** only.
+**Site status:** `coming_soon / unlaunched`.
+
+## Original current Footer Gutenberg block markup
+
+```html
+<!-- wp:group {"align":"full","backgroundColor":"theme-4","textColor":"theme-1","style":{"spacing":{"padding":{"top":"var:preset|spacing|60","right":"var:preset|spacing|40","bottom":"var:preset|spacing|40","left":"var:preset|spacing|40"}}},"layout":{"type":"constrained"}} -->
+<div class="wp-block-group alignfull has-theme-1-color has-text-color has-theme-4-background-color has-background" style="padding-top:var(--wp--preset--spacing--60);padding-right:var(--wp--preset--spacing--40);padding-bottom:var(--wp--preset--spacing--40);padding-left:var(--wp--preset--spacing--40)">
+<!-- wp:columns {"align":"wide"} -->
+<div class="wp-block-columns alignwide">
+<!-- wp:column {"width":"60%"} -->
+<div class="wp-block-column" style="flex-basis:60%">
+<!-- wp:heading {"level":3,"textColor":"theme-1"} --><h3 class="wp-block-heading has-theme-1-color has-text-color">HYBRID MIND</h3><!-- /wp:heading -->
+<!-- wp:paragraph {"textColor":"theme-2"} --><p class="has-theme-2-color has-text-color"><strong>Live Smarter. Live Future.</strong></p><!-- /wp:paragraph -->
+<!-- wp:paragraph {"textColor":"theme-2"} --><p class="has-theme-2-color has-text-color">แหล่งความรู้ข่าว AI และไลฟ์สไตล์เทคโนโลยี ช่วยให้คุณเข้าใจโลกที่เปลี่ยนไป และเลือกใช้เครื่องมือที่เหมาะกับชีวิตจริง</p><!-- /wp:paragraph -->
+</div><!-- /wp:column -->
+<!-- wp:column {"width":"40%"} -->
+<div class="wp-block-column" style="flex-basis:40%">
+<!-- wp:heading {"level":3,"textColor":"theme-1"} --><h3 class="wp-block-heading has-theme-1-color has-text-color">EXPLORE</h3><!-- /wp:heading -->
+<!-- wp:paragraph {"textColor":"theme-2"} --><p class="has-theme-2-color has-text-color"><a href="https://hybridmind.online/category/ai-news/">AI News</a> · <a href="https://hybridmind.online/category/explained/">Explained</a></p><!-- /wp:paragraph -->
+<!-- wp:paragraph {"textColor":"theme-2"} --><p class="has-theme-2-color has-text-color"><a href="https://hybridmind.online/category/future-lifestyle/">Future Lifestyle</a> · <a href="https://hybridmind.online/#hm-smart-picks">Smart Buying</a></p><!-- /wp:paragraph -->
+</div><!-- /wp:column -->
+</div><!-- /wp:columns -->
+<!-- wp:separator {"backgroundColor":"theme-2","className":"is-style-wide"} --><hr class="wp-block-separator has-text-color has-theme-2-color has-alpha-channel-opacity has-theme-2-background-color has-background is-style-wide"/><!-- /wp:separator -->
+<!-- wp:paragraph {"textColor":"theme-2","fontSize":"small"} --><p class="has-theme-2-color has-text-color has-small-font-size">© 2026 Hybrid Mind · ความรู้ก่อนการขาย · หากมีลิงก์ Affiliate จะระบุความสัมพันธ์ทางการค้าอย่างชัดเจน</p><!-- /wp:paragraph -->
+</div><!-- /wp:group -->
+```
+
+## Rollback guard
+If reverting, remove only the new Published About link paragraph from this Footer after checking no other intervening changes. Do not restore the old Footer wholesale over unrelated updates or publish unfinished legal-policy Draft links.
