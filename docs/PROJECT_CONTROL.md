@@ -18,6 +18,17 @@
 
 
 
+
+## SEO-02 — PUBLIC SEARCH VISIBILITY + AEO-01 #55 NATIVE ANSWERS (2026-10-10)
+
+- **Owner authorized search visibility** by replying “ทำต่อเลย” immediately after the explicit question whether to enable Google/Bing indexing. WordPress.com `manage-site.set-visibility("public")` **SUCCESS**, changing `discourage_search → public` exactly once. Immediately after, `manage-site.status=launched/public`, WP.com `blog_public=1` and authenticated core WordPress REST `blog_public=1`: the previously conflicting readback values now agree. This is **search eligibility**, not guaranteed indexed URLs.
+- **Sitemap remains P0 HOLD:** after Public, connected public reader still returned WordPress “ไม่พบหน้า” HTML rather than XML at `/sitemap.xml`, `/news-sitemap.xml`, `/wp-sitemap.xml`; no raw HTTP status/response headers yet. Jetpack `sitemaps=true`, `robots.txt` advertises sitemap; check real HTTP/X-Robots-Tag via Windows VPS script / Google Search Console before any Jetpack toggle. Owner-approved indexing policy stays **public** unless separate instruction reverts.
+- **AEO-01 Post #55 LIVE PASS:** A 4,432-char native Gutenberg `core/group` Answer-Ready summary with 6 headings, 10 paragraphs, primary links (MCP, A2A, OpenAI) was inserted **before** the existing iframe via optimistic-guarded `post-sections.insert`. Published #55 modified `2026-10-10T02:07:48`; original 50,842-char immersive `core/html` block remains **byte- and SHA1-identical** (`35fffee971d301017a4ad5d8b3d6a8e96c33854d`), Featured Media still 0. Public HTML contains native answers before original Visual lesson; basic mobile Lighthouse #55 returned SEO **100/100**, Accessibility **100/100** (not proof of Google ranking).
+- **Recovery:** [Exact #55 pre-change backup](backups/AEO_01_POST_55_PRE_NATIVE_SUMMARY_2026-10-10.html) · [AEO native summary block](design/AEO_01_POST_55_NATIVE_SUMMARY_BLOCK_2026-10-10.html). Temporary Draft QA Page #101 was moved to recoverable Trash after successful fidelity test.
+- **SEO-04 still pending:** local OG image JPEGs for Home and #55 are ready at 1200×630 but **not uploaded into WordPress**, because the tool runner cannot reach WordPress's multipart-upload host. The site and #55 continue using blank WordPress social preview; do not claim installed or invent IDs. User browser upload/Work mode necessary before adding WordPress Media IDs.
+- **Invariants:** Homepage V3 + Ad Slots intact; Published only #55/#52/#31; Draft #57 and Trust Draft #67/#68/#69/#70 remain Draft; Typhoon v0.2.2 inactive; Affiliate slots still hidden/no links. Backup latest known Oct 8 and full restore test UNKNOWN.
+- [Complete SEO-02 / AEO-01 production release and outstanding Sitemap/OG gates](releases/SEO_02_SEARCH_VISIBILITY_AND_AEO_01_2026-10-10.md). **UNKNOWN ≠ PASS.**
+
 ## SEO-02 + SEO-03 + SEO-04 — SITE STRUCTURE FIXES AND ARTWORK READY (2026-10-10)
 
 - **Owner instructed “ทำเลย”** on the next SEO/AEO roadmap; work split into P0 Indexing diagnostics, P1 SEO-03 live fixes and P1 SEO-04 prepared assets. **Do not reopen indexing without separate owner decision.**
