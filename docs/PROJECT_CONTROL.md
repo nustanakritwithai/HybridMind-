@@ -4,6 +4,16 @@
 **Project:** Hybrid Mind · Modern AI Lifestyle Media / Shopee Affiliate
 
 
+
+## L2-C Editorial Verification — READ-ONLY AUDIT (2026-10-09)
+
+- Audited live WordPress Post #31, #52, #55 and Draft #57 against official references, media metadata, embedded HTML/JS source and prior photography provenance report; **no Production content or site setting was modified**.
+- **#31 GS20: HOLD** — clear AI-image/vendor-data disclaimers PASS; original vendor product listing and variant for 602 THB missing (editorial provenance FAIL), browser imagery UNKNOWN.
+- **#52 AI game development: HOLD** — Godot/Unreal/Blender descriptions broadly match technical documentation; article has 0 external source links, add official docs after approval, featured image display UNKNOWN.
+- **#55 AI ERA: HOLD for L3** — A2A/MCP/Computer Use sources open and distinction consistent; embedded script/control/quiz structure present, runtime/mobile UNKNOWN.
+- **#57 AiPASS 2.0: HOLD / DRAFT** — news of 500,000 Gemini Enterprise seats, 1,000 points, up to 10 months corroborated by 2026-10-09 reports; important editorial FAIL: official AiPASS says target is 5 million *people*, while article calls it 5 million *registration rights* in callout/stat/quiz. Correct wording throughout only upon scoped owner approval. Edition, available quotas, actual browser behavior UNKNOWN. Featured AI cover and three Pexels photographs traceable to saved media evidence; never publish without individual authorization.
+- [Full fact-check, official sources, static interactive inventory and proposed narrow correction batches](releases/L2_C_EDITORIAL_VERIFICATION_AUDIT_2026-10-09.md). Next: approve individual precision/source updates and run L3 authenticated browser/device QA. **UNKNOWN != PASS. Public Launch NO GO.**
+
 ## L2-B Editorial Cleanup — execution, 2026-10-09 (B1/B2 COMPLETE)
 
 - Explicit owner approval received. WordPress Post #3 moved from Published to recoverable Trash at `2026-10-09T17:47:08`; body unchanged (165 chars). Post #55 category replaced from `[1]` Uncategorized to `[26694708]` Explained at `2026-10-09T17:47:46`; body unchanged (50,842 chars), title/URL/slug/publish date unchanged.
