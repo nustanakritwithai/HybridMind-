@@ -9,6 +9,16 @@
 
 
 
+
+## L6 — CONTENT-ONLY SOFT PUBLIC LAUNCH LIVE (2026-10-09)
+
+- **Owner explicitly directed to get the site online now** (“ตอนนี้เอาแค่ให้มันออนไลน์ก่อน”), without publishing Draft #57 or completing unapproved advanced features. **WordPress `manage-site.launch` SUCCESS**, `launch_status=launched`; actual anonymous homepage HTML no longer Coming Soon. Website **LIVE**.
+- **Content-only protection:** Hybrid Mind — Typhoon Chat plugin **v0.2.2 temporarily INACTIVE** with WordPress GET verification; no paid chat POST. Changed only Homepage #16 Hero top-level group via optimistic-lock `page-sections.replace` to remove the bot shortcode and change four intro strings to editorial/“chat under review” copy. Backed up original exact block [here](wordpress/L6_SOFT_LAUNCH_HERO_CONTENT_ONLY_PRECHANGE_2026-10-09.md); post-readback verified 17 other blocks unchanged, `modified=2026-10-09T20:39:52`.
+- **SEO caveat:** `launch` unexpectedly set `blog_public=1`; immediately returned it to `0` with WordPress `settings.update`. Now `visibility=discourage_search`, `launch_status=launched`, and publicly viewable. **External HTML still showed meta robots `max-image-preview:large`, not `noindex`**, so effective crawler blocking **UNKNOWN**, not SEO PASS. Do not promise complete Google exclusion.
+- **Public verification:** anonymous Homepage shows article cards `#55/#52/#31` and no Typhoon JS; anonymous `?p=57` displays a not-found title, #57 remains Draft. No Contact/Privacy/Policy Drafts published.
+- **FULL release readiness gates NOT closed:** AI News empty but linked, actual mobile Browser QA L3 UNKNOWN, Contact/Privacy L1 HOLD, Typhoon Guest L4 HOLD (disabled), fresh backup/SEO/monitoring L5 HOLD. This is an owner-directed **soft launch with known exceptions**, not full SEO or guest-AI GO.
+- [Complete content-only soft launch changes, verification and rollback](releases/L6_CONTENT_ONLY_SOFT_LAUNCH_2026-10-09.md). **UNKNOWN != PASS**.
+
 ## L3-C Isolated Runtime Units & L4 Typhoon READ ONLY — 2026-10-09
 
 - **L3-C isolated mock-DOM tests PASS:** extracted current WordPress iframe scripts (Post #55 Published / Post #57 Draft), invoked quiz event callbacks for both; correct/wrong/finish/restart cycles produced expected 2/3, reset state. #57 calculator functions `recalc/setCount` produced 0 initial, 10 videos=1,000, Reset=0, mixed preset=1,010, progress capped 100%, count clamped 0..99. These are **isolated JavaScript unit tests, NOT authenticated browser/Android QA**.
