@@ -3,6 +3,15 @@
 **As of:** 2026-10-09 (Asia/Bangkok)  
 **Project:** Hybrid Mind · Modern AI Lifestyle Media / Shopee Affiliate
 
+
+## L2-B Editorial Cleanup — execution, 2026-10-09 (B1/B2 COMPLETE)
+
+- Explicit owner approval received. WordPress Post #3 moved from Published to recoverable Trash at `2026-10-09T17:47:08`; body unchanged (165 chars). Post #55 category replaced from `[1]` Uncategorized to `[26694708]` Explained at `2026-10-09T17:47:46`; body unchanged (50,842 chars), title/URL/slug/publish date unchanged.
+- Independent WordPress readback PASS: Published IDs `[55,52,31]`; Explained Published = 3; Uncategorized Published = 0. Homepage #16 raw body and Query Loop unchanged; #55 is now eligible in the feed. Live authenticated browser render remains UNKNOWN.
+- AI News Published = 0 and Navigation/Footer still point to the category: B3 HOLD. #57 remains Draft, site remains Coming Soon/unlaunched. No Public Launch authorization.
+- Jetpack Backup is active, last successful backup `2026-10-08T18:15:15`, restore preflight UNKNOWN. B1 and B2 are individually reversible; no current full-site restore test was performed.
+- [Complete L2-B execution evidence and verification](releases/L2_B_EDITORIAL_CLEANUP_EXECUTION_2026-10-09.md). Next: L2-C content/source/visual review; Public Launch NO GO. **UNKNOWN != PASS.**
+
 ## L1 Trust Pages & Footer — 2026-10-09 (PRE-LAUNCH)
 
 - Owner said `ทำเลย` to begin Public Launch **L1 — Trust Pages**. **No Public Launch** or draft article publication authorized.
