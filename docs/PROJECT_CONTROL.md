@@ -3,6 +3,15 @@
 **As of:** 2026-10-09 (Asia/Bangkok)  
 **Project:** Hybrid Mind · Modern AI Lifestyle Media / Shopee Affiliate
 
+## Post #57 Cover-Only landing (owner option 2, 2026-10-09)
+
+- Owner chose **Option 2**: on AiPASS 2.0 Visual Draft #57, remove visible white WordPress title panel/gaps and show **full-width original-cover image immediately after Hybrid Mind header**, before the dark interactive lesson. Preserve post title metadata/accessible H1, full image ratio and other posts.
+- Inspected Assembler shared `single` template; confirmed initial Spacer + Post Title + forced 4:3 Featured Image are source of white title area/cropping. **Did not modify shared template.**
+- Backed up Global Styles ID 2 at **5,496 characters**, [Backup](wordpress/POST57_LANDING_FULL_BLEED_PRECHANGE_CSS_2026-10-09.md). A concurrent change added **`R2-POST57-COVER-ONLY`** CSS before our planned write. Our optimistic guard **stopped without writing**, avoiding duplicate/conflicting CSS.
+- **Independent readback PASS:** WordPress CSS **7,682 characters**, preserves the original 5,496-character prefix, with 2,186-character Post #57-only addendum: hide Spacer, visually hide title H1, stretch cover to 100vw, preserve natural image ratio, remove gap before `post-content`, darken white surrounding area.
+- Post #57 remains **Draft** with Featured Media #63; interactive code and Pexels photos unchanged; site still **Coming Soon / Unlaunched**. The public unauthenticated fetch receives Coming Soon splash, so **authenticated post-fix Mobile Visual QA UNKNOWN** and Release Gate HOLD.
+- [Detailed Cover-Only QA Report](wordpress/POST57_LANDING_FULL_BLEED_COVER_QA_2026-10-09.md). UNKNOWN ≠ PASS.
+
 ## AiPASS 2.0 — Cover-only hero replacing white title area (2026-10-09)
 
 - Owner screenshot of Draft Post #57 displayed a large white WordPress title/space around the AI-generated cover. Owner explicitly authorized changing the **white top section to only the cover image**, no visible page title.
