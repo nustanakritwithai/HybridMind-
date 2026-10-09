@@ -15,6 +15,18 @@
 
 
 
+
+## SEO-01 — TECHNICAL AUDIT COMPLETE / INDEXING HOLD (2026-10-10)
+
+- **Owner-directed SEO-01 READ ONLY completed**, reviewing Homepage #16, Published #55/#52/#31, About #1, AI News/Explained category archives, robots, 4 candidate XML sitemaps, canonical, meta robots, Open Graph, JSON-LD, internal anchors and WordPress / Jetpack settings. **No Production writes, no Search Indexing toggle, no Trust Draft publication.**
+- **P0 conflicting indexing signals:** WordPress.com `settings.get.privacy.blog_public=0`, `manage-site.status.visibility=discourage_search`; independent WordPress `GET /wp/v2/settings` returned **`blog_public=1`** for same domain. Public meta robots showed `max-image-preview:large` without `noindex`; effective header `X-Robots-Tag`/Googlebot interpretation **UNKNOWN**. **Search Indexing Gate HOLD** pending option, header and Google Search Console reconciliation.
+- **P0 missing XML despite configuration:** Jetpack REST `sitemaps=true`, `seo-tools=true`; `robots.txt` declares `/sitemap.xml` and `/news-sitemap.xml`, but connected public page reader returned WordPress not-found HTML instead of XML at `/sitemap.xml`, `/news-sitemap.xml`, `/wp-sitemap.xml`, `/sitemap_index.xml` (HTTP status not exposed). May be affected by `discourage_search`, not proven.
+- **SEO structural PASS:** Homepage and 3 Published articles have self-canonical, normal titles and meta descriptions; one parseable `Organization+WebSite` JSON-LD graph on Home, one `Person+Article+BreadcrumbList` graph on each post. Do **not** add duplicate Schema. `robots.txt` does not block Googlebot/OAI-SearchBot at file-rule level; actual crawler/WAF success UNKNOWN.
+- **P1 navigation errors and brand assets:** old Smart Buying `/#hm-smart-picks` link points to missing Home V3 ID (two header/footer instances per public page checked); AI News category Published post count **0** but visible in nav; Home and #55 OG image is WordPress blank.jpg (200×200), and Site Icon/Logo ID 0.
+- **AEO-critical #55:** one Gutenberg `core/html` + iframe `srcdoc`; WordPress post body contains only **81 characters** of reader-visible fallback text outside iframe. Add meaningful native HTML Agent/MCP/A2A answers and sources in AEO-01 later without removing Visual Interactive. #55 Article image property absent, Featured Media 0. #31 and #52 OG/Schema featured images present.
+- **P2:** published About #1 rendered no `h1`; tested category archives had no `rel=canonical` observed. Evaluate owner crawl/indexing policy before changes. Search Console indexing/citation/ranking is UNKNOWN.
+- **Evidence:** [SEO-01 Full Technical Audit & release gates](audits/SEO_01_TECHNICAL_AUDIT_2026-10-10.md) · [Machine-readable QA Matrix](audits/SEO_01_TECHNICAL_MATRIX_2026-10-10.json). **Next: SEO-01.A Read-only indexing/sitemap reconciliation and owner authorization before any `blog_public` change; subsequent guarded P1 nav and OG fixes. UNKNOWN ≠ PASS.**
+
 ## R2 Trust + SEO — Scoped Draft & Homepage Metadata Fix (2026-10-10)
 
 - Owner directed “ทำต่อเลย” for R2 **Trust & SEO** after R1. **Controlled Gutenberg draft edits** now complete: Contact **#67** (media/ad-space inquiry; modified `2026-10-10T00:40:44`), Privacy **#68** (Typhoon inactive, dormant ad slots, review date; `00:37:10`), Editorial Policy **#69** (publisher-not-seller and disabled Typhoon; `00:38:36`), Affiliate Disclosure **#70** (no products/checkout, links only in marked Ad Spaces; `00:35:22`). **Eight narrow block replacements**, other blocks unchanged; all **remain DRAFT** and have **not** been published.
