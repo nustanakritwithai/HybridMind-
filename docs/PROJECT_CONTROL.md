@@ -7,6 +7,14 @@
 
 
 
+
+## L3-C Interactive Script Parsing & Data Tests — 2026-10-09 (READ ONLY)
+
+- Fetched fresh WordPress #55 (`publish`, modified `2026-10-09T17:47:46`) and #57 (`draft`, modified `2026-10-09T18:31:53`). Extracted `iframe srcdoc` documents and tested the 3 embedded JavaScript blocks for syntax validity; **all 3 parsed PASS**.
+- Parsed the 3-question quizzes as JavaScript data: #55 correct indexes `[1,0,2]`, #57 `[1,0,1]`, all within valid option ranges. #57 scoring source yields 10 standard videos × 100 = **1,000**; Mixed preset = **1,010**; reset code zeros all counters. **STATIC assertions PASS, runtime UNKNOWN**.
+- Authenticated browser/device click, viewport, screenshots and iframe scroll cannot be verified via present WordPress connectors; anonymous site and preview requests show Coming Soon as intended. **Do not mark L3 PASS, publish #57 or alter visibility to get around the gate.**
+- [L3-C source/data evidence](releases/L3_C_INTERACTIVE_SOURCE_VERIFICATION_2026-10-09.md). **Next requires authenticated-browser testing (e.g. Work Cloud Browser with owner-login) at 320/375/390/768/1280 CSS px. NO GO for Public Launch. UNKNOWN != PASS.**
+
 ## L3-A Structural / L3-B-C Static QA — READ ONLY (2026-10-09)
 
 - **WordPress site still `coming_soon / unlaunched`.** Anonymous `hybridmind.online` and anonymous Draft #57 Preview returned WordPress Coming Soon HTML (`wpcom-coming-soon-body`), as intended. This blocks public DOM/click QA without a signed-in browser, not a site failure.
