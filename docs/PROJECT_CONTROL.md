@@ -3,6 +3,16 @@
 **As of:** 2026-10-09 (Asia/Bangkok)  
 **Project:** Hybrid Mind · Modern AI Lifestyle Media / Shopee Affiliate
 
+## HYBRID MIND VISUALIZE ENGINE — strict Widget Worker boundary (owner clarification)
+
+- **Highest design constraint:** the Website Agent/Typhoon does **not** have independently verified planning or autonomous error-prevention criteria. **Do NOT delegate planning, risk assessment, editorial decisions or scope expansion to it**.
+- **1 REQUEST = 1 WIDGET.** Main ChatGPT Agent owns storyline, sources, component selection, instruction, positioning and review. Typhoon only generates **one** bounded declarative WidgetCandidate for the specifically requested ID and slot, or returns an error. No unsolicited second box.
+- **Security authority is outside the model:** deterministic Backend validates request and result, immutable ID + Draft slot, schema, permissions, versions, size limits, external action denial and isolation. Trusted renderer owns event/state handlers. Typhoon does not self-validate or self-approve.
+- Failure or missing input must return an error, not invent instructions. **No autonomous Website Worker actions, model-authored live JS, changes to other Widgets, publication or transactions.**
+- This **Widget-Level Visualize Engine V0.1** is distinct from the earlier whole-article visual-first A2A Draft prototype (#54) and from the published iframe-based lesson Post #55. Neither is evidence that Widget Request API, Validator/Renderer or Sandbox exists.
+- [Updated Widget-Level Architecture and strict boundary](visualize-engine/V0.1_ARCHITECTURE_LIMITS_PLAN_2026-10-09.md); [source-grounded Widget Inventory](visualize-engine/V0.1_WIDGET_INVENTORY_2026-10-09.md).
+- **Gate:** Architecture clarification recorded; backend enforcement and negative tests NOT IMPLEMENTED. WordPress Production remains unchanged. UNKNOWN ≠ PASS.
+
 ## VISUAL-FIRST A2A PUBLISHING — Prototype checkpoint (2026-10-09)
 
 - Strategic product direction: **Every Hybrid Mind article is a visual-first knowledge experience generated through A2A agent roles**, not manually decorated Gutenberg prose. Gutenberg is the storage/rendering output, not the user's editing workflow.
