@@ -7,6 +7,45 @@
 **SHA256:** `a96f195e6a447217f7b159d9f56844da2b15cfed31ea2014c7450ee6cfdf1505`  
 **Rule:** UNKNOWN ≠ PASS
 
+## PRODUCTION VERIFICATION — 09:54 (2026-10-09)
+
+**Updated latest status:** **V0.2.1 IS INSTALLED AND ACTIVE**. Both WordPress.com plugin inventory and WPVibe `site_info` independently show `Hybrid Mind — Typhoon Chat` v0.2.1 active.
+
+**Owner Android screenshots (~09:54):**
+- Chat input `หาแว่น` now yields an answer about Smart Glasses with a seller-claim label and numeric `[1]` source reference instead of saying no knowledge found.
+- Under `อ่านเพิ่มเติมจาก Hybrid Mind`, the user sees linked source titles for homepage `[1]` and GS20 article `[2]`.
+- Headings, bold text and list bullets render instead of raw Markdown markup.
+- Screenshot **does not prove links were tapped**. Some answers may still overgeneralize seller product claims; editorial accuracy is not certified by a single reply.
+
+**Live Knowledge API retest — 12/12 PASS, WordPress-backed admin-only `knowledge-preview`:**
+
+| Prompt | Expected result | Outcome |
+| --- | --- | --- |
+| แว่น | GS20 present | PASS (home + GS20) |
+| หาแว่น | GS20 present | PASS (home + GS20) |
+| ช่วยหาแว่น | GS20 present | PASS (home + GS20) |
+| แว่นฟังเพลง | GS20 present | PASS (home + GS20) |
+| อยากได้แว่นราคาถูก | GS20 present | PASS (home + GS20) |
+| Gs20 | GS20 present | PASS |
+| GS20 | GS20 present | PASS |
+| G20 | no matching product | PASS (zero) |
+| ข่าว AI ล่าสุดวันนี้ | no misleading product page | PASS (zero) |
+| ข่าว AI สดจากอินเทอร์เน็ต | no misleading product page | PASS (zero) |
+| HUAWEI Eyewear 2 | do not expose draft | PASS (zero) |
+| Hello World! | do not offer boilerplate sample | PASS (zero) |
+
+Every nonempty result uses HTTPS URLs on `hybridmind.online`. The knowledge-status endpoint reports `version=0.2.1`, `knowledge_enabled=true`, `configured=true`, `published_wordpress_only`, `external_live_web_search=false` and `reads_drafts=false`.
+
+**Remaining issues / limits:**
+- **Relevance ranking / UX:** broad `หาแว่น` places generic homepage first and the specialist GS20 article second. Work on ranking separately; current patch resolves search failure but not ideal order.
+- Browser tap-through of sources, new-session behavior, provider failures, guest access/rate/cost controls, privacy handling and wider responsive device grid are **UNKNOWN/HOLD**.
+- This is **site knowledge** only; external live-news retrieval still **not implemented**. Do not advertise broad internet-search capability.
+- WordPress site **remains Coming Soon/unlaunched**, with no release approval.
+
+**Decision:** **V0.2.1 PRODUCTION INSTALL PASS / THAI KNOWLEDGE RETRIEVAL PASS / BASIC ANDROID RESPONSE+CITATION DISPLAY PASS / FULL PUBLIC QA HOLD**.
+
+The earlier sections below document the **pre-installation state and bug discovery at the time**, now superseded by this latest verification.
+
 ## User mobile evidence (~09:29–09:31)
 
 The site owner submitted 5 Android screenshots of the **live v0.2 chatbot**. Screenshot files are in the conversation, **not attached here in this public GitHub repository**.
