@@ -24,6 +24,16 @@
 - This feature reads the **site's already published content**, **not** external live news/internet sources, drafts or private pages. External search is a separate future milestone.
 - Do not mark v0.2 production PASS or open Coming Soon until live tests and the separate release approval.
 
+## Production verification — Typhoon v0.2.0 (2026-10-09)
+
+- WordPress.com and WPVibe independently verified **Hybrid Mind — Typhoon Chat v0.2.0 ACTIVE**.
+- Admin-only Website Knowledge endpoint: enabled, published WordPress posts/pages only, 3 sources max, configured; **no external live-news search**.
+- Published GS20 post #31 and homepage #16 returned as real sources. Draft #17 and #18 excluded in tested cases, default Hello World excluded in tested case.
+- Owner's Android screenshot at ~09:23 shows GS20 search QA result. Actual v0.2 Typhoon response with clickable references and safe Markdown **still UNKNOWN**.
+- Negative relevance: 'ข่าว AI ล่าสุดวันนี้' returns broader website content (GS20 and homepage) rather than verified real-time news. Must not claim external search.
+- **Gate:** v0.2 install/search PASS; model-response-grounding, Markdown UI, mobile UX and guest/security QA HOLD/UNKNOWN. Site stays Coming Soon.
+- Evidence: [Typhoon V0.2 Production QA](wordpress/TYPHOON_V0_2_PRODUCTION_QA_2026-10-09.md).
+
 ## Assets and roles
 
 | Surface | Verified link | Role | State |
