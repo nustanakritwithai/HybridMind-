@@ -3,6 +3,15 @@
 **As of:** 2026-10-09 (Asia/Bangkok)  
 **Project:** Hybrid Mind · Modern AI Lifestyle Media / Shopee Affiliate
 
+## R1.2-D mobile long-answer fix / v0.2.2 pending — 2026-10-09
+
+- User Android screenshot shows **nested scroll problem**: long Typhoon answers confined to 44vh feed while parent page also scrolls; JavaScript still calls feed.scrollTop and refocuses textarea after reply.
+- Live WordPress Global Styles ID 2 scoped `.hm-ai-hero` CSS adjusted at <=781px to `height:auto !important; max-height:none !important; overflow:visible !important` with initial `min-height:clamp(128px,22dvh,220px)`. Original 3,820-character CSS backed up; final 4,246-character CSS read back; only new 426-character scoped rule appended.
+- **Typhoon Chat v0.2.2 candidate ZIP BUILT**: mobile avoids inner-scroll / input refocus, scrolls outer document to beginning of AI answer, shortens footer note to `คำตอบอาจผิดพลาดได้`. Candidate ZIP SHA256 `6e3346241dc70e1c429217109ae00a8e8f1d6d7e59f792505dfa51ad8870cb47`. Local PHP/JS/mocks and Chromium component-only 320/375/390/768/1280 tests PASS.
+- **PRODUCTION PLUGIN REMAINS v0.2.1 at last check.** Existing API key/model/site options not changed. To complete UX fix the owner must upload v0.2.2 ZIP with WordPress **Replace current with uploaded**; do not delete v0.2.1 first.
+- Browser/screenshots after CSS and v0.2.2 installation **UNKNOWN**; **R1.2-D = PARTIAL / HOLD**. Keep Coming Soon / unlaunched and public guest gate unchanged.
+- Evidence: [R1.2-D Mobile Long Reply / Single Scroll Report](wordpress/R1_2_D_MOBILE_LONG_REPLY_SINGLE_SCROLL_2026-10-09.md) and [CSS Prechange Backup](wordpress/R1_2_E_CHAT_SINGLE_SCROLL_CSS_BACKUP_2026-10-09.md).
+
 ## R1.2-D-01 CSS fix applied — 2026-10-09 (LATEST)
 
 - **Explicit owner approval** received to fix exactly two AI Hero typography declarations with `!important`: submit button 16px; chat note 13px. No theme or plugin code changes.
