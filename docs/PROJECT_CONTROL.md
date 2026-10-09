@@ -19,6 +19,17 @@
 
 
 
+
+## SEO-04 — OPEN GRAPH MEDIA LIVE ON HOMEPAGE + AI ERA #55 (2026-10-10)
+
+- **Owner confirmed “อัพโหลดแล้ว”** for two 1200×630 social artwork JPG files transferred to staging WPVibe upload. `WPVibe.check_upload` returned 2 ready items; WPWriter plugin/app was **connected successfully** to `hybridmind.online` and imported them via URL to **Media #104** (Homepage, 147,472 bytes) and **Media #105** (AI ERA #55, 218,734 bytes). Media IDs, dimensions and actual stored byte sizes independently verified with WP.com `media.get`; descriptive Thai titles and alt text set for AI-generated artwork; no additional AI generation credits spent.
+- **Production Homepage Page #16 updated:** previous `featured_media=0` → **104** via scoped `pages.update`; modified `2026-10-10T02:45:56`; **original 57,728-char Gutenberg body byte-identical**, status Published. Anonymous public `og:image` now resolves Media #104 with **1200×630** metadata. V3 homepage and hidden Affiliate Ad Slots preserved; no extra image inserted into visible homepage body.
+- **Production AI ERA #55 updated:** previous `featured_media=0` → **105** via scoped `posts.update`; modified `2026-10-10T02:46:59`; **original 55,274-char Gutenberg body byte-identical**. Public `og:image` is Media #105, 1200×630; `Article` JSON-LD gains image. The attempted REST meta `_jetpack_hide_featured_image=true` **was discarded by WordPress** and is NOT claimed saved.
+- To keep #55's immersive Visual lesson from gaining a large unwanted featured-image hero, inserted **one tiny scoped `core/html` CSS block** (`hm-seo04-social-only-image`) to hide only `body.single-post.postid-55 main.wp-block-group figure.wp-block-post-featured-image` via optimistic `post-sections.insert`; final modified `2026-10-10T02:48:37`. **Original AEO summary and 50,842-char iframe core/html block hashes unchanged.** Connected public HTML validates scoped CSS, native AEO and iframe all remain.
+- Third-party article #52 original `og:image` unchanged. No edits to #31, #57, Trust Drafts, global header/footer or shared Single template; published posts unchanged. Site remains Public for indexing; Typhoon inactive; no Affiliate ads activated.
+- **Evidence and precise rollback:** [SEO-04 OG Media live deployment report](releases/SEO_04_OG_IMAGES_PRODUCTION_DEPLOY_2026-10-10.md) · [pre-media featured metadata baseline](backups/SEO_04_OG_FEATURED_MEDIA_BEFORE_2026-10-10.json) · [scoped #55 CSS source](design/SEO_04_POST_55_SOCIAL_IMAGE_ONLY_GUTENBERG_2026-10-10.html). To rollback, restore `featured_media=0` on Page #16 and Post #55; remove only dedicated style block with guarded section removal. No full Gutenberg rewrite.
+- **SEO-04 OG HTML PASS, but actual Facebook/LINE crawler preview refresh and computed Android layout UNKNOWN.** Site icon/logo still 0; Sitemap XML P0 HOLD; Search Console indexing/citations UNKNOWN. **UNKNOWN ≠ PASS.**
+
 ## SEO-02 — PUBLIC SEARCH VISIBILITY + AEO-01 #55 NATIVE ANSWERS (2026-10-10)
 
 - **Owner authorized search visibility** by replying “ทำต่อเลย” immediately after the explicit question whether to enable Google/Bing indexing. WordPress.com `manage-site.set-visibility("public")` **SUCCESS**, changing `discourage_search → public` exactly once. Immediately after, `manage-site.status=launched/public`, WP.com `blog_public=1` and authenticated core WordPress REST `blog_public=1`: the previously conflicting readback values now agree. This is **search eligibility**, not guaranteed indexed URLs.
