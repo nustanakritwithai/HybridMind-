@@ -3,6 +3,17 @@
 **As of:** 2026-10-09 (Asia/Bangkok)  
 **Project:** Hybrid Mind · Modern AI Lifestyle Media / Shopee Affiliate
 
+## VISUAL-FIRST A2A PUBLISHING — Prototype checkpoint (2026-10-09)
+
+- Strategic product direction: **Every Hybrid Mind article is a visual-first knowledge experience generated through A2A agent roles**, not manually decorated Gutenberg prose. Gutenberg is the storage/rendering output, not the user's editing workflow.
+- Registered a **Visual Article Manifest contract**: [A2A Architecture](architecture/VISUAL_FIRST_A2A_PUBLISHING_V0.1.md), [JSON Schema](../contracts/visual-article-v1.schema.json), [deterministic renderer](../tools/visual_article/render_gutenberg.mjs), [responsive CSS kit](../tools/visual_article/visual-article.css), [smoke tests](../tools/visual_article/test_renderer.mjs), and [sample manifest](../examples/ai-game-tools.visual-article.json).
+- Created independent **WordPress Draft #54** (`visual-pilot-ai-game-tools`) using owner-authored article #52 as a read-only source. Server readback **PASS** for 15 visual/narrative modules, owner image Media #51, and all original 63 paragraphs. Original published Post #52 remains unchanged.
+- **Important:** Reusable JavaScript renderer/CI unit tests were committed but not executed on a Node runner in this turn; future execution/CI gate is UNKNOWN. WordPress Draft was generated via the corresponding typed-manifest-to-Gutenberg mapping in this session.
+- WordPress remains `coming_soon / unlaunched` with Assembler; no sitewide Visual Article stylesheet has been deployed, no unpublished article was published, no existing public page overwritten.
+- **A2A unattended automation NOT DEPLOYED:** no A2A protocol endpoint, queue, trigger schedule, secret-backed WP Draft-publisher or publish role configured. Next is validate preview and runtime, implement least-privileged **Draft-only** publisher, then agree cadence and enable after owner review.
+- Visual-First QA status: CMS Draft save/readback PASS; authenticated mobile/desktop visual preview UNKNOWN; editorial and Public Launch HOLD. UNKNOWN ≠ PASS.
+- [Implementation Handoff / WP Draft #54](architecture/VISUAL_ARTICLE_A2A_IMPLEMENTATION_STATUS_2026-10-09.md).
+
 ## R1.2-D mobile long-answer fix / v0.2.2 pending — 2026-10-09
 
 - User Android screenshot shows **nested scroll problem**: long Typhoon answers confined to 44vh feed while parent page also scrolls; JavaScript still calls feed.scrollTop and refocuses textarea after reply.
