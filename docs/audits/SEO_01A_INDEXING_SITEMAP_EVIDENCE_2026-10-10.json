@@ -1,0 +1,135 @@
+{
+  "audit_id": "HYBRIDMIND-SEO01A-20261010",
+  "date": "2026-10-10",
+  "timezone": "Asia/Bangkok",
+  "site": "https://hybridmind.online",
+  "wordpress_com_site_id": 257844857,
+  "mode": "read-only production",
+  "production_writes": 0,
+  "signals": {
+    "wpcom": {
+      "launch_status": "launched",
+      "visibility": "discourage_search",
+      "settings_blog_public": 0,
+      "activity_log_changed_blog_public": [
+        {
+          "time_local": "2026-10-09T20:40:43+07:00",
+          "old_value": "0",
+          "new_value": "1",
+          "event": "setting__changed_blog_public"
+        },
+        {
+          "time_local": "2026-10-09T20:42:02+07:00",
+          "old_value": "1",
+          "new_value": "0",
+          "event": "setting__changed_blog_public"
+        }
+      ]
+    },
+    "wordpress_core_rest": {
+      "route": "/wp/v2/settings",
+      "blog_public": 1,
+      "readbacks": 2,
+      "cache_busting": true,
+      "site_url": "https://hybridmind.online"
+    },
+    "html": {
+      "robots_meta_content": "max-image-preview:large",
+      "noindex_meta_found": false,
+      "header_x_robots_tag": "UNKNOWN"
+    },
+    "jetpack": {
+      "sitemaps": true,
+      "seo_tools": true
+    },
+    "robots_txt": {
+      "reachable_via_wp_reader": true,
+      "declared_sitemaps": [
+        "/sitemap.xml",
+        "/news-sitemap.xml"
+      ],
+      "disallow": [
+        "/wp-admin/"
+      ],
+      "blanket_disallow_public_content": false
+    },
+    "xml_routes": [
+      {
+        "path": "/sitemap.xml",
+        "viewer_result": "WordPress not-found HTML",
+        "verified_xml": false,
+        "raw_http_status": "UNKNOWN",
+        "content_type": "UNKNOWN"
+      },
+      {
+        "path": "/news-sitemap.xml",
+        "viewer_result": "WordPress not-found HTML",
+        "verified_xml": false,
+        "raw_http_status": "UNKNOWN",
+        "content_type": "UNKNOWN"
+      },
+      {
+        "path": "/wp-sitemap.xml",
+        "viewer_result": "WordPress not-found HTML",
+        "verified_xml": false,
+        "raw_http_status": "UNKNOWN",
+        "content_type": "UNKNOWN"
+      },
+      {
+        "path": "/sitemap_index.xml",
+        "viewer_result": "WordPress not-found HTML",
+        "verified_xml": false,
+        "raw_http_status": "UNKNOWN",
+        "content_type": "UNKNOWN"
+      }
+    ],
+    "lighthouse": {
+      "device": "mobile",
+      "category": "seo",
+      "score": 100,
+      "max": 100,
+      "assessment": "basic automated SEO only; not indexing evidence"
+    },
+    "real_crawler": {
+      "google_search_console_url_inspection": "UNKNOWN",
+      "googlebot_http_behavior": "UNKNOWN",
+      "oai_searchbot_http_behavior": "UNKNOWN",
+      "http_response_headers": "UNKNOWN"
+    },
+    "wpvibe": {
+      "connect_plugin_installed": false,
+      "wp_cli_option_get_available": false
+    },
+    "external_probe": {
+      "container_http_result": "curl DNS could not resolve hybridmind.online",
+      "web_open_result": "domain not accessible from tool",
+      "cannot_diagnose_outage_from_tool_block": true
+    }
+  },
+  "evaluation": {
+    "technical_diagnostics": "PASS",
+    "indexing_settings_consistency": "CONFLICT_P0",
+    "effective_indexing": "UNKNOWN_P0",
+    "sitemap_xml": "FAIL_IN_VIEWER",
+    "sitemap_http_status": "UNKNOWN",
+    "production_changes": "NONE",
+    "next_release": "HOLD_FOR_OWNER_AUTHORIZATION_AND_HEADERS"
+  },
+  "handoff": {
+    "report": "docs/audits/SEO_01A_INDEXING_SITEMAP_DIAGNOSTICS_2026-10-10.md",
+    "readonly_header_probe": "scripts/seo/inspect-public-headers.ps1",
+    "next_steps": [
+      "Inspect effective core blog_public option on same WordPress Atomic installation via authorized server diagnostics",
+      "Obtain raw HTTP headers/statuses and sitemap Content-Type on a network-enabled machine",
+      "Connect Google Search Console or GSC Wizard for URL Inspection",
+      "Only with explicit owner approval change the global search visibility setting, then verify both APIs and public sitemap"
+    ],
+    "must_not_without_approval": [
+      "Change blog_public or WordPress Search Visibility",
+      "Publish draft posts/pages",
+      "Enable Typhoon Chat",
+      "Activate affiliate ads"
+    ]
+  },
+  "rule": "UNKNOWN != PASS"
+}
