@@ -17,6 +17,17 @@
 
 
 
+
+## SEO-02 + SEO-03 + SEO-04 — SITE STRUCTURE FIXES AND ARTWORK READY (2026-10-10)
+
+- **Owner instructed “ทำเลย”** on the next SEO/AEO roadmap; work split into P0 Indexing diagnostics, P1 SEO-03 live fixes and P1 SEO-04 prepared assets. **Do not reopen indexing without separate owner decision.**
+- **SEO-03 PRODUCTION PASS:** Homepage Page #16 published V3 Smart Buying topic card now includes unique `id="hm-smart-picks"` (modified `2026-10-10T01:32:38`), fixing shared header/footer fragment target. Original second `core/html` Affiliate Ad Reservation block hash unchanged. Existing Navigation #4 link `AI News` (category 0 Published posts) replaced with `Explained` (3 Published posts); Footer's AI News link removed while Explained retained. **About Page #1** now has one semantic visible H1 `เกี่ยวกับ HYBRID MIND` inserted as new top-level Gutenberg block (modified `2026-10-10T01:37:03`); original 12 sections preserved by hashes.
+- **Browser-reader public QA PASS:** no empty-category links in home/About/article pages checked, Smart Buying anchor exists on homepage, 1 H1 each on Home/About/standard posts, V3 and V3.3 structures preserved, Typhoon JS absent, post #55 Interactive iframe remains. Real Android screenshots/Google crawling **UNKNOWN**.
+- **Exact GitHub backups before each Production write:** [Homepage #16](backups/SEO_03_HOME_16_PRE_2026-10-10.html), [Navigation #4](backups/SEO_03_NAV_4_PRE_2026-10-10.html), [Footer](backups/SEO_03_FOOTER_PRE_2026-10-10.html), [About #1](backups/SEO_03_ABOUT_1_PRE_H1_2026-10-10.html).
+- **SEO-04 artwork prepared, NOT installed:** two 1200×630 branded OG images (Homepage and AI ERA #55) and 512/192px favicon PNG, packaged locally for upload and human review. **Live Open Graph on Homepage/#55 remains WordPress `blank.jpg`; Site Logo/Icon remain 0.** No WordPress media uploaded; no #55 featured-media changed. Image byte transfer limitations in current environment prevent media creation with this connector. Do not mark SEO-04 PASS or silently use an unrelated existing image.
+- **SEO-02 remains P0 HOLD:** WPcom `blog_public=0` while WordPress REST `blog_public=1`; sitemap path not XML in connected reader, real response headers/Google URL Inspection UNKNOWN. No setting change or sitemap submission. Typhoon inactive; Ad Slots disabled; #57 and Trust #67–#70 remain Draft.
+- **Evidence:** [SEO-02/03/04 Implementation, public QA, asset status, exact rollback](releases/SEO_02_03_04_EXECUTION_2026-10-10.md). **UNKNOWN ≠ PASS.**
+
 ## SEO-01.A — SETTINGS RECONCILIATION / SITEMAP DIAGNOSTICS (2026-10-10)
 
 - **Owner said “ทำเลย”** to SEO-01.A Indexing & Sitemap Recovery diagnostic. **READ-ONLY WordPress Production throughout; 0 settings writes and 0 content writes.** Site stays `launched / discourage_search` while the indexing release gate remains **HOLD**.
