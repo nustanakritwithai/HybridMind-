@@ -14,6 +14,17 @@
 
 
 
+
+## R2 Trust + SEO — Scoped Draft & Homepage Metadata Fix (2026-10-10)
+
+- Owner directed “ทำต่อเลย” for R2 **Trust & SEO** after R1. **Controlled Gutenberg draft edits** now complete: Contact **#67** (media/ad-space inquiry; modified `2026-10-10T00:40:44`), Privacy **#68** (Typhoon inactive, dormant ad slots, review date; `00:37:10`), Editorial Policy **#69** (publisher-not-seller and disabled Typhoon; `00:38:36`), Affiliate Disclosure **#70** (no products/checkout, links only in marked Ad Spaces; `00:35:22`). **Eight narrow block replacements**, other blocks unchanged; all **remain DRAFT** and have **not** been published.
+- **Homepage SEO metadata published fix PASS:** Page #16 retained exact 57,708-char V3 HTML and Ad Slot payload; changed only outdated `excerpt` and `advanced_seo_description` (“หน้าหลักต้นแบบ...” removed); modified `2026-10-10T00:39:58`. Anonymous Homepage verified updated `meta description` and `og:description`; Page #16 remains Published.
+- **SEO baseline:** Homepage and Published #31/#52/#55 canonical/title/description present. #31/#52 have OG featured images; **Homepage and #55 still use WordPress `blank.jpg` placeholder OG image**; missing site icon/logo (IDs 0). Former AI News navigation category still empty.
+- **Indexing / Sitemap HOLD:** WordPress remains `launched / discourage_search`, `blog_public=0`; public HTML meta robots `max-image-preview:large` **not `noindex`** and `robots.txt` lists sitemap paths while allowing crawlers except `/wp-admin/`. Connected public reader returned **not-found HTML** for `/sitemap.xml`, `/news-sitemap.xml`, `/wp-sitemap.xml` and `/sitemap_index.xml`. WordPress.com documents that sitemaps may not be exposed until the “Discourage search engines” option is removed; no toggle/indexing approval was given. Actual search crawler interpretation **UNKNOWN**, not SEO PASS.
+- **Hard Trust blocker:** no owner-authorized public contact channel, verified controller/privacy retention specifics or final Privacy/PDPA approval. Draft #67/#68/#69/#70 must stay unpublished; Footer/legal links remain incomplete. No fabricated business email, contact or sales relationship.
+- **No changes** to shared templates, theme, navigation, post bodies, Affiliate ad campaigns/links or Typhoon plugin state. Site LIVE content-only, #57 Draft, Typhoon disabled. Backup/Restore and real Production viewport QA still UNKNOWN.
+- [Full R2 execution, release gates and WordPress/Google/PDPA source links](releases/HM_R2_TRUST_SEO_EXECUTION_2026-10-10.md). **UNKNOWN ≠ PASS.**
+
 ## R1 Local QA + Affiliate Ad Spaces — RESERVATIONS LIVE / INACTIVE (2026-10-10)
 
 - **Owner confirmed** HYBRID MIND has no owned goods/stock/merchant checkout; it is an editorial media publisher using third-party **affiliate links only in explicit ad spaces**, then instructed “ทำเลย”. No e-commerce/catalog/cart/payment/order features.
