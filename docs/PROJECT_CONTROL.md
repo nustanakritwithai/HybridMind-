@@ -3,6 +3,17 @@
 **As of:** 2026-10-09 (Asia/Bangkok)  
 **Project:** Hybrid Mind · Modern AI Lifestyle Media / Shopee Affiliate
 
+## R1.2-D QA checkpoint — 2026-10-09
+
+- **R1.2-D = PARTIAL / HOLD**, not release-ready. Actual Android screenshots show chat works and text/bubbles/button fit the sampled viewport, but no verified five-width signed-in viewport/keyboard/menu/footer matrix yet.
+- Live WordPress.com readback: page #16 Published (modified `2026-10-09T08:49:54`), 18 Gutenberg sections, Typhoon shortcode active, four categories and GS20 rendered, Global Styles ID 2 responsive CSS 3,798 characters. Theme Assembler unchanged. Site remains `coming_soon` / `unlaunched`.
+- **Lighthouse caveat:** Mobile PageSpeed returned 91 Performance / 95 Accessibility / 100 Best Practices / 66 SEO, but public URL served the **WordPress.com Coming Soon splash**, not the authenticated homepage. Its missing `main` landmark finding applies to splash; Assembler page template has a `<main>`. Scores MUST NOT be cited as homepage layout QA.
+- **Code-level R1.2-D-01 FAIL:** Shipped Typhoon v0.2.1 CSS has `font-size:14px!important` for Send and `12px!important` for note, overriding the site's intended 16px/13px scoped non-important rules. Isolated Chromium component fixture reproduced this at 320/375/390/768/1280; production computed styles remain UNKNOWN. Correction proposed but **NOT APPLIED** in QA-only round (requires owner approval for site-wide Global Styles write).
+- Structural accessibility markup review PASSED for 1× H1 with H2/H3 subsections, textarea label/ID, alt on GS20 article card, valid internal #hm-explore anchor, registered navigation links. Full browser/screen-reader QA UNKNOWN.
+- Four category URLs exist; `ai-news` archive currently has zero articles (editorial content gate, not a URL failure).
+- **R1.2-D evidence:** [Responsive and Visual QA Report](wordpress/R1_2_D_RESPONSIVE_VISUAL_QA_2026-10-09.md). The screenshots remain in the ChatGPT conversation, not public GitHub.
+- **Next:** Explicit approval for minimal scoped CSS fix, then authenticated screenshots and interaction results at 320/375/390/768/1280 CSS px, keyboard/menu/footer and primary CTA tests. Do not open Public Launch or claim R1.2 PASS until gates close.
+
 ## Latest V0.2.1 production verification — 2026-10-09
 
 - **Typhoon Chat v0.2.1 ACTIVE in WordPress production** (verified independently from WordPress.com and WPVibe; supersedes historical V0.1/V0.2 checkpoints below).
