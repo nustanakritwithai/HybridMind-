@@ -1,0 +1,146 @@
+<!-- wp:template-part {"slug":"header","theme":"assembler"} /-->
+
+<!-- wp:html -->
+<style id="hm-v33-article-css">
+
+/* HYBRID MIND V3.3 — only article pages, protected Visual iframe layout */
+body.single-post:not(.postid-55):not(.postid-57){--hm33-ink:#102631;--hm33-muted:#546a73;--hm33-paper:#fff;--hm33-line:#dce6e2;--hm33-mint:#60dec1;background:#f5f7f4!important;color:var(--hm33-ink);overflow-x:clip}
+body.single-post .wp-site-blocks>header.wp-block-template-part>.wp-block-group.alignfull{background:#0b2030!important;color:#f4fafb!important}
+body.single-post .wp-site-blocks>header.wp-block-template-part .wp-block-site-title a,
+body.single-post .wp-site-blocks>header.wp-block-template-part .wp-block-navigation-item__content,
+body.single-post .wp-site-blocks>header.wp-block-template-part .wp-block-navigation-item__label{color:#f4fafb!important}
+body.single-post .wp-site-blocks>header.wp-block-template-part{position:relative;z-index:25}
+.hm-v33-readerbar{position:sticky;top:0;z-index:24;background:rgba(249,252,250,.96);color:#102631;backdrop-filter:blur(16px);border-bottom:1px solid #dce6e2;box-shadow:0 8px 30px rgba(15,47,47,.045);font-family:system-ui,"Noto Sans Thai",Tahoma,sans-serif}
+.hm-v33-readerbar *,.hm-v33-readerbar *::before,.hm-v33-readerbar *::after{box-sizing:border-box}
+.hm-v33-row{width:min(1140px,calc(100% - 36px));min-height:60px;display:flex;align-items:center;justify-content:space-between;gap:12px;margin:auto}
+.hm-v33-home{font-size:13px;font-weight:850;color:#0b2030;text-decoration:none;letter-spacing:.055em;white-space:nowrap}
+.hm-v33-home span{color:#168875}
+.hm-v33-actions{display:flex;align-items:center;gap:10px}
+.hm-v33-back{font-size:13px;font-weight:650;color:#415b64!important;text-decoration:none!important;white-space:nowrap}
+.hm-v33-back:hover,.hm-v33-home:hover{color:#138e78!important}
+.hm-v33-toc-toggle{display:inline-flex;align-items:center;justify-content:center;border:1px solid #b7d1cc;background:#e8f8f3;color:#0a5d50;border-radius:99px;min-height:40px;padding:8px 15px;font-size:13px;font-weight:750;cursor:pointer;white-space:nowrap}
+.hm-v33-toc-toggle:hover,.hm-v33-toc-toggle[aria-expanded="true"]{background:#d6f5ea;border-color:#64c8ae}
+.hm-v33-toc-toggle:focus-visible,.hm-v33-readerbar a:focus-visible,.hm-v33-toc a:focus-visible{outline:3px solid #2aa98b;outline-offset:3px}
+.hm-v33-toc{width:min(1140px,calc(100% - 36px));margin:0 auto 12px;padding:10px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px 10px;border-radius:16px;border:1px solid #dce8e2;background:#fff;box-shadow:0 14px 30px rgba(20,55,55,.09);max-height:52vh;overflow:auto}
+.hm-v33-toc[hidden],.hm-v33-toc-toggle[hidden]{display:none!important}
+.hm-v33-toc a{padding:9px 12px;color:#214950;text-decoration:none;line-height:1.4;border-radius:10px;font-size:13px;overflow-wrap:anywhere}
+.hm-v33-toc a:hover,.hm-v33-toc a.is-current{color:#086955;background:#eaf8f2}
+.hm-v33-progress{height:3px;background:#e4eeea;overflow:hidden}
+.hm-v33-progress>span{display:block;width:0;height:100%;background:linear-gradient(90deg,#16a486,#5bddc0);transition:width .12s linear}
+body.single-post:not(.postid-55):not(.postid-57) main.wp-block-group{margin-top:0!important;padding:28px 0 78px!important}
+body.single-post:not(.postid-55):not(.postid-57) main.wp-block-group>.wp-block-spacer:first-child{display:none!important}
+body.single-post:not(.postid-55):not(.postid-57) main.wp-block-group>.wp-block-group:has(>.wp-block-post-title){width:min(980px,calc(100% - 36px));max-width:none!important;margin:24px auto 0!important;padding:0!important}
+body.single-post:not(.postid-55):not(.postid-57) .wp-block-post-title{font-family:system-ui,"Noto Sans Thai",Tahoma,sans-serif;font-size:clamp(28px,3.65vw,52px)!important;line-height:1.22!important;font-weight:800!important;letter-spacing:-.035em;max-width:930px!important;text-align:left!important;color:#102631;margin:10px 0 30px!important;overflow-wrap:anywhere}
+body.single-post:not(.postid-55):not(.postid-57) figure.wp-block-post-featured-image{width:100%!important;max-width:980px!important;height:auto!important;aspect-ratio:auto!important;margin:0 auto 28px!important;overflow:visible!important;border-radius:22px}
+body.single-post:not(.postid-55):not(.postid-57) figure.wp-block-post-featured-image img{display:block;width:100%!important;max-width:100%!important;height:auto!important;max-height:none!important;aspect-ratio:auto!important;object-fit:contain!important;object-position:center!important;border-radius:22px!important;box-shadow:0 16px 42px rgba(12,36,44,.08)}
+body.single-post:not(.postid-55):not(.postid-57) main .entry-content.wp-block-post-content{box-sizing:border-box;width:min(880px,calc(100% - 36px))!important;max-width:none!important;background:#fff;color:#1a3037;padding:clamp(24px,5.5vw,72px)!important;border-radius:26px;border:1px solid #e3ebe7;box-shadow:0 18px 70px rgba(30,70,60,.055);margin:12px auto 0!important;font-size:clamp(16px,1.22vw,18px);line-height:1.91}
+body.single-post:not(.postid-55):not(.postid-57) .entry-content>:is(p,ul,ol,blockquote){color:#263f46;line-height:1.91;overflow-wrap:anywhere}
+body.single-post:not(.postid-55):not(.postid-57) .entry-content>p:first-of-type{font-size:clamp(17px,1.5vw,20px);line-height:1.83}
+body.single-post:not(.postid-55):not(.postid-57) .entry-content h2{font-size:clamp(23px,2.1vw,30px)!important;line-height:1.35!important;font-weight:800;margin-top:2.7em!important;padding-top:.65em;border-top:1px solid #e2ece7;color:#102b33;scroll-margin-top:110px}
+body.single-post:not(.postid-55):not(.postid-57) .entry-content h3{font-size:clamp(19px,1.7vw,23px)!important;line-height:1.45;color:#163a42;scroll-margin-top:110px}
+body.single-post:not(.postid-55):not(.postid-57) .entry-content a{color:#087d68;text-decoration-color:#69c9b2;text-underline-offset:3px}
+body.single-post:not(.postid-55):not(.postid-57) .entry-content a:focus-visible{outline:2px solid #1dab8d;outline-offset:3px}
+body.single-post:not(.postid-55):not(.postid-57) .entry-content img{height:auto;max-width:100%}
+body.single-post:not(.postid-55):not(.postid-57) .entry-content :is(pre,table){max-width:100%;overflow:auto}
+body.single-post:not(.postid-55):not(.postid-57) .entry-content .wp-block-group{max-width:100%}
+body.single-post.postid-55 .hm-v33-readerbar,body.single-post.postid-57 .hm-v33-readerbar{display:none!important}
+body.single-post.postid-55 .wp-block-post-title{position:absolute!important;width:1px!important;height:1px!important;margin:-1px!important;padding:0!important;overflow:hidden!important;clip-path:inset(50%)!important;white-space:nowrap!important}
+body.single-post.postid-55 main.wp-block-group{margin-top:0!important}
+body.single-post.postid-55 main.wp-block-group>.wp-block-spacer:first-child{display:none!important}
+@media(max-width:700px){.hm-v33-row{min-height:56px;width:calc(100% - 28px)}.hm-v33-toc{grid-template-columns:1fr;width:calc(100% - 28px)}.hm-v33-back{display:none}body.single-post:not(.postid-55):not(.postid-57) main.wp-block-group{padding:14px 0 48px!important}body.single-post:not(.postid-55):not(.postid-57) main.wp-block-group>.wp-block-group:has(>.wp-block-post-title){width:calc(100% - 30px);margin-top:12px!important}body.single-post:not(.postid-55):not(.postid-57) .wp-block-post-title{font-size:clamp(27px,7.5vw,38px)!important;line-height:1.25!important;margin-bottom:22px!important}body.single-post:not(.postid-55):not(.postid-57) figure.wp-block-post-featured-image img{border-radius:16px!important}body.single-post:not(.postid-55):not(.postid-57) main .entry-content.wp-block-post-content{width:calc(100% - 20px)!important;padding:24px 18px!important;margin-top:6px!important;border-radius:19px}body.single-post:not(.postid-55):not(.postid-57) .entry-content h2{margin-top:2em!important}}
+@media(prefers-reduced-motion:reduce){.hm-v33-progress>span{transition:none!important}}
+
+</style>
+<div class="hm-v33-readerbar" id="hm-v33-readerbar">
+ <div class="hm-v33-row">
+  <a class="hm-v33-home" href="https://hybridmind.online/">✦ HYBRID MIND <span> / INSIGHTS</span></a>
+  <div class="hm-v33-actions">
+   <a class="hm-v33-back" href="https://hybridmind.online/category/explained/">ดูบทความทั้งหมด ↗</a>
+   <button id="hm-v33-toc-toggle" class="hm-v33-toc-toggle" type="button" aria-controls="hm-v33-toc" aria-expanded="false" hidden>สารบัญ ↓</button>
+  </div>
+ </div>
+ <nav id="hm-v33-toc" class="hm-v33-toc" aria-label="สารบัญบทความ" hidden></nav>
+ <div class="hm-v33-progress" id="hm-v33-progress" role="progressbar" aria-label="ความคืบหน้าการอ่าน" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span id="hm-v33-progressbar"></span></div>
+</div>
+<script id="hm-v33-article-js">
+(function(){'use strict';
+function init(){
+ const bar=document.getElementById('hm-v33-progress');
+ const content=document.querySelector('body.single-post .entry-content.wp-block-post-content');
+ if(!bar||!content)return;
+ const toc=document.getElementById('hm-v33-toc');
+ const button=document.getElementById('hm-v33-toc-toggle');
+ const meter=document.getElementById('hm-v33-progressbar');
+ if(!toc||!button||!meter)return;
+ const headings=[...content.querySelectorAll('h2')].filter(h=>h.textContent.trim().length>0).slice(0,35);
+ const used=new Set([...document.querySelectorAll('[id]')].map(n=>n.id));
+ headings.forEach((h,i)=>{
+   if(!h.id){let base='hm-v33-section-'+(i+1),id=base,suffix=2;while(used.has(id))id=base+'-'+suffix++;h.id=id;used.add(id);}
+   const a=document.createElement('a');a.href='#'+encodeURIComponent(h.id);a.textContent=h.textContent.trim().slice(0,95);
+   a.addEventListener('click',()=>{toc.hidden=true;button.setAttribute('aria-expanded','false')});toc.appendChild(a);
+ });
+ button.hidden=headings.length===0;
+ button.addEventListener('click',()=>{const expanded=button.getAttribute('aria-expanded')==='true';button.setAttribute('aria-expanded',String(!expanded));toc.hidden=expanded;if(!expanded)toc.querySelector('a')?.focus();});
+ document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!toc.hidden){toc.hidden=true;button.setAttribute('aria-expanded','false');button.focus()}});
+ let scheduled=false;
+ const onScroll=()=>{if(scheduled)return;scheduled=true;requestAnimationFrame(()=>{scheduled=false;const rect=content.getBoundingClientRect();const top=window.scrollY+rect.top;const end=top+content.offsetHeight-window.innerHeight;const progress=end<=top?(window.scrollY>=top?100:0):Math.min(100,Math.max(0,((window.scrollY-top)/(end-top))*100));bar.setAttribute('aria-valuenow',String(Math.round(progress)));meter.style.width=progress.toFixed(2)+'%';});};
+ window.addEventListener('scroll',onScroll,{passive:true});window.addEventListener('resize',onScroll,{passive:true});onScroll();
+}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
+})();
+</script>
+<!-- /wp:html -->
+
+<!-- wp:group {"tagName":"main","metadata":{"name":"Main"},"layout":{"type":"default"}} -->
+<main class="wp-block-group"><!-- wp:spacer {"height":"var:preset|spacing|20"} -->
+<div style="height:var(--wp--preset--spacing--20)" aria-hidden="true" class="wp-block-spacer"></div>
+<!-- /wp:spacer -->
+
+<!-- wp:group {"layout":{"type":"constrained","wideSize":"800px","contentSize":"800px"}} -->
+<div class="wp-block-group"><!-- wp:post-title {"level":1,"textAlign":"left","fontSize":"large"} /-->
+
+<!-- wp:post-featured-image {"aspectRatio":"4/3","align":"wide","style":{"spacing":{"margin":{"top":"var:preset|spacing|30","bottom":"var:preset|spacing|20"}}}} /--></div>
+<!-- /wp:group -->
+
+<!-- wp:post-content {"lock":{"move":false,"remove":false},"layout":{"type":"constrained"}} /-->
+
+<!-- wp:group {"layout":{"type":"constrained"}} -->
+<div class="wp-block-group"><!-- wp:comments {"style":{"spacing":{"margin":{"top":"0","bottom":"0"}}}} -->
+<div class="wp-block-comments" style="margin-top:0;margin-bottom:0"><!-- wp:comments-title {"showPostTitle":false,"showCommentsCount":false,"style":{"spacing":{"margin":{"bottom":"var:preset|spacing|20"}}},"fontSize":"medium"} /-->
+
+<!-- wp:comment-template {"fontSize":"small"} -->
+<!-- wp:columns {"isStackedOnMobile":false,"style":{"spacing":{"blockGap":{"top":"0","left":"16px"},"margin":{"bottom":"var:preset|spacing|30"}}}} -->
+<div class="wp-block-columns is-not-stacked-on-mobile" style="margin-bottom:var(--wp--preset--spacing--30)"><!-- wp:column {"width":"34px"} -->
+<div class="wp-block-column" style="flex-basis:34px"><!-- wp:avatar {"size":34,"isLink":true,"style":{"border":{"radius":"100px"},"spacing":{"margin":{"top":"4px"}}}} /--></div>
+<!-- /wp:column -->
+
+<!-- wp:column {"style":{"spacing":{"blockGap":"8px"}}} -->
+<div class="wp-block-column"><!-- wp:comment-author-name {"style":{"elements":{"link":{"color":{"text":"var:preset|color|theme-6"},":hover":{"color":{"text":"var:preset|color|theme-8"}}}}},"textColor":"theme-6","fontSize":"small"} /-->
+
+<!-- wp:group {"style":{"spacing":{"margin":{"top":"0px","bottom":"0px"}},"elements":{"link":{"color":{"text":"var:preset|color|theme-5"}}}},"textColor":"theme-5","layout":{"type":"flex"}} -->
+<div class="wp-block-group has-theme-5-color has-text-color has-link-color" style="margin-top:0px;margin-bottom:0px"><!-- wp:comment-date {"style":{"elements":{"link":{":hover":{"color":{"text":"var:preset|color|theme-8"}}}}},"fontSize":"small"} /-->
+
+<!-- wp:comment-edit-link {"fontSize":"small"} /--></div>
+<!-- /wp:group -->
+
+<!-- wp:comment-content /-->
+
+<!-- wp:comment-reply-link {"style":{"elements":{"link":{"color":{"text":"var:preset|color|theme-5"},":hover":{"color":{"text":"var:preset|color|theme-8"}}}},"spacing":{"margin":{"top":"var:preset|spacing|20"}}}} /--></div>
+<!-- /wp:column --></div>
+<!-- /wp:columns -->
+<!-- /wp:comment-template -->
+
+<!-- wp:spacer {"height":"var:preset|spacing|20","style":{"layout":[]}} -->
+<div style="height:var(--wp--preset--spacing--20)" aria-hidden="true" class="wp-block-spacer"></div>
+<!-- /wp:spacer -->
+
+<!-- wp:post-comments-form /-->
+
+<!-- wp:spacer {"height":"var:preset|spacing|40"} -->
+<div style="height:var(--wp--preset--spacing--40)" aria-hidden="true" class="wp-block-spacer"></div>
+<!-- /wp:spacer --></div>
+<!-- /wp:comments --></div>
+<!-- /wp:group --></main>
+<!-- /wp:group -->
+
+<!-- wp:template-part {"slug":"footer","theme":"assembler"} /-->
