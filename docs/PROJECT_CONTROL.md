@@ -16,6 +16,18 @@
 
 
 
+
+## SEO-01.A — SETTINGS RECONCILIATION / SITEMAP DIAGNOSTICS (2026-10-10)
+
+- **Owner said “ทำเลย”** to SEO-01.A Indexing & Sitemap Recovery diagnostic. **READ-ONLY WordPress Production throughout; 0 settings writes and 0 content writes.** Site stays `launched / discourage_search` while the indexing release gate remains **HOLD**.
+- **New evidence: WordPress.com Site Activity** `setting__changed_blog_public`: **2026-10-09 20:40:43 Asia/Bangkok** `0→1` during site launch; **2026-10-09 20:42:02** `1→0` afterward. No later setting event seen in inspected filtered history. WordPress.com `settings.get` still reports `blog_public=0`, consistent with this log; its `manage-site.status` says `discourage_search`.
+- **Discrepancy still confirmed:** connected on-site `GET /wp/v2/settings` returns **`blog_public=1`**, repeated twice with cache-busting; website HTML `meta name=robots` remains `max-image-preview:large` (no visible `noindex`). WordPress Core normally prints `noindex` if effective `get_option('blog_public')` equals 0. **Hypothesis of WP.com service vs Atomic runtime option propagation/cache mismatch, not confirmed**. Never toggle blindly.
+- **Sitemap issue persists:** Jetpack REST `sitemaps=true`, `seo-tools=true`; `robots.txt` lists `/sitemap.xml` and news sitemap. Connected public site reader returns not-found HTML, not XML at `/sitemap.xml`, `/news-sitemap.xml`, `/wp-sitemap.xml`, `/sitemap_index.xml`. *Actual HTTP status / Content-Type / `X-Robots-Tag` UNKNOWN* because public header probes from container failed DNS and web reader cannot expose response headers. WordPress.com discouragement setting may be responsible but unproven.
+- **Mobile Lighthouse SEO 100/100** as returned by connected PageSpeed audit, **NOT a Search Indexing PASS**. Direct WP-CLI `option get blog_public` unavailable because WPVibe's optional server plugin is not installed; do not install or issue PHP/SQL without approval.
+- **New reproducible handoff:** [R2 / SEO-01.A diagnostic root-cause report](audits/SEO_01A_INDEXING_SITEMAP_DIAGNOSTICS_2026-10-10.md) · [Windows VPS anonymous HTTP header/XML probe](../scripts/seo/inspect-public-headers.ps1) (created but not executed; requires network-enabled host). GSC Wizard was suggested as a possible Google Search Console URL Inspection connector; **not connected**.
+- **Next gate:** confirm owner intent to permit search indexing; inspect effective stored option / raw HTTP headers and Search Console diagnostics; only with explicit owner approval change `blog_public` or Search Visibility, then verify public XML Sitemap. **No post #57/Trust Draft publication, Typhoon activation, Affiliate launch, or other production changes**.
+- **UNKNOWN ≠ PASS.**
+
 ## SEO-01 — TECHNICAL AUDIT COMPLETE / INDEXING HOLD (2026-10-10)
 
 - **Owner-directed SEO-01 READ ONLY completed**, reviewing Homepage #16, Published #55/#52/#31, About #1, AI News/Explained category archives, robots, 4 candidate XML sitemaps, canonical, meta robots, Open Graph, JSON-LD, internal anchors and WordPress / Jetpack settings. **No Production writes, no Search Indexing toggle, no Trust Draft publication.**
