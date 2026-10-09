@@ -8,6 +8,15 @@
 
 
 
+
+## L3-C Isolated Runtime Units & L4 Typhoon READ ONLY — 2026-10-09
+
+- **L3-C isolated mock-DOM tests PASS:** extracted current WordPress iframe scripts (Post #55 Published / Post #57 Draft), invoked quiz event callbacks for both; correct/wrong/finish/restart cycles produced expected 2/3, reset state. #57 calculator functions `recalc/setCount` produced 0 initial, 10 videos=1,000, Reset=0, mixed preset=1,010, progress capped 100%, count clamped 0..99. These are **isolated JavaScript unit tests, NOT authenticated browser/Android QA**.
+- [Detailed reproducible isolated-function observations](releases/L3_C_ISOLATED_INTERACTION_UNIT_QA_2026-10-09.md). **L3 Browser Gate remains UNKNOWN/HOLD** for CSS/layout/cropping/iframe/clipboard and 320/375/390/768/1280 width screenshots.
+- **L4 read-only Typhoon preflight:** WordPress confirms Hybrid Mind — Typhoon Chat v0.2.2 Active, `POST /hybridmind/v1/chat`, GET knowledge endpoints. Knowledge-status: `published_wordpress_only`, published posts=3/pages=2, `reads_drafts=false`, `external_live_web_search=false`. **Configuration PASS; actual guest authorization, rate limits, cost cap, token use, draft extraction resistance, error recovery and retention UNKNOWN.**
+- Privacy Page #68 remains Draft and still needs contact, prompt retention/provider/log and cookie/PDPA decisions. WPVibe plugin-backed file-source read unavailable, core REST and WPcom reads worked. No chat POST and no paid AI test performed; presence of Typhoon JS in anonymous Coming Soon response is **review item, not proof of vulnerability**.
+- [L4 safety/cost preflight report](releases/L4_TYPHOON_GUEST_READ_ONLY_PREFLIGHT_2026-10-09.md). **No WordPress Production changes. #57 remains Draft, Coming Soon unchanged; public launch NO GO. UNKNOWN != PASS.**
+
 ## L3-C Interactive Script Parsing & Data Tests — 2026-10-09 (READ ONLY)
 
 - Fetched fresh WordPress #55 (`publish`, modified `2026-10-09T17:47:46`) and #57 (`draft`, modified `2026-10-09T18:31:53`). Extracted `iframe srcdoc` documents and tested the 3 embedded JavaScript blocks for syntax validity; **all 3 parsed PASS**.
