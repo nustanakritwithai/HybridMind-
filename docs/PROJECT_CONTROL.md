@@ -3,6 +3,16 @@
 **As of:** 2026-10-09 (Asia/Bangkok)  
 **Project:** Hybrid Mind · Modern AI Lifestyle Media / Shopee Affiliate
 
+## AiPASS 2.0 — Cover-only hero replacing white title area (2026-10-09)
+
+- Owner screenshot of Draft Post #57 displayed a large white WordPress title/space around the AI-generated cover. Owner explicitly authorized changing the **white top section to only the cover image**, no visible page title.
+- Read Assembler `assembler//single` template to confirm the initial spacer, 800px constrained title/featured-image group and `4/3` featured-image ratio. Reused current Media #63 (**1672×941**; words in image kept).
+- Backed up **all previous Global Styles ID 2 custom CSS (5,496 characters)**: [Cover-only prechange backup](wordpress/POST57_COVER_ONLY_PRECHANGE_CSS_2026-10-09.md). Confirmed exact match to live CSS before write.
+- Appended **2,186-character scoped CSS patch** `R2-POST57-COVER-ONLY` targeting `body.single-post.postid-57`: hide title **visually** while keeping semantic DOM, remove top spacer and white gutters, widen cover to viewport, show original aspect with `object-fit:contain`, dark navy background to meet embedded interactive page without a white band. No shared theme changes.
+- **WordPress independent CSS readback PASS**: CSS now 7,682 chars with exact original prefix. Post #57 remains **Draft**, `featured_media=63`, original post body **62,069 chars**, calculator/quiz/photos/sources preserved. Coming Soon remains `coming_soon/unlaunched`. Header and original article code were not edited.
+- **Actual visual result still UNKNOWN** until a signed-in Android screenshot shows the full-width cover/no title/no white panel; the external fetch sees Coming Soon instead of Draft. **R1.2-D visual gate HOLD.**
+- [Scoped layout fix and QA report](wordpress/TH_AI_PASSPORT_2_COVER_ONLY_LAYOUT_QA_2026-10-09.md). UNKNOWN ≠ PASS.
+
 ## TH-AI Passport 2.0 — Featured Cover uploaded (2026-10-09)
 
 - User requested the newly generated **TH-AI Passport 2.0** cover be uploaded to the existing article. WordPress Media **#63** successfully uploaded: `hybridmind-th-ai-passport-2-cover.png` (**1672×941 PNG**, AI-generated). Media caption/Alt identifies it as editorial AI-generated imagery, NOT a real government press event.
