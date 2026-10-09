@@ -1,0 +1,252 @@
+{
+  "audit_id": "HYBRIDMIND-SEO01-20261010",
+  "date": "2026-10-10",
+  "time_zone": "Asia/Bangkok",
+  "website": "https://hybridmind.online",
+  "mode": "READ_ONLY_WORDPRESS_PRODUCTION",
+  "production_write_count": 0,
+  "control_rule": "UNKNOWN != PASS",
+  "scope": {
+    "published_posts": [
+      55,
+      52,
+      31
+    ],
+    "homepage_page": 16,
+    "about_page": 1,
+    "trust_drafts": [
+      67,
+      68,
+      69,
+      70
+    ],
+    "archives": [
+      "/category/ai-news/",
+      "/category/explained/"
+    ]
+  },
+  "website_status": {
+    "launch_status": "launched",
+    "wpcom_visibility": "discourage_search",
+    "wpcom_blog_public": 0,
+    "wp_rest_blog_public": 1,
+    "indexing_setting_consistency": "CONFLICT_P0",
+    "raw_http_status": null,
+    "x_robots_tag_header": null,
+    "search_console_indexing": null
+  },
+  "jetpack": {
+    "active": true,
+    "seo_tools": true,
+    "sitemaps_setting": true
+  },
+  "robots": {
+    "route": "/robots.txt",
+    "exists_as_reader_content": true,
+    "rules": [
+      "User-agent: *",
+      "Disallow: /wp-admin/",
+      "Allow: /wp-admin/admin-ajax.php"
+    ],
+    "sitemaps_declared": [
+      "/sitemap.xml",
+      "/news-sitemap.xml"
+    ],
+    "blocks_googlebot_at_file_level": false,
+    "blocks_oai_searchbot_at_file_level": false,
+    "real_bot_http_access": "UNKNOWN"
+  },
+  "sitemaps": [
+    {
+      "path": "/sitemap.xml",
+      "renderer_returned_xml": false,
+      "renderer_returned_wordpress_notfound_html": true,
+      "http_status": "UNKNOWN"
+    },
+    {
+      "path": "/news-sitemap.xml",
+      "renderer_returned_xml": false,
+      "renderer_returned_wordpress_notfound_html": true,
+      "http_status": "UNKNOWN"
+    },
+    {
+      "path": "/wp-sitemap.xml",
+      "renderer_returned_xml": false,
+      "renderer_returned_wordpress_notfound_html": true,
+      "http_status": "UNKNOWN"
+    },
+    {
+      "path": "/sitemap_index.xml",
+      "renderer_returned_xml": false,
+      "renderer_returned_wordpress_notfound_html": true,
+      "http_status": "UNKNOWN"
+    }
+  ],
+  "rendered_robots_meta": "max-image-preview:large",
+  "meta_noindex_seen_on_inspected_pages": false,
+  "urls": [
+    {
+      "key": "home",
+      "path": "/",
+      "canonical": "PASS",
+      "h1": 1,
+      "json_ld": [
+        "Organization",
+        "WebSite"
+      ],
+      "og_image": "PLACEHOLDER_BLANK_JPG",
+      "advertising": "INACTIVE_HIDDEN"
+    },
+    {
+      "key": "article55",
+      "post_id": 55,
+      "path": "/2026/10/09/ai-era-2026-agent-tools-a2a/",
+      "canonical": "PASS",
+      "json_ld": [
+        "Person",
+        "Article",
+        "BreadcrumbList"
+      ],
+      "schema_article_image": "MISSING",
+      "og_image": "PLACEHOLDER_BLANK_JPG",
+      "parent_post_body_text_outside_iframe_chars": 81,
+      "featured_media": 0,
+      "aeo_html_answer_ready": "NEEDS_WORK"
+    },
+    {
+      "key": "article52",
+      "post_id": 52,
+      "path": "/2026/10/09/ai-game-development-right-tools-godot-unreal-blender/",
+      "canonical": "PASS",
+      "h1_in_parent": 1,
+      "json_ld": [
+        "Person",
+        "Article",
+        "BreadcrumbList"
+      ],
+      "schema_article_image": "PRESENT",
+      "og_image": "PRESENT",
+      "featured_media": 51
+    },
+    {
+      "key": "article31",
+      "post_id": 31,
+      "path": "/2026/10/09/gs20-smart-glasses-ai-translation-guide/",
+      "canonical": "PASS",
+      "h1_in_parent": 1,
+      "json_ld": [
+        "Person",
+        "Article",
+        "BreadcrumbList"
+      ],
+      "schema_article_image": "PRESENT",
+      "og_image": "PRESENT",
+      "featured_media": 26
+    },
+    {
+      "key": "about",
+      "page_id": 1,
+      "path": "/%e0%b9%80%e0%b8%81%e0%b8%b5%e0%b9%88%e0%b8%a2%e0%b8%a7%e0%b8%81%e0%b8%b1%e0%b8%9a/",
+      "canonical": "PASS",
+      "h1": 0,
+      "json_ld": [
+        "BreadcrumbList"
+      ],
+      "og_image": "PLACEHOLDER_BLANK_JPG"
+    },
+    {
+      "key": "archive_ai_news",
+      "path": "/category/ai-news/",
+      "published_count": 0,
+      "canonical_link": "NOT_OBSERVED",
+      "linked_in_navigation": true
+    },
+    {
+      "key": "archive_explained",
+      "path": "/category/explained/",
+      "published_count": 3,
+      "canonical_link": "NOT_OBSERVED"
+    }
+  ],
+  "internal_links": {
+    "broken_home_anchor": "#hm-smart-picks",
+    "href_occurrences_per_rendered_home": 2,
+    "target_id_present_on_home": false
+  },
+  "brand": {
+    "site_icon_id": 0,
+    "site_logo_id": 0
+  },
+  "seo_audit_findings": [
+    {
+      "id": "SEO01-P0-01",
+      "severity": "P0",
+      "status": "CONFLICT",
+      "issue": "WordPress.com blog_public=0 vs WordPress core REST blog_public=1; public meta lacks noindex.",
+      "action": "Reconcile authoritative effective option and inspect response headers, Googlebot URL Inspection and current owner indexing intent."
+    },
+    {
+      "id": "SEO01-P0-02",
+      "severity": "P0",
+      "status": "HOLD",
+      "issue": "No XML from four tested sitemap routes despite Jetpack sitemaps=true and robots.txt sitemap declarations.",
+      "action": "Check WP.com search visibility, sitemap regeneration/routing, HTTP status, and revalidate XML only after controlled indexing approval."
+    },
+    {
+      "id": "SEO01-P1-01",
+      "severity": "P1",
+      "status": "FAIL",
+      "issue": "Smart Buying old nav/footer points to homepage anchor #hm-smart-picks which does not exist in V3.",
+      "action": "Patch links or add correct target via guarded update and verify all pages."
+    },
+    {
+      "id": "SEO01-P1-02",
+      "severity": "P1",
+      "status": "FAIL",
+      "issue": "AI News archive is empty (published post count 0) but linked from header/footer.",
+      "action": "Editorial owner decide populate or remove/rename navigation until news exists."
+    },
+    {
+      "id": "SEO01-P1-03",
+      "severity": "P1",
+      "status": "FAIL",
+      "issue": "Homepage and post55 have WordPress blank 200x200 Open Graph image; site logo/icon not configured.",
+      "action": "Approve brand visuals and apply OG/featured image under media QA."
+    },
+    {
+      "id": "SEO01-P1-04",
+      "severity": "P1",
+      "status": "RISK",
+      "issue": "Post55 body outside iframe only 81 visible text chars, no native answer-ready article sections.",
+      "action": "Add introductory summary, key Q&A and source links outside iframe without altering visual lesson."
+    },
+    {
+      "id": "SEO01-P2-01",
+      "severity": "P2",
+      "status": "IMPROVEMENT",
+      "issue": "About page has no rendered h1; category archives have no rel=canonical in tested head.",
+      "action": "Validate SEO objective for archives, and make About's primary heading semantic without disturbing design."
+    },
+    {
+      "id": "SEO01-P0-03",
+      "severity": "P0",
+      "status": "UNKNOWN",
+      "issue": "Actual HTTP status, redirects, X-Robots-Tag and WAF bot responses could not be captured.",
+      "action": "Use trusted external header checker / Google Search Console URL Inspection."
+    }
+  ],
+  "do_not_change_without_new_approval": [
+    "blog_public",
+    "search_indexing",
+    "Google Search Console sitemap submission",
+    "draft publications 57/67/68/69/70",
+    "Typhoon Chat plugin status",
+    "affiliate campaigns"
+  ],
+  "verification_limits": [
+    "WPVibe rendered HTML is not raw HTTP headers/status.",
+    "Direct container DNS for hybridmind.online unavailable.",
+    "Web fetch of site routes did not succeed.",
+    "No authoritative Google Search Console indexing diagnostics."
+  ]
+}
