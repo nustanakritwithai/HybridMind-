@@ -3,6 +3,15 @@
 **As of:** 2026-10-09 (Asia/Bangkok)  
 **Project:** Hybrid Mind · Modern AI Lifestyle Media / Shopee Affiliate
 
+## TH-AI Passport 2.0 — Chromatic typography update (2026-10-09)
+
+- Owner requested more colorful typography on **TH-AI Passport 2.0 Visual Interactive** WordPress **Draft #57**; no public publishing authorized.
+- Applied **9 heading-focused inline color spans** and a **1,118-character iframe-scoped CSS text-color patch** using sky-blue, mint, lavender, gold. Accents cover key headlines, metric values, timeline, learning stages, quiz and source labels; original source text remains identical.
+- **Prewrite reversible diff PASS**: exact reversal of 9 header spans and appended CSS reproduces prior decoded HTML. Embedded JS, existing 3 Pexels photos, links and CSP untouched. Revision #61 is the WordPress prechange backup.
+- WordPress `post-sections.replace` only modified **Post #57 `core/html` section index 0**; independent readback confirms **Draft**, revision #62, modified `2026-10-09T14:33:06`, media/quiz/calculator intact, two source/disclaimer blocks retain prior hashes. Site stays `coming_soon / unlaunched`.
+- **Real authenticated mobile Visual QA still UNKNOWN**: WordPress block/source readback does not demonstrate all responsive/computed colors or real calculator and quiz interaction. No Release Gate bypass.
+- [Chromatic Typography QA & Rollback](wordpress/TH_AI_PASSPORT_2_COLOR_TYPOGRAPHY_QA_2026-10-09.md). UNKNOWN ≠ PASS.
+
 ## TH-AI Passport 2.0 — Real photography added to Draft #57 (2026-10-09)
 
 - Owner requested **real photographic work** inside the existing TH-AI Passport 2.0 interactive WordPress Draft #57 (not publication).
