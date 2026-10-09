@@ -3,6 +3,14 @@
 **As of:** 2026-10-09 (Asia/Bangkok)  
 **Project:** Hybrid Mind · Modern AI Lifestyle Media / Shopee Affiliate
 
+## TH-AI Passport 2.0 — Featured Cover uploaded (2026-10-09)
+
+- User requested the newly generated **TH-AI Passport 2.0** cover be uploaded to the existing article. WordPress Media **#63** successfully uploaded: `hybridmind-th-ai-passport-2-cover.png` (**1672×941 PNG**, AI-generated). Media caption/Alt identifies it as editorial AI-generated imagery, NOT a real government press event.
+- WordPress Post **#57** updated **Featured Image → Media #63**; independent `posts.get(edit)` readback confirms `status=draft`, `featured_media=63`, `modified=2026-10-09T14:43:11`, content unchanged (62,069 chars), calculator/quiz/source and previous 3 stock photos retained.
+- Assembler shared single template still enforces **4:3**. To preserve text on the wide 16:9 cover, backed up Global Styles ID 2 CSS (4,888 chars) and appended a **608-character only-post-57 CSS rule group**, making featured image natural aspect, `object-fit:contain`, max-width 100%. WordPress readback confirms 5,496 chars, with original CSS exactly preserved.
+- **Coming Soon remains `coming_soon/unlaunched`**. Post #57 remains Draft. Real authenticated mobile cover appearance is **UNKNOWN** until screenshot; responsive Release Gate is HOLD.
+- [Featured Cover QA and backup evidence](wordpress/TH_AI_PASSPORT_2_FEATURED_COVER_QA_2026-10-09.md). UNKNOWN ≠ PASS.
+
 ## TH-AI Passport 2.0 — Chromatic typography update (2026-10-09)
 
 - Owner requested more colorful typography on **TH-AI Passport 2.0 Visual Interactive** WordPress **Draft #57**; no public publishing authorized.
