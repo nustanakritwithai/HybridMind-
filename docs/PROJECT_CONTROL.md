@@ -13,6 +13,18 @@
 
 
 
+
+## R1 Local QA + Affiliate Ad Spaces — RESERVATIONS LIVE / INACTIVE (2026-10-10)
+
+- **Owner confirmed** HYBRID MIND has no owned goods/stock/merchant checkout; it is an editorial media publisher using third-party **affiliate links only in explicit ad spaces**, then instructed “ทำเลย”. No e-commerce/catalog/cart/payment/order features.
+- **R1 local Chromium QA:** existing WordPress-shell Home V3 and Article V3.3 fixtures at widths `320/375/390/768/1280/1440` passed **12/12** smoke tests (no horizontal scroll / JS error). At 390px, filters, Article TOC 8 links, Escape-close and reading progress 100% also worked. **Real Production Android/desktop screenshot and click QA UNKNOWN** (do not claim browser gate passed).
+- **Production ad reservations deployed with 0 campaigns:** one shared `core/html` block [source](design/HM_AFFILIATE_RESERVATIONS_V1_GUTENBERG_BLOCK_2026-10-10.html), 3,366 chars, no external URLs/requests; all DOM slots have `hidden=true`, `data-hm-aff-enabled=false`. Homepage slots: `home_after_feature`, `home_in_feed`; regular article slots (GS20 #31 and AI Game #52): `article_after_intro`, `article_near_end`. Immersive Interactive #55 is intentionally excluded; #57 remains Draft. Mobile uses responsive version of the same slots, not duplicate ads.
+- **Homepage Page #16** add-only `page-sections.insert(index=1)`, new modified `2026-10-10T00:17:24`; original V3 block hash `3f087997d00f792cf12b13fe4c082fe7140b6631` preserved. [Exact prior Home backup](backups/WORDPRESS_HOME_16_PRE_AFF_SLOTS_2026-10-10.html).
+- **Single Post Template `assembler//single`** now 17,663 chars with original V3.3 14,295 chars plus ad reservation block after `core/post-content`; exact GitHub candidate/readback PASS. [Prior Single Template backup](backups/WORDPRESS_SINGLE_TEMPLATE_PRE_AFF_SLOTS_2026-10-10.html) · [new template candidate](design/HM_SINGLE_TEMPLATE_WITH_INACTIVE_AD_SLOTS_2026-10-10.html).
+- **Anonymous post-deploy HTML PASS:** Home contains its 2 reserved slots and #31/#52 each contain 2, all hidden/disabled. #55 contains **none** and Visual iframe still present. No ad tracking or affiliate URLs, no visual empty ad boxes. Temporary Draft QA Page #84 moved to recoverable Trash after checks. Published posts #55/#52/#31 and draft #57 unchanged; Typhoon 0.2.2 inactive; website `launched / discourage_search`.
+- **Remaining gates:** latest known Jetpack full backup success **2026-10-08 18:15:15** (restore preflight UNKNOWN); real Production viewport and click QA UNKNOWN; public Contact/Privacy/Affiliate Disclosure still HOLD; SEO `noindex` still not proven despite `blog_public=0`, as anonymous meta `robots=max-image-preview:large`. No ads activated without owner-approved destination/creative and near-link disclosure.
+- [R1 detailed QA, deployment, rollbacks and evidence](releases/HM_R1_STABILITY_AND_INACTIVE_AFFILIATE_SLOTS_2026-10-10.md). **UNKNOWN ≠ PASS.**
+
 ## Business Model Owner Correction — Affiliate Ad Slots, NO STORE (2026-10-10)
 
 - **Authoritative new instruction:** “เราไม่มีสินค้านะเราใช้ลิงก์ affiliate ตามจุดที่เป็นพื้นที่โฆษณา”. HYBRID MIND is a **publisher / AI media and learning platform**. It **owns no products**, holds no stock, does not act as seller, and monetizes via **third-party affiliate outbound links placed into clearly marked AD SPACE SLOTS** on editorial pages. Third-party marketplaces/sellers handle checkout, pricing, fulfillment and returns.
