@@ -89,6 +89,50 @@ class NewsroomChecks(unittest.TestCase):
         manifest['title']='Breaking breakthrough 999999 totally real!'
         self.assertTrue(any('UNSUPPORTED_NUMBERS' in x for x in p.editorial_check(packet,manifest)))
 
+    def test_process_restart_keeps_one_mock_draft(self):
+        item_id=self.ledger.ingest(self.item,self.now)['item_id']
+        self.ledger.ready(item_id)
+        article=SAMPLE['manifest']['article_id']
+        job=self.ledger.job(item_id,article,self.now)
+        self.assertTrue(self.ledger.lock(job,'first',self.now))
+        draft=self.ledger.mock_write(job,'draft',self.now)
+        self.ledger.unlock(job,'first')
+        restarted=p.Ledger(self.ledger.db_file)
+        try:
+            repeat=restarted.ingest(self.item,self.now)
+            self.assertEqual(repeat['state'],'DUPLICATE')
+            self.assertEqual(repeat['original_state'],'DRAFTED')
+            self.assertEqual(restarted.job(item_id,article,self.now),job)
+            self.assertFalse(restarted.lock(job,'restart',self.now))
+            self.assertEqual(restarted.reconcile(job,self.now),draft)
+            self.assertEqual(restarted.db.execute('SELECT COUNT(*) FROM mock_wp').fetchone()[0],1)
+        finally:
+            restarted.close()
+
+    def test_bounded_retry_lock(self):
+        item_id=self.ledger.ingest(self.item,self.now)['item_id']
+        self.ledger.ready(item_id)
+        job=self.ledger.job(item_id,SAMPLE['manifest']['article_id'],self.now)
+        for i in range(3):
+            worker=f'retry-{i}'
+            self.assertTrue(self.ledger.lock(job,worker,self.now))
+            self.ledger.unlock(job,worker)
+        self.assertFalse(self.ledger.lock(job,'retry-4',self.now))
+
+    def test_editorial_checks_fail_closed_even_before_renderer(self):
+        with patch.object(p,'validate_schema',return_value=None):
+            packet=json.loads(json.dumps(SAMPLE['evidence_packet']))
+            manifest=json.loads(json.dumps(SAMPLE['manifest']))
+            self.assertEqual(p.editorial_check(packet,manifest),[])
+            manifest['gates']['research']='UNKNOWN'
+            self.assertIn('EVIDENCE_GATES_NOT_PASS',p.editorial_check(packet,manifest))
+            manifest['gates']['research']='PASS'
+            manifest['claims'][0]['source_ids']=[]
+            self.assertTrue(any('CLAIM_MISSING_EVIDENCE' in x for x in p.editorial_check(packet,manifest)))
+            manifest=json.loads(json.dumps(SAMPLE['manifest']))
+            manifest['title']='Breakthrough 999999 without evidence'
+            self.assertTrue(any('UNSUPPORTED_NUMBERS' in x for x in p.editorial_check(packet,manifest)))
+
     def test_rss_and_atom_parser(self):
         rss=b'<rss><channel><item><title>AI research</title><link>https://example.com/a</link><pubDate>Mon, 05 Oct 2026 10:00:00 GMT</pubDate></item></channel></rss>'
         items=parse_feed(rss,'official',self.now)
