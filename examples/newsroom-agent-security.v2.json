@@ -1,0 +1,211 @@
+{
+  "item": {
+    "source_id": "google-research",
+    "canonical_url": "https://research.google/blog/open-and-emergent-problems-in-agentic-privacy-and-security-a-contextual-angle/",
+    "event_key": "google-research-agentic-privacy-workshop-report-20261005",
+    "title": "Open and Emergent Problems in Agentic Privacy and Security: A Contextual Angle",
+    "summary": "Google Research published research directions concerning safe autonomous agents.",
+    "source_published_at": "2026-10-05",
+    "event_at": null,
+    "fetched_at": "2026-10-10T20:40:00+07:00"
+  },
+  "evidence_packet": {
+    "version": "hm-news-evidence/0.1",
+    "article_id": "hm-google-agentic-privacy-report-20261005",
+    "source_published_at": "2026-10-05",
+    "event_at": null,
+    "fetched_at": "2026-10-10T20:40:00+07:00",
+    "review_status": "PASS",
+    "risk_flags": [],
+    "sources": [
+      {
+        "id": "src-google-research",
+        "title": "Google Research — Open and Emergent Problems in Agentic Privacy and Security",
+        "url": "https://research.google/blog/open-and-emergent-problems-in-agentic-privacy-and-security-a-contextual-angle/",
+        "published_at": "2026-10-05",
+        "kind": "official"
+      }
+    ],
+    "evidence": [
+      {
+        "claim_id": "claim-google-released",
+        "claim_text": "Google Research เผยแพร่รายงานเกี่ยวกับโจทย์ความเป็นส่วนตัวและความปลอดภัยของ AI Agent",
+        "source_id": "src-google-research",
+        "evidence_text": "Today, we share a comprehensive new workshop report",
+        "attribution": "primary-statement",
+        "review": "PASS"
+      },
+      {
+        "claim_id": "claim-agentic-risks",
+        "claim_text": "รายงานของ Google Research ระบุความเสี่ยงจาก prompt injection และการมอบหมายงานของ AI Agent",
+        "source_id": "src-google-research",
+        "evidence_text": "adversarial manipulations like prompt injection; Autonomy and delegation",
+        "attribution": "primary-statement",
+        "review": "PASS"
+      },
+      {
+        "claim_id": "claim-proposes",
+        "claim_text": "Google Research เสนอแนวทางควบคุมการทำงานของ AI Agent โดยพิจารณาบริบทของคำสั่งและข้อมูล",
+        "source_id": "src-google-research",
+        "evidence_text": "Our report advocates for complementing model and user interaction advances with a contextual policy engine",
+        "attribution": "primary-statement",
+        "review": "PASS"
+      }
+    ]
+  },
+  "manifest": {
+    "schema_version": "hm-va/0.1",
+    "article_id": "hm-google-agentic-privacy-report-20261005",
+    "title": "Google Research เสนอแนวทางความปลอดภัยของ AI Agent ที่ยึดบริบทเป็นหลัก",
+    "slug": "google-research-agentic-privacy-context-report",
+    "dek": "งานวิจัยใหม่ชวนคิดว่า AI Agent ที่ทำงานแทนผู้ใช้ควรตรวจสอบความเหมาะสมของการเข้าถึงข้อมูลและคำสั่งตามบริบท ไม่ใช่อาศัยเพียงสิทธิ์การใช้งานแบบตายตัว",
+    "category": "ai-news",
+    "language": "th",
+    "source_post_id": 0,
+    "featured_media_id": 0,
+    "status": "draft",
+    "editorial_type": "news",
+    "sources": [
+      {
+        "id": "src-google-research",
+        "title": "Google Research — Open and Emergent Problems in Agentic Privacy and Security",
+        "url": "https://research.google/blog/open-and-emergent-problems-in-agentic-privacy-and-security-a-contextual-angle/",
+        "published_at": "2026-10-05",
+        "kind": "official"
+      }
+    ],
+    "claims": [
+      {
+        "id": "claim-google-released",
+        "text": "Google Research เผยแพร่รายงานเกี่ยวกับโจทย์ความเป็นส่วนตัวและความปลอดภัยของ AI Agent",
+        "status": "vendor-claim",
+        "source_ids": [
+          "src-google-research"
+        ]
+      },
+      {
+        "id": "claim-agentic-risks",
+        "text": "รายงานของ Google Research ระบุความเสี่ยงจาก prompt injection และการมอบหมายงานของ AI Agent",
+        "status": "vendor-claim",
+        "source_ids": [
+          "src-google-research"
+        ]
+      },
+      {
+        "id": "claim-proposes",
+        "text": "Google Research เสนอแนวทางควบคุมการทำงานของ AI Agent โดยพิจารณาบริบทของคำสั่งและข้อมูล",
+        "status": "vendor-claim",
+        "source_ids": [
+          "src-google-research"
+        ]
+      }
+    ],
+    "modules": [
+      {
+        "id": "at-a-glance",
+        "type": "summary",
+        "title": "ภาพรวมประเด็นที่ควรรู้",
+        "bullets": [
+          "Google Research เผยแพร่รายงานด้านความปลอดภัยและความเป็นส่วนตัวของ AI Agent",
+          "ประเด็นสำคัญคือ AI Agent ใช้เครื่องมือและข้อมูลแทนผู้ใช้ในสถานการณ์ต่างกัน",
+          "รายงานเสนอแนวคิดการบังคับใช้กฎที่สอดคล้องกับบริบทของงาน"
+        ],
+        "source_ids": [
+          "src-google-research"
+        ]
+      },
+      {
+        "id": "security-steps",
+        "type": "process",
+        "title": "เส้นทางตรวจความเสี่ยงของ AI Agent",
+        "steps": [
+          {
+            "label": "รับคำสั่ง",
+            "detail": "ระบุเป้าหมายผู้ใช้และข้อมูลที่คำสั่งต้องใช้"
+          },
+          {
+            "label": "ตรวจบริบท",
+            "detail": "พิจารณาสิทธิ์และความเหมาะสมก่อนส่งข้อมูลหรือสั่งเครื่องมือ"
+          },
+          {
+            "label": "ให้มนุษย์กำกับ",
+            "detail": "หยุดหรือตรวจซ้ำเมื่อบริบทเสี่ยงหรือข้อเท็จจริงยังไม่ชัดเจน"
+          }
+        ],
+        "source_ids": [
+          "src-google-research"
+        ]
+      },
+      {
+        "id": "explainer",
+        "type": "narrative",
+        "title": "เกิดอะไรขึ้น และสำคัญอย่างไร",
+        "paragraphs": [
+          "Google Research เผยแพร่รายงานเกี่ยวกับโจทย์ความเป็นส่วนตัวและความปลอดภัยของ AI Agent โดยเน้นการเข้าใจบริบทของการทำงานมากกว่าพิจารณาเฉพาะคำสั่งแบบแยกส่วน",
+          "รายงานของ Google Research ระบุความเสี่ยงจาก prompt injection และการมอบหมายงานของ AI Agent ซึ่งทำให้รูปแบบการกำกับดูแลแบบเดิมอาจไม่เพียงพอ"
+        ],
+        "source_ids": [
+          "src-google-research"
+        ]
+      },
+      {
+        "id": "impact",
+        "type": "narrative",
+        "title": "กระทบใคร และนำไปใช้อย่างไร",
+        "paragraphs": [
+          "ผู้พัฒนาระบบที่ให้ Agent ติดต่อข้อมูลส่วนตัวหรือเรียกใช้เครื่องมือควรออกแบบจุดตรวจสิทธิ์ตามความเสี่ยงและความหมายของงาน",
+          "สำหรับองค์กร แนวทางปฏิบัติคือแยกข้อมูลอ้างอิงภายนอกออกจากคำสั่งที่ผู้ใช้อนุญาต และตรวจสิทธิ์ก่อนให้ AI ดำเนินการที่ย้อนกลับไม่ได้"
+        ],
+        "source_ids": [
+          "src-google-research"
+        ]
+      },
+      {
+        "id": "limitations",
+        "type": "narrative",
+        "title": "ข้อจำกัดและสิ่งที่ต้องติดตาม",
+        "paragraphs": [
+          "Google Research เสนอแนวทางควบคุมการทำงานของ AI Agent โดยพิจารณาบริบทของคำสั่งและข้อมูล แต่บทความนี้เป็นการรายงานแนวทางวิจัย ไม่ใช่หลักฐานว่าระบบดังกล่าวถูกใช้งานจริงอย่างครอบคลุม",
+          "ข้อสรุปในบทความนี้อ้างอิงประกาศจากผู้เผยแพร่รายงาน ยังไม่ได้อ้างว่าได้รับการทดสอบยืนยันอย่างเป็นอิสระ"
+        ],
+        "source_ids": [
+          "src-google-research"
+        ]
+      },
+      {
+        "id": "takeaway",
+        "type": "checklist",
+        "title": "เช็กลิสต์ก่อนนำ Agent มาใช้",
+        "items": [
+          "แยกข้อมูลจากเว็บเป็นข้อมูลอ้างอิง ไม่ใช่คำสั่งที่มีสิทธิ์สั่งงาน",
+          "ขออนุมัติจากมนุษย์ก่อนทำงานเสี่ยงหรือเปลี่ยนแปลงข้อมูล",
+          "ตรวจบันทึกการเข้าถึงและหลักฐานที่ใช้ตัดสินใจ",
+          "อ่านเอกสารต้นทางก่อนอ้างว่าเป็นแนวทางที่ใช้ได้ผลจริง"
+        ],
+        "source_ids": [
+          "src-google-research"
+        ]
+      }
+    ],
+    "gates": {
+      "research": "PASS",
+      "fact_check": "PASS",
+      "visual_qa": "UNKNOWN",
+      "editorial": "PENDING"
+    }
+  },
+  "faqs": [
+    {
+      "question": "บทความนี้เป็นผลทดสอบ AI Agent แล้วหรือยัง?",
+      "answer": "ยังไม่ใช่ผลการทดสอบความปลอดภัยของผลิตภัณฑ์สำเร็จรูป แต่เป็นการเสนอแนวทางวิจัยจาก Google Research"
+    },
+    {
+      "question": "ความเสี่ยงที่ควรระวังคืออะไร?",
+      "answer": "ข้อมูลภายนอกที่พยายามสั่งให้ Agent ทำงานนอกสิทธิ์ เช่น prompt injection และการส่งต่อข้อมูลข้ามบริบท"
+    },
+    {
+      "question": "ผู้พัฒนาควรเริ่มตรงไหน?",
+      "answer": "กำหนดสิทธิ์ของเครื่องมือ แยกแหล่งข้อมูลกับคำสั่ง และให้มนุษย์ตรวจการกระทำที่มีผลกระทบสูง"
+    }
+  ]
+}
