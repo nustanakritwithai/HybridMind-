@@ -1,0 +1,18 @@
+{
+  "status": "OFFLINE_RENDER_ARTIFACT_ONLY",
+  "rendered_with": "existing tools/visual_article/render_gutenberg.mjs pure function in sandboxed JS with minimal URL shim",
+  "date_checked": "2026-10-05",
+  "manifest_validated_by_renderer": true,
+  "full_JSON_Schema_2020_12_runtime": "UNKNOWN",
+  "gutenberg_block_count": 44,
+  "interactive_details_count": 3,
+  "clickable_source_links_count": 1,
+  "html_chars": 8633,
+  "has_script": false,
+  "wordPress_post_id": null,
+  "wp_readback": "NOT_ATTEMPTED",
+  "visual_wordpress_desktop_mobile": "UNKNOWN",
+  "model_calls": 0,
+  "tokens": 0,
+  "cost_usd": 0
+}
