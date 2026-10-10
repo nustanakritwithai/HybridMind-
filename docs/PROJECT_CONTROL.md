@@ -20,6 +20,17 @@
 
 
 
+
+## UX FIX — AI ERA #55 VISUAL FIRST, NATIVE AEO AFTER LESSON (2026-10-10)
+
+- Owner supplied an actual Samsung Android screenshot and stated twice that the black AEO text block at the top of **AI ERA Post #55** was ugly and overwhelmed the lesson. **Fixed directly on Published Production #55** (not an image mockup).
+- **Before-state full WordPress serialized body backed up and exact GitHub readback verified**: [Post #55 Pre-Visual-First Mobile Fix](backups/AEO_01_POST55_PRE_MOBILE_VISUAL_FIRST_2026-10-10.html), 55,462 chars, blob sha `dcdcf98854cc267bda67f0923a598415983598cb`.
+- Using optimistic `post-sections.move(index=1,to_index=2)`, moved the **entire existing native AEO group** AFTER the original immersive iframe. All three original Gutenberg block hashes preserved byte-for-byte, especially the full Visual lesson `35fffee971d301017a4ad5d8b3d6a8e96c33854d`. This restores the **Visual Interactive first-fold experience**; no SEO copy deleted.
+- Added a new site-page-specific responsive CSS core/html block `hm55-visual-first-reader-css`, with light white/mint AEO paper card, **16px / 1.9** mobile paragraphs, well-spaced H2/H3, focus/links and reduced blank top space. [Scoped CSS source](design/HM_POST55_VISUAL_FIRST_MOBILE_READER_CSS_2026-10-10.html). Other posts and template not altered.
+- Updated only 2 visible strings in the bottom AEO block (removed phrase “สรุปเนื้อหาสำหรับ... Search Engine”; the backlink now correctly says **“กลับไปดูบทเรียน...ด้านบน ↑”**). [Updated AEO source](design/AEO_01_POST55_READER_FRIENDLY_SUMMARY_2026-10-10.html). Latest #55 modified `2026-10-10T20:17:02`.
+- Independently checked connected anonymous public HTML: original iframe appears BEFORE native FAQ group, new responsive CSS present, primary MCP/A2A references preserved, Post #55 `og:image` #105 intact; Homepage V3 and Article #52 unaffected by page-scoped styling. **Real new Samsung screenshot/visual appearance UNKNOWN until checked**; user WordPress logged-in admin strip is separate from visitor site content.
+- [SEO / UX Release Evidence and Rollback](releases/HM_POST55_VISUAL_FIRST_MOBILE_UX_FIX_2026-10-10.md). Site still Public, post #55 Published, Typhoon disabled, Affiliate Slots inactive. **UNKNOWN ≠ PASS.**
+
 ## SEO-04 — OPEN GRAPH MEDIA LIVE ON HOMEPAGE + AI ERA #55 (2026-10-10)
 
 - **Owner confirmed “อัพโหลดแล้ว”** for two 1200×630 social artwork JPG files transferred to staging WPVibe upload. `WPVibe.check_upload` returned 2 ready items; WPWriter plugin/app was **connected successfully** to `hybridmind.online` and imported them via URL to **Media #104** (Homepage, 147,472 bytes) and **Media #105** (AI ERA #55, 218,734 bytes). Media IDs, dimensions and actual stored byte sizes independently verified with WP.com `media.get`; descriptive Thai titles and alt text set for AI-generated artwork; no additional AI generation credits spent.
