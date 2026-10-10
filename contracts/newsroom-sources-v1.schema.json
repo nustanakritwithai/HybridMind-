@@ -1,0 +1,20 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "type":"object","required":["version","network_enabled","sources"],"additionalProperties":false,
+  "properties": {
+    "version":{"const":"hm-sources/0.1"},"network_enabled":{"const":false},
+    "sources":{"type":"array","minItems":5,"maxItems":10,"uniqueItems":true,"items":{
+      "type":"object","additionalProperties":false,
+      "required":["id","name","url","method","frequency_minutes","probe","enabled","usage"],
+      "properties":{
+        "id":{"type":"string","pattern":"^[a-z][a-z0-9-]+$"},
+        "name":{"type":"string","minLength":3},"url":{"type":"string","format":"uri","pattern":"^https://"},
+        "method":{"enum":["rss","atom","permitted_html"]},
+        "frequency_minutes":{"type":"integer","minimum":60},
+        "probe":{"enum":["XML_MIME_SEEN_BODY_UNVERIFIED","ATOM_MIME_SEEN_BODY_UNVERIFIED","RSS_MIME_SEEN_BODY_UNVERIFIED","PUBLIC_HTML_BODY_VERIFIED"]},
+        "enabled":{"const":false},
+        "usage":{"type":"string","minLength":15}
+      }
+    }}
+  }
+}
