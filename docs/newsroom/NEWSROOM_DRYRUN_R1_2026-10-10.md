@@ -15,12 +15,12 @@ Date: 2026-10-10 Asia/Bangkok. Production remains unchanged. Rule: **UNKNOWN ≠
 | --- | --- | --- |
 | CMS/homepage | PASS | WordPress.com Atomic Assembler; `page_on_front=16`; Page #16 Published; `blog_public=1`; no writes |
 | Post #55 presence | PASS | Published ID #55; public DOM contains `hm-a2a-lesson-iframe`, `hm-aeo-native` styling and scope; featured media #105 |
-| Post #107 presence | PASS | Published ID #107, updated 2026-10-10 20:35:35; public DOM includes `.hm-content-experience` visual layout |
-| Home V3 auto latest article | **FAIL** | Public homepage complete body (about 71KB) lacks article #107 and #115 links while both posts Published; older #55/#52 links remain; static cards have no Query Loop. Change only card-list subcomponent to dynamic Published posts AFTER separate approval |
+| Post #107 presence | PASS | Published ID #107. Initial DOM included `.hm-content-experience`. Later WordPress readback at 21:17:36 found a newer edit with featured_media ID 133, so the initial DOM screenshot/metadata baseline is now **STALE**; post-edit DOM/OG **UNKNOWN** |
+| Home V3 auto latest article | **FAIL** | Initial public homepage body (about 71KB) lacked article #107 and #115 links while both posts were Published; older #55/#52 links remain; no Query Loop seen. WordPress Page #16 modified 02:45:56 (unchanged at final readback). Initial observation is FAIL; post-concurrent-edit live DOM recheck is UNKNOWN because page reader hit a rate limit. Change only card-list subcomponent AFTER separate approval and fresh screenshot |
 | XML Sitemap content | **FAIL** | `/sitemap.xml` and `/wp-sitemap.xml` retrieved via public page reader return WordPress HTML/not-found, not XML sitemap. Don't treat 404-looking HTML as success |
 | Raw Sitemap HTTP status / Content-Type | **UNKNOWN** | Page reader does not expose the raw upstream response status/header. Run read-only `curl -i` or existing `scripts/seo/inspect-public-headers.ps1` from network-enabled host; validate XML parse before Jetpack or Search Console action |
 | Canonical | PASS | Public `<head>` on Home/#55/#107 contains self-canonical URLs |
-| OG | Mixed | Home and #55 use true 1200×630 OG images (#104/#105) PASS; #107 uses `https://s0.wp.com/i/blank.jpg` 200×200 and has empty `og:image:alt`: social image quality FAIL |
+| OG | Mixed | Home and #55 had 1200×630 OG images at initial inspection. #107 initially used `https://s0.wp.com/i/blank.jpg` 200×200, but another agent subsequently updated #107 and assigned featured_media 133; **current #107 OG = UNKNOWN until fresh public-head readback**. Do not fix old OG based on stale evidence |
 | Structured Data | PASS for syntax presence | Home one parseable Organization + WebSite graph; #55 and #107 each Person + Article + BreadcrumbList. Independent rich-result testing UNKNOWN; do not inject duplicate Schema |
 | Protected unpublished | PASS | Posts #57 Draft; Pages #67, #68, #69, #70 Draft. #121 also appeared as Draft during audit: concurrent editorial work was occurring. None modified |
 | Typhoon guest chat | PASS inactive | `Hybrid Mind — Typhoon Chat` plugin inactive (v0.2.2); Newsroom does not import or activate it |
@@ -129,7 +129,7 @@ Measure editorial minutes per draft, accepted ratio, amount of human correction,
 
 1. Homepage newest stories: surgically replace ONLY static story-card feed area with a WordPress `core/query`/Query Loop of Published posts; match V3 classes and preserve inactive affiliate slots, hero, header/footer. Protect draft statuses, regression compare old HTML snapshots, verify desktop/real phone afterward.
 2. Sitemap P0: network-enabled real GET captures status, `Content-Type`, body and XML parse + sitemap links. Diagnose endpoint mapping/Jetpack/indexability. **No blind setting toggle**. Check Google Search Console separately.
-3. Post #107 OG `blank.jpg` -> separately review/select a legitimate 1200×630 editorial image and explicit license. Do not silently fill media.
+3. Post #107 OG was `blank.jpg` in earlier inspection but featured_media later changed to 133 by another editor: **DO NOT change OG now**. First recheck live head/OG after WPVibe quota resets; if still defective, separately review image/alt/license.
 4. Fix narrowly confirmed accessibility issues with scoped contrast/accessible label changes and confirm browser keyboard/touch QA before release; do not redesign interactive lessons.
 
 ## Rollback
