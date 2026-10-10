@@ -1,0 +1,12 @@
+{
+  "version": "hm-sources/0.1",
+  "network_enabled": false,
+  "sources": [
+    {"id":"openai-news","name":"OpenAI News","url":"https://openai.com/news/rss.xml","method":"rss","frequency_minutes":180,"probe":"XML_MIME_SEEN_BODY_UNVERIFIED","enabled":false,"usage":"headline, metadata, short attributed excerpts, deep link only; check feed terms"},
+    {"id":"google-deepmind","name":"Google DeepMind Blog","url":"https://deepmind.google/blog/rss.xml","method":"rss","frequency_minutes":240,"probe":"XML_MIME_SEEN_BODY_UNVERIFIED","enabled":false,"usage":"official announcements; verify date on original article; no image republication"},
+    {"id":"google-research","name":"Google Research","url":"https://research.google/blog/rss/","method":"rss","frequency_minutes":240,"probe":"XML_MIME_SEEN_BODY_UNVERIFIED","enabled":false,"usage":"research articles; distinguish preprints from validated deployments"},
+    {"id":"nvidia-developer","name":"NVIDIA Technical Blog","url":"https://developer.nvidia.com/blog/feed/","method":"atom","frequency_minutes":360,"probe":"ATOM_MIME_SEEN_BODY_UNVERIFIED","enabled":false,"usage":"technical claims are vendor-sourced; no full-text copying"},
+    {"id":"microsoft-research","name":"Microsoft Research","url":"https://www.microsoft.com/en-us/research/feed/","method":"rss","frequency_minutes":360,"probe":"RSS_MIME_SEEN_BODY_UNVERIFIED","enabled":false,"usage":"research announcements; verify original paper and dates"},
+    {"id":"google-research-archive","name":"Google Research dated archive","url":"https://research.google/blog/2026/","method":"permitted_html","frequency_minutes":720,"probe":"PUBLIC_HTML_BODY_VERIFIED","enabled":false,"usage":"read public headline/date/link metadata only; no bypass or full article reuse"}
+  ]
+}
