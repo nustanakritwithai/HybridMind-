@@ -436,7 +436,7 @@ final class HM_Affiliate_Slots {
     /** Converts strict API JSON to the existing schema without allowing activation fields. */
     private static function normalize_product_request($body, $creating) {
         $allowed = array('title', 'url', 'description', 'image', 'order');
-        $required = array('title', 'url', 'description');
+        $required = $creating ? array('title', 'url', 'description') : array();
         if ($creating) {
             array_unshift($allowed, 'id');
             array_unshift($required, 'id');
