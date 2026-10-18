@@ -28,6 +28,11 @@ jobs:
             https://raw.githubusercontent.com/WordPress/WordPress/6.4.3/wp-includes/class-wp-block-parser.php \
             --output "$parser"
           echo "5034b45720731204a1ae4d869b06815c344c91b4844292ade9d6642b2dd02e7c  $parser" | sha256sum --check --status
+          parser_block="$RUNNER_TEMP/class-wp-block-parser-block.php"
+          curl --fail --location --silent --show-error \
+            https://raw.githubusercontent.com/WordPress/WordPress/6.4.3/wp-includes/class-wp-block-parser-block.php \
+            --output "$parser_block"
+          echo "159e4fbbf3b4721d46a25d6eab0a5b4c620b9453f3cf12c9a6b314f11c6f12e2  $parser_block" | sha256sum --check --status
           echo "HM_WP_BLOCK_PARSER_PATH=$parser" >> "$GITHUB_ENV"
       - name: Lint and run the isolated WordPress mock suite
         run: |
