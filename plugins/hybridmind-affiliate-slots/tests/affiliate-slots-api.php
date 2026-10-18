@@ -13,6 +13,15 @@ $hm_attachments = array(
 function add_action() {}
 function add_shortcode() {}
 function register_activation_hook() {}
+function shortcode_atts($pairs, $atts, $shortcode = '') {
+    $result = $pairs;
+    foreach ($pairs as $name => $default) {
+        if (array_key_exists($name, $atts)) {
+            $result[$name] = $atts[$name];
+        }
+    }
+    return $result;
+}
 function register_rest_route($namespace, $route, $args) {
     $GLOBALS['hm_routes'][$namespace.$route] = $args;
 }
