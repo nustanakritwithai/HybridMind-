@@ -41,7 +41,9 @@ Success returns HTTP 201 with product, revision, draft=true, public_output=false
 curl --fail-with-body --user "$WP_USER:$WP_APP_PASSWORD" 'https://<wordpress-host>/wp-json/hybridmind-affiliate/v1/products/travel-smart-glasses'
 ```
 
-Compare the product and revision from readback. Replaying the same key and payload returns HTTP 200 with replayed=true and does not add another record. Reusing a key with another payload or reusing a product ID returns HTTP 409.
+Compare the product and revision from readback. Replaying the same key and payload returns HTTP 200 with replayed=true and does not add another record. Replay returns the product's current snapshot: `draft` and `public_output` match its current live eligibility. If an owner later approves that product, replaying its create key reports `draft=false` and `public_output=true` without changing configuration. Reusing a key with another payload or reusing a product ID returns HTTP 409.
+
+If create returns HTTP 409 because the configuration changed during save, the draft may already have committed. Retry only the same payload with the same Idempotency-Key; the pending receipt checks for the matching saved product and recovers its result without creating a duplicate. Do not switch to a new key until you have read and reconciled the current product list.
 
 ## Update and conflict
 

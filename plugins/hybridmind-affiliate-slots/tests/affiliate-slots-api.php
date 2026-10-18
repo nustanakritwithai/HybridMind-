@@ -160,6 +160,18 @@ class HM_Test_WPDB {
                 return 0;
             }
             $GLOBALS['hm_options'][$name] = unserialize($serialized_next);
+            if ($name === 'hm_affiliate_slots_v1' && !empty($GLOBALS['hm_after_next_config_cas'])) {
+                unset($GLOBALS['hm_after_next_config_cas']);
+                foreach ($GLOBALS['hm_options'][$name]['items'] as &$item) {
+                    if ($item['id'] === 'legacy-product') {
+                        // Simulate another writer landing after our CAS but
+                        // before write_config() performs its readback.
+                        $item['order'] = 1;
+                        break;
+                    }
+                }
+                unset($item);
+            }
             return 1;
         }
         if (strpos($prepared['sql'], 'DELETE') === 0) {
@@ -365,5 +377,53 @@ HM_Test_Assertions::check(HM_Test_Assertions::status($image_update) === 200, 'lo
 HM_Test_Assertions::check($image_update->get_data()['product']['rights_confirmed'] === false, 'changing image never asserts owner rights');
 $empty_api_price = strpos(json_encode($image_update->get_data()), 'price') === false;
 HM_Test_Assertions::check($empty_api_price, 'product API responses never expose price fields');
+
+// Simulate the owner approving the reviewed current revision after creation.
+$owner_approved = HM_Affiliate_Slots::get_config();
+foreach ($owner_approved['items'] as &$item) {
+    if ($item['id'] === 'travel-smart-glasses') {
+        $item['image_id'] = 7;
+        $item['rights_confirmed'] = true;
+        $item['enabled'] = true;
+    }
+}
+unset($item);
+$owner_approved['slots']['home_after_feature'] = array('enabled' => true, 'item_ids' => array('legacy-product', 'travel-smart-glasses'));
+$owner_approved['approval'] = null;
+$owner_approved['reviewed_digest'] = null;
+$owner_approved = HM_Affiliate_Slots::validate_config($owner_approved);
+$owner_approved['reviewed_digest'] = HM_Affiliate_Slots::digest($owner_approved);
+$owner_approved['approval'] = array(
+    'digest' => HM_Affiliate_Slots::digest($owner_approved),
+    'user_id' => 1,
+    'approved_at' => '2026-10-18T11:00:00+00:00',
+    'domains_confirmed' => true,
+);
+HM_Test_Assertions::check(HM_Affiliate_Slots::live_ready($owner_approved), 'owner approval opens the live gate for the reviewed revision');
+update_option(HM_Affiliate_Slots::OPTION, $owner_approved);
+$approved_snapshot = get_option(HM_Affiliate_Slots::OPTION);
+$approved_replay = HM_Affiliate_Slots::rest_products_create(hm_request($travel_body, array('Idempotency-Key' => $key)));
+$approved_replay_data = $approved_replay->get_data();
+HM_Test_Assertions::check(HM_Test_Assertions::status($approved_replay) === 200 && $approved_replay_data['replayed'] === true, 'same create key replays after owner approval');
+HM_Test_Assertions::check($approved_replay_data['product']['status'] === 'approved' && $approved_replay_data['draft'] === false && $approved_replay_data['public_output'] === true, 'approved replay flags match the current product state');
+HM_Test_Assertions::check(get_option(HM_Affiliate_Slots::OPTION) === $approved_snapshot, 'approved replay does not mutate product, slots or approval');
+
+// A CAS can commit our draft, then a concurrent writer can change another field
+// before readback. The pending receipt must recover on retry with the same key.
+$race_body = hm_create_body('cas-race-product', 'CAS race recovery', 'https://s.shopee.co.th/cas-race', null, 900);
+$race_key = 'agent-run-2026-10-18-cas-race';
+$GLOBALS['hm_after_next_config_cas'] = true;
+$race_first = HM_Affiliate_Slots::rest_products_create(hm_request($race_body, array('Idempotency-Key' => $race_key)));
+HM_Test_Assertions::check(is_wp_error($race_first) && hm_error_status($race_first) === 409, 'concurrent post-CAS config change returns a create conflict');
+$race_receipt_name = 'hm_affiliate_idem_'.hash('sha256', $race_key);
+$pending_receipt = get_option($race_receipt_name, null);
+HM_Test_Assertions::check(is_array($pending_receipt) && $pending_receipt['state'] === 'pending', 'possibly committed create keeps its pending idempotency receipt');
+$items_after_race = HM_Affiliate_Slots::get_config()['items'];
+HM_Test_Assertions::check(count(array_filter($items_after_race, function ($row) { return $row['id'] === 'cas-race-product'; })) === 1, 'first CAS attempt persisted one matching product');
+$race_retry = HM_Affiliate_Slots::rest_products_create(hm_request($race_body, array('Idempotency-Key' => $race_key)));
+HM_Test_Assertions::check(HM_Test_Assertions::status($race_retry) === 200 && $race_retry->get_data()['replayed'] === true, 'same-key retry recovers the possibly committed create');
+$items_after_retry = HM_Affiliate_Slots::get_config()['items'];
+HM_Test_Assertions::check(count($items_after_retry) === count($items_after_race) && count(array_filter($items_after_retry, function ($row) { return $row['id'] === 'cas-race-product'; })) === 1, 'recovered retry does not create a duplicate');
+HM_Test_Assertions::check(get_option($race_receipt_name)['state'] === 'complete', 'recovery completes the idempotency receipt');
 
 echo 'PASS '.HM_Test_Assertions::$count." assertions\n";

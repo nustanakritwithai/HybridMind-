@@ -1,1 +1,1 @@
-9f0145c710066c3f636746962dadde2b0d401c00a6a770c2589639db4a7495c9  hybridmind-affiliate-slots-0.2.0-agent-api.zip
+6a7e6ce69373ff2637b18122c177effe0460ec85ab298d72c2fd5327beb6ff67  hybridmind-affiliate-slots-0.2.0-agent-api.zip

@@ -692,12 +692,14 @@ final class HM_Affiliate_Slots {
             return self::rest_error('hm_affiliate_idempotency_orphaned', 'The completed idempotency record has no matching product; inspect the latest configuration before retrying.', 409);
         }
         $revision = self::digest($config);
+        $product = self::product_view($config['items'][$index], $config);
+        $public_output = $product['status'] === 'approved';
         return self::rest_response(array(
-            'product' => self::product_view($config['items'][$index], $config),
+            'product' => $product,
             'revision' => $revision,
             'replayed' => true,
-            'draft' => true,
-            'public_output' => false,
+            'draft' => !$public_output,
+            'public_output' => $public_output,
         ), 200, $revision);
     }
 
@@ -807,9 +809,15 @@ final class HM_Affiliate_Slots {
         }
         $saved = self::persist_draft_config($expected_stored, $before, $next);
         if (is_wp_error($saved)) {
-            self::release_idempotency_lock($option_name, $lock);
             if ($saved->get_error_code() === 'hm_affiliate_write_conflict') {
-                return self::rest_error('hm_affiliate_write_conflict', 'Configuration changed during create; reload current products and retry with the same idempotency key.', 409);
+                // The compare-and-swap may have committed before another writer
+                // changed the option seen during readback. Keep the pending
+                // receipt so a retry with this key can recover that product.
+                return self::rest_error('hm_affiliate_write_conflict', 'Configuration changed during create. The draft may have committed; retry with the same idempotency key so the saved product can be recovered.', 409);
+            }
+            if ($saved->get_error_code() === 'hm_affiliate_backup_failed') {
+                // Backup failure happens before write_config is called.
+                self::release_idempotency_lock($option_name, $lock);
             }
             return $saved;
         }
