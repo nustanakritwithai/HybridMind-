@@ -60,3 +60,31 @@ Help Thai readers understand advances in AI and modern technology and make infor
 - **W5–W6:** Quality assurance, analytics, soft launch decision.
 
 Project docs reflect a plan and evidence from connector readbacks, not proof that all milestones are complete.
+# HybridMind knowledge textbook phase-one pilot
+
+## Run locally
+
+Requires Node.js 18 or newer. From the repository root:
+
+```powershell
+node .\scripts\serve-pilot.mjs
+```
+
+Then open `http://127.0.0.1:8000/knowledge-textbook/`. The static server binds to loopback only. Use `HM_PILOT_PORT` to select another local port.
+
+The runnable reader receives a public-only projection of five individually verified, non-password-protected WordPress articles and their 138 sections, with proposed editorial mappings. The full 248-row catalog and raw inventory remain offline in the source worktree and are excluded from the runnable build and server routes. WordPress remains canonical for article bodies, Gutenberg media and interactive examples; the reader links back to those source URLs. The local snapshot has no full article HTML or media, so full-body rendering is blocked as documented in [docs/reader-content-blocker.md](docs/reader-content-blocker.md).
+
+`node scripts/ingest-public-wp.mjs` rebuilds the full catalog offline to `offline/pilot-catalog-full.json` when its four source files under `reference/inventory/knowledge-inventory/` are available. They are not shipped in the runnable ZIP. For a separately approved future refresh, `node scripts/fetch-public-wp-inventory.mjs` uses anonymous GET requests, waits 1.5 seconds between requests, checkpoints each page, and stops on HTTP 429. It captures excerpt/body headings only when WordPress explicitly reports `password_protected: false`; unknown/protected rows retain metadata only. That live capture was not run for this handoff.
+
+Search is a transparent keyword baseline with a small Thai-English alias list, not semantic search. See [docs/search-evaluation.md](docs/search-evaluation.md) for actual-corpus regressions and known acceptance gates.
+
+## Checks and build
+
+```powershell
+npm run lint
+npm test
+npm run evaluate
+npm run build
+```
+
+The browser acceptance test uses installed Microsoft Edge without adding a dependency. Set `HM_EDGE_PATH` if Edge is installed at a non-default path. The build stages a runnable copy under `dist/hybridmind-knowledge-phase1`.

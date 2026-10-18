@@ -1,0 +1,13 @@
+{
+  "name": "hybridmind-knowledge-textbook-phase1",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Local-first phase-one knowledge textbook pilot",
+  "scripts": {
+    "serve": "node scripts/serve-pilot.mjs",
+    "lint": "node scripts/lint-pilot.mjs",
+    "test": "node --test tests/catalog.test.mjs tests/fetch-public-wp-inventory.test.mjs tests/reader-browser.test.mjs tests/search.test.mjs tests/server.test.mjs",
+    "evaluate": "node tests/evaluate-search.mjs",
+    "build": "node scripts/build-pilot.mjs"
+  }
+}

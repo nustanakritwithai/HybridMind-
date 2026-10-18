@@ -1,0 +1,5 @@
+dist/
+artifacts/*.zip
+offline/
+reference/inventory/
+reference/knowledge-inventory-snapshot.zip

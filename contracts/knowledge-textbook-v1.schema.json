@@ -1,0 +1,151 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hybridmind.online/schemas/knowledge-textbook-v1.json",
+  "title": "HybridMind Knowledge Textbook Catalog v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "snapshot", "articles", "sections", "topics", "relationships", "learning_paths"],
+  "properties": {
+    "schema_version": { "const": "1.0.0" },
+    "snapshot": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source", "source_url", "captured_at", "coverage_complete", "page_count", "note"],
+      "properties": {
+        "source": { "const": "wordpress_public_rest_api" },
+        "source_url": { "type": "string", "format": "uri" },
+        "captured_at": { "type": "string", "format": "date-time" },
+        "coverage_complete": { "type": "boolean" },
+        "page_count": { "type": "integer", "minimum": 0 },
+        "published_total": { "type": ["integer", "null"], "minimum": 0 },
+        "note": { "type": "string" }
+      }
+    },
+    "articles": { "type": "array", "items": { "$ref": "#/$defs/article" } },
+    "sections": { "type": "array", "items": { "$ref": "#/$defs/section" } },
+    "topics": { "type": "array", "items": { "$ref": "#/$defs/topic" } },
+    "relationships": { "type": "array", "items": { "$ref": "#/$defs/relationship" } },
+    "learning_paths": { "type": "array", "items": { "$ref": "#/$defs/learningPath" } }
+  },
+  "$defs": {
+    "article": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["article_id", "wp_post_id", "article_revision", "canonical_url", "title", "summary", "locale", "status", "visibility", "password_protected", "published_at", "modified_at", "topic_ids", "primary_topic_id", "content_type", "audience_level", "content_state", "source_hash", "schema_version"],
+      "properties": {
+        "article_id": { "type": "string", "pattern": "^hm:article:[0-9]+$" },
+        "wp_post_id": { "type": "integer", "minimum": 1 },
+        "article_revision": { "type": "string", "minLength": 1 },
+        "canonical_url": { "type": "string", "format": "uri" },
+        "title": { "type": "string", "minLength": 1 },
+        "summary": { "type": ["string", "null"] },
+        "locale": { "type": "string", "minLength": 2 },
+        "status": { "const": "published" },
+        "visibility": { "enum": ["public", "unknown"] },
+        "password_protected": { "type": ["boolean", "null"] },
+        "published_at": { "type": ["string", "null"], "format": "date-time" },
+        "modified_at": { "type": ["string", "null"], "format": "date-time" },
+        "topic_ids": { "type": "array", "uniqueItems": true, "items": { "type": "string" } },
+        "primary_topic_id": { "type": ["string", "null"] },
+        "inventory_flags": { "type": "array", "uniqueItems": true, "items": { "enum": ["cross_listed_for_editorial_review"] } },
+        "content_type": { "enum": ["explainer", "guide", "checklist", "case_study", "news", "reference", "interview", "unknown"] },
+        "audience_level": { "enum": ["beginner", "intermediate", "advanced", "unknown"] },
+        "content_state": { "enum": ["published", "review_needed", "superseded"] },
+        "source_hash": { "type": ["string", "null"], "pattern": "^[a-f0-9]{64}$" },
+        "schema_version": { "const": "1.0.0" }
+      }
+    },
+    "section": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["section_id", "article_id", "heading_text", "heading_level", "anchor", "anchor_aliases", "anchor_status", "summary", "content_text", "display_order", "article_revision", "schema_version"],
+      "properties": {
+        "section_id": { "type": "string", "pattern": "^hm:section:[0-9]+:[a-z0-9][a-z0-9-]*$" },
+        "article_id": { "type": "string", "pattern": "^hm:article:[0-9]+$" },
+        "heading_text": { "type": "string", "minLength": 1 },
+        "heading_level": { "enum": [2, 3] },
+        "anchor": { "type": ["string", "null"] },
+        "anchor_aliases": { "type": "array", "uniqueItems": true, "items": { "type": "string" } },
+        "anchor_status": { "enum": ["verified", "proposed", "missing"] },
+        "summary": { "type": ["string", "null"] },
+        "content_text": { "type": ["string", "null"] },
+        "display_order": { "type": "integer", "minimum": 0 },
+        "article_revision": { "type": "string", "minLength": 1 },
+        "schema_version": { "const": "1.0.0" }
+      }
+    },
+    "topic": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["topic_id", "topic_revision", "parent_topic_id", "label_th", "label_en", "definition", "search_aliases", "questions", "audience_level", "intent", "status", "editorial_status"],
+      "properties": {
+        "topic_id": { "type": "string", "pattern": "^hm:topic:[a-z0-9][a-z0-9-]*$" },
+        "topic_revision": { "type": "integer", "minimum": 1 },
+        "parent_topic_id": { "type": ["string", "null"] },
+        "label_th": { "type": "string", "minLength": 1 },
+        "label_en": { "type": ["string", "null"] },
+        "definition": { "type": "string" },
+        "search_aliases": { "type": "array", "items": { "type": "object", "additionalProperties": false, "required": ["value", "locale"], "properties": { "value": { "type": "string" }, "locale": { "type": "string" } } } },
+        "questions": { "type": "array", "items": { "type": "string" } },
+        "audience_level": { "enum": ["beginner", "intermediate", "advanced", "unknown"] },
+        "intent": { "type": "string" },
+        "status": { "enum": ["proposed", "ready", "archived"] },
+        "editorial_status": { "enum": ["proposed", "reviewed", "approved"] }
+      }
+    },
+    "relationship": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["relationship_id", "from_id", "to_id", "type", "rationale", "review_status", "reviewer_id", "created_at", "updated_at"],
+      "properties": {
+        "relationship_id": { "type": "string", "minLength": 1 },
+        "from_id": { "type": "string", "minLength": 1 },
+        "to_id": { "type": "string", "minLength": 1 },
+        "type": { "enum": ["prerequisite", "explains", "example", "contradicts", "supersedes"] },
+        "rationale": { "type": "string" },
+        "review_status": { "enum": ["proposed", "approved", "rejected"] },
+        "reviewer_id": { "type": ["string", "null"] },
+        "created_at": { "type": ["string", "null"], "format": "date-time" },
+        "updated_at": { "type": ["string", "null"], "format": "date-time" }
+      }
+    },
+    "learningPath": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path_id", "title", "audience", "goal", "ordered_topic_ids", "estimated_minutes", "prerequisites", "status"],
+      "properties": {
+        "path_id": { "type": "string", "pattern": "^hm:path:[a-z0-9][a-z0-9-]*$" },
+        "title": { "type": "string", "minLength": 1 },
+        "audience": { "type": "string" },
+        "goal": { "type": "string" },
+        "ordered_topic_ids": { "type": "array", "uniqueItems": true, "items": { "type": "string" } },
+        "estimated_minutes": { "type": ["integer", "null"], "minimum": 0 },
+        "prerequisites": { "type": "array", "items": { "type": "string" } },
+        "status": { "enum": ["proposed", "approved", "archived"] }
+      }
+    },
+    "readingProgress": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["progress_schema_version", "consent", "items"],
+      "properties": {
+        "progress_schema_version": { "const": 1 },
+        "consent": { "const": true },
+        "items": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["path_id", "topic_id", "topic_revision", "completed_at"],
+            "properties": {
+              "path_id": { "type": "string" },
+              "topic_id": { "type": "string" },
+              "topic_revision": { "type": "integer", "minimum": 1 },
+              "completed_at": { "type": "string", "format": "date-time" }
+            }
+          }
+        }
+      }
+    }
+  }
+}
