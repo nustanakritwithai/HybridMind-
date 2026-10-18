@@ -3,14 +3,22 @@ define('ABSPATH', __DIR__);
 
 $hm_options = array();
 $hm_routes = array();
+$hm_filters = array();
 $hm_logged_in = true;
 $hm_manage_options = true;
 $hm_front_page = true;
+$hm_singular = false;
+$hm_is_admin = false;
+$hm_in_loop = true;
+$hm_main_query = true;
+$hm_password_required = false;
+$hm_current_post = (object) array('ID' => 16, 'post_status' => 'publish', 'post_content' => '', 'post_password' => '');
 $hm_attachments = array(
     7 => array('mime' => 'image/png', 'url' => 'https://media.hybridmind.online/uploads/product.png'),
 );
 
 function add_action() {}
+function add_filter($tag, $callback, $priority = 10, $accepted_args = 1) { $GLOBALS['hm_filters'][$tag][$priority] = $callback; }
 function add_shortcode() {}
 function register_activation_hook() {}
 function shortcode_atts($pairs, $atts, $shortcode = '') {
@@ -90,13 +98,41 @@ function attachment_url_to_postid($url) {
     }
     return 0;
 }
-function is_feed() { return false; }
-function is_preview() { return false; }
+function is_feed() { return !empty($GLOBALS['hm_is_feed']); }
+function is_preview() { return !empty($GLOBALS['hm_is_preview']); }
+function is_admin() { return $GLOBALS['hm_is_admin']; }
+function in_the_loop() { return $GLOBALS['hm_in_loop']; }
+function is_main_query() { return $GLOBALS['hm_main_query']; }
+function post_password_required($post = null) { return $GLOBALS['hm_password_required']; }
 function is_front_page() { return $GLOBALS['hm_front_page']; }
-function is_singular($post_type = 'post') { return false; }
-function get_queried_object_id() { return 16; }
-function get_post($id) { return (object) array('post_content' => ''); }
+function is_singular($post_type = 'post') { return $post_type === 'post' && $GLOBALS['hm_singular']; }
+function get_queried_object_id() { return $GLOBALS['hm_current_post']->ID; }
+function get_post($id) { return $GLOBALS['hm_current_post']; }
+function has_shortcode($content, $tag) { return preg_match('/\[\s*'.preg_quote($tag, '/').'\b/i', $content) === 1; }
+function parse_blocks($content) {
+    $blocks = array();
+    if (preg_match_all('~<!-- wp:([a-z0-9/_-]+)(?:\s+({.*?}))? -->(.*?)<!-- /wp:\1 -->~s', $content, $matches, PREG_SET_ORDER)) {
+        foreach ($matches as $match) {
+            $html = $match[3];
+            $blocks[] = array('blockName' => $match[1], 'attrs' => isset($match[2]) && $match[2] !== '' ? json_decode($match[2], true) : array(), 'innerBlocks' => array(), 'innerHTML' => $html, 'innerContent' => array($html));
+        }
+    }
+    return $blocks;
+}
+function serialize_blocks($blocks) {
+    $content = '';
+    foreach ($blocks as $block) {
+        if (!isset($block['blockName']) || !is_string($block['blockName']) || !isset($block['innerHTML']) || !is_string($block['innerHTML'])) {
+            return '';
+        }
+        $name = $block['blockName'];
+        $content .= '<!-- wp:'.$name.' -->'.$block['innerHTML'].'<!-- /wp:'.$name.' -->';
+    }
+    return $content;
+}
 function is_wp_error($value) { return $value instanceof WP_Error; }
+function wp_verify_nonce($nonce, $action) { return $nonce === 'test-nonce'; }
+function get_current_user_id() { return 1; }
 
 class WP_Error {
     private $code;
@@ -218,6 +254,29 @@ function hm_find_item($config, $id) {
 }
 function hm_error_status($result) {
     return HM_Test_Assertions::status($result);
+}
+function hm_block($name, $html) {
+    return array('blockName' => $name, 'attrs' => array(), 'innerBlocks' => array(), 'innerHTML' => $html, 'innerContent' => array($html));
+}
+function hm_blocks_content($blocks) { return serialize_blocks($blocks); }
+function hm_set_content_context($content, $front_page = false) {
+    global $post;
+    $GLOBALS['hm_front_page'] = $front_page;
+    $GLOBALS['hm_singular'] = !$front_page;
+    $id = $front_page ? 16 : 101;
+    $GLOBALS['hm_current_post'] = (object) array('ID' => $id, 'post_status' => 'publish', 'post_content' => $content, 'post_password' => '');
+    $post = $GLOBALS['hm_current_post'];
+}
+function hm_paragraph_blocks($count, $words_each = 12) {
+    $blocks = array();
+    for ($i = 1; $i <= $count; $i++) {
+        $words = array();
+        for ($j = 0; $j < $words_each; $j++) {
+            $words[] = 'article'.$i.'word'.$j;
+        }
+        $blocks[] = hm_block('core/paragraph', '<p>'.implode(' ', $words).'.</p>');
+    }
+    return $blocks;
 }
 
 HM_Affiliate_Slots::activate();
@@ -425,5 +484,110 @@ HM_Test_Assertions::check(HM_Test_Assertions::status($race_retry) === 200 && $ra
 $items_after_retry = HM_Affiliate_Slots::get_config()['items'];
 HM_Test_Assertions::check(count($items_after_retry) === count($items_after_race) && count(array_filter($items_after_retry, function ($row) { return $row['id'] === 'cas-race-product'; })) === 1, 'recovered retry does not create a duplicate');
 HM_Test_Assertions::check(get_option($race_receipt_name)['state'] === 'complete', 'recovery completes the idempotency receipt');
+
+// Automatic placements are opt-in, do not alter stored content, and are bound to owner approval.
+HM_Test_Assertions::check(HM_Affiliate_Slots::auto_placements() === HM_Affiliate_Slots::auto_placement_defaults(), 'automatic placement defaults are all disabled');
+$homepage_html = '<div class="hm-v3"><div class="hm-v3-main"><section class="hero container"><p>Featured</p></section>' . "\n" . '<section class="section container" id="latest"><p>Latest</p></section></div></div>';
+$homepage_content = hm_blocks_content(array(hm_block('core/html', $homepage_html)));
+hm_set_content_context($homepage_content, true);
+HM_Test_Assertions::check(HM_Affiliate_Slots::filter_auto_placements($homepage_content) === $homepage_content, 'automatic placement remains inactive by default');
+
+$placement_save = HM_Affiliate_Slots::process_admin_action(array(
+    '_wpnonce' => 'test-nonce',
+    'hm_aff_action' => 'save_placements',
+    'expected_placement_digest' => HM_Affiliate_Slots::placement_digest(),
+    'auto_placements' => array('home_after_feature', 'article_after_intro', 'article_near_end'),
+));
+HM_Test_Assertions::check(!is_wp_error($placement_save) && HM_Affiliate_Slots::auto_placements()['home_after_feature'] === true, 'administrator can explicitly opt in to selected automatic positions');
+$stale_placement_save = HM_Affiliate_Slots::process_admin_action(array('_wpnonce' => 'test-nonce', 'hm_aff_action' => 'save_placements', 'expected_placement_digest' => HM_Affiliate_Slots::placement_digest(HM_Affiliate_Slots::auto_placement_defaults()), 'auto_placements' => array()));
+HM_Test_Assertions::check(is_wp_error($stale_placement_save) && HM_Affiliate_Slots::auto_placements()['home_after_feature'] === true, 'stale settings form cannot overwrite a newer placement selection');
+HM_Test_Assertions::check(HM_Affiliate_Slots::get_config()['approval'] === null && HM_Affiliate_Slots::get_config()['reviewed_digest'] === null && !HM_Affiliate_Slots::live_ready(HM_Affiliate_Slots::get_config()), 'changing placements clears review and approval without enabling output');
+HM_Test_Assertions::check(HM_Affiliate_Slots::filter_auto_placements($homepage_content) === $homepage_content, 'automatic settings alone cannot activate public output');
+
+$auto_approved = HM_Affiliate_Slots::get_config();
+$auto_approved['slots']['home_after_feature'] = array('enabled' => true, 'item_ids' => array('legacy-product'));
+$auto_approved['slots']['article_after_intro'] = array('enabled' => true, 'item_ids' => array('legacy-product'));
+$auto_approved['slots']['article_near_end'] = array('enabled' => true, 'item_ids' => array('legacy-product'));
+$auto_approved['approval'] = null;
+$auto_approved['reviewed_digest'] = null;
+$auto_approved = HM_Affiliate_Slots::validate_config($auto_approved);
+$auto_approved['reviewed_digest'] = HM_Affiliate_Slots::digest($auto_approved);
+$auto_approved['approval'] = array(
+    'digest' => HM_Affiliate_Slots::digest($auto_approved),
+    'user_id' => 1,
+    'approved_at' => '2026-10-18T12:00:00+00:00',
+    'domains_confirmed' => true,
+    'placement_digest' => HM_Affiliate_Slots::placement_digest(),
+);
+update_option(HM_Affiliate_Slots::OPTION, $auto_approved);
+HM_Test_Assertions::check(HM_Affiliate_Slots::live_ready(HM_Affiliate_Slots::get_config()), 'owner approval binds the exact automatic placement selection');
+
+hm_set_content_context($homepage_content, true);
+$homepage_inserted = HM_Affiliate_Slots::filter_auto_placements($homepage_content);
+$hero_close = strpos($homepage_inserted, '</section>');
+$home_shortcode = strpos($homepage_inserted, '[hm_affiliate_slot id="home_after_feature"]');
+$latest_section = strpos($homepage_inserted, '<section class="section container" id="latest"');
+HM_Test_Assertions::check($home_shortcode !== false && $hero_close < $home_shortcode && $home_shortcode < $latest_section, 'homepage shortcode is inserted after Featured and before #latest at the exact safe boundary');
+HM_Test_Assertions::check(HM_Affiliate_Slots::filter_auto_placements($homepage_inserted) === $homepage_inserted, 'existing shortcode prevents duplicate homepage insertion');
+$unsafe_home_html = '<div><section class="hero container"><p>Featured</p></section><div id="latest">Changed boundary</div></div>';
+$unsafe_home = hm_blocks_content(array(hm_block('core/html', $unsafe_home_html)));
+hm_set_content_context($unsafe_home, true);
+HM_Test_Assertions::check(HM_Affiliate_Slots::filter_auto_placements($unsafe_home) === $unsafe_home, 'homepage markup without the exact verified boundary is left untouched');
+
+$short_article = hm_blocks_content(hm_paragraph_blocks(5, 25));
+hm_set_content_context($short_article, false);
+$short_article_output = HM_Affiliate_Slots::filter_auto_placements($short_article);
+HM_Test_Assertions::check(substr_count($short_article_output, '[hm_affiliate_slot id="article_after_intro"]') === 1 && strpos($short_article_output, '[hm_affiliate_slot id="article_near_end"]') === false, 'short article receives only the safe after-intro placement');
+$thin_article = hm_blocks_content(hm_paragraph_blocks(5, 12));
+hm_set_content_context($thin_article, false);
+HM_Test_Assertions::check(HM_Affiliate_Slots::filter_auto_placements($thin_article) === $thin_article, 'intro placement skips a short or insubstantial target paragraph');
+
+$long_article = hm_blocks_content(hm_paragraph_blocks(8, 80));
+hm_set_content_context($long_article, false);
+$long_article_output = HM_Affiliate_Slots::filter_auto_placements($long_article);
+HM_Test_Assertions::check(substr_count($long_article_output, '[hm_affiliate_slot id="article_after_intro"]') === 1 && substr_count($long_article_output, '[hm_affiliate_slot id="article_near_end"]') === 1, 'long article receives at most one intro and one near-end unit');
+
+$explicit_article = hm_blocks_content(array_merge(hm_paragraph_blocks(8, 80), array(hm_block('core/shortcode', '[hm_affiliate_slot id="article_after_intro"]'))));
+hm_set_content_context($explicit_article, false);
+HM_Test_Assertions::check(HM_Affiliate_Slots::filter_auto_placements($explicit_article) === $explicit_article, 'existing explicit shortcode prevents all automatic article duplicates');
+
+$unsupported_article = hm_blocks_content(array_merge(hm_paragraph_blocks(8, 80), array(hm_block('core/embed', '<figure>embed</figure>'))));
+hm_set_content_context($unsupported_article, false);
+HM_Test_Assertions::check(HM_Affiliate_Slots::filter_auto_placements($unsupported_article) === $unsupported_article, 'unsupported embed content is left untouched');
+
+$heading_article = hm_blocks_content(array_merge(array_slice(hm_paragraph_blocks(5), 0, 3), array(hm_block('core/heading', '<h2>Section</h2>')), array_slice(hm_paragraph_blocks(5), 3)));
+hm_set_content_context($heading_article, false);
+HM_Test_Assertions::check(HM_Affiliate_Slots::filter_auto_placements($heading_article) === $heading_article, 'article insertion skips a heading boundary');
+
+$GLOBALS['hm_is_admin'] = true;
+HM_Test_Assertions::check(HM_Affiliate_Slots::filter_auto_placements($short_article) === $short_article, 'automatic placement is excluded from admin content');
+$GLOBALS['hm_is_admin'] = false;
+$GLOBALS['hm_password_required'] = true;
+HM_Test_Assertions::check(HM_Affiliate_Slots::filter_auto_placements($short_article) === $short_article, 'password-protected article content is left untouched');
+$GLOBALS['hm_password_required'] = false;
+
+$disabled_auto_slot = HM_Affiliate_Slots::get_config();
+$disabled_auto_slot['slots']['article_after_intro'] = array('enabled' => false, 'item_ids' => array());
+$disabled_auto_slot['approval'] = null;
+$disabled_auto_slot = HM_Affiliate_Slots::validate_config($disabled_auto_slot);
+$disabled_auto_slot['reviewed_digest'] = HM_Affiliate_Slots::digest($disabled_auto_slot);
+$disabled_auto_slot['approval'] = array('digest' => HM_Affiliate_Slots::digest($disabled_auto_slot), 'user_id' => 1, 'approved_at' => '2026-10-18T12:01:00+00:00', 'domains_confirmed' => true, 'placement_digest' => HM_Affiliate_Slots::placement_digest());
+update_option(HM_Affiliate_Slots::OPTION, $disabled_auto_slot);
+hm_set_content_context($short_article, false);
+HM_Test_Assertions::check(HM_Affiliate_Slots::live_ready(HM_Affiliate_Slots::get_config()) && HM_Affiliate_Slots::filter_auto_placements($short_article) === $short_article, 'disabled slot stays empty even when another approved slot keeps the gate live');
+
+update_option(HM_Affiliate_Slots::OPTION, $auto_approved);
+$legacy_shortcode_approval = $auto_approved;
+unset($legacy_shortcode_approval['approval']['placement_digest']);
+update_option(HM_Affiliate_Slots::OPTION, $legacy_shortcode_approval);
+update_option(HM_Affiliate_Slots::AUTO_OPTION, HM_Affiliate_Slots::auto_placement_defaults());
+$legacy_after_upgrade = HM_Affiliate_Slots::get_config();
+HM_Test_Assertions::check(HM_Affiliate_Slots::live_ready($legacy_after_upgrade), 'legacy explicit-shortcode approval remains valid when automatic placements default off');
+update_option(HM_Affiliate_Slots::AUTO_OPTION, array('home_after_feature' => true, 'article_after_intro' => false, 'article_near_end' => false));
+HM_Test_Assertions::check(!HM_Affiliate_Slots::live_ready(HM_Affiliate_Slots::get_config()), 'changing placement flags without matching approval closes the live gate');
+$preserved_config_before_activation = get_option(HM_Affiliate_Slots::OPTION);
+$preserved_placements_before_activation = get_option(HM_Affiliate_Slots::AUTO_OPTION);
+HM_Affiliate_Slots::activate();
+HM_Test_Assertions::check(get_option(HM_Affiliate_Slots::OPTION) === $preserved_config_before_activation && get_option(HM_Affiliate_Slots::AUTO_OPTION) === $preserved_placements_before_activation, 'activation does not overwrite existing product or placement configuration');
 
 echo 'PASS '.HM_Test_Assertions::$count." assertions\n";
