@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Hybrid Mind Affiliate Slots (Candidate)
  * Description: Manually ordered affiliate advertisement slots with optional owner-approved automatic placements. Disabled until private review and owner approval. No remote fetches or tracking.
- * Version: 0.3.0
+ * Version: 0.3.1
  * Requires at least: 6.4
  * Requires PHP: 7.4
  * Author: Hybrid Mind
@@ -15,7 +15,7 @@ if (!defined('ABSPATH')) {
 }
 
 final class HM_Affiliate_Slots {
-    const VERSION = '0.3.0';
+    const VERSION = '0.3.1';
     const OPTION = 'hm_affiliate_slots_v1';
     const BACKUP_OPTION = 'hm_affiliate_slots_backup_v1';
     const AUTO_OPTION = 'hm_affiliate_auto_placements_v1';
@@ -436,10 +436,36 @@ final class HM_Affiliate_Slots {
         return trim(preg_replace('/\s+/u', ' ', $text));
     }
 
-    private static function article_paragraph_word_count($block) {
-        $text = self::article_paragraph_text($block);
+    /**
+     * Estimate content length without pretending that whitespace tokenization counts Thai words.
+     * Thai-containing text uses visible grapheme clusters; other text uses letter/number runs.
+     */
+    private static function article_text_measure($text) {
+        if (preg_match('/[\x{0E00}-\x{0E7F}]/u', $text) === 1) {
+            $compact = preg_replace('/\s+/u', '', $text);
+            $count = preg_match_all('/\X/u', $compact, $matches);
+            return array('kind' => 'thai_graphemes', 'count' => $count === false ? 0 : $count);
+        }
         $count = preg_match_all('/[\p{L}\p{N}]+/u', $text, $matches);
-        return $count === false ? 0 : $count;
+        return array('kind' => 'word_like_units', 'count' => $count === false ? 0 : $count);
+    }
+
+    private static function article_paragraph_is_substantial($block) {
+        $measure = self::article_text_measure(self::article_paragraph_text($block));
+        $minimum = $measure['kind'] === 'thai_graphemes' ? 80 : 20;
+        return $measure['count'] >= $minimum;
+    }
+
+    /** Skip only empty freeform blocks, never headings, embeds, tables, or arbitrary HTML. */
+    private static function next_substantive_block_is_paragraph($blocks, $index) {
+        for ($next = $index + 1, $total = count($blocks); $next < $total; $next++) {
+            $block = $blocks[$next];
+            if (is_array($block) && array_key_exists('blockName', $block) && $block['blockName'] === null && isset($block['innerHTML']) && is_string($block['innerHTML']) && preg_match('/\A\s*\z/u', $block['innerHTML']) === 1) {
+                continue;
+            }
+            return self::article_paragraph_text($block) !== '';
+        }
+        return false;
     }
 
     private static function insert_article_slots($blocks, $original_content, $placements, $config) {
@@ -448,28 +474,27 @@ final class HM_Affiliate_Slots {
             return $original_content;
         }
         $paragraphs = array();
-        $word_count = 0;
+        $paragraph_texts = array();
         foreach ($blocks as $index => $block) {
             $text = self::article_paragraph_text($block);
             if ($text === '') {
                 continue;
             }
             $paragraphs[] = $index;
-            $count = preg_match_all('/[\p{L}\p{N}]+/u', $text, $matches);
-            if ($count !== false) {
-                $word_count += $count;
-            }
+            $paragraph_texts[$index] = $text;
         }
+        $article_measure = self::article_text_measure(implode(' ', $paragraph_texts));
         $insert_after = array();
         if ($placements['article_after_intro'] && count($paragraphs) >= 4 && self::slot_items($config, 'article_after_intro', true)) {
             $candidate = $paragraphs[2];
-            if (self::article_paragraph_word_count($blocks[$candidate]) >= 20 && isset($blocks[$candidate + 1]) && self::article_paragraph_text($blocks[$candidate + 1]) !== '') {
+            if (self::article_paragraph_is_substantial($blocks[$candidate]) && self::next_substantive_block_is_paragraph($blocks, $candidate)) {
                 $insert_after[$candidate] = 'article_after_intro';
             }
         }
-        if ($placements['article_near_end'] && count($paragraphs) >= 8 && $word_count >= 600 && self::slot_items($config, 'article_near_end', true)) {
+        $long_threshold = $article_measure['kind'] === 'thai_graphemes' ? 2400 : 600;
+        if ($placements['article_near_end'] && count($paragraphs) >= 8 && $article_measure['count'] >= $long_threshold && self::slot_items($config, 'article_near_end', true)) {
             $candidate = $paragraphs[count($paragraphs) - 2];
-            if (self::article_paragraph_word_count($blocks[$candidate]) >= 20 && isset($blocks[$candidate + 1]) && self::article_paragraph_text($blocks[$candidate + 1]) !== '') {
+            if (self::article_paragraph_is_substantial($blocks[$candidate]) && self::next_substantive_block_is_paragraph($blocks, $candidate)) {
                 $insert_after[$candidate] = 'article_near_end';
             }
         }
@@ -1324,7 +1349,7 @@ final class HM_Affiliate_Slots {
         $placements = self::auto_placements();
         $placement_digest = self::placement_digest($placements);
         $json = wp_json_encode($config, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
-        echo '<div class="wrap"><h1>Hybrid Mind Affiliate Slots — Candidate 0.3.0</h1><p>Private configuration and review. Existing homepage/article reservation stubs are untouched. No scraping, remote metadata fetching, scripts or click tracking.</p>';
+        echo '<div class="wrap"><h1>Hybrid Mind Affiliate Slots — Candidate 0.3.1</h1><p>Private configuration and review. Existing homepage/article reservation stubs are untouched. No scraping, remote metadata fetching, scripts or click tracking.</p>';
         if ($result !== null) {
             $message = is_wp_error($result) ? $result->get_error_message() : $result['message'];
             echo '<div class="notice '.(is_wp_error($result) ? 'notice-error' : 'notice-success').'"><p>'.esc_html($message).'</p></div>';
@@ -1334,8 +1359,8 @@ final class HM_Affiliate_Slots {
         wp_nonce_field(self::NONCE_ACTION);
         echo '<input type="hidden" name="hm_aff_action" value="save_placements"><input type="hidden" name="expected_placement_digest" value="'.esc_attr($placement_digest).'"><fieldset><legend>Public positions</legend>';
         echo '<label><input type="checkbox" name="auto_placements[]" value="home_after_feature"'.checked($placements['home_after_feature'], true, false).'> Homepage, after the Featured hero and before the #latest section (only when the exact saved Gutenberg HTML boundary is found)</label><br>';
-        echo '<label><input type="checkbox" name="auto_placements[]" value="article_after_intro"'.checked($placements['article_after_intro'], true, false).'> Published articles, after the third top-level paragraph when a safe paragraph boundary exists</label><br>';
-        echo '<label><input type="checkbox" name="auto_placements[]" value="article_near_end"'.checked($placements['article_near_end'], true, false).'> Long published articles, after the penultimate top-level paragraph (at least 8 paragraphs and 600 words)</label>';
+        echo '<label><input type="checkbox" name="auto_placements[]" value="article_after_intro"'.checked($placements['article_after_intro'], true, false).'> Published articles, after the substantial third top-level paragraph (20 letter/number runs, or 80 Thai grapheme clusters) when a safe boundary exists</label><br>';
+        echo '<label><input type="checkbox" name="auto_placements[]" value="article_near_end"'.checked($placements['article_near_end'], true, false).'> Long published articles, after the penultimate paragraph (at least 8 paragraphs and 600 word-like units, or 2,400 Thai grapheme clusters)</label>';
         echo '</fieldset><p>If the homepage block changes and the exact boundary cannot be verified, no automatic card is inserted. The fallback is a manually placed Gutenberg Shortcode block immediately after the Featured section and before #latest, after checking that exact boundary in the page editor. Existing explicit shortcodes suppress automatic placement on that page to prevent duplicates.</p>';
         submit_button('Save automatic placement choices', 'secondary');
         echo '</form></section>';

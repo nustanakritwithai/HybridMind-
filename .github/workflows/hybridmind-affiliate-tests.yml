@@ -21,6 +21,14 @@ jobs:
         with:
           php-version: ${{ matrix.php-version }}
           coverage: none
+      - name: Fetch pinned WordPress 6.4.3 block parser
+        run: |
+          parser="$RUNNER_TEMP/wp-block-parser-6.4.3.php"
+          curl --fail --location --silent --show-error \
+            https://raw.githubusercontent.com/WordPress/WordPress/6.4.3/wp-includes/class-wp-block-parser.php \
+            --output "$parser"
+          echo "5034b45720731204a1ae4d869b06815c344c91b4844292ade9d6642b2dd02e7c  $parser" | sha256sum --check --status
+          echo "HM_WP_BLOCK_PARSER_PATH=$parser" >> "$GITHUB_ENV"
       - name: Lint and run the isolated WordPress mock suite
         run: |
           php -l plugins/hybridmind-affiliate-slots/hybridmind-affiliate-slots.php

@@ -1,5 +1,5 @@
 === Hybrid Mind Affiliate Slots (Candidate) ===
-Version: 0.3.0
+Version: 0.3.1
 Requires at least: 6.4
 Requires PHP: 7.4
 License: GPL-2.0-or-later
@@ -30,7 +30,7 @@ Cards show no prices. Legacy price fields remain in the stored schema for compat
 
 Manual Gutenberg Shortcode fallback: [hm_affiliate_slot id="home_after_feature"]
 Known IDs: home_after_feature, home_in_feed, article_after_intro, article_near_end, sidebar_desktop.
-Automatic placements are separate settings and default off. The owner can opt in to homepage after the Featured hero, after a 20+-word third top-level paragraph in a published post with at least four paragraphs, and near the end of long posts (at least 8 top-level paragraphs and 600 words; the target paragraph also needs at least 20 words). A change clears review and approval; preview and owner approval are required again. Approval includes a digest of the placement choices. Automatic processing is transient and does not write to post content.
+Automatic placements are separate settings and default off. The owner can opt in to homepage after the Featured hero, after a substantial third top-level paragraph in a published post with at least four paragraphs, and near the end of long posts (at least 8 top-level paragraphs). Substantiality uses 20 letter/number runs for other scripts or 80 Thai grapheme clusters. Long-post length uses 600 word-like units for other scripts or 2,400 Thai grapheme clusters; the Thai threshold is a character-length proxy, not a Thai word count. A change clears review and approval; preview and owner approval are required again. Approval includes a digest of the placement choices. Automatic processing is transient and does not write to post content.
 
 Homepage insertion is supported only when one Custom HTML block contains the exact Featured hero opening/closing section immediately followed by the #latest section. If that exact boundary is absent or ambiguous, the filter leaves page content untouched; manually place a Shortcode block after Featured and before #latest only after checking the boundary in the editor. Existing explicit affiliate shortcodes suppress automatic placement on that page. Article insertion only uses top-level paragraph boundaries and skips if the adjacent block is not another paragraph. Feeds, REST, admin, previews, excerpts, password-protected content, unsupported single-post contexts and recognized protected interactive/code/embed content are excluded. Posts 55 and 57 remain excluded.
 
@@ -44,6 +44,6 @@ The canonical product option remains hm_affiliate_slots_v1 with schema version 1
 
 Before installing a future production update, export/read back the current configuration and retain both option backups. Replace plugin files with the reviewed ZIP without deleting plugin options. To roll back, restore the previous plugin files and keep the existing product/placement options and idempotency receipts; do not reset the configuration. A previous version ignores automatic placement options and may reject the new approval metadata, leaving output paused until the owner reviews and approves within that version. API writes intentionally invalidate approval, so no draft can become public through upgrade or rollback.
 
-The ZIP in this repository is a review candidate only. WordPress.com Atomic installation, authenticated REST behavior, plugin replacement, public cache behavior, and anonymous output must be checked on a separately approved staging site before any production action.
+The isolated CI suite runs PHP 7.4/8.3 and uses the checksum-pinned WordPress 6.4.3 block parser for paragraph/freeform boundary tests. The 0.3.1 ZIP in this repository is a review candidate only; the earlier 0.3.0 ZIP is superseded. WordPress.com Atomic installation, authenticated REST behavior, plugin replacement, public cache behavior, and anonymous output must be checked on a separately approved staging site before any production action.
 
 No campaign or product is bundled or published. The draft payloads in examples/ are fixtures only; their claims, images, link ownership, programme eligibility and commission are not verified by this plugin.

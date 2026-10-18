@@ -1,4 +1,4 @@
-# Agent guide: Affiliate Slots 0.3.0
+# Agent guide: Affiliate Slots 0.3.1
 
 ## Scope and permissions
 
@@ -54,8 +54,8 @@ The `config` route is read-only for agents. Automatic placement choices are sepa
 Supported opt-in positions:
 
 - Homepage after Featured: only when exactly one Custom HTML block contains the verified Featured section, its single closing `</section>`, and the `#latest` section immediately after it. Otherwise the filter leaves the page unchanged. Place a core Shortcode block after Featured and before `#latest` only as a reviewed fallback.
-- Article after intro: after the third non-empty top-level paragraph with at least 20 words, only with at least four top-level paragraphs and another paragraph immediately after it.
-- Article near end: after the penultimate non-empty top-level paragraph with at least 20 words, only with at least eight paragraphs, 600 words, and another paragraph immediately after it.
+- Article after intro: after the third non-empty top-level paragraph, only with at least four top-level paragraphs and another paragraph immediately after it. The target needs 20 letter/number runs for other scripts or 80 Thai grapheme clusters.
+- Article near end: after the penultimate non-empty top-level paragraph, only with at least eight paragraphs and another paragraph immediately after it. Length is at least 600 word-like units for other scripts or 2,400 Thai grapheme clusters; the Thai value is a character-length proxy, not a Thai word count. The target paragraph also needs 20 letter/number runs or 80 Thai grapheme clusters.
 
 Any existing `hm_affiliate_slot` shortcode on a page suppresses all automatic placements there. Insertion occurs in the render filter only and does not update saved posts. Feeds, REST, admin, previews, excerpts, password-protected content, unsupported contexts, recognized code/embed/interactive content, and posts 55 and 57 are excluded. `home_in_feed` and `sidebar_desktop` remain manual-only; the sidebar is unplaced.
 

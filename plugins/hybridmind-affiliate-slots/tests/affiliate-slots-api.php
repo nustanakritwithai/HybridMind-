@@ -16,6 +16,10 @@ $hm_current_post = (object) array('ID' => 16, 'post_status' => 'publish', 'post_
 $hm_attachments = array(
     7 => array('mime' => 'image/png', 'url' => 'https://media.hybridmind.online/uploads/product.png'),
 );
+$hm_wp_block_parser_path = getenv('HM_WP_BLOCK_PARSER_PATH');
+if (is_string($hm_wp_block_parser_path) && $hm_wp_block_parser_path !== '' && is_file($hm_wp_block_parser_path)) {
+    require_once $hm_wp_block_parser_path;
+}
 
 function add_action() {}
 function add_filter($tag, $callback, $priority = 10, $accepted_args = 1) { $GLOBALS['hm_filters'][$tag][$priority] = $callback; }
@@ -110,23 +114,49 @@ function get_queried_object_id() { return $GLOBALS['hm_current_post']->ID; }
 function get_post($id) { return $GLOBALS['hm_current_post']; }
 function has_shortcode($content, $tag) { return preg_match('/\[\s*'.preg_quote($tag, '/').'\b/i', $content) === 1; }
 function parse_blocks($content) {
+    if (class_exists('WP_Block_Parser')) {
+        $parser = new WP_Block_Parser();
+        return $parser->parse($content);
+    }
     $blocks = array();
-    if (preg_match_all('~<!-- wp:([a-z0-9/_-]+)(?:\s+({.*?}))? -->(.*?)<!-- /wp:\1 -->~s', $content, $matches, PREG_SET_ORDER)) {
+    $offset = 0;
+    if (preg_match_all('~<!-- wp:([a-z0-9/_-]+)(?:\s+({.*?}))? -->(.*?)<!-- /wp:\1 -->~s', $content, $matches, PREG_SET_ORDER | PREG_OFFSET_CAPTURE)) {
         foreach ($matches as $match) {
-            $html = $match[3];
-            $blocks[] = array('blockName' => $match[1], 'attrs' => isset($match[2]) && $match[2] !== '' ? json_decode($match[2], true) : array(), 'innerBlocks' => array(), 'innerHTML' => $html, 'innerContent' => array($html));
+            $full = $match[0][0];
+            $start = $match[0][1];
+            if ($start > $offset) {
+                $freeform = substr($content, $offset, $start - $offset);
+                $blocks[] = array('blockName' => null, 'attrs' => array(), 'innerBlocks' => array(), 'innerHTML' => $freeform, 'innerContent' => array($freeform));
+            }
+            $name = $match[1][0];
+            $attrs = isset($match[2]) && $match[2][0] !== '' ? json_decode($match[2][0], true) : array();
+            $html = $match[3][0];
+            $blocks[] = array('blockName' => $name, 'attrs' => is_array($attrs) ? $attrs : array(), 'innerBlocks' => array(), 'innerHTML' => $html, 'innerContent' => array($html));
+            $offset = $start + strlen($full);
         }
+    }
+    if ($offset < strlen($content)) {
+        $freeform = substr($content, $offset);
+        $blocks[] = array('blockName' => null, 'attrs' => array(), 'innerBlocks' => array(), 'innerHTML' => $freeform, 'innerContent' => array($freeform));
     }
     return $blocks;
 }
 function serialize_blocks($blocks) {
     $content = '';
     foreach ($blocks as $block) {
-        if (!isset($block['blockName']) || !is_string($block['blockName']) || !isset($block['innerHTML']) || !is_string($block['innerHTML'])) {
+        if (!isset($block['innerHTML']) || !is_string($block['innerHTML'])) {
+            return '';
+        }
+        if (!isset($block['blockName']) || $block['blockName'] === null) {
+            $content .= $block['innerHTML'];
+            continue;
+        }
+        if (!is_string($block['blockName'])) {
             return '';
         }
         $name = $block['blockName'];
-        $content .= '<!-- wp:'.$name.' -->'.$block['innerHTML'].'<!-- /wp:'.$name.' -->';
+        $attrs = !empty($block['attrs']) ? ' '.json_encode($block['attrs'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) : '';
+        $content .= '<!-- wp:'.$name.$attrs.' -->'.$block['innerHTML'].'<!-- /wp:'.$name.' -->';
     }
     return $content;
 }
@@ -278,8 +308,33 @@ function hm_paragraph_blocks($count, $words_each = 12) {
     }
     return $blocks;
 }
+function hm_conventional_blocks_content($blocks) {
+    $serialized = array();
+    foreach ($blocks as $block) {
+        $serialized[] = serialize_blocks(array($block));
+    }
+    return implode("\n\n", $serialized)."\n\n";
+}
+function hm_test_thai_graphemes($text) {
+    $compact = preg_replace('/\s+/u', '', $text);
+    $count = preg_match_all('/\X/u', $compact, $matches);
+    return $count === false ? 0 : $count;
+}
+function hm_thai_paragraph_blocks($count, $minimum_graphemes) {
+    $sentence = 'เนื้อหาภาษาไทยนี้อธิบายข้อมูลอย่างระมัดระวัง โดยไม่ยืนยันคุณสมบัติที่ยังไม่ได้ตรวจสอบ และชวนให้ผู้อ่านพิจารณารายละเอียดจากแหล่งข้อมูล';
+    $blocks = array();
+    for ($i = 0; $i < $count; $i++) {
+        $text = '';
+        while (hm_test_thai_graphemes($text) < $minimum_graphemes) {
+            $text .= $sentence;
+        }
+        $blocks[] = hm_block('core/paragraph', '<p>'.$text.'</p>');
+    }
+    return $blocks;
+}
 
 HM_Affiliate_Slots::activate();
+HM_Test_Assertions::check(getenv('HM_WP_BLOCK_PARSER_PATH') === false || class_exists('WP_Block_Parser'), 'CI loads the pinned real WordPress block parser when configured');
 $legacy = HM_Affiliate_Slots::defaults();
 $legacy['items'][] = array(
     'id' => 'legacy-product',
@@ -538,6 +593,13 @@ $short_article = hm_blocks_content(hm_paragraph_blocks(5, 25));
 hm_set_content_context($short_article, false);
 $short_article_output = HM_Affiliate_Slots::filter_auto_placements($short_article);
 HM_Test_Assertions::check(substr_count($short_article_output, '[hm_affiliate_slot id="article_after_intro"]') === 1 && strpos($short_article_output, '[hm_affiliate_slot id="article_near_end"]') === false, 'short article receives only the safe after-intro placement');
+$spaced_article = hm_conventional_blocks_content(hm_paragraph_blocks(5, 25));
+$spaced_parsed_blocks = parse_blocks($spaced_article);
+$blank_freeform_count = count(array_filter($spaced_parsed_blocks, function ($block) { return is_array($block) && array_key_exists('blockName', $block) && $block['blockName'] === null && isset($block['innerHTML']) && is_string($block['innerHTML']) && trim($block['innerHTML']) === ''; }));
+HM_Test_Assertions::check($blank_freeform_count >= 4, 'WordPress block parser preserves conventional blank lines as freeform blocks');
+hm_set_content_context($spaced_article, false);
+$spaced_article_output = HM_Affiliate_Slots::filter_auto_placements($spaced_article);
+HM_Test_Assertions::check(substr_count($spaced_article_output, '[hm_affiliate_slot id="article_after_intro"]') === 1, 'intro insertion crosses only blank freeform blocks between paragraphs');
 $thin_article = hm_blocks_content(hm_paragraph_blocks(5, 12));
 hm_set_content_context($thin_article, false);
 HM_Test_Assertions::check(HM_Affiliate_Slots::filter_auto_placements($thin_article) === $thin_article, 'intro placement skips a short or insubstantial target paragraph');
@@ -546,6 +608,19 @@ $long_article = hm_blocks_content(hm_paragraph_blocks(8, 80));
 hm_set_content_context($long_article, false);
 $long_article_output = HM_Affiliate_Slots::filter_auto_placements($long_article);
 HM_Test_Assertions::check(substr_count($long_article_output, '[hm_affiliate_slot id="article_after_intro"]') === 1 && substr_count($long_article_output, '[hm_affiliate_slot id="article_near_end"]') === 1, 'long article receives at most one intro and one near-end unit');
+$spaced_long_article = hm_conventional_blocks_content(hm_paragraph_blocks(8, 80));
+hm_set_content_context($spaced_long_article, false);
+$spaced_long_output = HM_Affiliate_Slots::filter_auto_placements($spaced_long_article);
+HM_Test_Assertions::check(substr_count($spaced_long_output, '[hm_affiliate_slot id="article_after_intro"]') === 1 && substr_count($spaced_long_output, '[hm_affiliate_slot id="article_near_end"]') === 1, 'near-end insertion crosses only blank freeform blocks in conventional long Gutenberg content');
+
+$thai_short_article = hm_conventional_blocks_content(hm_thai_paragraph_blocks(8, 160));
+hm_set_content_context($thai_short_article, false);
+$thai_short_output = HM_Affiliate_Slots::filter_auto_placements($thai_short_article);
+HM_Test_Assertions::check(substr_count($thai_short_output, '[hm_affiliate_slot id="article_after_intro"]') === 1 && strpos($thai_short_output, '[hm_affiliate_slot id="article_near_end"]') === false, 'Thai text uses grapheme length for paragraph suitability and stays below the long-article threshold');
+$thai_long_article = hm_conventional_blocks_content(hm_thai_paragraph_blocks(8, 320));
+hm_set_content_context($thai_long_article, false);
+$thai_long_output = HM_Affiliate_Slots::filter_auto_placements($thai_long_article);
+HM_Test_Assertions::check(substr_count($thai_long_output, '[hm_affiliate_slot id="article_after_intro"]') === 1 && substr_count($thai_long_output, '[hm_affiliate_slot id="article_near_end"]') === 1, 'Thai long-article threshold uses grapheme clusters rather than whitespace word counts');
 
 $explicit_article = hm_blocks_content(array_merge(hm_paragraph_blocks(8, 80), array(hm_block('core/shortcode', '[hm_affiliate_slot id="article_after_intro"]'))));
 hm_set_content_context($explicit_article, false);
@@ -558,6 +633,9 @@ HM_Test_Assertions::check(HM_Affiliate_Slots::filter_auto_placements($unsupporte
 $heading_article = hm_blocks_content(array_merge(array_slice(hm_paragraph_blocks(5), 0, 3), array(hm_block('core/heading', '<h2>Section</h2>')), array_slice(hm_paragraph_blocks(5), 3)));
 hm_set_content_context($heading_article, false);
 HM_Test_Assertions::check(HM_Affiliate_Slots::filter_auto_placements($heading_article) === $heading_article, 'article insertion skips a heading boundary');
+$table_article = hm_blocks_content(array_merge(array_slice(hm_paragraph_blocks(5), 0, 3), array(hm_block('core/table', '<figure class="wp-block-table"><table><tbody><tr><td>Data</td></tr></tbody></table></figure>')), array_slice(hm_paragraph_blocks(5), 3)));
+hm_set_content_context($table_article, false);
+HM_Test_Assertions::check(HM_Affiliate_Slots::filter_auto_placements($table_article) === $table_article, 'article insertion skips a table boundary');
 
 $GLOBALS['hm_is_admin'] = true;
 HM_Test_Assertions::check(HM_Affiliate_Slots::filter_auto_placements($short_article) === $short_article, 'automatic placement is excluded from admin content');
