@@ -345,7 +345,8 @@ HM_Test_Assertions::check(is_wp_error($not_found) && hm_error_status($not_found)
 
 $old_revision = $list_data['revision'];
 $stale = HM_Affiliate_Slots::rest_products_update(hm_request(array('title' => 'Stale change'), array('If-Match' => str_repeat('0', 64)), array('id' => 'travel-smart-glasses')));
-HM_Test_Assertions::check(is_wp_error($stale) && hm_error_status($stale) === 409, 'stale If-Match returns HTTP 409');
+$stale_status = hm_error_status($stale);
+HM_Test_Assertions::check(is_wp_error($stale) && $stale_status === 409, 'stale If-Match returns HTTP 409 (got '.$stale_status.', '.(is_wp_error($stale) ? $stale->get_error_code() : get_class($stale)).')');
 $missing_precondition = HM_Affiliate_Slots::rest_products_update(hm_request(array('title' => 'No precondition'), array(), array('id' => 'travel-smart-glasses')));
 HM_Test_Assertions::check(is_wp_error($missing_precondition) && hm_error_status($missing_precondition) === 428, 'missing update precondition returns HTTP 428');
 $updated = HM_Affiliate_Slots::rest_products_update(hm_request(array('title' => 'แว่นตาสำหรับเดินทาง'), array('If-Match' => '"'.$old_revision.'"'), array('id' => 'travel-smart-glasses')));
