@@ -1,4 +1,4 @@
-# Agent guide: Affiliate Slots 0.3.1
+# Agent guide: Affiliate Slots 0.3.2
 
 ## Scope and permissions
 
@@ -49,15 +49,19 @@ Read the product again after every successful update. A `409` means the revision
 
 ## Owner-only placement workflow
 
-The `config` route is read-only for agents. Automatic placement choices are separate administrator settings and default off. They are not part of any agent request schema. The owner must select positions under **Settings → Affiliate Slots**, save, preview the resulting configuration, and explicitly approve the current revision and placement choices. Saving any placement change clears review and approval. A selected position still renders nothing unless its slot and product are enabled, the product has an owner-confirmed local image, and the live gate passes.
+The `config` route is read-only for agents. Automatic placement choices are separate administrator settings and default off. They are not part of any agent request schema. The owner must select positions under **Settings → Affiliate Slots**, save, preview the resulting configuration, and explicitly approve the current revision and placement choices. Saving any placement change clears review and approval. Choose at most two article positions; midpoint plus near-end is a supported pair, while homepage is separate. The midpoint uses the existing `article_after_intro` product bank and does not add a product-config slot or change schema version 1. A selected position still renders nothing unless its slot and product are enabled, the product has an owner-confirmed local image, and the live gate passes.
 
 Supported opt-in positions:
 
 - Homepage after Featured: only when exactly one Custom HTML block contains the verified Featured section, its single closing `</section>`, and the `#latest` section immediately after it. Otherwise the filter leaves the page unchanged. Place a core Shortcode block after Featured and before `#latest` only as a reviewed fallback.
-- Article after intro: after the third non-empty top-level paragraph, only with at least four top-level paragraphs and another paragraph immediately after it. The target needs 20 letter/number runs for other scripts or 80 Thai grapheme clusters.
-- Article near end: after the penultimate non-empty top-level paragraph, only with at least eight paragraphs and another paragraph immediately after it. Length is at least 600 word-like units for other scripts or 2,400 Thai grapheme clusters; the Thai value is a character-length proxy, not a Thai word count. The target paragraph also needs 20 letter/number runs or 80 Thai grapheme clusters.
+- Article after intro: after the third non-empty paragraph, only with at least four paragraphs and another paragraph immediately after it in the same safe block container. The target needs 20 letter/number runs for other scripts or 80 Thai grapheme clusters.
+- Article near end: after the penultimate non-empty paragraph, only with at least eight paragraphs and another paragraph immediately after it in the same safe block container. Length is at least 600 word-like units for other scripts or 2,400 Thai grapheme clusters; the Thai value is a character-length proxy, not a Thai word count. The target paragraph also needs 20 letter/number runs or 80 Thai grapheme clusters.
 
 Any existing `hm_affiliate_slot` shortcode on a page suppresses all automatic placements there. Insertion occurs in the render filter only and does not update saved posts. Feeds, REST, admin, previews, excerpts, password-protected content, unsupported contexts, recognized code/embed/interactive content, and posts 55 and 57 are excluded. `home_in_feed` and `sidebar_desktop` remain manual-only; the sidebar is unplaced.
+
+- Article midpoint: nearest safe adjacent-paragraph boundary to the measured text midpoint, inside the central 35–65% of measured text, with at least six paragraphs. The target needs 20 letter/number runs or 80 Thai grapheme clusters, and at least two paragraphs must follow it. For Thai, midpoint measure uses visible grapheme clusters, not Thai word count.
+
+Article traversal counts paragraphs at the top level and recursively inside core/group blocks (maximum nesting depth 8). Other blocks, including core/html, columns, embeds, and tables, remain opaque; the filter does not inspect HTML to discover hidden paragraphs. If a safe same-container paragraph boundary cannot be proven, that placement is skipped. At most two article placements can be selected, and the renderer retains its two-unit request limit.
 
 ## Product-card restrictions
 

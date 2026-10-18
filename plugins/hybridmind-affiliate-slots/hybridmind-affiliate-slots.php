@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Hybrid Mind Affiliate Slots (Candidate)
  * Description: Manually ordered affiliate advertisement slots with optional owner-approved automatic placements. Disabled until private review and owner approval. No remote fetches or tracking.
- * Version: 0.3.1
+ * Version: 0.3.2
  * Requires at least: 6.4
  * Requires PHP: 7.4
  * Author: Hybrid Mind
@@ -15,7 +15,7 @@ if (!defined('ABSPATH')) {
 }
 
 final class HM_Affiliate_Slots {
-    const VERSION = '0.3.1';
+    const VERSION = '0.3.2';
     const OPTION = 'hm_affiliate_slots_v1';
     const BACKUP_OPTION = 'hm_affiliate_slots_backup_v1';
     const AUTO_OPTION = 'hm_affiliate_auto_placements_v1';
@@ -26,7 +26,8 @@ final class HM_Affiliate_Slots {
     const MAX_CARDS = 3;
     const HOSTS = array('shopee.co.th', 's.shopee.co.th', 'shope.ee');
     const SLOT_IDS = array('home_after_feature', 'home_in_feed', 'article_after_intro', 'article_near_end', 'sidebar_desktop');
-    const AUTO_PLACEMENT_IDS = array('home_after_feature', 'article_after_intro', 'article_near_end');
+    const ARTICLE_PLACEMENT_IDS = array('article_after_intro', 'article_middle', 'article_near_end');
+    const AUTO_PLACEMENT_IDS = array('home_after_feature', 'article_after_intro', 'article_middle', 'article_near_end');
     const REST_NAMESPACE = 'hybridmind-affiliate/v1';
     const IDEMPOTENCY_PREFIX = 'hm_affiliate_idem_';
     const IDEMPOTENCY_PENDING_SECONDS = 300;
@@ -79,12 +80,25 @@ final class HM_Affiliate_Slots {
             }
             $defaults[$id] = isset($stored[$id]) ? $stored[$id] : false;
         }
+        $selected_article_positions = 0;
+        foreach (self::ARTICLE_PLACEMENT_IDS as $id) {
+            if ($defaults[$id]) {
+                $selected_article_positions++;
+            }
+        }
+        if ($selected_article_positions > 2) {
+            return self::auto_placement_defaults();
+        }
         return $defaults;
     }
 
     public static function placement_digest($placements = null) {
         if ($placements === null) {
             $placements = self::auto_placements();
+        }
+        // An omitted/false new position must preserve digests from pre-0.3.2 approval.
+        if (isset($placements['article_middle']) && $placements['article_middle'] === false) {
+            unset($placements['article_middle']);
         }
         return hash('sha256', wp_json_encode($placements, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
     }
@@ -237,10 +251,13 @@ final class HM_Affiliate_Slots {
     }
 
     private static function slot_items($config, $id, $live = false) {
-        if (!isset($config['slots'][$id]) || !$config['slots'][$id]['enabled']) {
+        // The midpoint is a placement, not a new product-config slot. Reuse the
+        // existing article_after_intro item bank so schema-1 approvals survive.
+        $slot_id = $id === 'article_middle' ? 'article_after_intro' : $id;
+        if (!isset($config['slots'][$slot_id]) || !$config['slots'][$slot_id]['enabled']) {
             return array();
         }
-        $selected = array_flip($config['slots'][$id]['item_ids']);
+        $selected = array_flip($config['slots'][$slot_id]['item_ids']);
         $items = array();
         foreach ($config['items'] as $sequence => $item) {
             if (!isset($selected[$item['id']]) || !$item['enabled'] || !self::valid_affiliate_url($item['url'])) {
@@ -291,7 +308,7 @@ final class HM_Affiliate_Slots {
     }
 
     public static function context_allows_slot($id) {
-        if (!in_array($id, self::SLOT_IDS, true) || is_feed() || is_preview()) {
+        if (!in_array($id, array_merge(self::SLOT_IDS, array('article_middle')), true) || is_feed() || is_preview()) {
             return false;
         }
         if (is_front_page()) {
@@ -306,7 +323,7 @@ final class HM_Affiliate_Slots {
         if (preg_match('/<\s*(?:iframe|pre|code)\b|<!--\s*wp:(?:core\/)?(?:code|preformatted|embed)\b|<!--\s*wp:(?:[a-z0-9_-]+\/)?[a-z0-9_-]*(?:quiz|game|video[-_]agent[-_]lab)[a-z0-9_-]*\b|\[[a-z0-9_-]*(?:quiz|game)[a-z0-9_-]*\b|\[hm_video_agent_lab\b|(?:class|id)\s*=\s*["\x27][^"\x27]*(?:quiz|game[-_]lab|hm[-_]game|hm[-_]video[-_]agent[-_]lab)/i', $content)) {
             return false;
         }
-        return in_array($id, array('article_after_intro', 'article_near_end', 'sidebar_desktop'), true);
+        return in_array($id, array('article_after_intro', 'article_middle', 'article_near_end', 'sidebar_desktop'), true);
     }
 
     /** Only alter the main, published, public content query. */
@@ -440,20 +457,29 @@ final class HM_Affiliate_Slots {
      * Estimate content length without pretending that whitespace tokenization counts Thai words.
      * Thai-containing text uses visible grapheme clusters; other text uses letter/number runs.
      */
-    private static function article_text_measure($text) {
-        if (preg_match('/[\x{0E00}-\x{0E7F}]/u', $text) === 1) {
+    private static function article_text_measure_count($text, $kind) {
+        if ($kind === 'thai_graphemes') {
             $compact = preg_replace('/\s+/u', '', $text);
             $count = preg_match_all('/\X/u', $compact, $matches);
-            return array('kind' => 'thai_graphemes', 'count' => $count === false ? 0 : $count);
+            return $count === false ? 0 : $count;
         }
         $count = preg_match_all('/[\p{L}\p{N}]+/u', $text, $matches);
-        return array('kind' => 'word_like_units', 'count' => $count === false ? 0 : $count);
+        return $count === false ? 0 : $count;
+    }
+
+    private static function article_text_measure($text) {
+        $kind = preg_match('/[\x{0E00}-\x{0E7F}]/u', $text) === 1 ? 'thai_graphemes' : 'word_like_units';
+        return array('kind' => $kind, 'count' => self::article_text_measure_count($text, $kind));
+    }
+
+    private static function article_paragraph_text_is_substantial($text) {
+        $measure = self::article_text_measure($text);
+        $minimum = $measure['kind'] === 'thai_graphemes' ? 80 : 20;
+        return $measure['count'] >= $minimum;
     }
 
     private static function article_paragraph_is_substantial($block) {
-        $measure = self::article_text_measure(self::article_paragraph_text($block));
-        $minimum = $measure['kind'] === 'thai_graphemes' ? 80 : 20;
-        return $measure['count'] >= $minimum;
+        return self::article_paragraph_text_is_substantial(self::article_paragraph_text($block));
     }
 
     /** Skip only empty freeform blocks, never headings, embeds, tables, or arbitrary HTML. */
@@ -468,44 +494,191 @@ final class HM_Affiliate_Slots {
         return false;
     }
 
+    /** Recurse only through core/group. HTML, columns, embeds, tables and other wrappers remain opaque. */
+    private static function collect_article_paragraphs($blocks, $path = array(), $depth = 0) {
+        if (!is_array($blocks) || $depth > 8) {
+            return array();
+        }
+        $paragraphs = array();
+        foreach ($blocks as $index => $block) {
+            $text = self::article_paragraph_text($block);
+            if ($text !== '') {
+                $paragraphs[] = array(
+                    'path' => array_merge($path, array($index)),
+                    'text' => $text,
+                    'safe_after' => self::next_substantive_block_is_paragraph($blocks, $index),
+                );
+                continue;
+            }
+            if (is_array($block) && isset($block['blockName']) && $block['blockName'] === 'core/group' && isset($block['innerBlocks']) && self::is_list($block['innerBlocks'])) {
+                $nested = self::collect_article_paragraphs($block['innerBlocks'], array_merge($path, array($index)), $depth + 1);
+                foreach ($nested as $paragraph) {
+                    $paragraphs[] = $paragraph;
+                }
+            }
+        }
+        return $paragraphs;
+    }
+
+    /** Choose the safe paragraph boundary nearest half of measured text, within the central 35–65%. */
+    private static function middle_paragraph_index($paragraphs, $measure_kind, $excluded_indices = array()) {
+        $count = count($paragraphs);
+        if ($count < 6) {
+            return null;
+        }
+        $lengths = array();
+        $total = 0;
+        foreach ($paragraphs as $paragraph) {
+            $length = self::article_text_measure_count($paragraph['text'], $measure_kind);
+            $lengths[] = $length;
+            $total += $length;
+        }
+        if ($total < 1) {
+            return null;
+        }
+        $target = $total / 2;
+        $lower = $total * 0.35;
+        $upper = $total * 0.65;
+        $cumulative = 0;
+        $best_index = null;
+        $best_distance = PHP_INT_MAX;
+        foreach ($paragraphs as $index => $paragraph) {
+            $cumulative += $lengths[$index];
+            if ($index < 1 || $index > $count - 3 || empty($paragraph['safe_after']) || !self::article_paragraph_text_is_substantial($paragraph['text'])) {
+                continue;
+            }
+            $too_close = false;
+            foreach ($excluded_indices as $excluded_index) {
+                if (abs($index - $excluded_index) < 2) {
+                    $too_close = true;
+                    break;
+                }
+            }
+            if ($too_close || $cumulative < $lower || $cumulative > $upper) {
+                continue;
+            }
+            $distance = abs($cumulative - $target);
+            if ($distance < $best_distance) {
+                $best_distance = $distance;
+                $best_index = $index;
+            }
+        }
+        return $best_index;
+    }
+
+    /** Keep the parsed parent block's innerContent placeholders in sync with its child list. */
+    private static function insert_group_child_placeholder_after(&$group, $child_index) {
+        if (!isset($group['innerBlocks'], $group['innerContent']) || !is_array($group['innerBlocks']) || !is_array($group['innerContent']) || $child_index < 0 || $child_index >= count($group['innerBlocks'])) {
+            return false;
+        }
+        $placeholder_count = 0;
+        foreach ($group['innerContent'] as $chunk) {
+            if ($chunk === null) {
+                $placeholder_count++;
+            }
+        }
+        if ($placeholder_count !== count($group['innerBlocks'])) {
+            return false;
+        }
+        $block_index = 0;
+        foreach ($group['innerContent'] as $content_index => $chunk) {
+            if ($chunk === null) {
+                if ($block_index === $child_index) {
+                    array_splice($group['innerContent'], $content_index + 1, 0, array(null));
+                    return true;
+                }
+                $block_index++;
+            }
+        }
+        return false;
+    }
+
+    /** Insert after a parsed paragraph path, synchronizing nested Gutenberg serialization metadata. */
+    private static function insert_after_paragraph_path(&$blocks, $path, $slot_id) {
+        if (!self::is_list($path) || !$path) {
+            return false;
+        }
+        $target_index = array_pop($path);
+        $container =& $blocks;
+        $parent_group = null;
+        $has_parent_group = false;
+        foreach ($path as $group_index) {
+            if (!isset($container[$group_index]) || !is_array($container[$group_index]) || !isset($container[$group_index]['blockName']) || $container[$group_index]['blockName'] !== 'core/group' || !isset($container[$group_index]['innerBlocks']) || !is_array($container[$group_index]['innerBlocks'])) {
+                unset($container, $parent_group);
+                return false;
+            }
+            $parent_group =& $container[$group_index];
+            $container =& $parent_group['innerBlocks'];
+            $has_parent_group = true;
+        }
+        if (!isset($container[$target_index]) || self::article_paragraph_text($container[$target_index]) === '') {
+            unset($container, $parent_group);
+            return false;
+        }
+        if ($has_parent_group && !self::insert_group_child_placeholder_after($parent_group, $target_index)) {
+            unset($container, $parent_group);
+            return false;
+        }
+        array_splice($container, $target_index + 1, 0, array(self::shortcode_block($slot_id)));
+        unset($container, $parent_group);
+        return true;
+    }
+
+    private static function article_candidate_is_separated($candidate_index, $insertions) {
+        foreach ($insertions as $insertion) {
+            if (abs($candidate_index - $insertion['paragraph_index']) < 2) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     private static function insert_article_slots($blocks, $original_content, $placements, $config) {
         // Keep existing protected-content exclusions and fail closed for blocks such as embeds, code and interactive experiences.
         if (!self::context_allows_slot('article_after_intro')) {
             return $original_content;
         }
-        $paragraphs = array();
-        $paragraph_texts = array();
-        foreach ($blocks as $index => $block) {
-            $text = self::article_paragraph_text($block);
-            if ($text === '') {
-                continue;
-            }
-            $paragraphs[] = $index;
-            $paragraph_texts[$index] = $text;
-        }
+        $paragraphs = self::collect_article_paragraphs($blocks);
+        $paragraph_texts = array_map(function ($paragraph) { return $paragraph['text']; }, $paragraphs);
         $article_measure = self::article_text_measure(implode(' ', $paragraph_texts));
-        $insert_after = array();
+        $insertions = array();
         if ($placements['article_after_intro'] && count($paragraphs) >= 4 && self::slot_items($config, 'article_after_intro', true)) {
-            $candidate = $paragraphs[2];
-            if (self::article_paragraph_is_substantial($blocks[$candidate]) && self::next_substantive_block_is_paragraph($blocks, $candidate)) {
-                $insert_after[$candidate] = 'article_after_intro';
+            $candidate = 2;
+            if (!empty($paragraphs[$candidate]['safe_after']) && self::article_paragraph_text_is_substantial($paragraphs[$candidate]['text'])) {
+                $insertions[] = array('path' => $paragraphs[$candidate]['path'], 'slot_id' => 'article_after_intro', 'paragraph_index' => $candidate);
+            }
+        }
+        if ($placements['article_middle'] && self::slot_items($config, 'article_middle', true) && count($insertions) < 2) {
+            $excluded = array_map(function ($insertion) { return $insertion['paragraph_index']; }, $insertions);
+            $candidate = self::middle_paragraph_index($paragraphs, $article_measure['kind'], $excluded);
+            if ($candidate !== null && self::article_candidate_is_separated($candidate, $insertions)) {
+                $insertions[] = array('path' => $paragraphs[$candidate]['path'], 'slot_id' => 'article_middle', 'paragraph_index' => $candidate);
             }
         }
         $long_threshold = $article_measure['kind'] === 'thai_graphemes' ? 2400 : 600;
-        if ($placements['article_near_end'] && count($paragraphs) >= 8 && $article_measure['count'] >= $long_threshold && self::slot_items($config, 'article_near_end', true)) {
-            $candidate = $paragraphs[count($paragraphs) - 2];
-            if (self::article_paragraph_is_substantial($blocks[$candidate]) && self::next_substantive_block_is_paragraph($blocks, $candidate)) {
-                $insert_after[$candidate] = 'article_near_end';
-            }
+        $near_end_index = count($paragraphs) - 2;
+        if ($placements['article_near_end'] && count($paragraphs) >= 8 && $article_measure['count'] >= $long_threshold && self::slot_items($config, 'article_near_end', true) && count($insertions) < 2 && isset($paragraphs[$near_end_index]) && !empty($paragraphs[$near_end_index]['safe_after']) && self::article_paragraph_text_is_substantial($paragraphs[$near_end_index]['text']) && self::article_candidate_is_separated($near_end_index, $insertions)) {
+            $insertions[] = array('path' => $paragraphs[$near_end_index]['path'], 'slot_id' => 'article_near_end', 'paragraph_index' => $near_end_index);
         }
-        if (!$insert_after) {
+        if (!$insertions) {
             return $original_content;
         }
-        krsort($insert_after, SORT_NUMERIC);
-        foreach ($insert_after as $index => $id) {
-            array_splice($blocks, $index + 1, 0, array(self::shortcode_block($id)));
+        usort($insertions, function ($left, $right) {
+            $limit = min(count($left['path']), count($right['path']));
+            for ($index = 0; $index < $limit; $index++) {
+                if ($left['path'][$index] !== $right['path'][$index]) {
+                    return $right['path'][$index] <=> $left['path'][$index];
+                }
+            }
+            return count($right['path']) <=> count($left['path']);
+        });
+        foreach ($insertions as $insertion) {
+            if (!self::insert_after_paragraph_path($blocks, $insertion['path'], $insertion['slot_id'])) {
+                return $original_content;
+            }
         }
-        return serialize_blocks($blocks);
+        $serialized = serialize_blocks($blocks);
+        return is_string($serialized) && $serialized !== '' ? $serialized : $original_content;
     }
 
     private static function has_context_slot() {
@@ -1245,6 +1418,15 @@ final class HM_Affiliate_Slots {
                 }
                 $next_placements[$id] = true;
             }
+            $article_position_count = 0;
+            foreach (self::ARTICLE_PLACEMENT_IDS as $id) {
+                if ($next_placements[$id]) {
+                    $article_position_count++;
+                }
+            }
+            if ($article_position_count > 2) {
+                return self::error('Select at most two article positions. Choose which two positions you want; the plugin will not silently enable three.');
+            }
             $current_placements = self::auto_placements();
             if ($current_placements === $next_placements) {
                 return array('message' => 'Automatic placement settings are unchanged.');
@@ -1349,18 +1531,19 @@ final class HM_Affiliate_Slots {
         $placements = self::auto_placements();
         $placement_digest = self::placement_digest($placements);
         $json = wp_json_encode($config, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
-        echo '<div class="wrap"><h1>Hybrid Mind Affiliate Slots — Candidate 0.3.1</h1><p>Private configuration and review. Existing homepage/article reservation stubs are untouched. No scraping, remote metadata fetching, scripts or click tracking.</p>';
+        echo '<div class="wrap"><h1>Hybrid Mind Affiliate Slots — Candidate 0.3.2</h1><p>Private configuration and review. Existing homepage/article reservation stubs are untouched. No scraping, remote metadata fetching, scripts or click tracking.</p>';
         if ($result !== null) {
             $message = is_wp_error($result) ? $result->get_error_message() : $result['message'];
             echo '<div class="notice '.(is_wp_error($result) ? 'notice-error' : 'notice-success').'"><p>'.esc_html($message).'</p></div>';
         }
         echo '<p><strong>Status:</strong> '.esc_html(self::live_ready($config) ? 'Approved for the placement choices shown below' : 'DRAFT / PUBLIC OUTPUT DISABLED').'<br><strong>Revision SHA256:</strong> <code>'.esc_html($digest).'</code><br><strong>Placement SHA256:</strong> <code>'.esc_html($placement_digest).'</code></p>';
-        echo '<section class="hm-aff-admin-placements"><h2>Automatic placements (opt-in)</h2><p>Check only the positions you want. Saving a change clears the previous review and approval. Then review the saved configuration and approve it again. A placement is still empty unless its slot and product are enabled and the current reviewed configuration passes the live gate.</p><form method="post">';
+        echo '<section class="hm-aff-admin-placements"><h2>Automatic placements (opt-in)</h2><p>Check only the positions you want. Choose at most two article positions; midpoint plus near-end is a supported two-unit choice. The homepage setting is separate. Saving a change clears the previous review and approval. Then review the saved configuration and approve it again. A placement is still empty unless its slot and product are enabled and the current reviewed configuration passes the live gate.</p><form method="post">';
         wp_nonce_field(self::NONCE_ACTION);
         echo '<input type="hidden" name="hm_aff_action" value="save_placements"><input type="hidden" name="expected_placement_digest" value="'.esc_attr($placement_digest).'"><fieldset><legend>Public positions</legend>';
         echo '<label><input type="checkbox" name="auto_placements[]" value="home_after_feature"'.checked($placements['home_after_feature'], true, false).'> Homepage, after the Featured hero and before the #latest section (only when the exact saved Gutenberg HTML boundary is found)</label><br>';
-        echo '<label><input type="checkbox" name="auto_placements[]" value="article_after_intro"'.checked($placements['article_after_intro'], true, false).'> Published articles, after the substantial third top-level paragraph (20 letter/number runs, or 80 Thai grapheme clusters) when a safe boundary exists</label><br>';
-        echo '<label><input type="checkbox" name="auto_placements[]" value="article_near_end"'.checked($placements['article_near_end'], true, false).'> Long published articles, after the penultimate paragraph (at least 8 paragraphs and 600 word-like units, or 2,400 Thai grapheme clusters)</label>';
+        echo '<label><input type="checkbox" name="auto_placements[]" value="article_after_intro"'.checked($placements['article_after_intro'], true, false).'> Published articles, after the substantial third paragraph (20 letter/number runs, or 80 Thai grapheme clusters) at a safe adjacent-paragraph boundary, including within Gutenberg Group blocks</label><br>';
+        echo '<label><input type="checkbox" name="auto_placements[]" value="article_middle"'.checked($placements['article_middle'], true, false).'> Published articles, near the measured content midpoint: nearest safe adjacent-paragraph boundary in the central 35–65% (at least 6 paragraphs; supports Gutenberg Group blocks only)</label><br>';
+        echo '<label><input type="checkbox" name="auto_placements[]" value="article_near_end"'.checked($placements['article_near_end'], true, false).'> Long published articles, after the penultimate safe paragraph (at least 8 paragraphs and 600 word-like units, or 2,400 Thai grapheme clusters; supports Gutenberg Group blocks)</label>';
         echo '</fieldset><p>If the homepage block changes and the exact boundary cannot be verified, no automatic card is inserted. The fallback is a manually placed Gutenberg Shortcode block immediately after the Featured section and before #latest, after checking that exact boundary in the page editor. Existing explicit shortcodes suppress automatic placement on that page to prevent duplicates.</p>';
         submit_button('Save automatic placement choices', 'secondary');
         echo '</form></section>';

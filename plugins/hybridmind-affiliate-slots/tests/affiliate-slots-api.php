@@ -156,7 +156,27 @@ function serialize_blocks($blocks) {
         }
         $name = $block['blockName'];
         $attrs = !empty($block['attrs']) ? ' '.json_encode($block['attrs'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) : '';
-        $content .= '<!-- wp:'.$name.$attrs.' -->'.$block['innerHTML'].'<!-- /wp:'.$name.' -->';
+        $inner_content = isset($block['innerContent']) && is_array($block['innerContent']) ? $block['innerContent'] : array($block['innerHTML']);
+        $inner_blocks = isset($block['innerBlocks']) && is_array($block['innerBlocks']) ? $block['innerBlocks'] : array();
+        $inner = '';
+        $child_index = 0;
+        foreach ($inner_content as $chunk) {
+            if ($chunk === null) {
+                if (!isset($inner_blocks[$child_index])) {
+                    return '';
+                }
+                $inner .= serialize_blocks(array($inner_blocks[$child_index]));
+                $child_index++;
+            } elseif (is_string($chunk)) {
+                $inner .= $chunk;
+            } else {
+                return '';
+            }
+        }
+        if ($child_index !== count($inner_blocks)) {
+            return '';
+        }
+        $content .= '<!-- wp:'.$name.$attrs.' -->'.$inner.'<!-- /wp:'.$name.' -->';
     }
     return $content;
 }
@@ -288,6 +308,27 @@ function hm_error_status($result) {
 function hm_block($name, $html) {
     return array('blockName' => $name, 'attrs' => array(), 'innerBlocks' => array(), 'innerHTML' => $html, 'innerContent' => array($html));
 }
+function hm_group_block($blocks, $attrs = array()) {
+    $inner_content = array("\n");
+    for ($i = 0, $count = count($blocks); $i < $count; $i++) {
+        $inner_content[] = null;
+        if ($i < $count - 1) {
+            $inner_content[] = "\n";
+        }
+    }
+    $inner_content[] = "\n";
+    return array('blockName' => 'core/group', 'attrs' => $attrs, 'innerBlocks' => $blocks, 'innerHTML' => str_repeat("\n", count($blocks) + 1), 'innerContent' => $inner_content);
+}
+function hm_flatten_block_names($blocks) {
+    $names = array();
+    foreach ($blocks as $block) {
+        $names[] = isset($block['blockName']) && is_string($block['blockName']) ? $block['blockName'] : null;
+        if (isset($block['blockName']) && $block['blockName'] === 'core/group' && isset($block['innerBlocks']) && is_array($block['innerBlocks'])) {
+            $names = array_merge($names, hm_flatten_block_names($block['innerBlocks']));
+        }
+    }
+    return $names;
+}
 function hm_blocks_content($blocks) { return serialize_blocks($blocks); }
 function hm_set_content_context($content, $front_page = false) {
     global $post;
@@ -328,13 +369,15 @@ function hm_thai_paragraph_blocks($count, $minimum_graphemes) {
         while (hm_test_thai_graphemes($text) < $minimum_graphemes) {
             $text .= $sentence;
         }
-        $blocks[] = hm_block('core/paragraph', '<p>'.$text.'</p>');
+        $blocks[] = hm_block('core/paragraph', '<p>'.$text.' Thai paragraph '.($i + 1).'</p>');
     }
     return $blocks;
 }
 
 HM_Affiliate_Slots::activate();
 HM_Test_Assertions::check(getenv('HM_WP_BLOCK_PARSER_PATH') === false || class_exists('WP_Block_Parser'), 'CI loads the pinned real WordPress block parser when configured');
+$legacy_placement_flags = array('home_after_feature' => false, 'article_after_intro' => false, 'article_near_end' => false);
+HM_Test_Assertions::check(HM_Affiliate_Slots::placement_digest($legacy_placement_flags) === HM_Affiliate_Slots::placement_digest(HM_Affiliate_Slots::auto_placement_defaults()), 'new disabled middle placement preserves legacy placement approval digest');
 $legacy = HM_Affiliate_Slots::defaults();
 $legacy['items'][] = array(
     'id' => 'legacy-product',
@@ -361,6 +404,8 @@ $legacy_item_before = HM_Affiliate_Slots::get_config()['items'][0];
 $legacy_slots_before = HM_Affiliate_Slots::get_config()['slots'];
 
 HM_Test_Assertions::check(HM_Affiliate_Slots::live_ready(HM_Affiliate_Slots::get_config()), 'legacy approved configuration starts live-ready');
+HM_Test_Assertions::check(count(HM_Affiliate_Slots::get_config()['slots']) === 5 && !array_key_exists('article_middle', HM_Affiliate_Slots::get_config()['slots']), 'middle placement preserves the five-slot schema-1 product configuration');
+HM_Test_Assertions::check(HM_Affiliate_Slots::digest($legacy) === HM_Affiliate_Slots::digest(HM_Affiliate_Slots::get_config()), 'legacy product approval digest remains unchanged');
 $legacy_html = HM_Affiliate_Slots::shortcode(array('id' => 'home_after_feature'));
 HM_Test_Assertions::check(strpos($legacy_html, 'ดูสินค้าบน Shopee') !== false, 'CTA uses the requested Shopee label');
 HM_Test_Assertions::check(strpos($legacy_html, 'rel="sponsored noopener"') !== false, 'outbound link has sponsored and noopener rel values');
@@ -556,6 +601,8 @@ $placement_save = HM_Affiliate_Slots::process_admin_action(array(
 HM_Test_Assertions::check(!is_wp_error($placement_save) && HM_Affiliate_Slots::auto_placements()['home_after_feature'] === true, 'administrator can explicitly opt in to selected automatic positions');
 $stale_placement_save = HM_Affiliate_Slots::process_admin_action(array('_wpnonce' => 'test-nonce', 'hm_aff_action' => 'save_placements', 'expected_placement_digest' => HM_Affiliate_Slots::placement_digest(HM_Affiliate_Slots::auto_placement_defaults()), 'auto_placements' => array()));
 HM_Test_Assertions::check(is_wp_error($stale_placement_save) && HM_Affiliate_Slots::auto_placements()['home_after_feature'] === true, 'stale settings form cannot overwrite a newer placement selection');
+$three_article_positions = HM_Affiliate_Slots::process_admin_action(array('_wpnonce' => 'test-nonce', 'hm_aff_action' => 'save_placements', 'expected_placement_digest' => HM_Affiliate_Slots::placement_digest(), 'auto_placements' => array('article_after_intro', 'article_middle', 'article_near_end')));
+HM_Test_Assertions::check(is_wp_error($three_article_positions) && count(array_filter(HM_Affiliate_Slots::auto_placements(), function ($enabled, $id) { return in_array($id, HM_Affiliate_Slots::ARTICLE_PLACEMENT_IDS, true) && $enabled; }, ARRAY_FILTER_USE_BOTH)) === 2, 'admin settings reject three article positions instead of silently showing three');
 HM_Test_Assertions::check(HM_Affiliate_Slots::get_config()['approval'] === null && HM_Affiliate_Slots::get_config()['reviewed_digest'] === null && !HM_Affiliate_Slots::live_ready(HM_Affiliate_Slots::get_config()), 'changing placements clears review and approval without enabling output');
 HM_Test_Assertions::check(HM_Affiliate_Slots::filter_auto_placements($homepage_content) === $homepage_content, 'automatic settings alone cannot activate public output');
 
@@ -636,6 +683,53 @@ HM_Test_Assertions::check(HM_Affiliate_Slots::filter_auto_placements($heading_ar
 $table_article = hm_blocks_content(array_merge(array_slice(hm_paragraph_blocks(5), 0, 3), array(hm_block('core/table', '<figure class="wp-block-table"><table><tbody><tr><td>Data</td></tr></tbody></table></figure>')), array_slice(hm_paragraph_blocks(5), 3)));
 hm_set_content_context($table_article, false);
 HM_Test_Assertions::check(HM_Affiliate_Slots::filter_auto_placements($table_article) === $table_article, 'article insertion skips a table boundary');
+
+$middle_placements = array('home_after_feature' => false, 'article_after_intro' => false, 'article_middle' => true, 'article_near_end' => true);
+update_option(HM_Affiliate_Slots::AUTO_OPTION, $middle_placements);
+$middle_approved = $auto_approved;
+$middle_approved['approval'] = null;
+$middle_approved['reviewed_digest'] = null;
+$middle_approved['reviewed_digest'] = HM_Affiliate_Slots::digest($middle_approved);
+$middle_approved['approval'] = array('digest' => HM_Affiliate_Slots::digest($middle_approved), 'user_id' => 1, 'approved_at' => '2026-10-18T12:02:00+00:00', 'domains_confirmed' => true, 'placement_digest' => HM_Affiliate_Slots::placement_digest());
+update_option(HM_Affiliate_Slots::OPTION, $middle_approved);
+HM_Test_Assertions::check(HM_Affiliate_Slots::live_ready(HM_Affiliate_Slots::get_config()) && HM_Affiliate_Slots::auto_placements()['article_middle'] && HM_Affiliate_Slots::auto_placements()['article_near_end'], 'owner-approved midpoint plus near-end is an explicit two-position configuration');
+
+$site_paragraphs = hm_thai_paragraph_blocks(12, 320);
+$site_group_children = array(hm_block('core/html', '<style>#hm-scenegraph-article{line-height:1.85}</style>'));
+foreach ($site_paragraphs as $index => $paragraph) {
+    $site_group_children[] = $paragraph;
+    if ($index === 1) {
+        $site_group_children[] = hm_block('core/heading', '<h2>Topic section</h2>');
+    }
+    if ($index === 3) {
+        $site_group_children[] = hm_block('core/image', '<figure class="wp-block-image"><img src="https://media.hybridmind.online/uploads/article.png" alt=""></figure>');
+    }
+    if ($index === 7) {
+        $site_group_children[] = hm_block('core/table', '<figure class="wp-block-table"><table><tbody><tr><td>Data</td></tr></tbody></table></figure>');
+    }
+}
+$site_group_content = hm_blocks_content(array(hm_group_block($site_group_children, array('anchor' => 'hm-scenegraph-article', 'layout' => array('type' => 'constrained')))));
+$site_group_parsed = parse_blocks($site_group_content);
+HM_Test_Assertions::check(isset($site_group_parsed[0]['blockName']) && $site_group_parsed[0]['blockName'] === 'core/group' && count($site_group_parsed[0]['innerBlocks']) >= 15, 'WordPress parser fixture matches the site article Group wrapper with nested blocks');
+hm_set_content_context($site_group_content, false);
+$middle_card = HM_Affiliate_Slots::shortcode(array('id' => 'article_middle'));
+HM_Test_Assertions::check(strpos($middle_card, 'hm-aff-slot-article_middle') !== false && strpos($middle_card, 'Legacy product') !== false, 'midpoint presentation reuses the existing article-after-intro product bank');
+$site_group_output = HM_Affiliate_Slots::filter_auto_placements($site_group_content);
+$middle_marker = strpos($site_group_output, '[hm_affiliate_slot id="article_middle"]');
+$near_marker = strpos($site_group_output, '[hm_affiliate_slot id="article_near_end"]');
+$p6_marker = strpos($site_group_output, 'Thai paragraph 6');
+$p7_marker = strpos($site_group_output, 'Thai paragraph 7');
+$p11_marker = strpos($site_group_output, 'Thai paragraph 11');
+$p12_marker = strpos($site_group_output, 'Thai paragraph 12');
+$parsed_site_output = parse_blocks($site_group_output);
+$site_output_names = hm_flatten_block_names($parsed_site_output);
+HM_Test_Assertions::check(substr_count($site_group_output, '[hm_affiliate_slot id="article_middle"]') === 1 && substr_count($site_group_output, '[hm_affiliate_slot id="article_near_end"]') === 1 && substr_count($site_group_output, '[hm_affiliate_slot id="article_after_intro"]') === 0, 'wrapped Thai article gets exactly the selected midpoint and near-end units');
+HM_Test_Assertions::check($p6_marker < $middle_marker && $middle_marker < $p7_marker && $p11_marker < $near_marker && $near_marker < $p12_marker, 'midpoint uses the measured text center and near-end remains after the penultimate paragraph');
+HM_Test_Assertions::check(count(array_filter($site_output_names, function ($name) { return $name === 'core/shortcode'; })) === 2 && strpos($site_group_output, 'anchor') !== false && substr_count($site_group_output, 'Thai paragraph 1</p>') === 1 && substr_count($site_group_output, '<table>') === 1 && substr_count($site_group_output, '<img ') === 1, 'nested insertion stays in separate Shortcode blocks and preserves the Group, image, table, and paragraph markup');
+
+$custom_html_wrapper = hm_blocks_content(array(hm_block('core/html', '<div class="wp-block-group" id="hm-scenegraph-article">'.implode('', array_map(function ($paragraph) { return $paragraph['innerHTML']; }, $site_paragraphs)).'</div>')));
+hm_set_content_context($custom_html_wrapper, false);
+HM_Test_Assertions::check(HM_Affiliate_Slots::filter_auto_placements($custom_html_wrapper) === $custom_html_wrapper, 'arbitrary Custom HTML article wrappers remain opaque and fail closed');
 
 $GLOBALS['hm_is_admin'] = true;
 HM_Test_Assertions::check(HM_Affiliate_Slots::filter_auto_placements($short_article) === $short_article, 'automatic placement is excluded from admin content');
