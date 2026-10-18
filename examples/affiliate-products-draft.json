@@ -1,0 +1,21 @@
+{
+  "description": "Draft request bodies only. Do not send or publish automatically.",
+  "products": [
+    {
+      "id": "travel-smart-glasses",
+      "title": "แว่นตาอัจฉริยะสำหรับเดินทาง",
+      "description": "พิจารณาข้อมูลผู้ขายและรายละเอียดที่ยืนยันได้ก่อนเลือกซื้อ",
+      "url": "https://s.shopee.co.th/1LgdBc2Osl",
+      "image": null,
+      "order": 100
+    },
+    {
+      "id": "aideepen-esp32s3-touch",
+      "title": "AIDEEPEN ESP32-S3 จอสัมผัส 2.8 นิ้ว",
+      "description": "บอร์ดสำหรับต่อยอดงาน IoT และทดลองแนวคิดผู้ช่วยเสียง รายละเอียด firmware และอุปกรณ์ในชุดควรยืนยันจากผู้ขายก่อนเลือกซื้อ",
+      "url": "https://s.shopee.co.th/9pfBJUyV6m",
+      "image": null,
+      "order": 200
+    }
+  ]
+}

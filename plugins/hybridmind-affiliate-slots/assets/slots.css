@@ -1,0 +1,26 @@
+/* Scoped affiliate presentation; server renders units before first paint. */
+.hm-aff-unit,.hm-aff-unit *{box-sizing:border-box}
+.hm-aff-unit{margin:28px 0;padding:20px;border:1px solid #cbded8;border-radius:16px;background:#eef7f3;color:#183b42;font-family:inherit;clear:both}
+.hm-aff-unit[hidden],.hm-aff-unit [hidden]{display:none!important}
+.hm-aff-label{display:inline-block;font-size:12px;font-weight:800;letter-spacing:.025em;color:#126c5c}
+.hm-aff-disclosure{margin:6px 0 16px;font-size:13px;line-height:1.65;color:#405d60}
+.hm-aff-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.hm-aff-card{min-width:0;display:flex;flex-direction:column;padding:12px;border:1px solid #d3e3dc;border-radius:12px;background:#fff;overflow-wrap:anywhere}
+.hm-aff-content{min-width:0;flex:1;display:flex;flex-direction:column}
+.hm-aff-media{position:relative;width:100%;aspect-ratio:4/3;background:#f0f3f1;border-radius:8px;overflow:hidden;display:grid;place-items:center}
+.hm-aff-media img{display:block;width:100%;height:100%;position:absolute;inset:0;object-fit:contain}
+.hm-aff-image-fallback{padding:14px;text-align:center;color:#52676d;font-size:13px;line-height:1.6}
+.hm-aff-title{font-size:16px;line-height:1.65;font-weight:700;margin:12px 0 6px;overflow-wrap:anywhere}
+.hm-aff-description{font-size:14px;line-height:1.7;margin:0 0 10px;overflow-wrap:anywhere}
+.hm-aff-price{font-size:13px;line-height:1.7;margin:0 0 10px;color:#52676d}
+.hm-aff-price small{display:block}
+.hm-aff-preview-label{font-size:12px;font-weight:800;color:#9b4a19}
+.hm-aff-preview-url{font:12px/1.5 monospace;overflow-wrap:anywhere}
+.hm-aff-cta{display:block;margin-top:auto;min-height:44px;padding:11px 12px;border-radius:9px;background:#153d42;color:#fff!important;font-size:14px;text-align:center;text-decoration:none!important;line-height:1.55;overflow-wrap:anywhere}
+.hm-aff-cta:focus-visible{outline:3px solid #7256c4;outline-offset:3px}
+.hm-aff-slot-sidebar_desktop .hm-aff-grid{grid-template-columns:1fr}
+.hm-aff-slot-sidebar_desktop{max-width:330px}
+@media(max-width:1023px){.hm-aff-slot-sidebar_desktop{display:none!important}}
+@media(max-width:700px){.hm-aff-unit{padding:14px;margin:24px 0}.hm-aff-grid{grid-template-columns:1fr}.hm-aff-card{display:grid;grid-template-columns:88px minmax(0,1fr);column-gap:12px;padding:12px}.hm-aff-media{grid-row:1/5}.hm-aff-title{margin:0 0 6px}.hm-aff-description,.hm-aff-price,.hm-aff-cta{grid-column:2}.hm-aff-cta{margin-top:4px}.hm-aff-image-fallback{font-size:11px;padding:8px}}
+@media(max-width:360px){.hm-aff-card{display:flex}.hm-aff-media{width:88px;height:66px;aspect-ratio:4/3}.hm-aff-title{margin-top:8px}}
+@media(prefers-reduced-motion:reduce){.hm-aff-unit *{animation:none!important;transition:none!important}}

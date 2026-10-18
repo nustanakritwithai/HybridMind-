@@ -1,0 +1,28 @@
+name: Hybrid Mind Affiliate Slots API tests
+
+on:
+  push:
+    branches:
+      - feature/hm-affiliate-agent-api
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  php-tests:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        php-version: ['7.4', '8.3']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          coverage: none
+      - name: Lint and run the isolated WordPress mock suite
+        run: |
+          php -l plugins/hybridmind-affiliate-slots/hybridmind-affiliate-slots.php
+          php -l plugins/hybridmind-affiliate-slots/tests/affiliate-slots-api.php
+          php plugins/hybridmind-affiliate-slots/tests/affiliate-slots-api.php
