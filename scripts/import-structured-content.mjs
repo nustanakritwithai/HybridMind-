@@ -2,6 +2,7 @@ import { readFile, writeFile } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { projectPublicCatalog } from './public-projection.mjs';
+import { attachContentDigest, sha256Hex } from './content-integrity.mjs';
 import { validateStructuredContent } from '../knowledge-textbook/content-renderer.mjs';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
@@ -19,20 +20,34 @@ export function normalizeExportBlock(block) {
   return { type: 'interactive_fallback', label: 'Interactive content shown as a static note', summary: 'This block is not supported by the pilot reader. Open the original article to use it.', source_block_type: name.slice(0, 120) };
 }
 
+function sourceIntegrity(raw) {
+  if (raw.source_payload_base64 === undefined) return { source_hash: null, source_hash_status: 'unverified' };
+  const encoded = raw.source_payload_base64;
+  if (typeof encoded !== 'string' || encoded.length === 0 || !/^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$/.test(encoded)) {
+    throw new TypeError('source_payload_base64 must contain the exact source bytes in canonical base64');
+  }
+  const bytes = Buffer.from(encoded, 'base64');
+  if (bytes.toString('base64') !== encoded) throw new TypeError('source_payload_base64 is not canonical base64');
+  const source_hash = `sha256:${sha256Hex(bytes)}`;
+  if (raw.source_hash !== undefined && raw.source_hash !== source_hash) throw new TypeError('Claimed source_hash does not match source_payload_base64');
+  return { source_hash, source_hash_status: 'verified' };
+}
+
 export function importStructuredExport(raw, catalog) {
   if (!raw || raw.provenance !== 'wordpress_export') throw new TypeError('Only wordpress_export provenance is accepted by production import');
   const projected = projectPublicCatalog(catalog);
+  const source = sourceIntegrity(raw);
   const entry = {
     schema_version: raw.schema_version,
     article_id: raw.article_id,
     canonical_url: raw.canonical_url,
     source_revision: raw.source_revision,
-    source_hash: raw.source_hash,
+    ...source,
     imported_at: raw.imported_at,
     provenance: raw.provenance,
     blocks: (raw.blocks ?? []).map(normalizeExportBlock),
   };
-  return validateStructuredContent(entry, { catalog: projected });
+  return validateStructuredContent(attachContentDigest(entry), { catalog: projected });
 }
 
 async function main() {

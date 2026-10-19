@@ -4,13 +4,15 @@
   "title": "HybridMind structured article content envelope",
   "type": "object",
   "additionalProperties": false,
-  "required": ["schema_version", "article_id", "canonical_url", "source_revision", "source_hash", "imported_at", "provenance", "blocks"],
+  "required": ["schema_version", "article_id", "canonical_url", "source_revision", "source_hash", "source_hash_status", "content_digest", "imported_at", "provenance", "blocks"],
   "properties": {
     "schema_version": { "const": "1.0.0" },
     "article_id": { "type": "string", "pattern": "^hm:article:[0-9]+$" },
     "canonical_url": { "type": "string", "format": "uri" },
     "source_revision": { "type": "string", "minLength": 1 },
-    "source_hash": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+    "source_hash": { "type": ["string", "null"], "pattern": "^sha256:[a-f0-9]{64}$" },
+    "source_hash_status": { "enum": ["verified", "unverified"] },
+    "content_digest": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
     "imported_at": { "type": "string", "format": "date-time" },
     "provenance": { "enum": ["wordpress_export", "test_fixture"] },
     "fixture_notice": { "type": "string" },
@@ -21,7 +23,9 @@
   },
   "allOf": [
     { "if": { "properties": { "provenance": { "const": "test_fixture" } }, "required": ["provenance"] }, "then": { "required": ["fixture_notice"] } },
-    { "if": { "properties": { "provenance": { "const": "wordpress_export" } }, "required": ["provenance"] }, "then": { "not": { "required": ["fixture_notice"] } } }
+    { "if": { "properties": { "provenance": { "const": "wordpress_export" } }, "required": ["provenance"] }, "then": { "not": { "required": ["fixture_notice"] } } },
+    { "if": { "properties": { "source_hash_status": { "const": "verified" } }, "required": ["source_hash_status"] }, "then": { "properties": { "source_hash": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" } } } },
+    { "if": { "properties": { "source_hash_status": { "const": "unverified" } }, "required": ["source_hash_status"] }, "then": { "properties": { "source_hash": { "type": "null" } } } }
   ],
   "$defs": {
     "heading": { "type": "object", "additionalProperties": false, "required": ["type", "level", "text"], "properties": { "type": { "const": "heading" }, "level": { "enum": [2,3,4,5,6] }, "text": { "type": "string" }, "anchor": { "type": "string" } } },

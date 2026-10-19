@@ -4,6 +4,7 @@ import { readFile } from 'node:fs/promises';
 import { extname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { projectPublicCatalog } from './public-projection.mjs';
+import { verifyContentBundleDigests } from './content-integrity.mjs';
 import { validateContentBundle } from '../knowledge-textbook/content-renderer.mjs';
 
 const root = resolve(fileURLToPath(new URL('../', import.meta.url)));
@@ -13,7 +14,7 @@ const clientCatalog = projectPublicCatalog(JSON.parse(await readFile(catalogPath
 const clientCatalogBytes = Buffer.from(`${JSON.stringify(clientCatalog)}\n`, 'utf8');
 const contentPath = [resolve(root, 'offline/pilot-content-bundle.json'), resolve(root, 'data/pilot-content-bundle.json')].find(existsSync);
 const clientContentBundle = contentPath
-  ? validateContentBundle(JSON.parse(await readFile(contentPath, 'utf8')), { catalog: clientCatalog })
+  ? verifyContentBundleDigests(validateContentBundle(JSON.parse(await readFile(contentPath, 'utf8')), { catalog: clientCatalog }))
   : null;
 const clientContentBytes = clientContentBundle ? Buffer.from(`${JSON.stringify(clientContentBundle)}\n`, 'utf8') : null;
 const port = Number(process.env.HM_PILOT_PORT || 8000);

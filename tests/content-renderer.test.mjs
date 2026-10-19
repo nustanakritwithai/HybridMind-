@@ -5,6 +5,7 @@ import { fileURLToPath } from 'node:url';
 import { dirname, resolve } from 'node:path';
 import { renderStructuredContent, safeContentLinkUrl, safeContentUrl, validateContentBundle, validateStructuredContent } from '../knowledge-textbook/content-renderer.mjs';
 import { importStructuredExport, normalizeExportBlock } from '../scripts/import-structured-content.mjs';
+import { computeContentDigest, sha256Hex, verifyContentBundleDigests, verifyContentDigest } from '../scripts/content-integrity.mjs';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const fixture = JSON.parse(await readFile(resolve(root, 'tests/fixtures/structured-content-fixture.json'), 'utf8'));
@@ -23,6 +24,9 @@ test('fixture exercises every supported block and is explicitly synthetic', () =
   assert.equal(fixture.provenance, 'test_fixture');
   assert.match(fixture.fixture_notice, /Synthetic.*not.*article content/i);
   assert.deepEqual(new Set(fixture.blocks.map(b => b.type)), new Set(['heading','paragraph','list','quote','code','image','interactive_fallback']));
+  assert.equal(verifyContentDigest(fixture), fixture);
+  assert.equal(fixture.source_hash, null);
+  assert.equal(fixture.source_hash_status, 'unverified');
   assert.equal(validateStructuredContent(fixture, { catalog, allowFixture: true }), fixture);
   assert.throws(() => validateStructuredContent(fixture, { catalog }), /not permitted/);
   assert.throws(() => validateContentBundle({ schema_version: '1.0.0', articles: [fixture] }, { catalog }), /not permitted/);
@@ -64,17 +68,37 @@ test('malicious block URLs are rejected and source metadata must match public pr
     { ...fixture, canonical_url: 'https://evil.test/article' },
     { ...fixture, source_revision: 'stale' },
   ]) assert.throws(() => validateStructuredContent(bad, { catalog, allowFixture: true }));
+  assert.throws(() => verifyContentDigest({ ...fixture, blocks: [{ type: 'paragraph', text: 'tampered fixture content' }] }), /digest mismatch/i);
   assert.throws(() => validateContentBundle({ schema_version: '1.0.0', articles: [fixture, fixture] }, { catalog, allowFixture: true }), /duplicate/);
 });
 
 test('importer normalizes Gutenberg blocks and maps unknown block to static fallback without HTML', () => {
   const normalized = importStructuredExport({
-    ...fixture, provenance: 'wordpress_export', fixture_notice: undefined,
+    ...fixture, provenance: 'wordpress_export', fixture_notice: undefined, source_hash: `sha256:${'a'.repeat(64)}`,
     blocks: [{ blockName: 'core/heading', attrs: { level: 2, anchor: 'from-export' }, text: 'Heading' }, { blockName: 'hm/live-quiz', innerHTML: '<script>run()</script>' }],
   }, catalog);
   assert.deepEqual(normalized.blocks[0], { type: 'heading', level: 2, text: 'Heading', anchor: 'from-export' });
   assert.equal(normalized.blocks[1].type, 'interactive_fallback');
   assert.equal(JSON.stringify(normalized).includes('<script>'), false);
+  assert.equal(normalized.source_hash, null);
+  assert.equal(normalized.source_hash_status, 'unverified');
+  assert.equal(verifyContentDigest(normalized), normalized);
+  assert.equal(computeContentDigest(Object.fromEntries(Object.entries(normalized).reverse())), normalized.content_digest, 'top-level property ordering must not change the canonical digest');
+  assert.throws(() => verifyContentBundleDigests({ schema_version: '1.0.0', articles: [{ ...normalized, blocks: [{ type: 'paragraph', text: 'tampered after import' }] }] }), /digest mismatch/i);
+
+  const rawBytes = Buffer.from('exact original WordPress export bytes', 'utf8');
+  const verified = importStructuredExport({
+    ...fixture, provenance: 'wordpress_export', fixture_notice: undefined,
+    source_payload_base64: rawBytes.toString('base64'), source_hash: `sha256:${sha256Hex(rawBytes)}`,
+    blocks: [{ blockName: 'core/paragraph', text: 'Verified payload' }],
+  }, catalog);
+  assert.equal(verified.source_hash, `sha256:${sha256Hex(rawBytes)}`);
+  assert.equal(verified.source_hash_status, 'verified');
+  assert.throws(() => importStructuredExport({
+    ...fixture, provenance: 'wordpress_export', fixture_notice: undefined,
+    source_payload_base64: rawBytes.toString('base64'), source_hash: `sha256:${'0'.repeat(64)}`,
+    blocks: [{ blockName: 'core/paragraph', text: 'Verified payload' }],
+  }, catalog), /does not match source_payload_base64/);
   assert.throws(() => importStructuredExport({ ...fixture, provenance: 'test_fixture' }, catalog), /Only wordpress_export/);
   assert.throws(() => importStructuredExport({ ...fixture, provenance: 'wordpress_export', source_revision: 'stale', fixture_notice: undefined }, catalog), /source_revision/);
 });

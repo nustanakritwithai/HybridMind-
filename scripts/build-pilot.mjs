@@ -5,6 +5,7 @@ import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import { projectPublicCatalog } from './public-projection.mjs';
 import { validateCatalog } from './validate-catalog.mjs';
+import { verifyContentBundleDigests } from './content-integrity.mjs';
 import { validateContentBundle } from '../knowledge-textbook/content-renderer.mjs';
 
 const root = resolve(fileURLToPath(new URL('../', import.meta.url)));
@@ -27,7 +28,7 @@ if (errors.length) throw new Error(`Public projection failed schema/reference va
 const contentSourcePath = resolve(root, 'offline/pilot-content-bundle.json');
 let publicContentBundle = null;
 if (existsSync(contentSourcePath)) {
-  publicContentBundle = validateContentBundle(JSON.parse(await readFile(contentSourcePath, 'utf8')), { catalog: publicCatalog });
+  publicContentBundle = verifyContentBundleDigests(validateContentBundle(JSON.parse(await readFile(contentSourcePath, 'utf8')), { catalog: publicCatalog }));
 }
 
 await mkdir(distRoot, { recursive: true });

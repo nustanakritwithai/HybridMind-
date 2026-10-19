@@ -31,8 +31,8 @@ class PipeClient {
         let message;
         try { message = JSON.parse(raw); } catch { continue; }
         if (message.id && this.pending.has(message.id)) {
-          const { resolve, reject, timer, method } = this.pending.get(message.id); clearTimeout(timer); this.pending.delete(message.id);
-          if (message.error) reject(new Error(`CDP ${method}: ${JSON.stringify(message.error)}`)); else resolve(message);
+          const { resolve, reject, timer, method, params } = this.pending.get(message.id); clearTimeout(timer); this.pending.delete(message.id);
+          if (message.error) reject(new Error(`CDP ${method} (${JSON.stringify(params ?? {})}): ${JSON.stringify(message.error)}`)); else resolve(message);
         }
       }
     });
@@ -41,13 +41,13 @@ class PipeClient {
     const id = this.nextId++;
     return new Promise((resolve, reject) => {
       const timer = setTimeout(() => { this.pending.delete(id); reject(new Error(`CDP timeout: ${method}`)); }, 10000);
-      this.pending.set(id, { resolve, reject, timer, method });
+      this.pending.set(id, { resolve, reject, timer, method, params });
       this.child.stdio[3].write(`${JSON.stringify({ id, method, params, ...(sessionId ? { sessionId } : {}) })}\0`);
     });
   }
   async evaluate(expression, sessionId) {
     const response = await this.request('Runtime.evaluate', { expression, awaitPromise: true, returnByValue: true, userGesture: true }, sessionId);
-    if (response.result.exceptionDetails) throw new Error(response.result.exceptionDetails.text || 'Browser evaluation failed');
+    if (response.result.exceptionDetails) throw new Error(response.result.exceptionDetails.text || `Browser evaluation failed: ${expression}`);
     return response.result.result.value;
   }
 }
@@ -92,26 +92,79 @@ test('responsive reader navigation, search, progress, missing anchors, and safe 
     sessionId = attachedTarget.sessionId;
     await cdp.request('Page.enable', {}, sessionId);
     await cdp.request('Runtime.enable', {}, sessionId);
-    const orderedPathId='hm:path:e2e-ordered', orderedTopicIds=['hm:topic:verify-ai-work','hm:topic:ai-news-industry','hm:topic:ai-agents-automation'];
+    const orderedPathId='hm:path:e2e-ordered', conflictingPathId='hm:path:e2e-conflicting';
+    const orderedTopicIds=['hm:topic:verify-ai-work','hm:topic:ai-news-industry','hm:topic:ai-agents-automation'];
+    const conflictingTopicIds=['hm:topic:verify-ai-work','hm:topic:ai-agents-automation','hm:topic:ai-news-industry'];
     const orderedTopics=orderedTopicIds.map(id=>catalog.topics.find(topic=>topic.topic_id===id)); assert.ok(orderedTopics.every(Boolean));
-    const injectPath=`(()=>{const original=window.fetch.bind(window);window.fetch=(...args)=>original(...args).then(async response=>{if(!String(args[0]).includes('pilot-catalog.json'))return response;const data=await response.json();data.learning_paths.push({path_id:ñPATHñ,title:'Browser test ordered path',ordered_topic_ids:ñTOPICSñ});return new Response(JSON.stringify(data),{status:200,headers:{'Content-Type':'application/json'}})});})()`.replace('ñPATHñ',JSON.stringify(orderedPathId)).replace('ñTOPICSñ',JSON.stringify(orderedTopicIds));
+    const progressArticleId=catalog.relationships.find(relation=>relation.from_id===orderedTopicIds[0]&&catalog.articles.some(article=>article.article_id===relation.to_id))?.to_id; assert.ok(progressArticleId);
+    const e2ePaths=[
+      {path_id:orderedPathId,title:'Browser test ordered path',ordered_topic_ids:orderedTopicIds},
+      {path_id:conflictingPathId,title:'Browser test conflicting path',ordered_topic_ids:conflictingTopicIds},
+    ];
+    const injectPath=`(()=>{const original=window.fetch.bind(window);window.fetch=(...args)=>original(...args).then(async response=>{if(!String(args[0]).includes('pilot-catalog.json'))return response;const data=await response.json();data.learning_paths.push(...ñPATHSñ);const revision=JSON.parse(localStorage.getItem('hm-test-revision-overrides')||'{}');const topic=data.topics.find(t=>t.topic_id===ñTOPICñ);if(revision.topicRevision!==undefined)topic.topic_revision=revision.topicRevision;const article=data.articles.find(a=>a.article_id===ñARTICLEñ);if(revision.articleRevision!==undefined)article.article_revision=revision.articleRevision;return new Response(JSON.stringify(data),{status:200,headers:{'Content-Type':'application/json'}})});})()`
+      .replace('ñPATHSñ',JSON.stringify(e2ePaths)).replace('ñTOPICñ',JSON.stringify(orderedTopicIds[0])).replace('ñARTICLEñ',JSON.stringify(progressArticleId));
     await cdp.request('Page.addScriptToEvaluateOnNewDocument',{source:injectPath},sessionId);
-    const topicUrl=new URL(`/knowledge-textbook/?topic=${encodeURIComponent(orderedTopicIds[0])}&path=${encodeURIComponent(orderedPathId)}`,base).href;
+    const topicUrl=new URL(`/knowledge-textbook/?topic=${encodeURIComponent(orderedTopicIds[0])}`,base).href;
     await cdp.request('Page.navigate', { url: topicUrl }, sessionId);
     await waitFor(cdp, `document.querySelector('#snapshot-label')?.textContent || ''`, sessionId, value => value.includes('ข้อมูล'));
     await waitFor(cdp, `document.querySelectorAll('#reader-content .source-card').length`, sessionId, value => value === 5);
     assert.match(await cdp.evaluate(`document.querySelector('#search-form').textContent`, sessionId), /ค้นหา/);
     assert.match(await cdp.evaluate(`document.querySelector('#reader-content').textContent`, sessionId), /ข้อจำกัดของต้นแบบ/);
     assert.equal(await cdp.evaluate(`Array.from(document.querySelectorAll('#reader-content .source-link')).every(a=>new URL(a.href).hostname==='hybridmind.online'&&a.target==='_blank'&&a.rel.includes('noopener'))`, sessionId), true);
-    assert.equal(await cdp.evaluate(`document.querySelectorAll('#learning-paths .learning-path-card').length`, sessionId), 2);
+    assert.equal(await cdp.evaluate(`document.querySelectorAll('#learning-paths .learning-path-card').length`, sessionId), 3);
     assert.match(await cdp.evaluate(`document.querySelector('#learning-paths').textContent`, sessionId), /เส้นทางการเรียนรู้/);
+    assert.equal(await cdp.evaluate(`new URL(location.href).searchParams.has('path')===false&&document.querySelector('.topic-pager')===null&&document.querySelector('.active-path-label').textContent.startsWith('Choose a learning path')`,sessionId),true,'a bare topic route must not auto-select a path');
+    assert.equal(await cdp.evaluate(`document.querySelectorAll('.topic-path-choice').length`,sessionId),3);
+    await cdp.evaluate(`document.querySelector('[data-path-id="${orderedPathId}"]').click()`,sessionId);
+    await waitFor(cdp,`new URL(location.href).searchParams.get('path')`,sessionId,value=>value===orderedPathId);
+    assert.equal(await cdp.evaluate(`document.querySelector('.active-path-label').textContent`,sessionId),'Active learning path: Browser test ordered path');
     assert.equal(await cdp.evaluate(`document.querySelector('.topic-pager a:last-child')?.textContent`,sessionId),`ถัดไป: ${orderedTopics[1].label_th||orderedTopics[1].label_en||orderedTopics[1].topic_id} →`);
+    await cdp.evaluate(`document.querySelector('[data-path-id="${conflictingPathId}"]').click()`,sessionId);
+    await waitFor(cdp,`new URL(location.href).searchParams.get('path')`,sessionId,value=>value===conflictingPathId);
+    assert.equal(await cdp.evaluate(`document.querySelector('.active-path-label').textContent`,sessionId),'Active learning path: Browser test conflicting path');
+    assert.equal(await cdp.evaluate(`document.querySelector('.topic-pager a:last-child')?.getAttribute('href')`,sessionId),`/knowledge-textbook/?topic=${encodeURIComponent(conflictingTopicIds[1])}&path=${encodeURIComponent(conflictingPathId)}`,'conflicting path order must determine the next topic');
+    await cdp.evaluate(`document.querySelector('[data-path-id="${orderedPathId}"]').click()`,sessionId);
+    await waitFor(cdp,`new URL(location.href).searchParams.get('path')`,sessionId,value=>value===orderedPathId);
     await cdp.evaluate(`document.querySelector('.topic-pager a:last-child').click()`,sessionId);
     await waitFor(cdp,`new URL(location.href).searchParams.get('topic')`,sessionId,value=>value===orderedTopicIds[1]);
     assert.equal(await cdp.evaluate(`document.querySelector('.topic-pager a:first-child')?.textContent`,sessionId),`← ก่อนหน้า: ${orderedTopics[0].label_th||orderedTopics[0].label_en||orderedTopics[0].topic_id}`);
     assert.equal(await cdp.evaluate(`document.querySelector('.topic-pager a:last-child')?.textContent`,sessionId),`ถัดไป: ${orderedTopics[2].label_th||orderedTopics[2].label_en||orderedTopics[2].topic_id} →`);
+    // Completion follows explicit topic revisions; last-view freshness follows article revisions.
+    await cdp.evaluate("history.pushState({},'',location.pathname+'?topic=hm%3Atopic%3Averify-ai-work&path=hm%3Apath%3Ae2e-ordered');window.dispatchEvent(new PopStateEvent('popstate'))", sessionId);
+    await waitFor(cdp, 'new URL(location.href).searchParams.get(\'topic\')', sessionId, value => value === orderedTopicIds[0]);
+    const progressKey = 'hm-reading:' + orderedTopicIds[0], progressKeyJson = JSON.stringify('hm-reading:' + orderedTopicIds[0]);
+    const progressValue = 'JSON.parse(localStorage.getItem(' + progressKeyJson + '))';
+    await cdp.evaluate('document.querySelector(\'#progress-opt-in\').click()', sessionId);
+    await waitFor(cdp, 'localStorage.getItem(' + progressKeyJson + ')', sessionId);
+    assert.equal(await cdp.evaluate('localStorage.getItem(\'hm-reading:consent\')===\'yes\'&&Array.isArray(' + progressValue + '.completionEvents)&&Object.hasOwn(' + progressValue + ',\'lastViewedSectionId\')', sessionId), true);
+    await cdp.evaluate('document.querySelector(\'.complete-topic\').click()', sessionId);
+    assert.equal(await cdp.evaluate(progressValue + '.completionEvents.length===1&&' + progressValue + '.completionEvents[0].topicRevision===\'1\'&&document.querySelector(\'.complete-topic\').getAttribute(\'aria-pressed\')===\'true\'', sessionId), true);
+    await cdp.evaluate('localStorage.setItem(\'hm-test-revision-overrides\',JSON.stringify({articleRevision:\'browser-article-revision-2\'}));location.reload()', sessionId);
+    await waitFor(cdp, 'document.querySelector(\'.complete-topic\')?.getAttribute(\'aria-pressed\')||\'\'', sessionId, value => value === 'true');
+    assert.equal(await cdp.evaluate('document.querySelector(\'.updated-note\')!==null&&document.querySelector(\'.completion-note\').textContent.includes(\'topic revision 1\')&&' + progressValue + '.completionEvents.length===1', sessionId), true, 'article revision changes must not invalidate topic-revision completion');
+    await cdp.evaluate('localStorage.setItem(\'hm-test-revision-overrides\',JSON.stringify({articleRevision:\'browser-article-revision-2\',topicRevision:2}));location.reload()', sessionId);
+    await waitFor(cdp, 'document.querySelector(\'.review-needed\')?.textContent||\'\'', sessionId, value => value.includes('previously completed at topic revision 1'));
+    assert.equal(await cdp.evaluate('document.querySelector(\'.complete-topic\').getAttribute(\'aria-pressed\')===\'false\'&&' + progressValue + '.completionEvents.length===1', sessionId), true);
+    await cdp.evaluate('document.querySelector(\'.complete-topic\').click();document.querySelector(\'.complete-topic\').click();document.querySelector(\'.complete-topic\').click()', sessionId);
+    assert.equal(await cdp.evaluate('(()=>{const e=' + progressValue + '.completionEvents;return e.length===4&&e.map(x=>x.status).join(\',\')===\'completed,completed,incomplete,completed\'&&e.map(x=>x.topicRevision).join(\',\')===\'1,2,2,2\'&&document.querySelector(\'.complete-topic\').getAttribute(\'aria-pressed\')===\'true\'})()', sessionId), true, 'completion toggles must append revision-stamped history events');
+    await cdp.evaluate('localStorage.setItem(' + progressKeyJson + ',JSON.stringify({revision:\'old-revision\',sectionId:\'legacy-section\',savedAt:new Date().toISOString()}));location.reload()', sessionId);
+    await waitFor(cdp, 'document.querySelector(\'#progress-opt-in\')?.checked', sessionId);
+    assert.equal(await cdp.evaluate('document.querySelector(\'.updated-note\')!==null&&' + progressValue + '.lastViewedSectionId===\'legacy-section\'&&Array.isArray(' + progressValue + '.completionEvents)&&' + progressValue + '.completionEvents.length===0&&!Object.hasOwn(' + progressValue + ',\'sectionId\')&&!Object.hasOwn(' + progressValue + ',\'completed\')', sessionId), true);
+    await cdp.evaluate('document.querySelector(\'.reset-progress\').click()', sessionId);
+    assert.equal(await cdp.evaluate('Object.keys(localStorage).filter(k=>k.startsWith(\'hm-reading:\')).length===0&&!document.querySelector(\'#progress-opt-in\').checked', sessionId), true);
+    await cdp.evaluate('localStorage.removeItem(\'hm-test-revision-overrides\');history.pushState({},\'\',location.pathname+\'?topic=hm%3Atopic%3Aai-agents-automation\');window.dispatchEvent(new PopStateEvent(\'popstate\'))', sessionId);
+    const afterResetKeyJson = JSON.stringify('hm-reading:hm:topic:ai-agents-automation');
+    await delay(100); assert.equal(await cdp.evaluate('localStorage.getItem(' + progressKeyJson + ')===null&&localStorage.getItem(\'hm-reading:consent\')===null', sessionId), true);
+    await cdp.evaluate('document.querySelector(\'#progress-opt-in\').click()', sessionId);
+    await waitFor(cdp, 'localStorage.getItem(' + afterResetKeyJson + ')', sessionId);
+
     await cdp.evaluate(`history.back()`,sessionId); await waitFor(cdp,`new URL(location.href).searchParams.get('topic')`,sessionId,value=>value===orderedTopicIds[0]);
     assert.equal(await cdp.evaluate(`document.querySelector('#search-input').labels.length>0 && document.querySelector('#search-results').getAttribute('aria-live')==='polite'`,sessionId),true);
+    await cdp.evaluate(`document.querySelector('.reset-progress').click();localStorage.removeItem('hm-test-revision-overrides')`,sessionId);
+    const screenshotUrl = new URL(topicUrl); screenshotUrl.searchParams.set('path', orderedPathId);
+    await cdp.request('Page.navigate', { url: screenshotUrl.href }, sessionId);
+    await waitFor(cdp,`new URL(location.href).searchParams.get('path')`,sessionId,value=>value===orderedPathId);
+    await cdp.evaluate(`window.scrollTo(0,0)`,sessionId);
 
     // Capture the rendered prototype at desktop and phone widths for the handoff.
     const screenshotDir = join(root, 'artifacts', 'screenshots'); mkdirSync(screenshotDir, { recursive: true });
@@ -159,23 +212,6 @@ test('responsive reader navigation, search, progress, missing anchors, and safe 
     await waitFor(cdp, `location.search`, sessionId, value => value.includes('ai-news-industry'));
     await cdp.evaluate(`history.forward()`, sessionId);
     await waitFor(cdp, `location.search`, sessionId, value => value.includes('ai-agents-automation'));
-
-    // Opt-in stores only device-local progress, reports revision changes, and reset clears it.
-    await cdp.evaluate(`document.querySelector('#progress-opt-in').click()`, sessionId);
-    const progressKey = 'hm-reading:hm:topic:ai-agents-automation';
-    await waitFor(cdp, `localStorage.getItem('${progressKey}')`, sessionId);
-    assert.equal(await cdp.evaluate(`localStorage.getItem('hm-reading:consent')==='yes'&&JSON.parse(localStorage.getItem('${progressKey}')).completed===false&&Object.hasOwn(JSON.parse(localStorage.getItem('${progressKey}')),'lastViewedSectionId')`,sessionId),true);
-    await cdp.evaluate(`document.querySelector('.complete-topic').click()`,sessionId);
-    assert.equal(await cdp.evaluate(`JSON.parse(localStorage.getItem('${progressKey}')).completed===true`,sessionId),true);
-    await cdp.evaluate(`localStorage.setItem('${progressKey}',JSON.stringify({revision:'old-revision',sectionId:'legacy-section',savedAt:new Date().toISOString()}));location.reload()`,sessionId);
-    await waitFor(cdp,`document.querySelector('#progress-opt-in')?.checked`,sessionId);
-    assert.equal(await cdp.evaluate(`document.querySelector('.updated-note')!==null&&JSON.parse(localStorage.getItem('${progressKey}')).lastViewedSectionId==='legacy-section'&&JSON.parse(localStorage.getItem('${progressKey}')).completed===false&&!Object.hasOwn(JSON.parse(localStorage.getItem('${progressKey}')),'sectionId')`,sessionId),true);
-    await cdp.evaluate(`document.querySelector('.reset-progress').click()`,sessionId);
-    assert.equal(await cdp.evaluate(`Object.keys(localStorage).filter(k=>k.startsWith('hm-reading:')).length===0&&!document.querySelector('#progress-opt-in').checked`,sessionId),true);
-    await cdp.evaluate(`history.pushState({},'',location.pathname+'?topic=hm%3Atopic%3Aai-agents-automation');window.dispatchEvent(new PopStateEvent('popstate'))`,sessionId);
-    await delay(100); assert.equal(await cdp.evaluate(`localStorage.getItem('${progressKey}')===null&&localStorage.getItem('hm-reading:consent')===null`,sessionId),true);
-    await cdp.evaluate(`document.querySelector('#progress-opt-in').click()`,sessionId);
-    await waitFor(cdp,`localStorage.getItem('${progressKey}')`,sessionId);
 
     // Stable section routes display the unverified-anchor warning and canonical link without an invented fragment.
     const sampleSection = catalog.sections.find(section => section.article_id === 'hm:article:1077');
