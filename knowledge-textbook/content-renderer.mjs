@@ -27,7 +27,17 @@ function validBlock(block) {
   const str = x => typeof x === 'string';
   switch (block.type) {
     case 'heading': allowedKeys(block, ['type','level','text','anchor'], 'heading'); assert([2,3,4,5,6].includes(block.level) && str(block.text), 'invalid heading'); break;
-    case 'paragraph': allowedKeys(block, ['type','text','links'], 'paragraph'); assert(str(block.text), 'invalid paragraph'); for (const l of block.links ?? []) { allowedKeys(l, ['text','url'], 'link'); assert(str(l.text) && safeContentLinkUrl(l.url), 'unsafe or invalid link'); } break;
+    case 'paragraph': {
+      allowedKeys(block, ['type','text','links'], 'paragraph'); assert(str(block.text), 'invalid paragraph');
+      let lastEnd = 0;
+      for (const l of block.links ?? []) {
+        allowedKeys(l, ['text','url','start','end'], 'link');
+        assert(str(l.text) && safeContentLinkUrl(l.url), 'unsafe or invalid link');
+        assert(Number.isInteger(l.start) && Number.isInteger(l.end) && l.start >= lastEnd && l.end > l.start && l.end <= block.text.length && block.text.slice(l.start,l.end) === l.text, 'link text offsets do not match paragraph');
+        lastEnd = l.end;
+      }
+      break;
+    }
     case 'list': allowedKeys(block, ['type','ordered','items'], 'list'); assert(typeof block.ordered === 'boolean' && Array.isArray(block.items) && block.items.every(str), 'invalid list'); break;
     case 'quote': allowedKeys(block, ['type','text','attribution'], 'quote'); assert(str(block.text) && (block.attribution === undefined || str(block.attribution)), 'invalid quote'); break;
     case 'code': allowedKeys(block, ['type','code','language'], 'code'); assert(str(block.code) && (block.language === undefined || str(block.language)), 'invalid code'); break;
@@ -82,8 +92,12 @@ export function renderStructuredContent(entry, { document, sourceArticle } = {})
     let node;
     if (block.type === 'heading') { node = document.createElement(`h${block.level}`); node.textContent = block.text; if (block.anchor) node.id = block.anchor; }
     else if (block.type === 'paragraph') {
-      node = document.createElement('p'); node.append(document.createTextNode(block.text));
-      for (const link of block.links ?? []) { node.append(document.createTextNode(' ')); const a = document.createElement('a'); a.textContent = link.text; a.href = safeContentLinkUrl(link.url); a.target = '_blank'; a.rel = 'noopener noreferrer'; node.append(a); }
+      node = document.createElement('p'); let cursor = 0;
+      for (const link of block.links ?? []) {
+        if (link.start > cursor) node.append(document.createTextNode(block.text.slice(cursor, link.start)));
+        const a = document.createElement('a'); a.textContent = link.text; a.href = safeContentLinkUrl(link.url); a.target = '_blank'; a.rel = 'noopener noreferrer'; node.append(a); cursor = link.end;
+      }
+      if (cursor < block.text.length || !block.links?.length) node.append(document.createTextNode(block.text.slice(cursor)));
     } else if (block.type === 'list') { node = document.createElement(block.ordered ? 'ol' : 'ul'); for (const text of block.items) { const li = document.createElement('li'); li.textContent = text; node.append(li); } }
     else if (block.type === 'quote') { node = document.createElement('blockquote'); const p = document.createElement('p'); p.textContent = block.text; node.append(p); if (block.attribution) { const cite = document.createElement('cite'); cite.textContent = block.attribution; node.append(cite); } }
     else if (block.type === 'code') { node = document.createElement('pre'); const code = document.createElement('code'); code.textContent = block.code; if (block.language) code.className = `language-${block.language.replace(/[^a-z0-9_-]/gi, '')}`; node.append(code); }

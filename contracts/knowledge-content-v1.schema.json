@@ -31,6 +31,6 @@
     "code": { "type": "object", "additionalProperties": false, "required": ["type", "code"], "properties": { "type": { "const": "code" }, "code": { "type": "string" }, "language": { "type": "string" } } },
     "image": { "type": "object", "additionalProperties": false, "required": ["type", "src", "alt"], "properties": { "type": { "const": "image" }, "src": { "type": "string", "format": "uri" }, "alt": { "type": "string" }, "caption": { "type": "string" } } },
     "fallback": { "type": "object", "additionalProperties": false, "required": ["type", "label", "summary", "source_block_type"], "properties": { "type": { "const": "interactive_fallback" }, "label": { "type": "string" }, "summary": { "type": "string" }, "source_block_type": { "type": "string" } } },
-    "link": { "type": "object", "additionalProperties": false, "required": ["text", "url"], "properties": { "text": { "type": "string" }, "url": { "type": "string", "format": "uri" } } }
+    "link": { "type": "object", "additionalProperties": false, "required": ["text", "url", "start", "end"], "properties": { "text": { "type": "string" }, "url": { "type": "string", "format": "uri" }, "start": { "type": "integer", "minimum": 0 }, "end": { "type": "integer", "minimum": 1 } } }
   }
 }

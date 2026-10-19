@@ -11,7 +11,7 @@ export function normalizeExportBlock(block) {
   const attrs = block?.attrs ?? {};
   const text = String(block?.text ?? block?.content ?? '');
   if (name === 'core/heading' || name === 'heading') return { type: 'heading', level: Number(attrs.level ?? block.level ?? 2), text, ...(attrs.anchor || block.anchor ? { anchor: String(attrs.anchor ?? block.anchor) } : {}) };
-  if (name === 'core/paragraph' || name === 'paragraph') return { type: 'paragraph', text, links: (block.links ?? []).map(l => ({ text: String(l.text ?? ''), url: String(l.url ?? '') })) };
+  if (name === 'core/paragraph' || name === 'paragraph') return { type: 'paragraph', text, links: (block.links ?? []).map(l => ({ text: String(l.text ?? ''), url: String(l.url ?? ''), start: Number(l.start), end: Number(l.end) })) };
   if (name === 'core/list' || name === 'list') return { type: 'list', ordered: Boolean(attrs.ordered ?? block.ordered), items: (block.items ?? []).map(x => String(typeof x === 'string' ? x : x?.text ?? '')) };
   if (name === 'core/quote' || name === 'quote') return { type: 'quote', text, ...(block.attribution ? { attribution: String(block.attribution) } : {}) };
   if (name === 'core/code' || name === 'core/preformatted' || name === 'code') return { type: 'code', code: String(block.code ?? text), ...(block.language ? { language: String(block.language) } : {}) };

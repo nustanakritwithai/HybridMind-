@@ -32,13 +32,13 @@ test('renderer creates only text and allowlisted elements; untrusted text remain
   const tree = renderStructuredContent(fixture, { document: documentMock, sourceArticle: catalog.articles.find(a => a.article_id === fixture.article_id) });
   assert.deepEqual(tree.children.map(node => node.tagName), ['h2','p','ol','blockquote','pre','figure','aside']);
   const paragraph = tree.children[1];
-  assert.equal(paragraph.children[0].textContent, fixture.blocks[1].text);
-  assert.equal(paragraph.children[1].tagName, '#text');
-  const link = paragraph.children[2];
+  assert.equal(paragraph.children[0].textContent, fixture.blocks[1].text.slice(0,74));
+  const link = paragraph.children[1];
   assert.equal(link.tagName, 'a');
-  assert.equal(link.href, 'https://hybridmind.online/example/');
+  assert.equal(link.href, 'https://example.org/citation');
   assert.equal(link.target, '_blank');
   assert.equal(link.rel, 'noopener noreferrer');
+  assert.equal(paragraph.children[2].textContent, fixture.blocks[1].text.slice(97));
   assert.equal(tree.children[4].children[0].textContent, fixture.blocks[4].code);
   assert.equal(tree.children[5].children[0].src, fixture.blocks[5].src);
   assert.equal(tree.children[6].children[0].textContent, fixture.blocks[6].label);
@@ -56,6 +56,7 @@ test('URL policy rejects unsafe links, hosts, credentials, ports and image paths
 test('malicious block URLs are rejected and source metadata must match public projection', () => {
   for (const bad of [
     { ...fixture, blocks: [{ type: 'paragraph', text: 'x', links: [{ text: 'x', url: 'javascript:alert(1)' }] }] },
+    { ...fixture, blocks: [{ type: 'paragraph', text: 'citation here', links: [{ text: 'citation', url: 'https://example.org/', start: 1, end: 4 }] }] },
     { ...fixture, blocks: [{ type: 'image', src: 'https://evil.test/wp-content/uploads/a.png', alt: 'x' }] },
     { ...fixture, blocks: [{ type: 'mystery', html: '<script/>' }] },
     { ...fixture, source_hash: 'not-a-hash' },

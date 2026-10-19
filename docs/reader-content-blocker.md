@@ -24,7 +24,7 @@ node scripts/import-structured-content.mjs <wordpress-export.json> <article-bund
 
 The output is a one-article bundle. Combine only validated `articles` entries into `offline/pilot-content-bundle.json`; the build validates that bundle against `contracts/knowledge-content-bundle-v1.schema.json`, rejects fixtures and excludes articles absent from the public projection. Then rebuild and run the reader locally. The importer does not fetch WordPress, bypass the current network restriction, or mutate the site.
 
-Known renderer scope: headings, paragraphs with safe same-site links, lists, quotations, code, and upload images are rendered as DOM nodes with `textContent`. Unknown Gutenberg blocks become a static explanatory note with their HTML/payload discarded; the original article link remains available for interactive use. This is a safe fallback, not playback of the original interactive block.
+Known renderer scope: headings, paragraphs with checked inline link offsets and credential-free HTTPS links, lists, quotations, code, and canonical upload images are rendered as DOM nodes with `textContent`. Unknown Gutenberg blocks become a static explanatory note with their HTML/payload discarded; the original article link remains available for interactive use. This is a safe fallback, not playback of the original interactive block.
 
 ## Safe completion criteria
 

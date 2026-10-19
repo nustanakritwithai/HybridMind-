@@ -9,7 +9,7 @@
   "fixture_notice": "Synthetic test fixture only. This is not a WordPress export or article content.",
   "blocks": [
     { "type": "heading", "level": 2, "text": "Synthetic fixture heading", "anchor": "fixture-heading" },
-    { "type": "paragraph", "text": "Synthetic paragraph fixture with <script>alert(1)</script> as inert text.", "links": [{ "text": "Allowed local source", "url": "https://hybridmind.online/example/" }] },
+    { "type": "paragraph", "text": "Synthetic paragraph fixture with <script>alert(1)</script> as inert text. Allowed external source.", "links": [{ "text": "Allowed external source", "url": "https://example.org/citation", "start": 74, "end": 97 }] },
     { "type": "list", "ordered": true, "items": ["Synthetic item one", "Synthetic item two"] },
     { "type": "quote", "text": "Synthetic quotation fixture", "attribution": "Fixture author" },
     { "type": "code", "language": "text", "code": "<img src=x onerror=alert(1)>" },
