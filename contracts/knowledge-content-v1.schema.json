@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hybridmind.online/schemas/knowledge-content-v1.json",
+  "title": "HybridMind structured article content envelope",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "article_id", "canonical_url", "source_revision", "source_hash", "imported_at", "provenance", "blocks"],
+  "properties": {
+    "schema_version": { "const": "1.0.0" },
+    "article_id": { "type": "string", "pattern": "^hm:article:[0-9]+$" },
+    "canonical_url": { "type": "string", "format": "uri" },
+    "source_revision": { "type": "string", "minLength": 1 },
+    "source_hash": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+    "imported_at": { "type": "string", "format": "date-time" },
+    "provenance": { "enum": ["wordpress_export", "test_fixture"] },
+    "fixture_notice": { "type": "string" },
+    "blocks": { "type": "array", "items": { "oneOf": [
+      { "$ref": "#/$defs/heading" }, { "$ref": "#/$defs/paragraph" }, { "$ref": "#/$defs/list" },
+      { "$ref": "#/$defs/quote" }, { "$ref": "#/$defs/code" }, { "$ref": "#/$defs/image" }, { "$ref": "#/$defs/fallback" }
+    ] } }
+  },
+  "allOf": [
+    { "if": { "properties": { "provenance": { "const": "test_fixture" } }, "required": ["provenance"] }, "then": { "required": ["fixture_notice"] } },
+    { "if": { "properties": { "provenance": { "const": "wordpress_export" } }, "required": ["provenance"] }, "then": { "not": { "required": ["fixture_notice"] } } }
+  ],
+  "$defs": {
+    "heading": { "type": "object", "additionalProperties": false, "required": ["type", "level", "text"], "properties": { "type": { "const": "heading" }, "level": { "enum": [2,3,4,5,6] }, "text": { "type": "string" }, "anchor": { "type": "string" } } },
+    "paragraph": { "type": "object", "additionalProperties": false, "required": ["type", "text"], "properties": { "type": { "const": "paragraph" }, "text": { "type": "string" }, "links": { "type": "array", "items": { "$ref": "#/$defs/link" } } } },
+    "list": { "type": "object", "additionalProperties": false, "required": ["type", "ordered", "items"], "properties": { "type": { "const": "list" }, "ordered": { "type": "boolean" }, "items": { "type": "array", "items": { "type": "string" } } } },
+    "quote": { "type": "object", "additionalProperties": false, "required": ["type", "text"], "properties": { "type": { "const": "quote" }, "text": { "type": "string" }, "attribution": { "type": "string" } } },
+    "code": { "type": "object", "additionalProperties": false, "required": ["type", "code"], "properties": { "type": { "const": "code" }, "code": { "type": "string" }, "language": { "type": "string" } } },
+    "image": { "type": "object", "additionalProperties": false, "required": ["type", "src", "alt"], "properties": { "type": { "const": "image" }, "src": { "type": "string", "format": "uri" }, "alt": { "type": "string" }, "caption": { "type": "string" } } },
+    "fallback": { "type": "object", "additionalProperties": false, "required": ["type", "label", "summary", "source_block_type"], "properties": { "type": { "const": "interactive_fallback" }, "label": { "type": "string" }, "summary": { "type": "string" }, "source_block_type": { "type": "string" } } },
+    "link": { "type": "object", "additionalProperties": false, "required": ["text", "url"], "properties": { "text": { "type": "string" }, "url": { "type": "string", "format": "uri" } } }
+  }
+}

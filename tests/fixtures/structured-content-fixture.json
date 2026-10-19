@@ -1,0 +1,19 @@
+{
+  "schema_version": "1.0.0",
+  "article_id": "hm:article:1077",
+  "canonical_url": "https://hybridmind.online/2026/10/13/verify-ai-answers-facts-numbers-citations/",
+  "source_revision": "2026-10-14T02:14:19.000Z",
+  "source_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "imported_at": "2026-10-19T00:00:00.000Z",
+  "provenance": "test_fixture",
+  "fixture_notice": "Synthetic test fixture only. This is not a WordPress export or article content.",
+  "blocks": [
+    { "type": "heading", "level": 2, "text": "Synthetic fixture heading", "anchor": "fixture-heading" },
+    { "type": "paragraph", "text": "Synthetic paragraph fixture with <script>alert(1)</script> as inert text.", "links": [{ "text": "Allowed local source", "url": "https://hybridmind.online/example/" }] },
+    { "type": "list", "ordered": true, "items": ["Synthetic item one", "Synthetic item two"] },
+    { "type": "quote", "text": "Synthetic quotation fixture", "attribution": "Fixture author" },
+    { "type": "code", "language": "text", "code": "<img src=x onerror=alert(1)>" },
+    { "type": "image", "src": "https://hybridmind.online/wp-content/uploads/fixture.png", "alt": "Synthetic fixture image", "caption": "Fixture only" },
+    { "type": "interactive_fallback", "label": "Static fallback fixture", "summary": "An unsupported interactive block is represented by this static fixture.", "source_block_type": "core/custom-interactive" }
+  ]
+}

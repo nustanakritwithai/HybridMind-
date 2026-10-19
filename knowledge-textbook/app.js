@@ -1,15 +1,16 @@
 import { searchCatalog } from '../search/local-search.mjs';
 import { safeCanonicalUrl } from '../search/safe-url.mjs';
+import { validateContentBundle, renderStructuredContent } from './content-renderer.mjs';
 
 const $ = (s, root = document) => root.querySelector(s);
-const state = { catalog: null, topicId: null, sectionId: null, invalidSection: false, progressEnabled: false, skipNextProgressSave: false };
+const state = { catalog: null, contentById: new Map(), topicId: null, sectionId: null, pathId: null, invalidSection: false, progressEnabled: false, progressPaused: false };
 const emptyCatalog = { snapshot: { captured_at: null, coverage_complete: false }, topics: [], articles: [], sections: [], learning_paths: [], relationships: [] };
 const text = value => String(value ?? '');
 function el(tag, value, cls) { const n = document.createElement(tag); if (value !== undefined) n.textContent = text(value); if (cls) n.className = cls; return n; }
 function link(href, value, cls) { const a = el('a', value, cls); a.href = href; return a; }
 function isSafeArticle(article) { return article?.status === 'published' && article?.visibility === 'public' && article?.password_protected === false; }
 function canonicalArticleUrl(article) { return safeCanonicalUrl(article?.canonical_url); }
-function route(topicId, sectionId) { const u = new URL(location.href); u.search = ''; if (topicId) u.searchParams.set('topic', topicId); if (sectionId) u.searchParams.set('section', sectionId); return u.pathname + u.search; }
+function route(topicId, sectionId, pathId = state.pathId) { const u = new URL(location.href); u.searchParams.delete('topic'); u.searchParams.delete('section'); u.searchParams.delete('path'); if (topicId) u.searchParams.set('topic', topicId); if (sectionId) u.searchParams.set('section', sectionId); if (pathId) u.searchParams.set('path', pathId); return u.pathname + u.search; }
 function topicLabel(t) { return t?.label_th || t?.label_en || t?.topic_id || 'Untitled topic'; }
 function topicDescription(topic) {
   if (topic?.topic_id === 'hm:topic:verify-ai-work') return 'ฝึกตรวจคำตอบ AI โค้ดที่สร้างขึ้น การอ้างอิง ความสดใหม่ของเอกสาร และการอนุมัติการทำงานของเอเจนต์';
@@ -28,9 +29,13 @@ function articlesFor(topic) {
 function topicSections(topic) { const ids = new Set(articlesFor(topic).map(a => a.article_id)); return state.catalog.sections.filter(s => ids.has(s.article_id)).sort((a,b) => a.display_order - b.display_order); }
 function selectedTopic() { return state.catalog.topics.find(t => t.topic_id === state.topicId); }
 function progressKey(topic) { return `hm-reading:${topic.topic_id}`; }
-function readProgress(topic) { if (!state.progressEnabled || !topic) return null; try { return JSON.parse(localStorage.getItem(progressKey(topic)) || 'null'); } catch { return null; } }
+const consentKey = 'hm-reading:consent';
+function readProgress(topic) { if (!state.progressEnabled || !topic) return null; try { const p = JSON.parse(localStorage.getItem(progressKey(topic)) || 'null'); if (!p) return null; if (!Object.hasOwn(p,'lastViewedSectionId')) p.lastViewedSectionId=p.sectionId??null; delete p.sectionId; if (!Object.hasOwn(p,'completed')) p.completed=false; localStorage.setItem(progressKey(topic),JSON.stringify(p)); return p; } catch { return null; } }
 function topicContentRevision(topic) { return `${topic.topic_revision ?? ''}:${articlesFor(topic).map(a => `${a.article_id}@${a.article_revision ?? a.modified_at ?? ''}`).sort().join('|')}`; }
-function saveProgress(topic) { if (!state.progressEnabled || !topic) return; try { localStorage.setItem(progressKey(topic), JSON.stringify({ revision: topicContentRevision(topic), sectionId: state.sectionId, savedAt: new Date().toISOString() })); } catch {} }
+function saveProgress(topic) { if (!state.progressEnabled || state.progressPaused || !topic) return; try { const prior = readProgress(topic); localStorage.setItem(progressKey(topic), JSON.stringify({ revision: topicContentRevision(topic), lastViewedSectionId: state.sectionId || prior?.lastViewedSectionId || null, completed: prior?.completed === true, savedAt: new Date().toISOString() })); } catch {} }
+function searchParamsFromControls() { const u = new URL(location.href); for (const [key, id] of [['q','search-input'],['filterTopic','filter-topic'],['type','filter-type'],['level','filter-level'],['locale','filter-locale'],['sort','filter-sort']]) { const value = $(`#${id}`)?.value || ''; if (value) u.searchParams.set(key, value); else u.searchParams.delete(key); } return u; }
+function syncSearchUrl({ replace = false } = {}) { const u = searchParamsFromControls(); history[replace ? 'replaceState' : 'pushState']({}, '', u); }
+function restoreSearchFromUrl() { const u = new URL(location.href); for (const [key, id] of [['q','search-input'],['filterTopic','filter-topic'],['type','filter-type'],['level','filter-level'],['locale','filter-locale'],['sort','filter-sort']]) { const node = $(`#${id}`); if (node) node.value = u.searchParams.get(key) || ''; } renderSearch(); }
 function renderTopicNav(target) {
   target.replaceChildren();
   const children = new Map();
@@ -53,7 +58,7 @@ function renderLearningPaths() {
   for (const path of state.catalog.learning_paths) {
     const firstTopic = path.ordered_topic_ids[0];
     const card = el('div', undefined, 'learning-path-card');
-    if (firstTopic) card.append(link(route(firstTopic), path.title)); else card.append(el('strong', path.title));
+    if (firstTopic) card.append(link(route(firstTopic, null, path.path_id), path.title)); else card.append(el('strong', path.title));
     const goal = path.path_id === 'hm:path:verify-ai-work-basics' ? 'เรียนรู้วิธีตรวจสอบผลลัพธ์ AI ด้วยหลักฐานจากบทความที่เสนอให้ศึกษา' : path.goal;
     card.append(el('small', `${path.status === 'proposed' ? 'เส้นทางที่เสนอ' : path.status} · ${goal}`));
     target.append(card);
@@ -62,7 +67,7 @@ function renderLearningPaths() {
 function renderSearch() {
   const box = $('#search-results'); box.replaceChildren(); const q = $('#search-input').value.trim(); if (!q) return;
   let matches = [], notice = null;
-  try { const found = searchCatalog(state.catalog, q, { topicId: $('#filter-topic').value, contentType: $('#filter-type').value, difficulty: $('#filter-level').value, locale: $('#filter-locale').value, sort: 'relevance' }); matches = Array.isArray(found) ? found : found?.results || []; notice = found?.notice ?? null; } catch (err) { console.warn('Keyword search unavailable', err); }
+  try { const found = searchCatalog(state.catalog, q, { topicId: $('#filter-topic').value, contentType: $('#filter-type').value, difficulty: $('#filter-level').value, locale: $('#filter-locale').value, sort: document.querySelector('#filter-sort')?.value || 'relevance' }); matches = Array.isArray(found) ? found : found?.results || []; notice = found?.notice ?? null; } catch (err) { console.warn('Keyword search unavailable', err); }
   if (!matches.length) {
     if (notice === 'unpublished-content') box.append(el('p', 'ค้นหาเฉพาะบทความที่เผยแพร่สาธารณะ ระบบไม่แสดงฉบับร่างหรือเนื้อหาส่วนตัว', 'proposed-note'));
     box.append(el('p', 'ไม่พบผลลัพธ์ ลองใช้คำค้นอื่น', 'muted')); return;
@@ -92,9 +97,10 @@ function renderReader() {
   out.append(el('p', topic.status === 'ready' && topic.editorial_status === 'approved' ? 'หัวข้อที่ผ่านการทบทวน' : 'หัวข้อที่เสนอ | รอทบทวนโดยกองบรรณาธิการ', 'eyebrow'), el('h1', topicLabel(topic), 'reader-title'));
   const description = topicDescription(topic);
   if (description) out.append(el('p', description, 'lead'));
-  out.append(el('p', 'ข้อจำกัดของต้นแบบ: ข้อมูลที่ได้รับมีชื่อเรื่อง บทคัดย่อ และหัวข้อย่อย แต่ไม่มี HTML เนื้อหาเต็ม ไฟล์ภาพ หรือบล็อก Gutenberg ฉบับนี้จึงไม่สร้างบทเรียนทดแทน เปิดบทความต้นฉบับเพื่ออ่านเนื้อหา ภาพ และตัวอย่างโต้ตอบครบถ้วน', 'scope-note'));
+  out.append(el('p', state.contentById.size ? 'แสดงเนื้อหาที่นำเข้าจาก WordPress และผ่านการตรวจสอบสำหรับบทความที่มีข้อมูลเท่านั้น ส่วนองค์ประกอบโต้ตอบที่ไม่รองรับจะแสดงคำอธิบายแบบคงที่; เปิดต้นฉบับเพื่อใช้สื่อโต้ตอบเต็มรูปแบบ' : 'ข้อจำกัดของต้นแบบ: ข้อมูลที่ได้รับมีชื่อเรื่อง บทคัดย่อ และหัวข้อย่อย แต่ไม่มี HTML เนื้อหาเต็ม ไฟล์ภาพ หรือบล็อก Gutenberg ฉบับนี้จึงไม่สร้างบทเรียนทดแทน เปิดบทความต้นฉบับเพื่ออ่านเนื้อหา ภาพ และตัวอย่างโต้ตอบครบถ้วน', 'scope-note'));
   const prior = readProgress(topic), revision = topicContentRevision(topic);
-  if (prior) out.append(el('p', prior.revision === revision ? 'บันทึกความคืบหน้าไว้ในอุปกรณ์นี้' : 'มีการปรับปรุงหลังจากที่คุณอ่านครั้งก่อน', prior.revision === revision ? 'progress-note' : 'updated-note'));
+  if(prior){const viewed=state.catalog.sections.find(sec=>sec.section_id===(prior.lastViewedSectionId??prior.sectionId));out.append(el('p',prior.revision===revision?`อ่านล่าสุด: ${viewed?.heading_text||'จุดเริ่มต้นของหัวข้อ'} · ${prior.completed?'อ่านจบแล้ว':'ยังอ่านไม่จบ'}`:'หัวข้อนี้มีการปรับปรุงหลังจากอ่านครั้งล่าสุด',prior.revision===revision?'progress-note':'updated-note'));}
+  if (state.progressEnabled) { const status=readProgress(topic), button=el('button',status?.completed?'ยกเลิกสถานะอ่านจบ':'ทำเครื่องหมายว่าอ่านจบ','complete-topic'); button.type='button'; button.setAttribute('aria-pressed',String(status?.completed===true)); button.addEventListener('click',()=>{try{localStorage.setItem(progressKey(topic),JSON.stringify({revision:topicContentRevision(topic),lastViewedSectionId:status?.lastViewedSectionId||state.sectionId||null,completed:status?.completed!==true,savedAt:new Date().toISOString()}));}catch{}renderReader();}); out.append(button); }
   const articles = articlesFor(topic), sections = topicSections(topic);
   const subnav = el('nav', undefined, 'in-page-toc'); subnav.setAttribute('aria-label', 'สารบัญหัวข้อย่อยในบทความ');
   subnav.append(el('strong', 'เลือกดูหัวข้อย่อยของบทความ'));
@@ -117,6 +123,7 @@ function renderReader() {
   articles.forEach(a => {
     const card = el('article', undefined, 'source-card');
     card.append(el('h3', a.title));
+    const contentEntry=state.contentById.get(a.article_id); if(contentEntry?.provenance==='wordpress_export') card.append(renderStructuredContent(contentEntry,{document,sourceArticle:a}));
     if (topicArticleMapping(topic, a) !== 'approved') card.append(el('span', 'เสนอให้เชื่อมโยง | รอทบทวนโดยกองบรรณาธิการ', 'mapping-note'));
     card.append(el('p', a.summary || 'บทความจาก WordPress'));
     if (a.modified_at) card.append(el('small', `แก้ไขต้นฉบับล่าสุด: ${new Date(a.modified_at).toLocaleDateString('th-TH')}`, 'source-meta'));
@@ -129,16 +136,15 @@ function renderReader() {
     source.append(card);
   });
   out.append(source);
-  const topics = state.catalog.topics, ix = topics.findIndex(t => t.topic_id === topic.topic_id), pager = el('nav', undefined, 'topic-pager'); pager.setAttribute('aria-label', 'หัวข้อก่อนหน้าและถัดไป');
-  pager.append(topics[ix-1] ? link(route(topics[ix-1].topic_id), `← ก่อนหน้า: ${topicLabel(topics[ix-1])}`) : el('span', 'หัวข้อแรก'));
-  pager.append(topics[ix+1] ? link(route(topics[ix+1].topic_id), `ถัดไป: ${topicLabel(topics[ix+1])} →`) : el('span', 'หัวข้อสุดท้าย'));
-  out.append(pager); if (state.progressEnabled && !state.skipNextProgressSave && (!prior || prior.revision === revision)) saveProgress(topic);
+  const path = state.catalog.learning_paths.find(p => p.path_id === state.pathId), sequence = path?.ordered_topic_ids || [], ix = sequence.indexOf(topic.topic_id), prev = ix > 0 ? state.catalog.topics.find(t=>t.topic_id===sequence[ix-1]) : null, next = ix >= 0 && ix < sequence.length-1 ? state.catalog.topics.find(t=>t.topic_id===sequence[ix+1]) : null;
+  const pager = el('nav', undefined, 'topic-pager'); pager.setAttribute('aria-label', 'หัวข้อก่อนหน้าและถัดไปในเส้นทางการเรียนรู้');
+  pager.append(prev ? link(route(prev.topic_id, null, path.path_id), `← ก่อนหน้า: ${topicLabel(prev)}`) : el('span', 'จุดเริ่มต้นของเส้นทางการเรียนรู้'));
+  pager.append(next ? link(route(next.topic_id, null, path.path_id), `ถัดไป: ${topicLabel(next)} →`) : el('span', 'สิ้นสุดเส้นทางการเรียนรู้'));  out.append(pager); if (state.progressEnabled && !state.progressPaused && (!prior || prior.revision === revision)) saveProgress(topic);
 }
 function syncRoute({ userNavigation = false } = {}) {
-  const u = new URL(location.href), topics = state.catalog.topics; state.topicId = u.searchParams.get('topic') || topics[0]?.topic_id || null; state.sectionId = u.searchParams.get('section');
+  const u = new URL(location.href), topics = state.catalog.topics; state.topicId = u.searchParams.get('topic') || topics[0]?.topic_id || null; state.sectionId = u.searchParams.get('section'); const paths = state.catalog.learning_paths.filter(p=>(p.ordered_topic_ids||[]).includes(state.topicId)).sort((a,b)=>a.path_id.localeCompare(b.path_id)); const requestedPath=u.searchParams.get('path'); state.pathId=paths.some(p=>p.path_id===requestedPath)?requestedPath:paths[0]?.path_id||null; if(requestedPath!==state.pathId){if(state.pathId)u.searchParams.set('path',state.pathId);else u.searchParams.delete('path');history.replaceState({},'',u);}
   const topic = selectedTopic(); state.invalidSection = Boolean(state.sectionId && topic && !topicSections(topic).some(s => s.section_id === state.sectionId));
   if (state.invalidSection) state.sectionId = null;
-  if (userNavigation) state.skipNextProgressSave = false;
   renderTopicNav($('#topic-toc')); renderMobileToc(); renderReader(); state.invalidSection = false;
 }
 function renderMobileToc() {
@@ -160,7 +166,7 @@ function renderMobileToc() {
   if (state.catalog.learning_paths.length) {
     const paths = el('nav', undefined, 'mobile-path-links'); paths.setAttribute('aria-label', 'เส้นทางการเรียนรู้');
     paths.append(el('strong', 'เส้นทางการเรียนรู้'));
-    for (const path of state.catalog.learning_paths) for (const topicId of path.ordered_topic_ids ?? []) paths.append(link(route(topicId), path.title));
+    for (const path of state.catalog.learning_paths) for (const topicId of path.ordered_topic_ids ?? []) paths.append(link(route(topicId, null, path.path_id), `${path.title}: ${topicLabel(state.catalog.topics.find(t=>t.topic_id===topicId))}`));
     target.append(paths);
   }
 }
@@ -168,18 +174,22 @@ async function start() {
   try { const res = await fetch('../data/pilot-catalog.json'); if (!res.ok) throw new Error(`HTTP ${res.status}`); state.catalog = await res.json(); }
   catch (err) { state.catalog = emptyCatalog; $('#reader-content').append(el('p', `Catalog unavailable (${err.message}).`, 'fallback-note')); }
   state.catalog = { ...emptyCatalog, ...state.catalog }; state.catalog.topics ||= []; state.catalog.articles ||= []; state.catalog.sections ||= []; state.catalog.relationships ||= [];
+  state.contentById = new Map(); try { const response=await fetch('../data/pilot-content-bundle.json'); if(response.ok){const bundle=await response.json();validateContentBundle(bundle,{catalog:state.catalog});state.contentById=new Map(bundle.articles.filter(entry=>entry.provenance==='wordpress_export').map(entry=>[entry.article_id,entry]));} } catch(error) { console.info('No validated WordPress content bundle; showing metadata fallback.'); }
   const snap = state.catalog.snapshot || {}; $('#snapshot-label').textContent = `ข้อมูล ${snap.captured_at ? new Date(snap.captured_at).toLocaleDateString('th-TH') : 'ไม่ทราบวันที่'} | ${snap.coverage_complete ? 'ครบตาม snapshot' : 'ข้อมูลบางส่วน'}`;
   const topicFilter = $('#filter-topic'); state.catalog.topics.forEach(t => { const option = document.createElement('option'); option.value = t.topic_id; option.textContent = topicLabel(t); topicFilter.append(option); });
-  $('#progress-controls').replaceChildren(); const label = el('label', undefined, 'progress-toggle'), input = document.createElement('input'); input.type = 'checkbox'; input.id = 'progress-opt-in'; label.append(input, document.createTextNode('บันทึกความคืบหน้าในอุปกรณ์นี้เท่านั้น')); $('#progress-controls').append(label);
-  input.addEventListener('change', () => { state.progressEnabled = input.checked; renderReader(); });
-  const reset = el('button', 'ล้างความคืบหน้า', 'reset-progress'); reset.type = 'button'; reset.addEventListener('click', () => { Object.keys(localStorage).filter(k => k.startsWith('hm-reading:')).forEach(k => localStorage.removeItem(k)); state.skipNextProgressSave = true; renderReader(); }); $('#progress-controls').append(reset);
+  const progressControls = $('#progress-controls'); progressControls.replaceChildren();
+  const label = el('label', undefined, 'progress-toggle'), input = document.createElement('input'); input.type='checkbox'; input.id='progress-opt-in';
+  try { state.progressEnabled = localStorage.getItem(consentKey) === 'yes'; } catch { state.progressEnabled = false; }
+  input.checked=state.progressEnabled; input.setAttribute('aria-label','บันทึกความคืบหน้าไว้ในอุปกรณ์นี้'); label.append(input,document.createTextNode('บันทึกความคืบหน้าไว้ในอุปกรณ์นี้')); progressControls.append(label);
+  input.addEventListener('change',()=>{state.progressEnabled=input.checked;state.progressPaused=false;try{if(input.checked)localStorage.setItem(consentKey,'yes');else localStorage.removeItem(consentKey);}catch{}renderReader();});
+  const reset=el('button','ล้างความคืบหน้าและการยินยอม','reset-progress'); reset.type='button'; reset.addEventListener('click',()=>{try{Object.keys(localStorage).filter(k=>k.startsWith('hm-reading:')).forEach(k=>localStorage.removeItem(k));}catch{}state.progressEnabled=false;state.progressPaused=true;input.checked=false;renderReader();}); progressControls.append(reset);
   const filterDisclosure = $('#filter-disclosure'), mobileLayout = matchMedia('(max-width:760px)');
   const syncFilterDisclosure = () => { filterDisclosure.open = !mobileLayout.matches; };
   syncFilterDisclosure(); mobileLayout.addEventListener('change', syncFilterDisclosure);
-  $('#search-form').addEventListener('submit', e => { e.preventDefault(); renderSearch(); }); $('#search-input').addEventListener('input', renderSearch);
-  ['filter-topic','filter-type','filter-level','filter-locale'].forEach(id => $(`#${id}`).addEventListener('change', renderSearch));
+  $('#search-form').addEventListener('submit', e => { e.preventDefault(); syncSearchUrl(); renderSearch(); }); $('#search-input').addEventListener('input', () => {renderSearch();syncSearchUrl({replace:true});});
+  ['filter-topic','filter-type','filter-level','filter-locale','filter-sort'].forEach(id => $(`#${id}`)?.addEventListener('change',()=>{renderSearch();syncSearchUrl();}));
   $('#mobile-toc').addEventListener('click', e => { if (e.target.closest('a')) $('#mobile-toc').open = false; });
   document.addEventListener('click', e => { const a = e.target.closest('a[href*="topic="]'); if (!a || e.ctrlKey || e.metaKey || e.shiftKey || e.altKey) return; const dest = new URL(a.href); if (dest.origin !== location.origin) return; e.preventDefault(); history.pushState({}, '', dest); syncRoute({ userNavigation: true }); window.scrollTo(0,0); });
-  window.addEventListener('popstate', () => syncRoute({ userNavigation: true })); syncRoute(); renderLearningPaths();
+  window.addEventListener('popstate', () => {restoreSearchFromUrl();syncRoute({userNavigation:true});}); restoreSearchFromUrl(); syncRoute(); renderLearningPaths();
 }
 start();

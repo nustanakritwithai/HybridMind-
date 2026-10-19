@@ -4,16 +4,30 @@
 
 The proposed topic `hm:topic:verify-ai-work` presents five individually verified public, non-password-protected WordPress articles: `hm:article:1077`, `1073`, `2241`, `2310`, and `2494`. Each card includes its WordPress title, snapshot excerpt, last-modified date when available, proposed-mapping status, and a hardened link to the original article. The local reader also offers stable heading IDs and a collapsible per-article outline.
 
-The supplied snapshot does not include the five article bodies, rendered Gutenberg HTML, image URLs or files, or interactive block data. It has 5,672 corpus-wide H2/H3 metadata rows, but no verified WordPress anchor IDs. The local reader therefore does not pretend that a list of headings is a complete lesson.
+The supplied snapshot does not include the five article bodies, rendered Gutenberg HTML, image URLs or files, or interactive block data. The checked local exports are the normalized inventory, mapping CSV/JSON, review flags and notes; the catalog has titles and heading metadata only, `source_hash` is null, and no verified WordPress anchor IDs are available. The local reader therefore does not present a heading list as a complete lesson.
 
 ## Retrieval attempts and blocker
 
-I attempted one anonymous read-only WordPress REST GET for verified post 1077 to determine whether the body could be fetched locally. The executor denied outbound TCP with `EACCES` before receiving an HTTP response. Direct page opens through the web retrieval tool were also unavailable. The web search index returned rendered text for some of the articles, but it did not provide a complete, attributable body/media package for all five posts or the original Gutenberg block structure.
+I attempted one anonymous read-only WordPress REST GET for verified post 1077 to determine whether the body could be fetched locally. The executor denied outbound TCP with `EACCES` before receiving an HTTP response. The available local snapshot ZIP and repository exports were checked and contain no post bodies. Search snippets do not provide a complete, attributable body/media package for all five posts or the original Gutenberg block structure.
 
-I did not assemble a local article from partial crawler text, infer missing images, or run scripts copied from WordPress. As a result, full body/media rendering and interactive Gutenberg playback are **blocked for this handoff**. WordPress remains the canonical reading destination, and every verified article card links directly to its existing HTTPS URL in a separate tab. The link is restricted to `hybridmind.online` and sets `rel="noopener noreferrer"`.
+I did not assemble a local article from partial crawler text, infer missing images, or run scripts copied from WordPress. As a result, full body/media rendering is **blocked for this handoff**. WordPress remains the canonical reading destination, and every verified article card links directly to its existing HTTPS URL in a separate tab. The link is restricted to `hybridmind.online` and sets `rel="noopener noreferrer"`.
+
+## Safe local import contract
+
+The pilot now includes a versioned entry schema (`contracts/knowledge-content-v1.schema.json`), a bundle schema, an offline-only importer (`scripts/import-structured-content.mjs`), and an allowlisted DOM renderer. Its tests use an explicitly labeled synthetic fixture; that fixture is never a build or server input. The current app fetches the optional bundle only from the fixed `/data/pilot-content-bundle.json` route and renders entries whose provenance is `wordpress_export`. If the route is absent, the metadata-only view remains available.
+
+To unblock source rendering, provide a saved structured export for each of the five IDs with: public `publish` status and `password_protected: false` checked at both enumeration and body-read time; the exact canonical URL; the public-catalog `source_revision`; a SHA-256 of the exported source payload; an import timestamp; and typed block data. Images must include canonical upload URLs, source alt text, and captions/attribution when present. The importer checks the canonical URL, public status and revision against the catalog. Run:
+
+```powershell
+node scripts/import-structured-content.mjs <wordpress-export.json> <article-bundle.json> [public-catalog.json]
+```
+
+The output is a one-article bundle. Combine only validated `articles` entries into `offline/pilot-content-bundle.json`; the build validates that bundle against `contracts/knowledge-content-bundle-v1.schema.json`, rejects fixtures and excludes articles absent from the public projection. Then rebuild and run the reader locally. The importer does not fetch WordPress, bypass the current network restriction, or mutate the site.
+
+Known renderer scope: headings, paragraphs with safe same-site links, lists, quotations, code, and upload images are rendered as DOM nodes with `textContent`. Unknown Gutenberg blocks become a static explanatory note with their HTML/payload discarded; the original article link remains available for interactive use. This is a safe fallback, not playback of the original interactive block.
 
 ## Safe completion criteria
 
-A future content export can complete this path without changing WordPress: request only these five IDs through anonymous, throttled GETs; verify `status=publish` and `password_protected=false` before and again with each body read; checkpoint each result; preserve the source URL, revision and SHA-256; then render only an explicit safe HTML/Gutenberg allowlist. Scripts, event handlers, forms, embeds and executable block payloads must not run locally. Unsupported interactive blocks should get a clear static fallback plus the original WordPress link. Images should load only from the canonical media host and retain their source alt text and attribution where present.
+A future content export can complete this path without changing WordPress: obtain the five public exports through an authorized, throttled read-only method; verify status and password protection; checkpoint each result; preserve URL, revision and source hash; then import only the structured allowlist. Scripts, event handlers, forms, embeds and executable block payloads do not run locally. Unsupported interactive blocks receive the static fallback. Images load only from the canonical uploads path and retain source alt text and captions supplied by the export.
 
 This blocker is separate from topic selection, search indexing, deep links, progress, and the metadata-only outlines, which are covered by the current prototype and tests.

@@ -4,12 +4,18 @@ import { readFile } from 'node:fs/promises';
 import { extname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { projectPublicCatalog } from './public-projection.mjs';
+import { validateContentBundle } from '../knowledge-textbook/content-renderer.mjs';
 
 const root = resolve(fileURLToPath(new URL('../', import.meta.url)));
 const offlinePath = resolve(root, 'offline/pilot-catalog-full.json');
 const catalogPath = existsSync(offlinePath) ? offlinePath : resolve(root, 'data/pilot-catalog.json');
 const clientCatalog = projectPublicCatalog(JSON.parse(await readFile(catalogPath, 'utf8')));
 const clientCatalogBytes = Buffer.from(`${JSON.stringify(clientCatalog)}\n`, 'utf8');
+const contentPath = [resolve(root, 'offline/pilot-content-bundle.json'), resolve(root, 'data/pilot-content-bundle.json')].find(existsSync);
+const clientContentBundle = contentPath
+  ? validateContentBundle(JSON.parse(await readFile(contentPath, 'utf8')), { catalog: clientCatalog })
+  : null;
+const clientContentBytes = clientContentBundle ? Buffer.from(`${JSON.stringify(clientContentBundle)}\n`, 'utf8') : null;
 const port = Number(process.env.HM_PILOT_PORT || 8000);
 const mimeTypes = new Map([
   ['.html', 'text/html; charset=utf-8'], ['.css', 'text/css; charset=utf-8'],
@@ -19,6 +25,7 @@ const staticRoutes = new Map([
   ['/knowledge-textbook/', 'knowledge-textbook/index.html'],
   ['/knowledge-textbook/index.html', 'knowledge-textbook/index.html'],
   ['/knowledge-textbook/app.js', 'knowledge-textbook/app.js'],
+  ['/knowledge-textbook/content-renderer.mjs', 'knowledge-textbook/content-renderer.mjs'],
   ['/knowledge-textbook/styles.css', 'knowledge-textbook/styles.css'],
   ['/search/local-search.mjs', 'search/local-search.mjs'],
   ['/search/safe-url.mjs', 'search/safe-url.mjs'],
@@ -38,6 +45,9 @@ const server = createServer(async (req, res) => {
     let body, contentType;
     if (pathname === '/data/pilot-catalog.json') {
       body = clientCatalogBytes; contentType = 'application/json; charset=utf-8';
+    } else if (pathname === '/data/pilot-content-bundle.json') {
+      if (!clientContentBytes) { res.writeHead(404, { 'X-Content-Type-Options': 'nosniff' }).end('Not found'); return; }
+      body = clientContentBytes; contentType = 'application/json; charset=utf-8';
     } else {
       const relative = staticRoutes.get(pathname);
       if (!relative) { res.writeHead(404, { 'X-Content-Type-Options': 'nosniff' }).end('Not found'); return; }

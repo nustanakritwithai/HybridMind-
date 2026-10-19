@@ -9,7 +9,8 @@ const root = resolve(fileURLToPath(new URL('../', import.meta.url)));
 const files = [
   'scripts/fetch-public-wp-inventory.mjs', 'scripts/ingest-public-wp.mjs', 'scripts/serve-pilot.mjs', 'scripts/validate-catalog.mjs', 'scripts/lint-pilot.mjs', 'scripts/build-pilot.mjs',
   'search/local-search.mjs', 'search/safe-url.mjs', 'search/meilisearch-adapter.mjs', 'search/typesense-adapter.mjs',
-  'scripts/public-projection.mjs', 'tests/fetch-public-wp-inventory.test.mjs', 'tests/search.test.mjs', 'tests/evaluate-search.mjs', 'tests/catalog.test.mjs', 'tests/reader-browser.test.mjs', 'tests/server.test.mjs',
+  'scripts/public-projection.mjs', 'scripts/import-structured-content.mjs', 'knowledge-textbook/content-renderer.mjs',
+  'tests/fetch-public-wp-inventory.test.mjs', 'tests/search.test.mjs', 'tests/evaluate-search.mjs', 'tests/catalog.test.mjs', 'tests/reader-browser.test.mjs', 'tests/server.test.mjs', 'tests/content-renderer.test.mjs',
   'knowledge-textbook/app.js',
 ];
 for (const file of files) {

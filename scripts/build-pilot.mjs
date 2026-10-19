@@ -5,6 +5,7 @@ import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import { projectPublicCatalog } from './public-projection.mjs';
 import { validateCatalog } from './validate-catalog.mjs';
+import { validateContentBundle } from '../knowledge-textbook/content-renderer.mjs';
 
 const root = resolve(fileURLToPath(new URL('../', import.meta.url)));
 const distRoot = resolve(root, 'dist');
@@ -21,6 +22,14 @@ const publicCatalog = projectPublicCatalog(sourceCatalog);
 const errors = validateCatalog(publicCatalog, schema);
 if (errors.length) throw new Error(`Public projection failed schema/reference validation:\n${errors.join('\n')}`);
 
+// Source bodies are optional. Only validated WordPress exports are copied into
+// the runnable package; synthetic test fixtures are never a build input.
+const contentSourcePath = resolve(root, 'offline/pilot-content-bundle.json');
+let publicContentBundle = null;
+if (existsSync(contentSourcePath)) {
+  publicContentBundle = validateContentBundle(JSON.parse(await readFile(contentSourcePath, 'utf8')), { catalog: publicCatalog });
+}
+
 await mkdir(distRoot, { recursive: true });
 await rm(target, { recursive: true, force: true });
 await mkdir(target, { recursive: true });
@@ -29,6 +38,7 @@ for (const path of ['package.json', 'contracts', 'docs', 'knowledge-textbook', '
 }
 await mkdir(resolve(target, 'data'), { recursive: true });
 await writeFile(resolve(target, 'data/pilot-catalog.json'), `${JSON.stringify(publicCatalog, null, 2)}\n`, 'utf8');
+if (publicContentBundle) await writeFile(resolve(target, 'data/pilot-content-bundle.json'), `${JSON.stringify(publicContentBundle, null, 2)}\n`, 'utf8');
 await copyFile(resolve(root, 'knowledge-textbook/README.md'), resolve(target, 'README.md'));
 
 // Ship planning references, but keep the full normalized and raw inventories

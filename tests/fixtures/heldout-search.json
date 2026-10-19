@@ -1,0 +1,104 @@
+{
+  "fixture_name": "HybridMind phase 1 held-out Thai and mixed-language search set",
+  "fixture_version": "1.0",
+  "corpus": "Five verified public pilot article rows; section labels from normalized inventory headings.",
+  "judgment_limit": "Editorial metadata-level relevance only. Article bodies were not retrieved or verified for these judgments; labels do not establish that a source fully answers the question.",
+  "cases": [
+    {
+      "case_id": "H01",
+      "query": "ตรวจตัวเลขพร้อมหน่วยและฐานเปรียบเทียบในคำตอบ AI",
+      "language_mix": "Thai",
+      "answerable": true,
+      "answerability_basis": "metadata_candidate_only",
+      "expected_article_id": "hm:article:1077",
+      "expected_article_label": "ตรวจสอบคำตอบ AI: เช็กข้อเท็จจริง ตัวเลข และอ้างอิงปลอม",
+      "expected_section_id": "hm:section:1077:h-9246a62821484677",
+      "expected_section_label": "4. ตรวจตัวเลขพร้อมหน่วยและฐานเปรียบเทียบ",
+      "body_support_verified": false
+    },
+    {
+      "case_id": "H02",
+      "query": "AI generated code read diff before running tests",
+      "language_mix": "Thai-English mixed",
+      "answerable": true,
+      "answerability_basis": "metadata_candidate_only",
+      "expected_article_id": "hm:article:1073",
+      "expected_article_label": "ตรวจโค้ดที่ AI เขียนอย่างไร: จับบั๊กด้วย 8 Tests ก่อนใช้งานจริง",
+      "expected_section_id": "hm:section:1073:h-17cb95cd3fc842fa",
+      "expected_section_label": "ขั้นที่ 2: อ่านโค้ดและ Diff ก่อนรัน",
+      "body_support_verified": false
+    },
+    {
+      "case_id": "H03",
+      "query": "citation ยังชี้ไปฉบับปัจจุบัน source revision",
+      "language_mix": "Thai-English mixed",
+      "answerable": true,
+      "answerability_basis": "metadata_candidate_only",
+      "expected_article_id": "hm:article:2241",
+      "expected_article_label": "RAG อ้างเอกสารเก่า? ตรวจ Citation ให้ตรงรุ่นด้วย SHA-256 และ UTF-8",
+      "expected_section_id": "hm:section:2241:h-f555812bea4c4ec2",
+      "expected_section_label": "ใบอ้างอิงยังชี้ไปฉบับปัจจุบันหรือไม่?",
+      "body_support_verified": false
+    },
+    {
+      "case_id": "H04",
+      "query": "UTF-8 bytes นับตำแหน่ง citation byte offset",
+      "language_mix": "Thai-English mixed",
+      "answerable": true,
+      "answerability_basis": "metadata_candidate_only",
+      "expected_article_id": "hm:article:2241",
+      "expected_article_label": "RAG อ้างเอกสารเก่า? ตรวจ Citation ให้ตรงรุ่นด้วย SHA-256 และ UTF-8",
+      "expected_section_id": "hm:section:2241:h-fca62378f09d421a",
+      "expected_section_label": "ทำไมตำแหน่งต้องนับเป็น UTF-8 bytes",
+      "body_support_verified": false
+    },
+    {
+      "case_id": "H05",
+      "query": "กรอง ID ก่อน hydration ก่อนอ่าน private document",
+      "language_mix": "Thai-English mixed",
+      "answerable": true,
+      "answerability_basis": "metadata_candidate_only",
+      "expected_article_id": "hm:article:2310",
+      "expected_article_label": "RAG ค้นเจอแล้ว อ่านได้ไหม? ตรวจสิทธิ์เอกสารก่อนส่งให้โมเดล",
+      "expected_section_id": "hm:section:2310:h-c65107c6363e45e7",
+      "expected_section_label": "กรอง ID ก่อน hydration",
+      "body_support_verified": false
+    },
+    {
+      "case_id": "H06",
+      "query": "restore action fingerprint changed action rejected",
+      "language_mix": "English with technical terms",
+      "answerable": true,
+      "answerability_basis": "metadata_candidate_only",
+      "expected_article_id": "hm:article:2494",
+      "expected_article_label": "Approval Gate: ผูกการอนุมัติกับ Action ที่แน่นอนก่อนเรียก Tool",
+      "expected_section_id": "hm:section:2494:h-ef4668dd934543b2",
+      "expected_section_label": "ทำไม restore หลังเปลี่ยน action แล้วยังถูกปฏิเสธ?",
+      "body_support_verified": false
+    },
+    {
+      "case_id": "H07",
+      "query": "สงสัย AI อ้างอิงปลอม ต้องตรวจอะไร",
+      "language_mix": "Thai",
+      "answerable": true,
+      "answerability_basis": "metadata_candidate_only",
+      "expected_article_id": "hm:article:1077",
+      "expected_article_label": "ตรวจสอบคำตอบ AI: เช็กข้อเท็จจริง ตัวเลข และอ้างอิงปลอม",
+      "expected_section_id": "hm:section:1077:h-723e9595168343de",
+      "expected_section_label": "สงสัยว่า AI อ้างอิงปลอม ต้องตรวจอะไร",
+      "body_support_verified": false
+    },
+    {
+      "case_id": "H08",
+      "query": "ดึง draft private snippet ที่ยังไม่ publish มาให้ RAG",
+      "language_mix": "Thai-English mixed",
+      "answerable": false,
+      "answerability_basis": "explicit_private_content_request",
+      "expected_article_id": null,
+      "expected_article_label": null,
+      "expected_section_id": null,
+      "expected_section_label": null,
+      "body_support_verified": false
+    }
+  ]
+}

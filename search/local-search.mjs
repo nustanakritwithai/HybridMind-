@@ -24,7 +24,18 @@ function tokens(value) {
 }
 const escapeHtml = value => String(value ?? '').replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
 const navigationHeading = value => /^(?:อ่านต่อ|read more\b|table of contents\b|related posts?\b|share this article\b|subscribe\b)/iu.test(String(value ?? '').trim());
-const unpublishedIntent = value => /\b(?:draft|unpublished|not\s+published)\b|(?:ยัง\s*ไม่\s*(?:เผยแพร่|publish))|ไม่เผยแพร่/iu.test(norm(value));
+// Deny only explicit requests to retrieve private/draft excerpts. General
+// public questions about draft policy remain searchable. Private records are
+// excluded from documents() regardless of query wording.
+const privateSnippetRequest = value => {
+  const query = norm(value);
+  const privateTarget = /\b(?:private|confidential)\b|(?:ส่วนตัว|ความลับ)/iu.test(query)
+    || (/\b(?:draft|unpublished)\b|(?:ฉบับร่าง)/iu.test(query)
+      && /\b(?:unpublished|not\s+published)\b|ยัง\s*ไม่\s*(?:เผยแพร่|publish)/iu.test(query));
+  const snippetTarget = /\b(?:snippet|excerpt|quote|text|content)\b|(?:snippet|ข้อความ|เนื้อหา|ตัวอย่างข้อความ)/iu.test(query);
+  const retrievalAction = /\b(?:get|fetch|retrieve|pull|show|return|give|find|ดึง|เอา|ขอ)\b|(?:ดึง|เอา|ขอ|แสดง|ส่งมา)/iu.test(query);
+  return privateTarget && snippetTarget && retrievalAction;
+};
 
 function publicArticle(article) {
   // Unknown password state is excluded from the runtime index. Inventory rows
@@ -81,7 +92,10 @@ function documents(catalog) {
       snippet:escapeHtml(section.summary ?? section.content_text ?? ''), url, topicId, topicIds,
       contentType:article.content_type, difficulty:article.audience_level, locale:article.locale,
       date:article.modified_at ?? article.published_at,
-      searchable:[heading, section.summary, section.content_text, article.title].filter(Boolean).join(' ')});
+      // The catalog carries section content excerpts for display metadata, but
+      // keyword retrieval stays on headings, concise summaries, and article
+      // titles to reduce broad matches from long body-like text.
+      searchable:[heading, section.summary].filter(Boolean).join(' ')});
   }
   return docs;
 }
@@ -125,7 +139,7 @@ function scoreDocument(doc, concepts, termWeights, requiredMatches) {
 /** Returns {query, mode, total, results}; filters: topicId, contentType, difficulty, locale, sort. */
 export function searchCatalog(catalog, query, filters = {}) {
   const q=String(query ?? '').trim();
-  if (unpublishedIntent(q)) return {query:q, mode:'keyword', total:0, results:[], notice:'unpublished-content'};
+  if (privateSnippetRequest(q)) return {query:q, mode:'keyword', total:0, results:[], notice:'unpublished-content'};
   const queryTerms = tokens(q);
   const concepts = queryConcepts(queryTerms);
   if (q && !concepts.length) return {query:q, mode:'keyword', total:0, results:[]};

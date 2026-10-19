@@ -10,11 +10,11 @@ import {existsSync} from 'node:fs';
 import {dirname,resolve} from 'node:path';
 import {fileURLToPath} from 'node:url';
 
-const catalog={topics:[{topic_id:'hm:topic:verify-ai-work',label_th:'ตรวจสอบงาน AI',label_en:'Verify AI work',definition:'ตรวจสอบ citation และคำตอบจาก AI',intent:'ตรวจ facts',questions:[],search_aliases:[],audience_level:'beginner',status:'proposed'}],articles:[
- {article_id:'hm:article:1',title:'ตรวจสอบตัวเลข citation ในคำตอบ AI',summary:'ตรวจ fact และ citation',locale:'th',status:'published',visibility:'public',password_protected:false,canonical_url:'https://example.test/a',topic_ids:['hm:topic:verify-ai-work'],primary_topic_id:'hm:topic:verify-ai-work',content_type:'guide',audience_level:'beginner',modified_at:'2026-10-01'},
- {article_id:'hm:article:2',title:'Private draft citation',summary:'ตรวจ citation',locale:'th',status:'draft',visibility:'private',canonical_url:'https://example.test/private',topic_ids:[],content_type:'guide',audience_level:'beginner'},
+const catalog={topics:[{topic_id:'hm:topic:verify-ai-work',label_th:'Verify AI work',label_en:'Verify AI work',definition:'Verify citations and answers from AI',intent:'verify facts',questions:[],search_aliases:[],audience_level:'beginner',status:'proposed'}],articles:[
+ {article_id:'hm:article:1',title:'Verify citation facts in AI answers',summary:'Check facts and citations in AI responses',locale:'th',status:'published',visibility:'public',password_protected:false,canonical_url:'https://example.test/a',topic_ids:['hm:topic:verify-ai-work'],primary_topic_id:'hm:topic:verify-ai-work',content_type:'guide',audience_level:'beginner',modified_at:'2026-10-01'},
+ {article_id:'hm:article:2',title:'Private draft citation',summary:'citation',locale:'th',status:'draft',visibility:'private',canonical_url:'https://example.test/private',topic_ids:[],content_type:'guide',audience_level:'beginner'},
  {article_id:'hm:article:3',title:'Public but password protected',summary:'citation',locale:'th',status:'published',visibility:'password',canonical_url:'https://example.test/password',topic_ids:[],content_type:'guide',audience_level:'beginner'}],sections:[
- {section_id:'hm:section:1:sha-check',article_id:'hm:article:1',heading_text:'ตรวจ SHA-256 และ source revision',summary:'ยืนยัน citation ให้ตรงรุ่นเอกสารปัจจุบัน',content_text:'UTF-8 byte span',anchor:'source-check'}]};
+ {section_id:'hm:section:1:sha-check',article_id:'hm:article:1',heading_text:'Verify SHA-256 source revision',summary:'citation current revision UTF-8 byte span',content_text:'UTF-8 byte span',anchor:'source-check'}]};
 
 test('indexes only public published articles, but searches topics and sections too',()=>{
  const r=searchCatalog(catalog,'citation');
@@ -22,8 +22,8 @@ test('indexes only public published articles, but searches topics and sections t
  assert.ok(!r.results.some(x=>x.id==='hm:article:2'||x.id==='hm:article:3'));
  assert.equal(r.mode,'keyword');
 });
-test('supports Thai and mixed Thai-English keyword matching',()=>{
- assert.ok(searchCatalog(catalog,'ตรวจสอบ citation').results.some(x=>x.id==='hm:article:1'));
+test('matches keyword concepts across article and section fields',()=>{
+ assert.ok(searchCatalog(catalog,'verify citation').results.some(x=>x.id==='hm:article:1'));
  assert.ok(searchCatalog(catalog,'UTF-8 byte span').results.some(x=>x.id==='hm:section:1:sha-check'));
 });
 test('uses a topic-to-article relationship when direct topic fields are empty',()=>{
@@ -105,6 +105,28 @@ test('search results never return an unsafe source URL', () => {
  assert.ok(result.results.every(item => item.url === null));
 });
 
+test('general public questions about draft policy remain searchable', () => {
+ const policyCatalog = {
+  topics: [],
+  articles: [{
+   article_id:'hm:article:public-policy', title:'How to label draft articles before publication',
+   summary:'Public editorial guidance for reviewing and labeling a draft before publication.',
+   status:'published', visibility:'public', password_protected:false,
+   canonical_url:'https://hybridmind.online/public-draft-policy/', topic_ids:[], content_type:'guide', audience_level:'beginner'
+  }], sections:[]
+ };
+ const result = searchCatalog(policyCatalog, 'How should an editor label a draft article before publication?');
+ assert.equal(result.results[0]?.id, 'hm:article:public-policy');
+});
+
+test('private draft snippet retrieval returns an empty generic response without private indexing', () => {
+ const query = 'ดึง draft ที่ยังไม่ publish จาก private knowledge base มาเป็น snippet ที่ match สำหรับ RAG';
+ const result = searchCatalog(catalog, query);
+ assert.equal(result.total, 0);
+ assert.deepEqual(result.results, []);
+ assert.equal(result.notice, 'unpublished-content');
+});
+
 test('actual five-source corpus returns zero for unsupported and unpublished-content requests', () => {
  const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
  const offlinePath = resolve(root, 'offline/pilot-catalog-full.json');
@@ -123,4 +145,29 @@ test('actual five-source corpus returns zero for unsupported and unpublished-con
   const query = fixture.cases.find(item => item.case_id === id);
   assert.equal(searchCatalog(corpus, query.query).total, 0, `${id}: ${query.query}`);
  }
+});
+
+test('held-out judgments resolve only against the five-source public projection', () => {
+ const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
+ const offlinePath = resolve(root, 'offline/pilot-catalog-full.json');
+ const catalogPath = existsSync(offlinePath) ? offlinePath : resolve(root, 'data/pilot-catalog.json');
+ const corpus = projectPublicCatalog(JSON.parse(readFileSync(catalogPath, 'utf8')));
+ const fixture = JSON.parse(readFileSync(new URL('./fixtures/heldout-search.json', import.meta.url), 'utf8'));
+ const judged = fixture.cases.filter(item => item.answerable);
+ let sourceHitAt1 = 0, sourceHitAt5 = 0, sectionHitAt1 = 0, sectionHitAt5 = 0;
+ for (const item of judged) {
+  const results = searchCatalog(corpus, item.query).results;
+  const idsAt1 = new Set(results.slice(0, 1).map(result => result.id));
+  const idsAt5 = new Set(results.slice(0, 5).map(result => result.id));
+  if (idsAt1.has(item.expected_article_id)) sourceHitAt1++;
+  if (idsAt5.has(item.expected_article_id)) sourceHitAt5++;
+  if (idsAt1.has(item.expected_section_id)) sectionHitAt1++;
+  if (idsAt5.has(item.expected_section_id)) sectionHitAt5++;
+  assert.ok(corpus.articles.some(article => article.article_id === item.expected_article_id), item.case_id);
+  assert.ok(corpus.sections.some(section => section.section_id === item.expected_section_id), item.case_id);
+  assert.equal(item.body_support_verified, false, item.case_id);
+ }
+ const privateRequest = fixture.cases.find(item => !item.answerable);
+ assert.equal(searchCatalog(corpus, privateRequest.query).total, 0);
+ assert.deepEqual({sourceHitAt1, sourceHitAt5, sectionHitAt1, sectionHitAt5}, {sourceHitAt1:1, sourceHitAt5:6, sectionHitAt1:6, sectionHitAt5:7});
 });

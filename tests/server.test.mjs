@@ -43,5 +43,7 @@ test('server exposes only fixed assets and an explicitly public catalog projecti
     '/%2e%2e/offline/pilot-catalog-full.json',
   ]) assert.equal((await fetch(`${address}${path}`)).status, 404, path);
   assert.equal((await fetch(`${address}/search/safe-url.mjs`)).status, 200);
+  assert.equal((await fetch(`${address}/knowledge-textbook/content-renderer.mjs`)).status, 200);
+  assert.equal((await fetch(`${address}/data/pilot-content-bundle.json`)).status, 404, 'no source content bundle is currently present');
   assert.equal((await fetch(`${address}/data/pilot-catalog.json`, { method: 'POST' })).status, 405);
 });
