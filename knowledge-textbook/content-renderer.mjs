@@ -49,16 +49,17 @@ function validBlock(block) {
 
 export function validateStructuredContent(entry, { catalog, allowFixture = false } = {}) {
   assert(entry && entry.schema_version === '1.0.0', 'unsupported schema_version');
-  allowedKeys(entry, ['schema_version','article_id','canonical_url','source_revision','source_hash','source_hash_status','content_digest','imported_at','provenance','fixture_notice','blocks'], 'envelope');
+  allowedKeys(entry, ['schema_version','article_id','canonical_url','source_revision','source_hash','source_hash_status','content_derivation_status','content_digest','imported_at','provenance','fixture_notice','blocks'], 'envelope');
   assert(/^hm:article:\d+$/.test(entry.article_id ?? ''), 'invalid article_id');
   assert(entry.provenance === 'wordpress_export' || entry.provenance === 'test_fixture', 'invalid provenance');
   assert(allowFixture || entry.provenance !== 'test_fixture', 'test_fixture provenance is not permitted');
   if (entry.provenance === 'test_fixture') assert(typeof entry.fixture_notice === 'string' && /synthetic/i.test(entry.fixture_notice) && /not.*(export|article content)/i.test(entry.fixture_notice), 'fixture must be clearly labeled synthetic and non-source');
   else assert(entry.fixture_notice === undefined, 'wordpress export cannot carry fixture metadata');
   assert(typeof entry.source_revision === 'string' && entry.source_revision.length > 0, 'missing source_revision');
-  assert(entry.source_hash_status === 'verified' || entry.source_hash_status === 'unverified', 'invalid source_hash_status');
-  if (entry.source_hash_status === 'verified') assert(/^sha256:[a-f0-9]{64}$/.test(entry.source_hash ?? ''), 'verified source_hash is missing or invalid');
+  assert(entry.source_hash_status === 'source_bytes_verified' || entry.source_hash_status === 'unverified', 'invalid source_hash_status');
+  if (entry.source_hash_status === 'source_bytes_verified') assert(/^sha256:[a-f0-9]{64}$/.test(entry.source_hash ?? ''), 'source-bytes-verified source_hash is missing or invalid');
   else assert(entry.source_hash === null, 'unverified source_hash must be null');
+  assert(entry.content_derivation_status === 'unverified', 'normalized content derivation must remain explicitly unverified');
   assert(/^sha256:[a-f0-9]{64}$/.test(entry.content_digest ?? ''), 'invalid content_digest');
   assert(typeof entry.imported_at === 'string' && /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$/.test(entry.imported_at) && !Number.isNaN(Date.parse(entry.imported_at)), 'invalid imported_at');
   const canonical = safeContentUrl(entry.canonical_url);

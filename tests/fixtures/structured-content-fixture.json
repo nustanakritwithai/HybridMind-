@@ -58,5 +58,6 @@
     }
   ],
   "source_hash_status": "unverified",
-  "content_digest": "sha256:d31b5f95a8de3cd8d17a2d611c1ee356d63b81739cc1f8b7fa3181efce0dbd1e"
+  "content_digest": "sha256:d31b5f95a8de3cd8d17a2d611c1ee356d63b81739cc1f8b7fa3181efce0dbd1e",
+  "content_derivation_status": "unverified"
 }

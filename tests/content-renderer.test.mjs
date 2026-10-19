@@ -27,6 +27,7 @@ test('fixture exercises every supported block and is explicitly synthetic', () =
   assert.equal(verifyContentDigest(fixture), fixture);
   assert.equal(fixture.source_hash, null);
   assert.equal(fixture.source_hash_status, 'unverified');
+  assert.equal(fixture.content_derivation_status, 'unverified');
   assert.equal(validateStructuredContent(fixture, { catalog, allowFixture: true }), fixture);
   assert.throws(() => validateStructuredContent(fixture, { catalog }), /not permitted/);
   assert.throws(() => validateContentBundle({ schema_version: '1.0.0', articles: [fixture] }, { catalog }), /not permitted/);
@@ -82,6 +83,7 @@ test('importer normalizes Gutenberg blocks and maps unknown block to static fall
   assert.equal(JSON.stringify(normalized).includes('<script>'), false);
   assert.equal(normalized.source_hash, null);
   assert.equal(normalized.source_hash_status, 'unverified');
+  assert.equal(normalized.content_derivation_status, 'unverified');
   assert.equal(verifyContentDigest(normalized), normalized);
   assert.equal(computeContentDigest(Object.fromEntries(Object.entries(normalized).reverse())), normalized.content_digest, 'top-level property ordering must not change the canonical digest');
   assert.throws(() => verifyContentBundleDigests({ schema_version: '1.0.0', articles: [{ ...normalized, blocks: [{ type: 'paragraph', text: 'tampered after import' }] }] }), /digest mismatch/i);
@@ -93,7 +95,8 @@ test('importer normalizes Gutenberg blocks and maps unknown block to static fall
     blocks: [{ blockName: 'core/paragraph', text: 'Verified payload' }],
   }, catalog);
   assert.equal(verified.source_hash, `sha256:${sha256Hex(rawBytes)}`);
-  assert.equal(verified.source_hash_status, 'verified');
+  assert.equal(verified.source_hash_status, 'source_bytes_verified');
+  assert.equal(verified.content_derivation_status, 'unverified');
   assert.throws(() => importStructuredExport({
     ...fixture, provenance: 'wordpress_export', fixture_notice: undefined,
     source_payload_base64: rawBytes.toString('base64'), source_hash: `sha256:${'0'.repeat(64)}`,

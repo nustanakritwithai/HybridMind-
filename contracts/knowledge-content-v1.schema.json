@@ -4,15 +4,16 @@
   "title": "HybridMind structured article content envelope",
   "type": "object",
   "additionalProperties": false,
-  "required": ["schema_version", "article_id", "canonical_url", "source_revision", "source_hash", "source_hash_status", "content_digest", "imported_at", "provenance", "blocks"],
+  "required": ["schema_version", "article_id", "canonical_url", "source_revision", "source_hash", "source_hash_status", "content_derivation_status", "content_digest", "imported_at", "provenance", "blocks"],
   "properties": {
     "schema_version": { "const": "1.0.0" },
     "article_id": { "type": "string", "pattern": "^hm:article:[0-9]+$" },
     "canonical_url": { "type": "string", "format": "uri" },
     "source_revision": { "type": "string", "minLength": 1 },
     "source_hash": { "type": ["string", "null"], "pattern": "^sha256:[a-f0-9]{64}$" },
-    "source_hash_status": { "enum": ["verified", "unverified"] },
-    "content_digest": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+    "source_hash_status": { "enum": ["source_bytes_verified", "unverified"], "description": "source_bytes_verified confirms the supplied original bytes match source_hash; it does not verify that normalized blocks were derived from them." },
+    "content_derivation_status": { "const": "unverified", "description": "The importer does not establish a byte-for-byte derivation from the original source payload to normalized blocks." },
+    "content_digest": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$", "description": "Integrity digest for normalized article identity and blocks; it is independent of source-byte verification and derivation provenance." },
     "imported_at": { "type": "string", "format": "date-time" },
     "provenance": { "enum": ["wordpress_export", "test_fixture"] },
     "fixture_notice": { "type": "string" },
@@ -24,7 +25,7 @@
   "allOf": [
     { "if": { "properties": { "provenance": { "const": "test_fixture" } }, "required": ["provenance"] }, "then": { "required": ["fixture_notice"] } },
     { "if": { "properties": { "provenance": { "const": "wordpress_export" } }, "required": ["provenance"] }, "then": { "not": { "required": ["fixture_notice"] } } },
-    { "if": { "properties": { "source_hash_status": { "const": "verified" } }, "required": ["source_hash_status"] }, "then": { "properties": { "source_hash": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" } } } },
+    { "if": { "properties": { "source_hash_status": { "const": "source_bytes_verified" } }, "required": ["source_hash_status"] }, "then": { "properties": { "source_hash": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" } } } },
     { "if": { "properties": { "source_hash_status": { "const": "unverified" } }, "required": ["source_hash_status"] }, "then": { "properties": { "source_hash": { "type": "null" } } } }
   ],
   "$defs": {

@@ -51,8 +51,15 @@ function topicContentRevision(topic) { return `${topic.topic_revision ?? ''}:${a
 function explicitTopicRevision(topic) { return topic?.topic_revision === null || topic?.topic_revision === undefined || topic?.topic_revision === '' ? null : String(topic.topic_revision); }
 function completionStatus(topic, progress) {
   const topicRevision = explicitTopicRevision(topic), events = progress?.completionEvents ?? [];
-  const currentEvent = topicRevision === null ? null : [...events].reverse().find(event => String(event.topicRevision) === topicRevision);
-  const previousCompletion = topicRevision === null ? null : [...events].reverse().find(event => event.status === 'completed' && String(event.topicRevision) !== topicRevision);
+  const latestByRevision = new Map();
+  events.forEach((event, index) => latestByRevision.set(String(event.topicRevision), { event, index }));
+  const currentEvent = topicRevision === null ? null : latestByRevision.get(topicRevision)?.event ?? null;
+  let previousCompletion = null, previousCompletionIndex = -1;
+  if (topicRevision !== null) for (const [revision, latest] of latestByRevision) {
+    if (revision !== topicRevision && latest.event.status === 'completed' && latest.index > previousCompletionIndex) {
+      previousCompletion = latest.event; previousCompletionIndex = latest.index;
+    }
+  }
   return { topicRevision, currentEvent, completed: currentEvent?.status === 'completed', reviewNeeded: topicRevision !== null && !currentEvent && Boolean(previousCompletion), previousCompletion };
 }
 function saveProgress(topic) { if (!state.progressEnabled || state.progressPaused || !topic) return; try { const prior = readProgress(topic); localStorage.setItem(progressKey(topic), JSON.stringify({ lastViewedContentRevision: topicContentRevision(topic), lastViewedSectionId: state.sectionId || prior?.lastViewedSectionId || null, completionEvents: prior?.completionEvents ?? [], savedAt: new Date().toISOString() })); } catch {} }

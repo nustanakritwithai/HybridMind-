@@ -21,7 +21,7 @@ export function normalizeExportBlock(block) {
 }
 
 function sourceIntegrity(raw) {
-  if (raw.source_payload_base64 === undefined) return { source_hash: null, source_hash_status: 'unverified' };
+  if (raw.source_payload_base64 === undefined) return { source_hash: null, source_hash_status: 'unverified', content_derivation_status: 'unverified' };
   const encoded = raw.source_payload_base64;
   if (typeof encoded !== 'string' || encoded.length === 0 || !/^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$/.test(encoded)) {
     throw new TypeError('source_payload_base64 must contain the exact source bytes in canonical base64');
@@ -30,7 +30,7 @@ function sourceIntegrity(raw) {
   if (bytes.toString('base64') !== encoded) throw new TypeError('source_payload_base64 is not canonical base64');
   const source_hash = `sha256:${sha256Hex(bytes)}`;
   if (raw.source_hash !== undefined && raw.source_hash !== source_hash) throw new TypeError('Claimed source_hash does not match source_payload_base64');
-  return { source_hash, source_hash_status: 'verified' };
+  return { source_hash, source_hash_status: 'source_bytes_verified', content_derivation_status: 'unverified' };
 }
 
 export function importStructuredExport(raw, catalog) {
