@@ -1,6 +1,8 @@
 import { searchCatalog } from '../search/local-search.mjs';
 import { safeCanonicalUrl } from '../search/safe-url.mjs';
 import { validateContentBundle, renderStructuredContent } from './content-renderer.mjs';
+import { prepareInteractiveEntries } from './labs/registry.mjs';
+import { mountInteractiveLabs, disposeInteractiveLabs } from './labs/manager.mjs';
 
 const $ = (s, root = document) => root.querySelector(s);
 const state = { catalog: null, contentById: new Map(), topicId: null, sectionId: null, pathId: null, invalidSection: false, progressEnabled: false, progressPaused: false };
@@ -138,7 +140,7 @@ function sectionNode(section) {
   return block;
 }
 function renderReader() {
-  const out = $('#reader-content'); out.replaceChildren(); const topic = selectedTopic();
+  const out = $('#reader-content'); disposeInteractiveLabs(out); out.replaceChildren(); const topic = selectedTopic();
   if (!topic) { const empty = el('div', undefined, 'empty-state'); empty.append(el('h2', 'Choose a topic to begin'), el('p', 'This snapshot may not cover every published article.')); out.append(empty); return; }
   out.append(el('p', topic.status === 'ready' && topic.editorial_status === 'approved' ? 'หัวข้อที่ผ่านการทบทวน' : 'หัวข้อที่เสนอ | รอทบทวนโดยกองบรรณาธิการ', 'eyebrow'), el('h1', topicLabel(topic), 'reader-title'));
   const description = topicDescription(topic);
@@ -206,6 +208,7 @@ function renderReader() {
     card.append(articlePager); source.append(card);
   });
   out.append(source);
+  mountInteractiveLabs(out);
   if (section && state.contentById.has(section.article_id)) {
     const target = document.getElementById("sec-" + section.section_id);
     if (target) requestAnimationFrame(() => { if (target.isConnected && state.sectionId === section.section_id) target.scrollIntoView({block:"start",behavior:"instant"}); });
@@ -258,7 +261,7 @@ async function start() {
   try { const res = await fetch('../data/pilot-catalog.json'); if (!res.ok) throw new Error(`HTTP ${res.status}`); state.catalog = await res.json(); }
   catch (err) { state.catalog = emptyCatalog; $('#reader-content').append(el('p', `Catalog unavailable (${err.message}).`, 'fallback-note')); }
   state.catalog = { ...emptyCatalog, ...state.catalog }; state.catalog.topics ||= []; state.catalog.articles ||= []; state.catalog.sections ||= []; state.catalog.relationships ||= [];
-  state.contentById = new Map(); try { const response=await fetch('../data/pilot-content-bundle.json'); if(response.ok){const bundle=await response.json();validateContentBundle(bundle,{catalog:state.catalog});state.contentById=new Map(bundle.articles.filter(entry=>entry.provenance==='wordpress_export').map(entry=>[entry.article_id,entry]));} } catch(error) { console.info('No validated WordPress content bundle; showing metadata fallback.'); }
+  state.contentById = new Map(); try { const response=await fetch('../data/pilot-content-bundle.json'); if(response.ok){const bundle=await response.json();validateContentBundle(bundle,{catalog:state.catalog});await prepareInteractiveEntries(bundle.articles);state.contentById=new Map(bundle.articles.filter(entry=>entry.provenance==='wordpress_export').map(entry=>[entry.article_id,entry]));} } catch(error) { console.info('No validated WordPress content bundle; showing metadata fallback.'); }
   const snap = state.catalog.snapshot || {}; $('#snapshot-label').textContent = `ข้อมูล ${snap.captured_at ? new Date(snap.captured_at).toLocaleDateString('th-TH') : 'ไม่ทราบวันที่'} | ${snap.coverage_complete ? 'ครบตาม snapshot' : 'ข้อมูลบางส่วน'}`;
   const topicFilter = $('#filter-topic'); state.catalog.topics.forEach(t => { const option = document.createElement('option'); option.value = t.topic_id; option.textContent = topicLabel(t); topicFilter.append(option); });
   const progressControls = $('#progress-controls'); progressControls.replaceChildren();

@@ -13,6 +13,9 @@ test('Pages artifact preserves the existing root and contains only the public ru
   const release = JSON.parse(await readFile(resolve(site, 'release.json'), 'utf8'));
   assert.match(release.source_commit, /^[a-f0-9]{40}$/);
   assert.equal(release.interactive_parity, false);
+  assert.equal(release.interactive_mode,'reviewed-local-modules');
+  assert.equal(release.reviewed_lab_roots,6);
+  assert.equal(Object.keys(release.sha256).length,37);
   for (const [name, hash] of Object.entries(release.sha256)) assert.equal(createHash('sha256').update(await readFile(resolve(site, name))).digest('hex'), hash, name);
   const catalog = JSON.parse(await readFile(resolve(site, 'data/pilot-catalog.json'), 'utf8'));
   assert.equal(catalog.articles.length, 5);

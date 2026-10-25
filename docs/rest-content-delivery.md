@@ -1,5 +1,7 @@
 # Full-content pilot delivery — 2026-10-25
 
+Historical evidence for the initial full-content release. Its static interactive limitations are superseded by the reviewed implementation described in [interactive-runtime.md](interactive-runtime.md); that document and the latest PR/CI evidence govern interactive delivery.
+
 The prior body/media blocker is resolved for the five pilot articles using a fresh public WordPress REST capture. The Library archive transfer itself remains blocked by a network error after the authorized bounded retry. Its expected archive hash is not claimed as verified.
 
 Source evidence: reference/source-exports/public-rest-2026-10-25/body-content-coverage-report.json and media-coverage-report.json. The raw post responses, attachment metadata and local media hashes are retained. The body hash scope is exact content.rendered UTF-8, not raw Gutenberg database bytes. Three source revisions are newer than the original metadata inventory; a separate overlay reconciles article and section revisions and verified source anchors.

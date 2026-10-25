@@ -1,3 +1,4 @@
+import {approvedLabRoots,registerLabMarkup} from './labs/registry.mjs';
 const ORIGIN = 'https://hybridmind.online';
 
 export function safeContentUrl(value, { image = false } = {}) {
@@ -210,6 +211,13 @@ function renderSafeHtml(html, entry, document, sourceArticle, sections) {
   const Parser = document.defaultView?.DOMParser ?? globalThis.DOMParser;
   assert(typeof Parser === 'function', 'a DOMParser is required to render imported WordPress HTML safely');
   const parsed = new Parser().parseFromString(html, 'text/html');
+  const reviewedRoots = approvedLabRoots(entry);
+  const labNodes = new Map();
+  for (const [id,kind] of Object.entries(reviewedRoots ?? {})) {
+    const sourceNode = parsed.getElementById(id);
+    if (sourceNode) labNodes.set(sourceNode,kind);
+  }
+  const labFor = node => { for(let p=node;p && p!==parsed.body;p=p.parentElement) if(labNodes.has(p))return p; return null; };
   const sourceIdMap = new Map();
   const prefix = entry.article_id.replace(/[^a-z0-9-]/gi, '-');
   for (const sourceNode of parsed.body.querySelectorAll('[id]')) {
@@ -244,14 +252,16 @@ function renderSafeHtml(html, entry, document, sourceArticle, sections) {
     if (sourceNode.nodeType === 3) return document.createTextNode(sourceNode.nodeValue ?? '');
     if (sourceNode.nodeType !== 1) return null;
     const tag = sourceNode.tagName.toLowerCase();
+    const approvedLab = labFor(sourceNode);
+    const reviewedControl = approvedLab && ['input','button','select','textarea','canvas'].includes(tag);
     if (EXECUTABLE_TAGS.has(tag)) return null;
     if (tag === 'form') return unwrap(sourceNode);
-    if (['input','button','select','textarea'].includes(tag)) {
+    if (!reviewedControl && ['input','button','select','textarea'].includes(tag)) {
       const control = document.createElement('span'); control.className = 'source-static-control'; control.setAttribute('aria-disabled','true');
       control.textContent = sourceNode.getAttribute('aria-label') || sourceNode.textContent.trim() || sourceNode.getAttribute('placeholder') || sourceNode.getAttribute('value') || 'Interactive input';
       return control;
     }
-    if (INTERACTIVE_TAGS.has(tag)) return renderInteractiveFallback(document, sourceArticle, [sourceNode.getAttribute('aria-label'),sourceNode.textContent.trim()].filter(Boolean).join(' — '));
+    if (!reviewedControl && INTERACTIVE_TAGS.has(tag)) return renderInteractiveFallback(document, sourceArticle, [sourceNode.getAttribute('aria-label'),sourceNode.textContent.trim()].filter(Boolean).join(' — '));
     if (tag === 'img') {
       const mediaId = sourceNode.getAttribute('data-attachment-id');
       const media = mediaById.get(mediaId);
@@ -263,7 +273,7 @@ function renderSafeHtml(html, entry, document, sourceArticle, sections) {
       }
       return renderSafeImage(media, document, sourceNode.getAttribute('alt') || media.alt_text);
     }
-    if (!HTML_TAGS.has(tag)) return unwrap(sourceNode);
+    if (!HTML_TAGS.has(tag) && !(approvedLab && ['section','header','nav','footer','label','option','input','button','select','textarea','canvas'].includes(tag))) return unwrap(sourceNode);
     if (tag === 'a') {
       const rawHref = sourceNode.getAttribute('href') ?? '';
       let resolved = null;
@@ -273,6 +283,7 @@ function renderSafeHtml(html, entry, document, sourceArticle, sections) {
       }
       if (!resolved) return unwrap(sourceNode);
       const anchor = document.createElement('a'); anchor.href = resolved;
+      if (approvedLab) copyReviewedAttributes(sourceNode,anchor,sourceIdMap);
       if (!resolved.startsWith('#')) { anchor.target = '_blank'; anchor.rel = 'noopener noreferrer'; }
       appendChildren(sourceNode, anchor);
       return anchor;
@@ -281,6 +292,11 @@ function renderSafeHtml(html, entry, document, sourceArticle, sections) {
     const id = sourceNode.getAttribute('id');
     if (id && sourceIdMap.has(id) && !emittedIds.has(id)) { node.id = sourceIdMap.get(id); node.setAttribute('data-source-anchor', id); emittedIds.add(id); }
     if (headingIds.has(sourceNode)) node.id = headingIds.get(sourceNode);
+    if (approvedLab) copyReviewedAttributes(sourceNode,node,sourceIdMap);
+    if (labNodes.has(sourceNode)) {
+      node.classList.add('hm-reviewed-lab');node.dataset.labKind=labNodes.get(sourceNode);node.dataset.labArticle=entry.article_id;
+      registerLabMarkup(node,entry,sourceNode.id);
+    }
     if (tag === 'code') {
       const language = [...sourceNode.classList].find(value => /^language-[a-z0-9_-]{1,40}$/i.test(value));
       if (language) node.className = language;
@@ -313,7 +329,36 @@ function renderSafeHtml(html, entry, document, sourceArticle, sections) {
   };
 
   const root = document.createElement('div'); root.className = 'source-html-fragment';
-  if (parsed.body.querySelector('form,input,button,select,textarea')) root.append(renderInteractiveFallback(document, sourceArticle, 'Original control labels are retained below as disabled static text.'));
+  if ([...parsed.body.querySelectorAll('form,input,button,select,textarea')].some(node=>!labFor(node))) root.append(renderInteractiveFallback(document, sourceArticle, 'Original control labels are retained below as disabled static text.'));
   appendChildren(parsed.body, root);
   return root;
+}
+
+// This path is reachable only after hashing the exact reviewed source snapshot.
+// Active attributes, inline CSS, script, frame, URLs and form actions remain forbidden.
+function copyReviewedAttributes(source,target,idMap) {
+  const classes=[...source.classList].filter(c=>/^[a-zA-Z0-9_-]{1,80}$/.test(c)).slice(0,20);
+  if(classes.length)target.className=classes.join(' ');
+  for(const attr of ['role','title','lang','aria-label','aria-live','aria-atomic','aria-pressed','aria-expanded','aria-hidden']) {
+    if(source.hasAttribute(attr))target.setAttribute(attr,source.getAttribute(attr).slice(0,500));
+  }
+  for(const attr of ['aria-labelledby','aria-describedby','aria-controls','for']) {
+    if(!source.hasAttribute(attr))continue;
+    const ids=source.getAttribute(attr).split(/\s+/).map(id=>idMap.get(id)).filter(Boolean);
+    if(ids.length)target.setAttribute(attr,ids.join(' '));
+  }
+  for(const attr of ['data-camera','data-stage','data-platform','data-value','data-state','data-view','data-card']) {
+    const value=source.getAttribute(attr);if(value!==null&&/^[a-zA-Z0-9_-]{1,60}$/.test(value))target.setAttribute(attr,value);
+  }
+  if(source.hasAttribute('hidden'))target.hidden=true;
+  const tag=target.tagName.toLowerCase();
+  if(tag==='button')target.type='button';
+  if(tag==='input')target.type=['text','number','range','checkbox','radio'].includes(source.getAttribute('type'))?source.getAttribute('type'):'text';
+  if(['input','option'].includes(tag)&&source.hasAttribute('value'))target.setAttribute('value',source.getAttribute('value').slice(0,1024));
+  for(const attr of ['checked','selected','readonly','disabled'])if(['input','option','textarea','select','button'].includes(tag)&&source.hasAttribute(attr))target.setAttribute(attr,'');
+  for(const attr of ['min','max','step','maxlength','rows']) {
+    const raw=source.getAttribute(attr),value=Number(raw);
+    if(raw!==null&&Number.isFinite(value)&&value>=-100000&&value<=1000000)target.setAttribute(attr,String(value));
+  }
+  if(source.hasAttribute('placeholder'))target.setAttribute('placeholder',source.getAttribute('placeholder').slice(0,200));
 }
