@@ -72,7 +72,9 @@ export function mountVideoLab(root, restored = null) {
     text('hm-view-label', `${view.toUpperCase()} 3D`); paint(); requestFrame();
   }
   function setPlaying(value) {
-    playing = !!value && !reducedMotion;
+    // Reduced motion starts paused; an explicit play action remains available.
+    // Orbit rotation stays disabled by that preference in step(), as in source.
+    playing = !!value;
     const b = byId('hm-pause-scene');
     if (b) { b.textContent = playing ? 'Ⅱ' : '▶'; b.setAttribute('aria-pressed', String(!playing)); b.setAttribute('aria-label', playing ? 'หยุดภาพเคลื่อนไหว' : 'เล่นภาพเคลื่อนไหว'); }
     if (playing) { lastT = 0; requestFrame(); } else paint();
