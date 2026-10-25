@@ -88,3 +88,7 @@ npm run build
 ```
 
 The browser acceptance test uses installed Microsoft Edge without adding a dependency. Set `HM_EDGE_PATH` if Edge is installed at a non-default path. The build stages a runnable copy under `dist/hybridmind-knowledge-phase1`.
+
+## Knowledge textbook pilot (2026-10-25)
+
+The phase-one local reader now includes five full public WordPress article bodies and local media. See [runnable pilot instructions](knowledge-textbook/README.md) and [delivery evidence](docs/rest-content-delivery.md).

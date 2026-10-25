@@ -44,6 +44,16 @@ test('server exposes only fixed assets and an explicitly public catalog projecti
   ]) assert.equal((await fetch(`${address}${path}`)).status, 404, path);
   assert.equal((await fetch(`${address}/search/safe-url.mjs`)).status, 200);
   assert.equal((await fetch(`${address}/knowledge-textbook/content-renderer.mjs`)).status, 200);
-  assert.equal((await fetch(`${address}/data/pilot-content-bundle.json`)).status, 404, 'no source content bundle is currently present');
+  const contentResponse = await fetch(`${address}/data/pilot-content-bundle.json`);
+  assert.equal(contentResponse.status, 200);
+  const bundle = await contentResponse.json();
+  assert.equal(bundle.articles.length, 5);
+  assert.ok(bundle.articles.every(entry => entry.blocks[0].html.length > 20000));
+  const asset = bundle.articles[0].media[0];
+  const image = await fetch(new URL(asset.local_src, `${address}/knowledge-textbook/`));
+  assert.equal(image.status, 200);
+  assert.equal(image.headers.get('content-type'), asset.mime_type);
+  assert.equal((await image.arrayBuffer()).byteLength, asset.byte_length);
+  for (const path of ['/assets/media/../../offline/pilot-catalog-full.json','/assets/media/1075.svg','/assets/media/media-1075.json']) assert.equal((await fetch(`${address}${path}`)).status, 404);
   assert.equal((await fetch(`${address}/data/pilot-catalog.json`, { method: 'POST' })).status, 405);
 });

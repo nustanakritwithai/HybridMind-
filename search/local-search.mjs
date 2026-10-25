@@ -23,6 +23,17 @@ function tokens(value) {
   return [...new Set(segments.filter(term => !/^\d+$/u.test(term) && !STOP_WORDS.has(term) && !EXTRA_STOP_WORDS.has(term)))];
 }
 const escapeHtml = value => String(value ?? '').replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
+function sourceText(html) {
+  const withoutNoise = String(html ?? '')
+    .replace(/<(script|style|nav|header|footer|form|button|input|select|textarea|iframe)\b[^>]*>[\s\S]*?<\/\1\s*>/gi, ' ')
+    .replace(/<([a-z][\w:-]*)\b[^>]*class=(['"])[^'"]*\b(?:adsbygoogle|ad-slot|sharedaddy|jp-relatedposts|post-navigation|wp-block-search|widget)\b[^'"]*\2[^>]*>[\s\S]*?<\/\1\s*>/gi, ' ')
+    .replace(/<[^>]*>/g, ' ');
+  return withoutNoise.replace(/&nbsp;/gi, ' ').replace(/&amp;/gi, '&').replace(/&lt;/gi, '<').replace(/&gt;/gi, '>')
+    .replace(/&quot;/gi, '"').replace(/&#0*39;/gi, "'")
+    .replace(/&#(\d+);/g, (_, code) => { try { return String.fromCodePoint(Number(code)); } catch { return ' '; } })
+    .replace(/&#x([0-9a-f]+);/gi, (_, code) => { try { return String.fromCodePoint(parseInt(code, 16)); } catch { return ' '; } })
+    .replace(/\s+/g, ' ').trim();
+}
 const navigationHeading = value => /^(?:อ่านต่อ|read more\b|table of contents\b|related posts?\b|share this article\b|subscribe\b)/iu.test(String(value ?? '').trim());
 // Deny only explicit requests to retrieve private/draft excerpts. General
 // public questions about draft policy remain searchable. Private records are
@@ -43,7 +54,9 @@ function publicArticle(article) {
   return article?.status === 'published' && article?.visibility === 'public' && article?.password_protected === false;
 }
 
-function documents(catalog) {
+function documents(catalog, contentEntries = []) {
+  const bodyTextByArticle = new Map(contentEntries.filter(entry => entry?.provenance === 'wordpress_export')
+    .map(entry => [entry.article_id, sourceText(entry.blocks?.find(block => block.type === 'html_fragment')?.html)]));
   const topics = catalog?.topics ?? [];
   const topicById = new Map(topics.map(topic => [topic.topic_id, topic]));
   const relationshipTopicsByArticle = new Map();
@@ -76,7 +89,7 @@ function documents(catalog) {
       topicIds,
       contentType:article.content_type, difficulty:article.audience_level, locale:article.locale,
       date:article.modified_at ?? article.published_at,
-      searchable:[article.title, article.summary, topic?.label_th, topic?.label_en].filter(Boolean).join(' ')});
+      searchable:[article.title, article.summary, topic?.label_th, topic?.label_en, bodyTextByArticle.get(article.article_id)].filter(Boolean).join(' ')});
   }
   for (const section of catalog?.sections ?? []) {
     if (navigationHeading(section.heading_text)) continue;
@@ -137,13 +150,13 @@ function scoreDocument(doc, concepts, termWeights, requiredMatches) {
 }
 
 /** Returns {query, mode, total, results}; filters: topicId, contentType, difficulty, locale, sort. */
-export function searchCatalog(catalog, query, filters = {}) {
+export function searchCatalog(catalog, query, filters = {}, contentEntries = []) {
   const q=String(query ?? '').trim();
   if (privateSnippetRequest(q)) return {query:q, mode:'keyword', total:0, results:[], notice:'unpublished-content'};
   const queryTerms = tokens(q);
   const concepts = queryConcepts(queryTerms);
   if (q && !concepts.length) return {query:q, mode:'keyword', total:0, results:[]};
-  const docs = documents(catalog);
+  const docs = documents(catalog, contentEntries);
   const documentTerms = docs.map(doc => new Set(tokens(doc.searchable)));
   const termWeights = new Map(concepts.map(concept => {
     const frequency = documentTerms.filter(termsForDoc => concept.aliases.some(alias => termsForDoc.has(alias))).length;

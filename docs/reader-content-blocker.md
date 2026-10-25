@@ -1,3 +1,7 @@
+# Superseded blocker record
+
+The five full bodies and media were imported from public REST on 2026-10-25. See [current delivery status](rest-content-delivery.md). The text below is the historical metadata-only handoff and does not describe the current pilot.
+
 # Reader content and media blocker
 
 ## Current phase-one path

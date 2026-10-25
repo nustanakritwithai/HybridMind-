@@ -1,0 +1,84 @@
+{
+  "id": 2309,
+  "date_gmt": "2026-10-16T10:30:51",
+  "modified_gmt": "2026-10-16T10:30:52",
+  "link": "https://hybridmind.online/hybridmind-rag-authorization-before-hydration-20261016/",
+  "title": {
+    "rendered": "RAG Authorization — ตรวจสิทธิ์ก่อนเปิดข้อความ"
+  },
+  "author": 285438014,
+  "caption": {
+    "rendered": "<p>Hydration คือการนำ ID ไปโหลดข้อความ; วาง authorization ก่อนจุดนี้ในเส้นทางตัวอย่าง แหล่ง: หลัก least privilege/deny-by-default ของ OWASP และการออกแบบตัวอย่าง</p>\n"
+  },
+  "alt_text": "candidate IDs หรือรหัสเอกสารที่ค้นพบผ่านการเทียบ tenant และสิทธิ์เอกสารก่อนโหลดข้อความที่อนุญาตแล้วส่งให้ reranker หรือโมเดล",
+  "media_type": "image",
+  "mime_type": "image/png",
+  "media_details": {
+    "width": 1448,
+    "height": 1086,
+    "file": "2026/10/hybridmind-rag-authorization-before-hydration-20261016.png",
+    "filesize": 1632104,
+    "sizes": {
+      "medium": {
+        "file": "hybridmind-rag-authorization-before-hydration-20261016-300x225.png",
+        "width": 300,
+        "height": 225,
+        "virtual": true,
+        "mime_type": "image/png",
+        "source_url": "https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hybridmind-rag-authorization-before-hydration-20261016.png?fit=300%2C225&ssl=1"
+      },
+      "large": {
+        "file": "hybridmind-rag-authorization-before-hydration-20261016-1024x768.png",
+        "width": 1024,
+        "height": 768,
+        "virtual": true,
+        "mime_type": "image/png",
+        "source_url": "https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hybridmind-rag-authorization-before-hydration-20261016.png?fit=1024%2C768&ssl=1"
+      },
+      "thumbnail": {
+        "file": "hybridmind-rag-authorization-before-hydration-20261016-150x150.png",
+        "width": 150,
+        "height": 150,
+        "virtual": true,
+        "mime_type": "image/png",
+        "source_url": "https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hybridmind-rag-authorization-before-hydration-20261016.png?resize=150%2C150&ssl=1"
+      },
+      "medium_large": {
+        "file": "hybridmind-rag-authorization-before-hydration-20261016-768x576.png",
+        "width": 768,
+        "height": 576,
+        "virtual": true,
+        "mime_type": "image/png",
+        "source_url": "https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hybridmind-rag-authorization-before-hydration-20261016.png?fit=768%2C576&ssl=1"
+      },
+      "full": {
+        "file": "hybridmind-rag-authorization-before-hydration-20261016.png?fit=1448%2C1086&ssl=1",
+        "width": 1448,
+        "height": 1086,
+        "mime_type": "image/png",
+        "source_url": "https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hybridmind-rag-authorization-before-hydration-20261016.png?fit=1448%2C1086&ssl=1"
+      }
+    },
+    "image_meta": {
+      "aperture": "0",
+      "credit": "",
+      "camera": "",
+      "caption": "",
+      "created_timestamp": "0",
+      "copyright": "",
+      "focal_length": "0",
+      "iso": "0",
+      "shutter_speed": "0",
+      "title": "",
+      "orientation": "0",
+      "keywords": [],
+      "alt": ""
+    }
+  },
+  "source_url": "https://hybridmind.online/wp-content/uploads/2026/10/hybridmind-rag-authorization-before-hydration-20261016.png",
+  "_capture": {
+    "fetched_at": "2026-10-25T20:30:02.916Z",
+    "etag": null,
+    "last_modified": null
+  }
+}

@@ -9,8 +9,8 @@ const root = resolve(fileURLToPath(new URL('../', import.meta.url)));
 const files = [
   'scripts/fetch-public-wp-inventory.mjs', 'scripts/ingest-public-wp.mjs', 'scripts/serve-pilot.mjs', 'scripts/validate-catalog.mjs', 'scripts/lint-pilot.mjs', 'scripts/build-pilot.mjs',
   'search/local-search.mjs', 'search/safe-url.mjs', 'search/meilisearch-adapter.mjs', 'search/typesense-adapter.mjs',
-  'scripts/public-projection.mjs', 'scripts/content-integrity.mjs', 'scripts/import-structured-content.mjs', 'knowledge-textbook/content-renderer.mjs',
-  'tests/fetch-public-wp-inventory.test.mjs', 'tests/search.test.mjs', 'tests/evaluate-search.mjs', 'tests/catalog.test.mjs', 'tests/reader-browser.test.mjs', 'tests/server.test.mjs', 'tests/content-renderer.test.mjs',
+  'scripts/public-projection.mjs', 'scripts/content-integrity.mjs', 'scripts/content-revision-overlay.mjs', 'scripts/import-structured-content.mjs', 'scripts/import-public-rest-snapshot.mjs', 'scripts/materialize-public-rest-media.mjs', 'knowledge-textbook/content-renderer.mjs',
+  'tests/fetch-public-wp-inventory.test.mjs', 'tests/search.test.mjs', 'tests/evaluate-search.mjs', 'tests/catalog.test.mjs', 'tests/reader-browser.test.mjs', 'tests/server.test.mjs', 'tests/content-renderer.test.mjs', 'tests/public-rest-content.test.mjs',
   'knowledge-textbook/app.js',
 ];
 for (const file of files) {
@@ -19,8 +19,13 @@ for (const file of files) {
 }
 const offlinePath = join(root, 'offline/pilot-catalog-full.json');
 const catalogPath = existsSync(offlinePath) ? offlinePath : join(root, 'data/pilot-catalog.json');
-const catalog = JSON.parse(await readFile(catalogPath, 'utf8'));
+const baseCatalog = JSON.parse(await readFile(catalogPath, 'utf8'));
+const overlayPath = join(root, 'offline/public-rest-revision-overlay.json');
+const overlay = existsSync(overlayPath) ? JSON.parse(await readFile(overlayPath, 'utf8')) : null;
+const { applyContentRevisionOverlay } = await import('./content-revision-overlay.mjs');
+const catalog = applyContentRevisionOverlay(baseCatalog, overlay);
 const schema = JSON.parse(await readFile(join(root, 'contracts/knowledge-textbook-v1.schema.json'), 'utf8'));
+for (const name of ['knowledge-content-v1.schema.json','knowledge-content-bundle-v1.schema.json']) JSON.parse(await readFile(join(root,'contracts',name),'utf8'));
 const errors = validateCatalog(catalog, schema);
 if (errors.length) throw new Error(errors.join('\n'));
 const verified = catalog.articles.filter(article => article.password_protected === false && article.visibility === 'public').length;

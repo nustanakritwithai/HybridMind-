@@ -1,0 +1,173 @@
+{
+  "captured_at": "2026-10-25T20:45:32.196Z",
+  "source": "anonymous public WordPress REST GET",
+  "original_library_archive": {
+    "id": "libfile_fb252f7af73c81919d1a22d98d2c2f9b",
+    "expected_sha256": "95fddb90552378bb6494441a85cf8af5c3134a5eb133e24d83db7857b0237b62",
+    "materialized": false,
+    "blocker": "Bundled Library helper retried once and returned hosted apps tools/list request failed: network."
+  },
+  "actual_source_scope": "Five public published articles confirmed by REST status=publish and content.protected=false; rendered content field and public media downloaded.",
+  "overall": {
+    "articles": 5,
+    "full_bodies": 5,
+    "images_local": 20,
+    "original_revisions_reconciled": true,
+    "editorial_mappings_remain_proposed": true
+  },
+  "articles": [
+    {
+      "article_id": "hm:article:1077",
+      "canonical_url": "https://hybridmind.online/2026/10/13/verify-ai-answers-facts-numbers-citations/",
+      "source_revision": "2026-10-14T02:14:19.000Z",
+      "source_hash": "sha256:76cb61bf61f10560a2b4518692f62ea72fbb884a0da454a18db49c8047db61bd",
+      "source_hash_scope": "WordPress REST content.rendered UTF-8 string; this is not the inaccessible Library ZIP or raw database payload",
+      "response_sha256": "76090750e861ba3ceccd468f0ffe4f14f3d2594ee7f9da004ba60b2c38011cf0",
+      "body_bytes": 53239,
+      "heading_count": 27,
+      "matched_catalog_sections": 27,
+      "inline_image_count": 3,
+      "inline_attachment_ids": [
+        1280,
+        1284,
+        1286
+      ],
+      "featured_media_id": 1075,
+      "media_ids": [
+        1075,
+        1280,
+        1284,
+        1286
+      ],
+      "script_tag_count": 0,
+      "iframe_count": 0,
+      "form_or_control_count": 0,
+      "duplicate_anchors": [],
+      "missing_internal_anchors": [],
+      "unresolved_media": []
+    },
+    {
+      "article_id": "hm:article:1073",
+      "canonical_url": "https://hybridmind.online/2026/10/13/verify-ai-generated-code-tests-thai/",
+      "source_revision": "2026-10-13T07:36:30.000Z",
+      "source_hash": "sha256:148aab6bc1381decc0897bec20199b767f9532c9a355c2ceff5100d1b44fa3c9",
+      "source_hash_scope": "WordPress REST content.rendered UTF-8 string; this is not the inaccessible Library ZIP or raw database payload",
+      "response_sha256": "cfdcc4353562b2a79ef26136e7eaba6165d2da5decf5adf08ba645a78a3c28c4",
+      "body_bytes": 48657,
+      "heading_count": 14,
+      "matched_catalog_sections": 14,
+      "inline_image_count": 3,
+      "inline_attachment_ids": [
+        1275,
+        1274,
+        1228
+      ],
+      "featured_media_id": 1074,
+      "media_ids": [
+        1074,
+        1228,
+        1274,
+        1275
+      ],
+      "script_tag_count": 0,
+      "iframe_count": 0,
+      "form_or_control_count": 0,
+      "duplicate_anchors": [],
+      "missing_internal_anchors": [],
+      "unresolved_media": []
+    },
+    {
+      "article_id": "hm:article:2241",
+      "canonical_url": "https://hybridmind.online/2026/10/16/rag-citation-gate-current-revision-sha256-utf8-byte-span/",
+      "source_revision": "2026-10-18T21:05:05.000Z",
+      "source_hash": "sha256:101dff6b44b53b804559fb1cdd260783beb713eebcd5d49b8130b7f313e050be",
+      "source_hash_scope": "WordPress REST content.rendered UTF-8 string; this is not the inaccessible Library ZIP or raw database payload",
+      "response_sha256": "20ca4e1c46ade80a3cf0d63c664f05c850bd4f3841dc43197e4cec0b1dea16ef",
+      "body_bytes": 102962,
+      "heading_count": 32,
+      "matched_catalog_sections": 31,
+      "inline_image_count": 4,
+      "inline_attachment_ids": [
+        2224,
+        2226,
+        2225,
+        2227
+      ],
+      "featured_media_id": 2224,
+      "media_ids": [
+        2224,
+        2225,
+        2226,
+        2227
+      ],
+      "script_tag_count": 1,
+      "iframe_count": 0,
+      "form_or_control_count": 33,
+      "duplicate_anchors": [],
+      "missing_internal_anchors": [],
+      "unresolved_media": []
+    },
+    {
+      "article_id": "hm:article:2310",
+      "canonical_url": "https://hybridmind.online/2026/10/16/rag-document-authorization-before-hydration/",
+      "source_revision": "2026-10-18T21:04:45.000Z",
+      "source_hash": "sha256:819c59704b0efee0105745e92a5b2300632112ec1f8b478ac0c5ccf0fbef7d6a",
+      "source_hash_scope": "WordPress REST content.rendered UTF-8 string; this is not the inaccessible Library ZIP or raw database payload",
+      "response_sha256": "dcd5c881f7ddfa5d153f5d84f1d2ec024a7f02a64877bf210a301142162a8041",
+      "body_bytes": 103696,
+      "heading_count": 33,
+      "matched_catalog_sections": 32,
+      "inline_image_count": 4,
+      "inline_attachment_ids": [
+        2308,
+        2306,
+        2309,
+        2307
+      ],
+      "featured_media_id": 2308,
+      "media_ids": [
+        2306,
+        2307,
+        2308,
+        2309
+      ],
+      "script_tag_count": 1,
+      "iframe_count": 0,
+      "form_or_control_count": 35,
+      "duplicate_anchors": [],
+      "missing_internal_anchors": [],
+      "unresolved_media": []
+    },
+    {
+      "article_id": "hm:article:2494",
+      "canonical_url": "https://hybridmind.online/2026/10/18/agent-approval-gate-action-fingerprint/",
+      "source_revision": "2026-10-18T21:04:33.000Z",
+      "source_hash": "sha256:49029c928f54c86d79bb8f579aed060794a03170f9d7c31128f59dd2563fe80d",
+      "source_hash_scope": "WordPress REST content.rendered UTF-8 string; this is not the inaccessible Library ZIP or raw database payload",
+      "response_sha256": "6d9d3772929babc8dee0d6a1906ac48571b9d2ee0eda2dbc94e375b48ca6dd0c",
+      "body_bytes": 98793,
+      "heading_count": 41,
+      "matched_catalog_sections": 34,
+      "inline_image_count": 4,
+      "inline_attachment_ids": [
+        2490,
+        2491,
+        2492,
+        2493
+      ],
+      "featured_media_id": 2490,
+      "media_ids": [
+        2490,
+        2491,
+        2492,
+        2493
+      ],
+      "script_tag_count": 1,
+      "iframe_count": 0,
+      "form_or_control_count": 42,
+      "duplicate_anchors": [],
+      "missing_internal_anchors": [],
+      "unresolved_media": []
+    }
+  ]
+}

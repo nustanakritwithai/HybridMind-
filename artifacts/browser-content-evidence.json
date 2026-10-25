@@ -1,0 +1,31 @@
+{
+  "bodyCoverage": {
+    "textLength": 141455,
+    "images": 23,
+    "headings": 138,
+    "duplicateIds": [],
+    "active": 0
+  },
+  "safety": {
+    "inert": true,
+    "active": 0,
+    "duplicates": 0,
+    "anchor": "sec-hm:section:test:stable",
+    "links": [
+      "#sec-hm:section:test:stable"
+    ],
+    "fallback": true,
+    "text": true,
+    "table": "preserved cell",
+    "stableAfterRename": true
+  },
+  "imagesLoaded": true,
+  "desktop": {
+    "width": 1440,
+    "height": 1000
+  },
+  "mobile": {
+    "width": 390,
+    "height": 844
+  }
+}

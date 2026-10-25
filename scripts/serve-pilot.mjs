@@ -4,23 +4,29 @@ import { readFile } from 'node:fs/promises';
 import { extname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { projectPublicCatalog } from './public-projection.mjs';
-import { verifyContentBundleDigests } from './content-integrity.mjs';
+import { verifyContentBundleDigests, verifyContentMediaFiles } from './content-integrity.mjs';
 import { validateContentBundle } from '../knowledge-textbook/content-renderer.mjs';
+import { applyContentRevisionOverlay } from './content-revision-overlay.mjs';
 
 const root = resolve(fileURLToPath(new URL('../', import.meta.url)));
 const offlinePath = resolve(root, 'offline/pilot-catalog-full.json');
 const catalogPath = existsSync(offlinePath) ? offlinePath : resolve(root, 'data/pilot-catalog.json');
-const clientCatalog = projectPublicCatalog(JSON.parse(await readFile(catalogPath, 'utf8')));
+const baseCatalog = JSON.parse(await readFile(catalogPath, 'utf8'));
+const revisionOverlayPath = resolve(root, 'offline/public-rest-revision-overlay.json');
+const revisionOverlay = existsSync(revisionOverlayPath) ? JSON.parse(await readFile(revisionOverlayPath, 'utf8')) : null;
+const clientCatalog = projectPublicCatalog(applyContentRevisionOverlay(baseCatalog, revisionOverlay));
 const clientCatalogBytes = Buffer.from(`${JSON.stringify(clientCatalog)}\n`, 'utf8');
 const contentPath = [resolve(root, 'offline/pilot-content-bundle.json'), resolve(root, 'data/pilot-content-bundle.json')].find(existsSync);
 const clientContentBundle = contentPath
   ? verifyContentBundleDigests(validateContentBundle(JSON.parse(await readFile(contentPath, 'utf8')), { catalog: clientCatalog }))
   : null;
 const clientContentBytes = clientContentBundle ? Buffer.from(`${JSON.stringify(clientContentBundle)}\n`, 'utf8') : null;
+if (clientContentBundle) await verifyContentMediaFiles(clientContentBundle, root);
 const port = Number(process.env.HM_PILOT_PORT || 8000);
 const mimeTypes = new Map([
   ['.html', 'text/html; charset=utf-8'], ['.css', 'text/css; charset=utf-8'],
   ['.js', 'text/javascript; charset=utf-8'], ['.mjs', 'text/javascript; charset=utf-8'],
+  ['.jpg', 'image/jpeg'], ['.jpeg', 'image/jpeg'], ['.png', 'image/png'], ['.webp', 'image/webp'], ['.gif', 'image/gif'],
 ]);
 const staticRoutes = new Map([
   ['/knowledge-textbook/', 'knowledge-textbook/index.html'],
@@ -49,6 +55,9 @@ const server = createServer(async (req, res) => {
     } else if (pathname === '/data/pilot-content-bundle.json') {
       if (!clientContentBytes) { res.writeHead(404, { 'X-Content-Type-Options': 'nosniff' }).end('Not found'); return; }
       body = clientContentBytes; contentType = 'application/json; charset=utf-8';
+    } else if (/^\/assets\/media\/[0-9]+\.(?:jpe?g|png|webp|gif)$/i.test(pathname)) {
+      body = await readFile(resolve(root, pathname.slice(1)));
+      contentType = mimeTypes.get(extname(pathname).toLowerCase()) || 'application/octet-stream';
     } else {
       const relative = staticRoutes.get(pathname);
       if (!relative) { res.writeHead(404, { 'X-Content-Type-Options': 'nosniff' }).end('Not found'); return; }
@@ -58,7 +67,7 @@ const server = createServer(async (req, res) => {
     res.writeHead(200, {
       'Content-Type': contentType, 'Content-Length': body.length,
       'Cache-Control': 'no-store', 'X-Content-Type-Options': 'nosniff',
-      'Content-Security-Policy': "default-src 'self'; img-src 'self' https://hybridmind.online; style-src 'self'; script-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'none'; frame-ancestors 'none'",
+      'Content-Security-Policy': "default-src 'self'; img-src 'self'; style-src 'self'; script-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'none'; frame-ancestors 'none'",
     });
     if (req.method === 'HEAD') res.end(); else res.end(body);
   } catch (error) {

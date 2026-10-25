@@ -24,9 +24,11 @@ function topicArticleMapping(topic, article) {
   return relation?.review_status === 'approved' ? 'approved' : relation?.review_status === 'proposed' || direct ? 'proposed' : null;
 }
 function articlesFor(topic) {
-  return state.catalog.articles.filter(a => isSafeArticle(a) && topicArticleMapping(topic, a));
+  const articles = state.catalog.articles.filter(a => isSafeArticle(a) && topicArticleMapping(topic, a));
+  const order = [1077,1073,2241,2310,2494].map(id => `hm:article:${id}`);
+  return topic.topic_id === 'hm:topic:verify-ai-work' ? articles.sort((a,b)=>order.indexOf(a.article_id)-order.indexOf(b.article_id)) : articles;
 }
-function topicSections(topic) { const ids = new Set(articlesFor(topic).map(a => a.article_id)); return state.catalog.sections.filter(s => ids.has(s.article_id)).sort((a,b) => a.display_order - b.display_order); }
+function topicSections(topic) { return articlesFor(topic).flatMap(article => state.catalog.sections.filter(section => section.article_id === article.article_id).sort((a,b) => a.display_order - b.display_order)); }
 function selectedTopic() { return state.catalog.topics.find(t => t.topic_id === state.topicId); }
 function progressKey(topic) { return `hm-reading:${topic.topic_id}`; }
 const consentKey = 'hm-reading:consent';
@@ -111,7 +113,7 @@ function renderTopicPathChoices(topic) {
 function renderSearch() {
   const box = $('#search-results'); box.replaceChildren(); const q = $('#search-input').value.trim(); if (!q) return;
   let matches = [], notice = null;
-  try { const found = searchCatalog(state.catalog, q, { topicId: $('#filter-topic').value, contentType: $('#filter-type').value, difficulty: $('#filter-level').value, locale: $('#filter-locale').value, sort: document.querySelector('#filter-sort')?.value || 'relevance' }); matches = Array.isArray(found) ? found : found?.results || []; notice = found?.notice ?? null; } catch (err) { console.warn('Keyword search unavailable', err); }
+  try { const found = searchCatalog(state.catalog, q, { topicId: $('#filter-topic').value, contentType: $('#filter-type').value, difficulty: $('#filter-level').value, locale: $('#filter-locale').value, sort: document.querySelector('#filter-sort')?.value || 'relevance' }, [...state.contentById.values()]); matches = Array.isArray(found) ? found : found?.results || []; notice = found?.notice ?? null; } catch (err) { console.warn('Keyword search unavailable', err); }
   if (!matches.length) {
     if (notice === 'unpublished-content') box.append(el('p', 'ค้นหาเฉพาะบทความที่เผยแพร่สาธารณะ ระบบไม่แสดงฉบับร่างหรือเนื้อหาส่วนตัว', 'proposed-note'));
     box.append(el('p', 'ไม่พบผลลัพธ์ ลองใช้คำค้นอื่น', 'muted')); return;
@@ -177,15 +179,15 @@ function renderReader() {
   out.append(subnav);
   const section = sections.find(s => s.section_id === state.sectionId);
   if (state.invalidSection || (state.sectionId && !section)) out.append(el('p', 'ไม่พบรหัสหัวข้อย่อยนี้ จึงแสดงหน้าหัวข้อแทน', 'fallback-note'));
-  if (section) { const node = sectionNode(section); out.append(node); requestAnimationFrame(() => node.scrollIntoView({ block: 'start', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' })); }
-  else if (sections.length) out.append(el('p', 'เลือกหัวข้อย่อยด้านบนเพื่อดูข้อมูลจาก snapshot หรือเปิดบทความต้นฉบับ', 'muted'));
+  if (section && !state.contentById.has(section.article_id)) { const node = sectionNode(section); out.append(node); requestAnimationFrame(() => node.scrollIntoView({ block: 'start', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' })); }
+  else if (!section && !state.contentById.size && sections.length) out.append(el('p', 'เลือกหัวข้อย่อยด้านบนเพื่อดูข้อมูลจาก snapshot หรือเปิดบทความต้นฉบับ', 'muted'));
   if (!sections.length) out.append(el('p', 'ไม่พบหัวข้อย่อยในข้อมูลชุดนี้', 'muted'));
   const source = el('div', undefined, 'source-list'); source.append(el('h2', 'บทความต้นฉบับและสื่อ'));
   if (!articles.length) source.append(el('p', 'ยังไม่มีบทความที่เชื่อมกับหัวข้อนี้'));
-  articles.forEach(a => {
+  articles.forEach((a, articleIndex) => {
     const card = el('article', undefined, 'source-card');
     card.append(el('h3', a.title));
-    const contentEntry=state.contentById.get(a.article_id); if(contentEntry?.provenance==='wordpress_export') card.append(renderStructuredContent(contentEntry,{document,sourceArticle:a}));
+    const contentEntry=state.contentById.get(a.article_id); if(contentEntry?.provenance==='wordpress_export') { card.append(el("small", "Public WordPress snapshot: "+new Date(contentEntry.imported_at).toLocaleDateString("th-TH")+" · source revision "+contentEntry.source_revision, "source-meta")); card.append(renderStructuredContent(contentEntry,{document,sourceArticle:a,sections:sections.filter(item=>item.article_id===a.article_id)})); }
     if (topicArticleMapping(topic, a) !== 'approved') card.append(el('span', 'เสนอให้เชื่อมโยง | รอทบทวนโดยกองบรรณาธิการ', 'mapping-note'));
     card.append(el('p', a.summary || 'บทความจาก WordPress'));
     if (a.modified_at) card.append(el('small', `แก้ไขต้นฉบับล่าสุด: ${new Date(a.modified_at).toLocaleDateString('th-TH')}`, 'source-meta'));
@@ -195,9 +197,24 @@ function renderReader() {
       sourceLink.target = '_blank'; sourceLink.rel = 'noopener noreferrer';
       card.append(sourceLink);
     } else card.append(el('p', 'ลิงก์ต้นฉบับไม่ผ่านการตรวจสอบ จึงซ่อนไว้', 'fallback-note'));
-    source.append(card);
+    const articlePager = el('nav', undefined, 'article-pager'); articlePager.setAttribute('aria-label', 'Previous and next source articles');
+    for (const [label,neighbor] of [['ก่อนหน้า', articles[articleIndex-1]], ['ถัดไป',articles[articleIndex+1]]]) {
+      if (!neighbor) continue;
+      const firstSection = sections.find(item=>item.article_id===neighbor.article_id);
+      articlePager.append(link(route(topic.topic_id,firstSection?.section_id,state.pathId), `${label}: ${neighbor.title}`));
+    }
+    card.append(articlePager); source.append(card);
   });
   out.append(source);
+  if (section && state.contentById.has(section.article_id)) {
+    const target = document.getElementById("sec-" + section.section_id);
+    if (target) requestAnimationFrame(() => { if (target.isConnected && state.sectionId === section.section_id) target.scrollIntoView({block:"start",behavior:"instant"}); });
+    else out.append(el("p", "This heading changed in the latest source revision. The full article is shown below its title; use its original WordPress link for the source outline.", "fallback-note"));
+    const index = sections.indexOf(section), pager = el("nav", undefined, "topic-pager");
+    pager.setAttribute("aria-label", "Previous and next sections");
+    for (const [label,item] of [["Previous",sections[index-1]],["Next",sections[index+1]]]) if (item) pager.append(link(route(topic.topic_id,item.section_id,state.pathId), label+": "+item.heading_text));
+    out.insertBefore(pager, source);
+  }
   const pathChoice = renderTopicPathChoices(topic); if (pathChoice) out.append(pathChoice);
   const path = state.catalog.learning_paths.find(p => p.path_id === state.pathId);
   if (path) {

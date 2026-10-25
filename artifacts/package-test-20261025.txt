@@ -1,0 +1,45 @@
+
+> hybridmind-knowledge-textbook-phase1@1.0.0 test
+> node --test tests/catalog.test.mjs tests/fetch-public-wp-inventory.test.mjs tests/reader-browser.test.mjs tests/search.test.mjs tests/server.test.mjs tests/content-renderer.test.mjs tests/public-rest-content.test.mjs
+
+โ” catalog conforms to schema and all stable references resolve (7.7225ms)
+โ” snapshot unknown visibility is retained for coverage but cannot enter the public index (0.3999ms)
+โ” public projection removes unknown records, their sections, and their relationship edges (3.3408ms)
+โ” fixture exercises every supported block and is explicitly synthetic (3.9149ms)
+โ” renderer creates only text and allowlisted elements; untrusted text remains inert (1.0856ms)
+โ” URL policy rejects unsafe links, hosts, credentials, ports and image paths (0.3656ms)
+โ” malicious block URLs are rejected and source metadata must match public projection (0.7578ms)
+โ” importer normalizes Gutenberg blocks and maps unknown block to static fallback without HTML (1.9443ms)
+โ” normalizer preserves only supported fields and defaults unknown Gutenberg types safely (0.1909ms)
+โ” public capture checkpoints after each page, pauses on 429, and excludes unknown/protected bodies (168.8716ms)
+โ” five full public bodies retain exact REST rendered bytes, canonical identity and UTC revision (40.7878ms)
+โ” all 20 local image files match recorded hashes and every inline source image has metadata (157.777ms)
+โ” public body keyword search finds code details without indexing script or navigation content (109.71ms)
+โ” responsive reader navigation, search, progress, missing anchors, and safe text (13764.2053ms)
+โน {"textLength":141455,"images":23,"headings":138,"duplicateIds":[],"active":0}
+โน Screenshots saved under artifacts\screenshots
+โ” indexes only public published articles, but searches topics and sections too (7.5381ms)
+โ” matches keyword concepts across article and section fields (3.1416ms)
+โ” uses a topic-to-article relationship when direct topic fields are empty (0.8356ms)
+โ” applies topic, type, difficulty, locale and date filters (2.0818ms)
+โ” empty and no-result queries are safe, and no-answer queries do not invent matches (4.3557ms)
+โ” Meilisearch adapter uses injected client and normalizes results (0.5255ms)
+โ” Typesense adapter uses injected client and normalizes results (0.7683ms)
+โ” excludes published articles with unknown password state and their sections (0.8533ms)
+โ” keeps generic navigation headings out of section search (0.9857ms)
+โ” topic filters honor every proposed relation and route through the filtered topic (0.895ms)
+โ” canonical URL policy accepts only credential-free HTTPS hybridmind.online links (0.3732ms)
+โ” search results never return an unsafe source URL (0.631ms)
+โ” general public questions about draft policy remain searchable (0.6468ms)
+โ” private draft snippet retrieval returns an empty generic response without private indexing (0.2052ms)
+โ” actual five-source corpus returns zero for unsupported and unpublished-content requests (122.7112ms)
+โ” held-out judgments resolve only against the five-source public projection (105.963ms)
+โ” server exposes only fixed assets and an explicitly public catalog projection (494.6825ms)
+โน tests 31
+โน suites 0
+โน pass 31
+โน fail 0
+โน cancelled 0
+โน skipped 0
+โน todo 0
+โน duration_ms 16264.053
