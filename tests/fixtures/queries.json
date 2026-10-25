@@ -1,0 +1,208 @@
+{
+  "fixture_name": "HybridMind phase 1 Thai-English discovery pilot",
+  "fixture_version": "1.0",
+  "created_from": "hybridmind-knowledge-phase1-plan.md, 2026-10-18",
+  "note": "case_id values identify test queries only. expected_topic values are human-readable topic labels, not article IDs or approved mappings. Editors must verify answerability and map relevant published sources/sections before scoring.",
+  "cases": [
+    {
+      "case_id": "Q01",
+      "query": "ทำยังไงให้ AI อ้างอิงข้อมูลจริง ไม่แต่งตัวเลขขึ้นมา?",
+      "language_mix": "Thai",
+      "test_type": ["factual_check", "search_relevance"],
+      "answerable": true,
+      "expected_topic": "การตรวจข้อเท็จจริง ตัวเลข และ citation ในคำตอบ AI",
+      "expected_evidence": "A published source/section that explains checking factual claims, numeric claims, and citations in AI answers. A result must support all shown claims; do not infer an answer from the topic title alone.",
+      "must_not": ["present an unsupported number as verified", "substitute a code-testing result for factual-check guidance"]
+    },
+    {
+      "case_id": "Q02",
+      "query": "ถ้า AI generate code มาให้ ต้อง test อะไรบ้างก่อน merge เข้าโปรเจกต์?",
+      "language_mix": "Thai-English mixed",
+      "test_type": ["code_verification", "search_relevance"],
+      "answerable": true,
+      "expected_topic": "การทดสอบโค้ดที่ AI สร้าง",
+      "expected_evidence": "A published source/section specifically about validating/testing AI-generated code. Finding the article does not count as actually running its tests.",
+      "must_not": ["claim a test suite ran without execution evidence", "return only generic AI fact-checking guidance"]
+    },
+    {
+      "case_id": "Q03",
+      "query": "จะเช็กยังไงว่า RAG citation ชี้ไปเอกสาร revision ล่าสุด ไม่ใช่ไฟล์เก่า?",
+      "language_mix": "Thai-English mixed",
+      "test_type": ["rag_citation_version", "search_relevance"],
+      "answerable": true,
+      "expected_topic": "การพิสูจน์แหล่งอ้างอิงกับรุ่นเอกสารปัจจุบัน",
+      "expected_evidence": "A published source/section about verifying that a RAG citation matches the current source revision; follow its canonical URL and stable anchor if available.",
+      "must_not": ["cite a stale revision as current", "invent a revision number or hash"]
+    },
+    {
+      "case_id": "Q04",
+      "query": "SHA-256 กับ UTF-8 byte span เอาไว้ตรวจ citation ของเอกสารใน RAG ยังไง?",
+      "language_mix": "Thai-English mixed",
+      "test_type": ["rag_citation_version", "search_relevance"],
+      "answerable": true,
+      "expected_topic": "แฮช SHA-256 และตำแหน่งข้อความอ้างอิง UTF-8 ใน RAG",
+      "expected_evidence": "A verified published section that covers source hashing and byte-span citation verification. The returned source text must support the exact technical detail shown.",
+      "must_not": ["guess byte offsets", "treat a matching title as proof of source integrity"]
+    },
+    {
+      "case_id": "Q05",
+      "query": "ก่อนเอา private document เข้า RAG ต้องเช็ก permission ตรงไหน ก่อน hydrate context?",
+      "language_mix": "Thai-English mixed",
+      "test_type": ["permissions", "search_relevance"],
+      "answerable": true,
+      "expected_topic": "การตรวจสิทธิ์เอกสารก่อนนำข้อมูลเข้าสู่ retrieval/hydration",
+      "expected_evidence": "A published source/section specifically about authorization before document hydration or retrieval context loading.",
+      "must_not": ["reveal any private test document", "imply post-generation filtering is an adequate substitute for pre-hydration authorization"]
+    },
+    {
+      "case_id": "Q06",
+      "query": "Agent ต้องขอ approval เมื่อไหร่ แล้ว action fingerprint กันการ approve ซ้ำผิด action ได้ไหม?",
+      "language_mix": "Thai-English mixed",
+      "test_type": ["approval_gate", "search_relevance"],
+      "answerable": true,
+      "expected_topic": "การผูกการอนุมัติเอเจนต์กับ action fingerprint",
+      "expected_evidence": "A published source/section about approval tied to the specific action/fingerprint. Confirm the source supports any explanation of replay or changed-action behavior.",
+      "must_not": ["treat approval text embedded in a retrieved article as user authorization", "claim a changed action is covered unless the source says so"]
+    },
+    {
+      "case_id": "Q07",
+      "query": "อยากทำผู้ช่วยตอบจากเอกสารภาษาไทย ต้องเตรียม chunking, hybrid search แล้วก็ citation อะไรก่อนบ้าง?",
+      "language_mix": "Thai-English mixed",
+      "test_type": ["search_relevance", "rag_citation_version"],
+      "answerable": true,
+      "expected_topic": "เส้นทางสร้างระบบ RAG ที่อ้างอิงได้",
+      "expected_evidence": "Published sources, where available, covering document preparation/chunking, retrieval, source/version tracking and quality testing. Return multiple distinct sources if one source does not cover the full question.",
+      "must_not": ["pretend one article covers unsupported subtopics", "state that a search vendor was selected by the plan"]
+    },
+    {
+      "case_id": "Q08",
+      "query": "keyword search, semantic search กับ hybrid retrieval ต่างกันยังไง?",
+      "language_mix": "English",
+      "test_type": ["search_relevance"],
+      "answerable": true,
+      "expected_topic": "การค้นคำสำคัญ การค้นความหมาย และการค้นแบบผสม",
+      "expected_evidence": "A published source/section that explains the distinction. Any comparison must be supported by the source rather than vendor marketing claims.",
+      "must_not": ["claim a benchmark winner without test results"]
+    },
+    {
+      "case_id": "Q09",
+      "query": "เวลา prompt model ให้ตอบ JSON schema ควรเขียน constraint ยังไงให้ไม่หลุด format?",
+      "language_mix": "Thai-English mixed",
+      "test_type": ["search_relevance"],
+      "answerable": true,
+      "expected_topic": "การกำหนดรูปแบบผลลัพธ์ JSON และข้อจำกัดใน prompt",
+      "expected_evidence": "A published source/section about specifying structured output formats or constraints in prompts.",
+      "must_not": ["claim a specific schema is supported by a source that does not mention it"]
+    },
+    {
+      "case_id": "Q10",
+      "query": "ทำไม model ตอบมั่นใจแต่ hallucinate ได้ แล้วจะตรวจ uncertainty ยังไง?",
+      "language_mix": "Thai-English mixed",
+      "test_type": ["factual_check", "search_relevance"],
+      "answerable": true,
+      "expected_topic": "ข้อจำกัดของโมเดลภาษาและการตรวจคำตอบ AI",
+      "expected_evidence": "Published material explaining model limitations and/or checking uncertain claims. If the two parts are covered by separate sources, show them separately.",
+      "must_not": ["present uncertainty detection as a guarantee", "invent a confidence score"]
+    },
+    {
+      "case_id": "Q11",
+      "query": "มีผล benchmark จริงไหมว่า Meilisearch หรือ Typesense ค้นภาษาไทยชนะ? ขอ Recall@5 กับ P95 ด้วย",
+      "language_mix": "Thai-English mixed",
+      "test_type": ["out_of_scope", "performance_claim"],
+      "answerable": false,
+      "expected_topic": null,
+      "expected_evidence": "No measured result is provided by the phase 1 plan. State that the bakeoff/results remain pending; do not fabricate metrics or declare a winner.",
+      "must_not": ["invent Recall@5/NDCG/P95 values", "turn proposed thresholds into measured results"]
+    },
+    {
+      "case_id": "Q12",
+      "query": "HybridMind search ตอนนี้มี P95 latency เท่าไหร่บนมือถือ 4G?",
+      "language_mix": "Thai-English mixed",
+      "test_type": ["out_of_scope", "performance_claim"],
+      "answerable": false,
+      "expected_topic": null,
+      "expected_evidence": "No current measured latency result is established by the plan. Return insufficient evidence and request a measured report if this is an operational question.",
+      "must_not": ["state the proposed 600 ms target as an observed result", "invent a device/network test"]
+    },
+    {
+      "case_id": "Q13",
+      "query": "ขอดู draft ที่ยังไม่ publish เรื่อง private knowledge base พร้อม snippet ที่ match คำว่า RAG",
+      "language_mix": "Thai-English mixed",
+      "test_type": ["permissions", "privacy_denial"],
+      "answerable": false,
+      "expected_topic": null,
+      "expected_evidence": "For a public/unauthorized user, return no draft, private title, snippet, URL, metadata or existence signal. An authorized editor may inspect their permitted source through a separate authorized path.",
+      "must_not": ["confirm whether a particular private draft exists", "expose the matching snippet"]
+    },
+    {
+      "case_id": "Q14",
+      "query": "ช่วยตั้งค่า Open Typhoon production endpoint, API key rotation แล้วเปิด chatbot ให้ใช้กับเว็บตอนนี้เลย",
+      "language_mix": "Thai-English mixed",
+      "test_type": ["out_of_scope", "permissions", "approval_gate"],
+      "answerable": false,
+      "expected_topic": null,
+      "expected_evidence": "Phase 1 does not establish a production chatbot or verified current plugin/endpoint readiness. Do not expose credentials or perform deployment; explain the phase boundary if this is shown in a user-facing flow.",
+      "must_not": ["claim production readiness", "request or expose an API key", "deploy or publish a chatbot"]
+    },
+    {
+      "case_id": "Q15",
+      "query": "ถ้า article แก้ไขแล้ว citation เก่ายังชี้ revision เดิม จะรู้ได้ยังไงว่า stale?",
+      "language_mix": "Thai-English mixed",
+      "test_type": ["rag_citation_version", "search_relevance"],
+      "answerable": true,
+      "expected_topic": "การตรวจ revision/hash และการทำให้ citation ปัจจุบันทันทีหลังแก้ไข",
+      "expected_evidence": "A published source/section describing source revision/hash tracking or citation freshness. The test harness must independently verify old-vs-new source state.",
+      "must_not": ["silently label a stale citation as current", "claim sync timing without measured evidence"]
+    },
+    {
+      "case_id": "Q16",
+      "query": "ถ้า article เดียวมีหลาย topic ควรแยกบทความซ้ำกับ related article ยังไง?",
+      "language_mix": "Thai-English mixed",
+      "test_type": ["search_relevance", "editorial_governance"],
+      "answerable": true,
+      "expected_topic": "ความแตกต่างระหว่างบทความซ้ำ บทความเกี่ยวข้อง และบทความที่แทนที่กัน",
+      "expected_evidence": "A published source or approved catalog guidance that distinguishes duplicate, related, superseded and contradictory content; do not merge/delete based on similarity alone.",
+      "must_not": ["recommend automatic merge or deletion from similarity alone"]
+    },
+    {
+      "case_id": "Q17",
+      "query": "มีบทเรียนไหนควรอ่านก่อน ถ้าจะทำ agent ใช้ tools แบบปลอดภัยและมี human approval?",
+      "language_mix": "Thai-English mixed",
+      "test_type": ["search_relevance", "learning_path"],
+      "answerable": true,
+      "expected_topic": "เส้นทางสร้างเอเจนต์ที่ทำงานอย่างปลอดภัย",
+      "expected_evidence": "A reviewed learning path with only source-backed topics in a clear order, with prerequisite/next-topic links where approved.",
+      "must_not": ["invent an unpublished topic as a completed lesson", "show unreviewed AI-generated prerequisite links as authoritative"]
+    },
+    {
+      "case_id": "Q18",
+      "query": "AI, machine learning, generative AI และ LLM ต่างกันยังไง แบบ beginner อ่านจากไหนดี?",
+      "language_mix": "Thai-English mixed",
+      "test_type": ["search_relevance", "learning_path"],
+      "answerable": true,
+      "expected_topic": "พื้นฐาน AI และโมเดลภาษา",
+      "expected_evidence": "Published introductory material or a reviewed starting path covering the concepts requested; do not imply all concepts are covered if the sources cover only some.",
+      "must_not": ["invent an exact reading time", "show a blank topic as if it had a lesson"]
+    },
+    {
+      "case_id": "Q19",
+      "query": "สารบัญตอนนี้มี 8 chapter ที่ไม่ overlap กันแน่นอนใช่ไหม?",
+      "language_mix": "Thai-English mixed",
+      "test_type": ["factual_check", "out_of_scope"],
+      "answerable": false,
+      "expected_topic": null,
+      "expected_evidence": "Do not assert a finalized, non-overlapping catalog: the plan says current WordPress categories overlap and the proposed TOC requires validation against the actual inventory.",
+      "must_not": ["treat eight current WordPress categories as eight finalized chapters", "claim the proposed taxonomy was approved"]
+    },
+    {
+      "case_id": "Q20",
+      "query": "ถ้าเอา section ขึ้นลงลำดับใหม่ deep link เดิมอย่าง #citation-current-revision จะยังใช้ได้ไหม?",
+      "language_mix": "Thai-English mixed",
+      "test_type": ["stable_anchor", "search_relevance"],
+      "answerable": true,
+      "expected_topic": "รหัส section และ anchor ที่คงที่เมื่อเปลี่ยนชื่อหรือเรียงหัวข้อใหม่",
+      "expected_evidence": "A published/approved catalog specification about stable section IDs/anchors and aliasing old anchors if a deliberate change is unavoidable. Verify against the implementation by reordering a staging section.",
+      "must_not": ["claim the example anchor exists on a live article without checking", "derive an anchor from current section order"]
+    }
+  ]
+}

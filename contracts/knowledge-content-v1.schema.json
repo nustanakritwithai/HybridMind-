@@ -1,0 +1,514 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hybridmind.online/schemas/knowledge-content-v1.json",
+  "title": "HybridMind structured article content envelope",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "article_id",
+    "canonical_url",
+    "source_revision",
+    "source_hash",
+    "source_hash_status",
+    "content_derivation_status",
+    "content_digest",
+    "imported_at",
+    "provenance",
+    "blocks"
+  ],
+  "properties": {
+    "schema_version": {
+      "enum": [
+        "1.0.0",
+        "1.1.0"
+      ]
+    },
+    "article_id": {
+      "type": "string",
+      "pattern": "^hm:article:[0-9]+$"
+    },
+    "canonical_url": {
+      "type": "string",
+      "format": "uri"
+    },
+    "source_revision": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_hash": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^sha256:[a-f0-9]{64}$"
+    },
+    "source_hash_status": {
+      "enum": [
+        "source_bytes_verified",
+        "unverified"
+      ],
+      "description": "source_bytes_verified confirms the supplied original bytes match source_hash; it does not verify that normalized blocks were derived from them."
+    },
+    "source_hash_scope": {
+      "const": "wordpress_rest_content_rendered_utf8",
+      "description": "For 1.1.0, the hash covers the exact UTF-8 string in the public WordPress REST content.rendered field, not the inaccessible original Library archive or raw WordPress storage payload."
+    },
+    "content_derivation_status": {
+      "const": "unverified",
+      "description": "The importer does not establish a byte-for-byte derivation from the original source payload to normalized blocks."
+    },
+    "content_digest": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$",
+      "description": "Integrity digest for normalized article identity and blocks; it is independent of source-byte verification and derivation provenance."
+    },
+    "imported_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "provenance": {
+      "enum": [
+        "wordpress_export",
+        "test_fixture"
+      ]
+    },
+    "fixture_notice": {
+      "type": "string"
+    },
+    "blocks": {
+      "type": "array",
+      "items": {
+        "oneOf": [
+          {
+            "$ref": "#/$defs/heading"
+          },
+          {
+            "$ref": "#/$defs/paragraph"
+          },
+          {
+            "$ref": "#/$defs/list"
+          },
+          {
+            "$ref": "#/$defs/quote"
+          },
+          {
+            "$ref": "#/$defs/code"
+          },
+          {
+            "$ref": "#/$defs/image"
+          },
+          {
+            "$ref": "#/$defs/fallback"
+          },
+          {
+            "$ref": "#/$defs/html_fragment"
+          }
+        ]
+      }
+    },
+    "media": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/media"
+      }
+    },
+    "featured_media_id": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 1
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "provenance": {
+            "const": "test_fixture"
+          }
+        },
+        "required": [
+          "provenance"
+        ]
+      },
+      "then": {
+        "required": [
+          "fixture_notice"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "provenance": {
+            "const": "wordpress_export"
+          }
+        },
+        "required": [
+          "provenance"
+        ]
+      },
+      "then": {
+        "not": {
+          "required": [
+            "fixture_notice"
+          ]
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "source_hash_status": {
+            "const": "source_bytes_verified"
+          }
+        },
+        "required": [
+          "source_hash_status"
+        ]
+      },
+      "then": {
+        "properties": {
+          "source_hash": {
+            "type": "string",
+            "pattern": "^sha256:[a-f0-9]{64}$"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "source_hash_status": {
+            "const": "unverified"
+          }
+        },
+        "required": [
+          "source_hash_status"
+        ]
+      },
+      "then": {
+        "properties": {
+          "source_hash": {
+            "type": "null"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "schema_version": {
+            "const": "1.1.0"
+          }
+        },
+        "required": [
+          "schema_version"
+        ]
+      },
+      "then": {
+        "required": [
+          "source_hash_scope",
+          "media",
+          "featured_media_id"
+        ],
+        "properties": {
+          "source_hash_status": {
+            "const": "source_bytes_verified"
+          },
+          "blocks": {
+            "minItems": 1,
+            "maxItems": 1,
+            "items": {
+              "$ref": "#/$defs/html_fragment"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "heading": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "level",
+        "text"
+      ],
+      "properties": {
+        "type": {
+          "const": "heading"
+        },
+        "level": {
+          "enum": [
+            2,
+            3,
+            4,
+            5,
+            6
+          ]
+        },
+        "text": {
+          "type": "string"
+        },
+        "anchor": {
+          "type": "string"
+        }
+      }
+    },
+    "paragraph": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "text"
+      ],
+      "properties": {
+        "type": {
+          "const": "paragraph"
+        },
+        "text": {
+          "type": "string"
+        },
+        "links": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/link"
+          }
+        }
+      }
+    },
+    "list": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "ordered",
+        "items"
+      ],
+      "properties": {
+        "type": {
+          "const": "list"
+        },
+        "ordered": {
+          "type": "boolean"
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "quote": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "text"
+      ],
+      "properties": {
+        "type": {
+          "const": "quote"
+        },
+        "text": {
+          "type": "string"
+        },
+        "attribution": {
+          "type": "string"
+        }
+      }
+    },
+    "code": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "code"
+      ],
+      "properties": {
+        "type": {
+          "const": "code"
+        },
+        "code": {
+          "type": "string"
+        },
+        "language": {
+          "type": "string"
+        }
+      }
+    },
+    "image": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "src",
+        "alt"
+      ],
+      "properties": {
+        "type": {
+          "const": "image"
+        },
+        "src": {
+          "type": "string",
+          "format": "uri"
+        },
+        "alt": {
+          "type": "string"
+        },
+        "caption": {
+          "type": "string"
+        }
+      }
+    },
+    "fallback": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "label",
+        "summary",
+        "source_block_type"
+      ],
+      "properties": {
+        "type": {
+          "const": "interactive_fallback"
+        },
+        "label": {
+          "type": "string"
+        },
+        "summary": {
+          "type": "string"
+        },
+        "source_block_type": {
+          "type": "string"
+        }
+      }
+    },
+    "html_fragment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "html"
+      ],
+      "properties": {
+        "type": {
+          "const": "html_fragment"
+        },
+        "html": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 600000,
+          "description": "Untrusted original rendered WordPress HTML. Readers must pass it through the allowlist sanitizer before DOM insertion; never assign it to innerHTML."
+        }
+      }
+    },
+    "media": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "attachment_id",
+        "source_url",
+        "local_src",
+        "mime_type",
+        "byte_length",
+        "sha256",
+        "modified_gmt",
+        "author_id",
+        "alt_text",
+        "title",
+        "caption",
+        "source_description",
+        "source_title",
+        "source_caption"
+      ],
+      "properties": {
+        "attachment_id": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "source_url": {
+          "type": "string",
+          "format": "uri"
+        },
+        "local_src": {
+          "type": "string",
+          "pattern": "^[.][.]/assets/media/[0-9]+\\.(?:jpe?g|png|webp|gif)$"
+        },
+        "mime_type": {
+          "enum": [
+            "image/jpeg",
+            "image/png",
+            "image/webp",
+            "image/gif"
+          ]
+        },
+        "byte_length": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^sha256:[a-f0-9]{64}$"
+        },
+        "modified_gmt": {
+          "type": "string"
+        },
+        "author_id": {
+          "type": "integer"
+        },
+        "alt_text": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "caption": {
+          "type": "string"
+        },
+        "source_description": {
+          "type": "string"
+        },
+        "source_title": {
+          "type": "string"
+        },
+        "source_caption": {
+          "type": "string"
+        }
+      }
+    },
+    "link": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "text",
+        "url",
+        "start",
+        "end"
+      ],
+      "properties": {
+        "text": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string",
+          "format": "uri"
+        },
+        "start": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "end": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    }
+  }
+}

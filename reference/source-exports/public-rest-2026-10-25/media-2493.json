@@ -1,0 +1,84 @@
+{
+  "id": 2493,
+  "date_gmt": "2026-10-17T05:48:04",
+  "modified_gmt": "2026-10-17T05:48:06",
+  "link": "https://hybridmind.online/hm-approval-receipt-lifecycle/",
+  "title": {
+    "rendered": "ใบอนุมัติมีสถานะ"
+  },
+  "author": 285438014,
+  "caption": {
+    "rendered": "<p>กฎจำลอง: changed → INVALIDATED, exact/unused/unexpired → CONSUMED และ ALLOW_MOCK_ONLY, expired → DENY_EXPIRED; หลัง consumed ใช้ซ้ำได้ DENY_USED ไม่มีเครื่องมือจริงถูกเรียก</p>\n"
+  },
+  "alt_text": "คำสั่งเปลี่ยนทำให้ receipt invalidated ฉบับตรงที่ยังไม่ใช้และไม่หมดอายุจึง consumed ได้หนึ่งครั้ง ส่วนหมดอายุหรือ replay ถูกปฏิเสธ",
+  "media_type": "image",
+  "mime_type": "image/png",
+  "media_details": {
+    "width": 1448,
+    "height": 1086,
+    "file": "2026/10/hm-approval-receipt-lifecycle.png",
+    "filesize": 1852463,
+    "sizes": {
+      "medium": {
+        "file": "hm-approval-receipt-lifecycle-300x225.png",
+        "width": 300,
+        "height": 225,
+        "virtual": true,
+        "mime_type": "image/png",
+        "source_url": "https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-approval-receipt-lifecycle.png?fit=300%2C225&ssl=1"
+      },
+      "large": {
+        "file": "hm-approval-receipt-lifecycle-1024x768.png",
+        "width": 1024,
+        "height": 768,
+        "virtual": true,
+        "mime_type": "image/png",
+        "source_url": "https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-approval-receipt-lifecycle.png?fit=1024%2C768&ssl=1"
+      },
+      "thumbnail": {
+        "file": "hm-approval-receipt-lifecycle-150x150.png",
+        "width": 150,
+        "height": 150,
+        "virtual": true,
+        "mime_type": "image/png",
+        "source_url": "https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-approval-receipt-lifecycle.png?resize=150%2C150&ssl=1"
+      },
+      "medium_large": {
+        "file": "hm-approval-receipt-lifecycle-768x576.png",
+        "width": 768,
+        "height": 576,
+        "virtual": true,
+        "mime_type": "image/png",
+        "source_url": "https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-approval-receipt-lifecycle.png?fit=768%2C576&ssl=1"
+      },
+      "full": {
+        "file": "hm-approval-receipt-lifecycle.png?fit=1448%2C1086&ssl=1",
+        "width": 1448,
+        "height": 1086,
+        "mime_type": "image/png",
+        "source_url": "https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-approval-receipt-lifecycle.png?fit=1448%2C1086&ssl=1"
+      }
+    },
+    "image_meta": {
+      "aperture": "0",
+      "credit": "",
+      "camera": "",
+      "caption": "",
+      "created_timestamp": "0",
+      "copyright": "",
+      "focal_length": "0",
+      "iso": "0",
+      "shutter_speed": "0",
+      "title": "",
+      "orientation": "0",
+      "keywords": [],
+      "alt": ""
+    }
+  },
+  "source_url": "https://hybridmind.online/wp-content/uploads/2026/10/hm-approval-receipt-lifecycle.png",
+  "_capture": {
+    "fetched_at": "2026-10-25T20:30:02.916Z",
+    "etag": null,
+    "last_modified": null
+  }
+}

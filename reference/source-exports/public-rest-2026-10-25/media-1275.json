@@ -1,0 +1,84 @@
+{
+  "id": 1275,
+  "date_gmt": "2026-10-13T07:34:39",
+  "modified_gmt": "2026-10-13T07:34:40",
+  "link": "https://hybridmind.online/2026/10/13/verify-ai-generated-code-tests-thai/1073-02-eight-tests/",
+  "title": {
+    "rendered": "8 กรณีทดสอบค่าส่ง"
+  },
+  "author": 285438014,
+  "caption": {
+    "rendered": "<p>กรณีทดสอบทั้งแปดจากตัวอย่างในบทความ ใช้จำนวนเต็มหน่วยสตางค์ และกำหนดผลที่คาดหวังจากข้อกำหนดก่อนรัน</p>\n"
+  },
+  "alt_text": "แปดกรณีทดสอบตามบทความ: ปกติ พอดีเกณฑ์ ต่ำกว่าเกณฑ์ ศูนย์ ติดลบ ข้อความ บูลีน และทศนิยม",
+  "media_type": "image",
+  "mime_type": "image/png",
+  "media_details": {
+    "width": 1086,
+    "height": 1448,
+    "file": "2026/10/1073-02-eight-tests.png",
+    "filesize": 1290726,
+    "sizes": {
+      "medium": {
+        "file": "1073-02-eight-tests-225x300.png",
+        "width": 225,
+        "height": 300,
+        "virtual": true,
+        "mime_type": "image/png",
+        "source_url": "https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/1073-02-eight-tests.png?fit=225%2C300&ssl=1"
+      },
+      "large": {
+        "file": "1073-02-eight-tests-768x1024.png",
+        "width": 768,
+        "height": 1024,
+        "virtual": true,
+        "mime_type": "image/png",
+        "source_url": "https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/1073-02-eight-tests.png?fit=768%2C1024&ssl=1"
+      },
+      "thumbnail": {
+        "file": "1073-02-eight-tests-150x150.png",
+        "width": 150,
+        "height": 150,
+        "virtual": true,
+        "mime_type": "image/png",
+        "source_url": "https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/1073-02-eight-tests.png?resize=150%2C150&ssl=1"
+      },
+      "medium_large": {
+        "file": "1073-02-eight-tests-768x1024.png",
+        "width": 768,
+        "height": 1024,
+        "virtual": true,
+        "mime_type": "image/png",
+        "source_url": "https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/1073-02-eight-tests.png?fit=768%2C1024&ssl=1"
+      },
+      "full": {
+        "file": "1073-02-eight-tests.png?fit=1086%2C1448&ssl=1",
+        "width": 1086,
+        "height": 1448,
+        "mime_type": "image/png",
+        "source_url": "https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/1073-02-eight-tests.png?fit=1086%2C1448&ssl=1"
+      }
+    },
+    "image_meta": {
+      "aperture": "0",
+      "credit": "",
+      "camera": "",
+      "caption": "",
+      "created_timestamp": "0",
+      "copyright": "",
+      "focal_length": "0",
+      "iso": "0",
+      "shutter_speed": "0",
+      "title": "",
+      "orientation": "0",
+      "keywords": [],
+      "alt": ""
+    }
+  },
+  "source_url": "https://hybridmind.online/wp-content/uploads/2026/10/1073-02-eight-tests.png",
+  "_capture": {
+    "fetched_at": "2026-10-25T20:30:02.916Z",
+    "etag": null,
+    "last_modified": null
+  }
+}

@@ -1,0 +1,384 @@
+{
+  "source": "https://hybridmind.online/wp-json/wp/v2/media?include=1074%2C1075%2C1228%2C1274%2C1275%2C1280%2C1284%2C1286%2C2224%2C2225%2C2226%2C2227%2C2306%2C2307%2C2308%2C2309%2C2490%2C2491%2C2492%2C2493&per_page=100&_fields=id,date_gmt,modified_gmt,link,title,author,caption,alt_text,media_type,mime_type,source_url,media_details",
+  "fetched_at": "2026-10-25T20:30:02.916Z",
+  "expected_ids": [
+    1074,
+    1075,
+    1228,
+    1274,
+    1275,
+    1280,
+    1284,
+    1286,
+    2224,
+    2225,
+    2226,
+    2227,
+    2306,
+    2307,
+    2308,
+    2309,
+    2490,
+    2491,
+    2492,
+    2493
+  ],
+  "assets": [
+    {
+      "attachment_id": 1074,
+      "status": "downloaded",
+      "filename": "1074.png",
+      "source_url": "https://hybridmind.online/wp-content/uploads/2026/10/hybridmind-check-ai-code.png",
+      "mime_type": "image/png",
+      "byte_length": 1883192,
+      "sha256": "75d02390a2f7b213a84d4855aa34e091a962196024ec1c26ad4b638f46c52451",
+      "modified_gmt": "2026-10-12T19:48:50",
+      "author_id": 285438014,
+      "alt_text": "แว่นขยายตรวจหาจุดผิดพลาดบนแผงโค้ดและชุดทดสอบในโทนน้ำเงิน",
+      "title": "ตรวจโค้ดที่ AI เขียนและออกแบบกรณีทดสอบ",
+      "caption_html": "<p>ภาพแนวคิดสร้างด้วย AI: การตรวจโค้ดที่ AI สร้างและออกแบบกรณีทดสอบเพื่อค้นหาข้อผิดพลาด</p>\n",
+      "inline_article_ids": [],
+      "inline_alt_texts": []
+    },
+    {
+      "attachment_id": 1075,
+      "status": "downloaded",
+      "filename": "1075.png",
+      "source_url": "https://hybridmind.online/wp-content/uploads/2026/10/hybridmind-verify-ai-sources.png",
+      "mime_type": "image/png",
+      "byte_length": 2329467,
+      "sha256": "34324b36d0275e92307aa707d82acafd0af0951aabd11e988784f0dc124b6765",
+      "modified_gmt": "2026-10-12T19:49:20",
+      "author_id": 285438014,
+      "alt_text": "ปริซึมเชื่อมข้อความคำตอบกับเอกสารต้นทาง สื่อถึงการตรวจสอบข้อมูลและแหล่งอ้างอิงของ AI",
+      "title": "ตรวจสอบคำตอบ AI และแหล่งอ้างอิง",
+      "caption_html": "<p>ภาพแนวคิดสร้างด้วย AI: การตรวจสอบคำตอบและย้อนรอยข้อกล่าวอ้างไปยังแหล่งข้อมูลต้นทาง</p>\n",
+      "inline_article_ids": [],
+      "inline_alt_texts": []
+    },
+    {
+      "attachment_id": 1228,
+      "status": "downloaded",
+      "filename": "1228.png",
+      "source_url": "https://hybridmind.online/wp-content/uploads/2026/10/1073-03-oracle.png",
+      "mime_type": "image/png",
+      "byte_length": 1166336,
+      "sha256": "815159de7eb5e01a0544a05a6e77f039d19eedeeb3e3bca11f57da6034160200",
+      "modified_gmt": "2026-10-13T05:53:34",
+      "author_id": 285438014,
+      "alt_text": "เมื่อเกณฑ์กำหนดค่าส่งศูนย์ที่ยอด 500 บาท แต่เฉลยผิดคาดหวัง 40 บาท โค้ดที่ผิดอาจผ่านการทดสอบได้ ต้องแก้เฉลยตามเกณฑ์",
+      "title": "Test ผ่าน แต่เฉลยอาจผิด",
+      "caption_html": "<p>ตัวอย่างเฉลยผิดจากบทความ: ต้องตรวจที่มาของ expected value ไม่ย้อนโค้ดที่ถูกให้กลับไปผิดเพียงเพื่อให้ Test ผ่าน</p>\n",
+      "inline_article_ids": [
+        1073
+      ],
+      "inline_alt_texts": []
+    },
+    {
+      "attachment_id": 1274,
+      "status": "downloaded",
+      "filename": "1274.png",
+      "source_url": "https://hybridmind.online/wp-content/uploads/2026/10/1073-01-threshold.png",
+      "mime_type": "image/png",
+      "byte_length": 1211437,
+      "sha256": "b6ff4039c099cd46d136886f3f74f709c764d052c4221953cfbb81a27e1a84c9",
+      "modified_gmt": "2026-10-13T07:33:26",
+      "author_id": 285438014,
+      "alt_text": "เปรียบเทียบเงื่อนไขมากกว่าและมากกว่าหรือเท่ากับ 50000 สตางค์ ที่ยอด 500 บาท โค้ดเดิมคิดค่าส่ง 40 บาท แต่เกณฑ์กำหนดให้ส่งฟรี",
+      "title": "บั๊กซ่อนอยู่ตรงขอบเขต",
+      "caption_html": "<p>ตัวอย่างจำลองจากบทความ: คำว่า “ตั้งแต่ 500 บาท” ต้องครอบคลุมยอด 500 บาทพอดี เปลี่ยน &gt; เป็น &gt;= แล้วตรวจกรณีเดิมซ้ำ</p>\n",
+      "inline_article_ids": [
+        1073
+      ],
+      "inline_alt_texts": []
+    },
+    {
+      "attachment_id": 1275,
+      "status": "downloaded",
+      "filename": "1275.png",
+      "source_url": "https://hybridmind.online/wp-content/uploads/2026/10/1073-02-eight-tests.png",
+      "mime_type": "image/png",
+      "byte_length": 1290726,
+      "sha256": "40fdaf93106548403cb09f6a7d57354ef6f92d78423b496fe4e9f209fa38f744",
+      "modified_gmt": "2026-10-13T07:34:40",
+      "author_id": 285438014,
+      "alt_text": "แปดกรณีทดสอบตามบทความ: ปกติ พอดีเกณฑ์ ต่ำกว่าเกณฑ์ ศูนย์ ติดลบ ข้อความ บูลีน และทศนิยม",
+      "title": "8 กรณีทดสอบค่าส่ง",
+      "caption_html": "<p>กรณีทดสอบทั้งแปดจากตัวอย่างในบทความ ใช้จำนวนเต็มหน่วยสตางค์ และกำหนดผลที่คาดหวังจากข้อกำหนดก่อนรัน</p>\n",
+      "inline_article_ids": [
+        1073
+      ],
+      "inline_alt_texts": []
+    },
+    {
+      "attachment_id": 1280,
+      "status": "downloaded",
+      "filename": "1280.png",
+      "source_url": "https://hybridmind.online/wp-content/uploads/2026/10/1077-01-trace.png",
+      "mime_type": "image/png",
+      "byte_length": 1244678,
+      "sha256": "551763de95cfec8632a6203de6f930434bc8139d5e090e2f48ad6f751b1d1c0b",
+      "modified_gmt": "2026-10-13T07:37:48",
+      "author_id": 285438014,
+      "alt_text": "แยกคำตอบ AI เป็นหนึ่งคำกล่าว แล้วตรวจแหล่งต้นฉบับและตำแหน่งหลักฐาน วันที่และเงื่อนไข รวมถึงตัวเลข หน่วย และสูตร",
+      "title": "หนึ่งคำกล่าว ตรวจให้ครบ",
+      "caption_html": "<p>เริ่มจากคำกล่าวสำคัญหนึ่งข้อ แล้วจับคู่หลักฐานให้ตรงเรื่อง ช่วงเวลา และหน่วยก่อนนำไปใช้</p>\n",
+      "inline_article_ids": [
+        1077
+      ],
+      "inline_alt_texts": []
+    },
+    {
+      "attachment_id": 1284,
+      "status": "downloaded",
+      "filename": "1284.png",
+      "source_url": "https://hybridmind.online/wp-content/uploads/2026/10/1077-02-citations.png",
+      "mime_type": "image/png",
+      "byte_length": 1283540,
+      "sha256": "2c62fbda765b46a60990c8573371132b9b1a0c7ae1157e55c09b7587e5279b16",
+      "modified_gmt": "2026-10-13T07:40:01",
+      "author_id": 285438014,
+      "alt_text": "ตรวจคำอ้างอิงสี่ด้าน: เอกสารมีจริงหรือไม่ เปิดอ่านได้หรือไม่ รองรับคำกล่าวหรือไม่ และหลายเว็บใช้ต้นทางเดียวกันหรือไม่",
+      "title": "อ้างอิงจริง รองรับจริงไหม",
+      "caption_html": "<p>แหล่งมีจริงยังต้องตรงคำกล่าว ลิงก์เปิดไม่ได้ยังไม่พิสูจน์ว่าแหล่งปลอม และหลายหน้าเว็บอาจอ้างต้นทางเดียวกัน</p>\n",
+      "inline_article_ids": [
+        1077
+      ],
+      "inline_alt_texts": []
+    },
+    {
+      "attachment_id": 1286,
+      "status": "downloaded",
+      "filename": "1286.png",
+      "source_url": "https://hybridmind.online/wp-content/uploads/2026/10/1077-03-evidence-status.png",
+      "mime_type": "image/png",
+      "byte_length": 1235082,
+      "sha256": "ab4640868bf70509fff2e3cac29ae35af64d1a3a68a26ae1fec1b3d9535373fc",
+      "modified_gmt": "2026-10-13T07:41:42",
+      "author_id": 285438014,
+      "alt_text": "แยกข้อเท็จจริงที่ต้องตรวจหลักฐาน ออกจากข้อเสนอหรือการคาดการณ์ และคงป้ายยังยืนยันไม่ได้เมื่อข้อมูลไม่พอ",
+      "title": "แยกประเภท ก่อนตัดสิน",
+      "caption_html": "<p>อย่ารวมข้อเท็จจริง ข้อเสนอ และสิ่งที่ยังไม่รู้ไว้ในข้อสรุปเดียวกัน สถานะรองรับแล้วใช้เฉพาะคำกล่าวและขอบเขตที่ตรวจจริง</p>\n",
+      "inline_article_ids": [
+        1077
+      ],
+      "inline_alt_texts": []
+    },
+    {
+      "attachment_id": 2224,
+      "status": "downloaded",
+      "filename": "2224.png",
+      "source_url": "https://hybridmind.online/wp-content/uploads/2026/10/hybridmind-rag-citation-freshness-cover-20261016.png",
+      "mime_type": "image/png",
+      "byte_length": 2256677,
+      "sha256": "d25ad18c5915c587613fe1769b1f0f1e14003b379b374cce4f10376ea8f430ab",
+      "modified_gmt": "2026-10-16T07:30:28",
+      "author_id": 285438014,
+      "alt_text": "วิศวกรตรวจใบอ้างอิง v1 ที่หยุดเชื่อมกับเอกสารฉบับปัจจุบัน v2",
+      "title": "Hybrid Mind RAG Citation Freshness Cover 20261016",
+      "caption_html": "<p>ภาพอธิบายจำลอง: ต้องตรวจรุ่นเอกสารก่อนใช้ข้อความอ้างอิงจาก RAG</p>\n",
+      "inline_article_ids": [
+        2241
+      ],
+      "inline_alt_texts": []
+    },
+    {
+      "attachment_id": 2225,
+      "status": "downloaded",
+      "filename": "2225.png",
+      "source_url": "https://hybridmind.online/wp-content/uploads/2026/10/hybridmind-rag-citation-four-gates-20261016.png",
+      "mime_type": "image/png",
+      "byte_length": 1861526,
+      "sha256": "0eb05ce64dbfb77c2283bb0eeff61ed4f7c0018dba6367ae5422a01bbe8a2638",
+      "modified_gmt": "2026-10-16T07:31:26",
+      "author_id": 285438014,
+      "alt_text": "สี่ด่านตรวจแหล่งและรุ่น แฮช ขอบเขต UTF-8 และข้อความตรง ก่อนให้ผล QUOTE_VERIFIED",
+      "title": "Hybrid Mind RAG Citation Four Gates 20261016",
+      "caption_html": "<p>แบบจำลองการออกแบบของบทเรียน: ผ่านสี่ด่านหมายถึงข้อความอ้างอิงตรงกับแหล่งฉบับปัจจุบัน ยังต้องตรวจความหมายของคำตอบแยก</p>\n",
+      "inline_article_ids": [
+        2241
+      ],
+      "inline_alt_texts": []
+    },
+    {
+      "attachment_id": 2226,
+      "status": "downloaded",
+      "filename": "2226.png",
+      "source_url": "https://hybridmind.online/wp-content/uploads/2026/10/hybridmind-rag-citation-version-20261016.png",
+      "mime_type": "image/png",
+      "byte_length": 1941560,
+      "sha256": "56a8ef96b0efee78f787517754cdbad4f67b92b7237895136d14b7d925c0fdfa",
+      "modified_gmt": "2026-10-16T07:33:17",
+      "author_id": 285438014,
+      "alt_text": "แฮชของเอกสาร v1 ยังตรงกับสำเนาเก่า แต่ใบอ้างอิง v1 ถูกหยุดเมื่อคลังปัจจุบันเป็น v2",
+      "title": "Hybrid Mind RAG Citation Revision 20261016",
+      "caption_html": "<p>แบบจำลองการออกแบบของบทเรียน: แฮชฉบับเก่าที่ตรงไม่ทำให้ใบอ้างอิงนั้นผ่านนโยบายใช้รุ่นปัจจุบัน</p>\n",
+      "inline_article_ids": [
+        2241
+      ],
+      "inline_alt_texts": []
+    },
+    {
+      "attachment_id": 2227,
+      "status": "downloaded",
+      "filename": "2227.png",
+      "source_url": "https://hybridmind.online/wp-content/uploads/2026/10/hybridmind-rag-citation-meaning-20261016.png",
+      "mime_type": "image/png",
+      "byte_length": 2043066,
+      "sha256": "5df2afb76d11848ce2cd59eca9b9e9019fca8b5d077e9443296cdfb402bb3841",
+      "modified_gmt": "2026-10-16T07:33:37",
+      "author_id": 285438014,
+      "alt_text": "แยกการตรวจข้อความและรุ่นเอกสารนโยบายวิดีโอจำลอง ออกจากการพิจารณาว่าคำตอบสรุปเกินหลักฐานหรือไม่",
+      "title": "Hybrid Mind RAG Citation Meaning Limits 20261016",
+      "caption_html": "<p>ตัวอย่างนโยบายวิดีโอจำลอง: ข้อความและรุ่นตรงกันเป็นการตรวจที่แยกจากความจริงและการรองรับข้อสรุป</p>\n",
+      "inline_article_ids": [
+        2241
+      ],
+      "inline_alt_texts": []
+    },
+    {
+      "attachment_id": 2306,
+      "status": "downloaded",
+      "filename": "2306.png",
+      "source_url": "https://hybridmind.online/wp-content/uploads/2026/10/hybridmind-rag-authorization-trusted-context-20261016.png",
+      "mime_type": "image/png",
+      "byte_length": 1539417,
+      "sha256": "3e44238a3f64cbeb06fa563460c5a5bbfe9aca2a577aa49a7e052df489547ba9",
+      "modified_gmt": "2026-10-16T10:26:54",
+      "author_id": 285438014,
+      "alt_text": "แยกบริบทที่เซิร์ฟเวอร์เชื่อถือและ policy ออกจาก tenant และ grants ที่ client อ้างเอง โดยไม่มีสิทธิ์ให้ปฏิเสธ",
+      "title": "RAG Authorization — Trusted Context",
+      "caption_html": "<p>Authentication กับ authorization เป็นคนละคำถาม; ใช้บริบทและ policy ที่แอปเชื่อถือ แหล่ง: OWASP Authorization Cheat Sheet และ Azure security trimming</p>\n",
+      "inline_article_ids": [
+        2310
+      ],
+      "inline_alt_texts": []
+    },
+    {
+      "attachment_id": 2307,
+      "status": "downloaded",
+      "filename": "2307.png",
+      "source_url": "https://hybridmind.online/wp-content/uploads/2026/10/hybridmind-rag-authorization-early-late-filter-20261016.png",
+      "mime_type": "image/png",
+      "byte_length": 1492031,
+      "sha256": "0ea367be2e50da8a9ca00db14efab6ee4af347e00effba2ad21da6c91a76ea06",
+      "modified_gmt": "2026-10-16T10:27:06",
+      "author_id": 285438014,
+      "alt_text": "เปรียบเทียบกรองช้าหลังอ่านข้อความต้องห้ามเข้า reranker กับกรอง ID ก่อนซึ่งหยุดเอกสารต้องห้ามไว้ก่อนเปิดข้อความ",
+      "title": "RAG Authorization — กรองเร็วกับกรองช้า",
+      "caption_html": "<p>ลำดับสังเคราะห์แสดงว่าการปฏิเสธภายหลังไม่ย้อนคืนข้อความที่ขั้นก่อนหน้าเห็นแล้ว เป็นแบบจำลอง ไม่ใช่ผลทดสอบระบบจริง</p>\n",
+      "inline_article_ids": [
+        2310
+      ],
+      "inline_alt_texts": []
+    },
+    {
+      "attachment_id": 2308,
+      "status": "downloaded",
+      "filename": "2308.png",
+      "source_url": "https://hybridmind.online/wp-content/uploads/2026/10/hybridmind-rag-authorization-cover-20261016.png",
+      "mime_type": "image/png",
+      "byte_length": 2033976,
+      "sha256": "54d6cf57b04c5f56b9888cab7c930f44dad689fb33538bbfd31dc1856e062dbd",
+      "modified_gmt": "2026-10-16T10:30:40",
+      "author_id": 285438014,
+      "alt_text": "วิศวกรกับ AI ตรวจรหัสเอกสารก่อนเปิดข้อความ โดยเอกสาร ID B ที่ไม่อนุญาตหยุดอยู่ก่อนด่าน policy และมีเฉพาะ ID A ผ่านไป",
+      "title": "RAG ค้นเจอแล้ว อ่านได้ไหม? — ตรวจสิทธิ์ก่อนส่งข้อความ",
+      "caption_html": "<p>ภาพแนวคิด RAG authorization: ตรวจสิทธิ์ก่อนโหลดข้อความไปยัง reranker หรือโมเดล; ไม่ใช่ผลทดสอบระบบจริง</p>\n",
+      "inline_article_ids": [
+        2310
+      ],
+      "inline_alt_texts": []
+    },
+    {
+      "attachment_id": 2309,
+      "status": "downloaded",
+      "filename": "2309.png",
+      "source_url": "https://hybridmind.online/wp-content/uploads/2026/10/hybridmind-rag-authorization-before-hydration-20261016.png",
+      "mime_type": "image/png",
+      "byte_length": 1632104,
+      "sha256": "c825f980791c469b5206524dc5dfc4fae2b70abaeaba415cb3cf686812e57cd5",
+      "modified_gmt": "2026-10-16T10:30:52",
+      "author_id": 285438014,
+      "alt_text": "candidate IDs หรือรหัสเอกสารที่ค้นพบผ่านการเทียบ tenant และสิทธิ์เอกสารก่อนโหลดข้อความที่อนุญาตแล้วส่งให้ reranker หรือโมเดล",
+      "title": "RAG Authorization — ตรวจสิทธิ์ก่อนเปิดข้อความ",
+      "caption_html": "<p>Hydration คือการนำ ID ไปโหลดข้อความ; วาง authorization ก่อนจุดนี้ในเส้นทางตัวอย่าง แหล่ง: หลัก least privilege/deny-by-default ของ OWASP และการออกแบบตัวอย่าง</p>\n",
+      "inline_article_ids": [
+        2310
+      ],
+      "inline_alt_texts": []
+    },
+    {
+      "attachment_id": 2490,
+      "status": "downloaded",
+      "filename": "2490.png",
+      "source_url": "https://hybridmind.online/wp-content/uploads/2026/10/hm-approval-action-fingerprint-cover.png",
+      "mime_type": "image/png",
+      "byte_length": 2158013,
+      "sha256": "cd0424c6121b1794931e94c19f494a5a63ad68ae40226bb6953956310e9dccdb",
+      "modified_gmt": "2026-10-17T05:47:01",
+      "author_id": 285438014,
+      "alt_text": "ภาพจำลองแผน A แบบ private ผูกกับใบอนุมัติ ส่วนแผน B แบบ public ถูกประตูกั้นก่อนเกิดผลกระทบ",
+      "title": "Approval Gate ผูกกับฉบับที่ตรวจแล้ว",
+      "caption_html": "<p>ภาพแนวคิดจำลอง: การอนุมัติฉบับ A ไม่ครอบคลุมคำขอ B ที่เปลี่ยนรายละเอียด ไม่มีการเผยแพร่จริงจากภาพ</p>\n",
+      "inline_article_ids": [
+        2494
+      ],
+      "inline_alt_texts": []
+    },
+    {
+      "attachment_id": 2491,
+      "status": "downloaded",
+      "filename": "2491.png",
+      "source_url": "https://hybridmind.online/wp-content/uploads/2026/10/hm-approval-changed-snapshot.png",
+      "mime_type": "image/png",
+      "byte_length": 2040962,
+      "sha256": "d4b15f819ab46a30f3cbbd9637e4d877ac65fd875fec0a9e17016041a21c398f",
+      "modified_gmt": "2026-10-17T05:47:37",
+      "author_id": 285438014,
+      "alt_text": "รายงานและเนื้อหาเดิมแต่ visibility เปลี่ยนจาก private เป็น public ทำให้ fingerprint ต่างและได้ DENY_CHANGED",
+      "title": "ฉบับ A ไม่ครอบคลุมฉบับ B",
+      "caption_html": "<p>แบบจำลอง: report, revision และ body เดิม แต่ visibility เปลี่ยน จึงต้องตรวจฉบับใหม่ ป้าย A/B เป็นสัญลักษณ์ ไม่ใช่ hash จริง</p>\n",
+      "inline_article_ids": [
+        2494
+      ],
+      "inline_alt_texts": []
+    },
+    {
+      "attachment_id": 2492,
+      "status": "downloaded",
+      "filename": "2492.png",
+      "source_url": "https://hybridmind.online/wp-content/uploads/2026/10/hm-approval-fixed-schema-fingerprint.png",
+      "mime_type": "image/png",
+      "byte_length": 1951598,
+      "sha256": "2ce4c9200d281922783c3fdf91dedd835d62259fca8f04e50002ac2eaeb219ea",
+      "modified_gmt": "2026-10-17T05:47:51",
+      "author_id": 285438014,
+      "alt_text": "Body เข้ารหัส UTF-8 และ SHA-256 ก่อนรวมกับ tenant actor tool report revision visibility เป็น schema คงที่เพื่อสร้าง action fingerprint",
+      "title": "สร้าง Fingerprint จากข้อมูลสำคัญ",
+      "caption_html": "<p>แผนภาพย่อของแบบจำลอง: โค้ดใช้ JSON array ตามลำดับคงที่พร้อม schema_version=1 และ body hash จาก UTF-8 ก่อน SHA-256 อีกครั้ง Hash ไม่ใช่การยืนยันตัวตน ลายเซ็น หรือ JSON canonicalizer ทั่วไป</p>\n",
+      "inline_article_ids": [
+        2494
+      ],
+      "inline_alt_texts": []
+    },
+    {
+      "attachment_id": 2493,
+      "status": "downloaded",
+      "filename": "2493.png",
+      "source_url": "https://hybridmind.online/wp-content/uploads/2026/10/hm-approval-receipt-lifecycle.png",
+      "mime_type": "image/png",
+      "byte_length": 1852463,
+      "sha256": "43ff37fed4eef24d62c211503eeadd89f2fa78dcb92844d96c969eb06143762d",
+      "modified_gmt": "2026-10-17T05:48:06",
+      "author_id": 285438014,
+      "alt_text": "คำสั่งเปลี่ยนทำให้ receipt invalidated ฉบับตรงที่ยังไม่ใช้และไม่หมดอายุจึง consumed ได้หนึ่งครั้ง ส่วนหมดอายุหรือ replay ถูกปฏิเสธ",
+      "title": "ใบอนุมัติมีสถานะ",
+      "caption_html": "<p>กฎจำลอง: changed → INVALIDATED, exact/unused/unexpired → CONSUMED และ ALLOW_MOCK_ONLY, expired → DENY_EXPIRED; หลัง consumed ใช้ซ้ำได้ DENY_USED ไม่มีเครื่องมือจริงถูกเรียก</p>\n",
+      "inline_article_ids": [
+        2494
+      ],
+      "inline_alt_texts": []
+    }
+  ]
+}

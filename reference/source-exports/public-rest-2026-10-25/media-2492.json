@@ -1,0 +1,84 @@
+{
+  "id": 2492,
+  "date_gmt": "2026-10-17T05:47:50",
+  "modified_gmt": "2026-10-17T05:47:51",
+  "link": "https://hybridmind.online/hm-approval-fixed-schema-fingerprint/",
+  "title": {
+    "rendered": "สร้าง Fingerprint จากข้อมูลสำคัญ"
+  },
+  "author": 285438014,
+  "caption": {
+    "rendered": "<p>แผนภาพย่อของแบบจำลอง: โค้ดใช้ JSON array ตามลำดับคงที่พร้อม schema_version=1 และ body hash จาก UTF-8 ก่อน SHA-256 อีกครั้ง Hash ไม่ใช่การยืนยันตัวตน ลายเซ็น หรือ JSON canonicalizer ทั่วไป</p>\n"
+  },
+  "alt_text": "Body เข้ารหัส UTF-8 และ SHA-256 ก่อนรวมกับ tenant actor tool report revision visibility เป็น schema คงที่เพื่อสร้าง action fingerprint",
+  "media_type": "image",
+  "mime_type": "image/png",
+  "media_details": {
+    "width": 1448,
+    "height": 1086,
+    "file": "2026/10/hm-approval-fixed-schema-fingerprint.png",
+    "filesize": 1951598,
+    "sizes": {
+      "medium": {
+        "file": "hm-approval-fixed-schema-fingerprint-300x225.png",
+        "width": 300,
+        "height": 225,
+        "virtual": true,
+        "mime_type": "image/png",
+        "source_url": "https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-approval-fixed-schema-fingerprint.png?fit=300%2C225&ssl=1"
+      },
+      "large": {
+        "file": "hm-approval-fixed-schema-fingerprint-1024x768.png",
+        "width": 1024,
+        "height": 768,
+        "virtual": true,
+        "mime_type": "image/png",
+        "source_url": "https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-approval-fixed-schema-fingerprint.png?fit=1024%2C768&ssl=1"
+      },
+      "thumbnail": {
+        "file": "hm-approval-fixed-schema-fingerprint-150x150.png",
+        "width": 150,
+        "height": 150,
+        "virtual": true,
+        "mime_type": "image/png",
+        "source_url": "https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-approval-fixed-schema-fingerprint.png?resize=150%2C150&ssl=1"
+      },
+      "medium_large": {
+        "file": "hm-approval-fixed-schema-fingerprint-768x576.png",
+        "width": 768,
+        "height": 576,
+        "virtual": true,
+        "mime_type": "image/png",
+        "source_url": "https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-approval-fixed-schema-fingerprint.png?fit=768%2C576&ssl=1"
+      },
+      "full": {
+        "file": "hm-approval-fixed-schema-fingerprint.png?fit=1448%2C1086&ssl=1",
+        "width": 1448,
+        "height": 1086,
+        "mime_type": "image/png",
+        "source_url": "https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-approval-fixed-schema-fingerprint.png?fit=1448%2C1086&ssl=1"
+      }
+    },
+    "image_meta": {
+      "aperture": "0",
+      "credit": "",
+      "camera": "",
+      "caption": "",
+      "created_timestamp": "0",
+      "copyright": "",
+      "focal_length": "0",
+      "iso": "0",
+      "shutter_speed": "0",
+      "title": "",
+      "orientation": "0",
+      "keywords": [],
+      "alt": ""
+    }
+  },
+  "source_url": "https://hybridmind.online/wp-content/uploads/2026/10/hm-approval-fixed-schema-fingerprint.png",
+  "_capture": {
+    "fetched_at": "2026-10-25T20:30:02.916Z",
+    "etag": null,
+    "last_modified": null
+  }
+}
