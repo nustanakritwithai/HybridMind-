@@ -26,6 +26,8 @@ Rollback: revert the textbook release PR on main and rerun a reviewed Pages buil
 
 ## Exact static reductions in the captured pilot
 
+The table below records the initial release 98404bc. The subsequent reviewed local modules restore the six known Lab roots without executing imported scripts; see [interactive-runtime.md](interactive-runtime.md) for the current behavior and test boundary.
+
 | WordPress article | Script blocks omitted | Canvas replaced by note | Controls rendered as disabled text |
 | --- | ---: | ---: | ---: |
 | 1077 — facts, numbers and citations | 0 | 0 | 0 |

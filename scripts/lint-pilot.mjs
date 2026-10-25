@@ -12,6 +12,8 @@ const files = [
   'scripts/public-projection.mjs', 'scripts/content-integrity.mjs', 'scripts/content-revision-overlay.mjs', 'scripts/import-structured-content.mjs', 'scripts/import-public-rest-snapshot.mjs', 'scripts/materialize-public-rest-media.mjs', 'knowledge-textbook/content-renderer.mjs',
   'tests/fetch-public-wp-inventory.test.mjs', 'tests/search.test.mjs', 'tests/evaluate-search.mjs', 'tests/catalog.test.mjs', 'tests/reader-browser.test.mjs', 'tests/server.test.mjs', 'tests/content-renderer.test.mjs', 'tests/public-rest-content.test.mjs',
   'knowledge-textbook/app.js', 'scripts/build-pages.mjs', 'tests/pages-build.test.mjs',
+  ...['registry','helpers','manager','video','citation','authorization','approval'].map(name=>'knowledge-textbook/labs/'+name+'.mjs'),
+  'tests/interactive-browser.test.mjs', 'tests/interactive-registry.test.mjs',
 ];
 for (const file of files) {
   const result = spawnSync(process.execPath, ['--check', file], { cwd: root, encoding: 'utf8' });
