@@ -11,7 +11,7 @@ const files = [
   'search/local-search.mjs', 'search/safe-url.mjs', 'search/meilisearch-adapter.mjs', 'search/typesense-adapter.mjs',
   'scripts/public-projection.mjs', 'scripts/content-integrity.mjs', 'scripts/content-revision-overlay.mjs', 'scripts/import-structured-content.mjs', 'scripts/import-public-rest-snapshot.mjs', 'scripts/materialize-public-rest-media.mjs', 'knowledge-textbook/content-renderer.mjs',
   'tests/fetch-public-wp-inventory.test.mjs', 'tests/search.test.mjs', 'tests/evaluate-search.mjs', 'tests/catalog.test.mjs', 'tests/reader-browser.test.mjs', 'tests/server.test.mjs', 'tests/content-renderer.test.mjs', 'tests/public-rest-content.test.mjs',
-  'knowledge-textbook/app.js',
+  'knowledge-textbook/app.js', 'scripts/build-pages.mjs', 'tests/pages-build.test.mjs',
 ];
 for (const file of files) {
   const result = spawnSync(process.execPath, ['--check', file], { cwd: root, encoding: 'utf8' });

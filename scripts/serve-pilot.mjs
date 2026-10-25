@@ -23,6 +23,8 @@ const clientContentBundle = contentPath
 const clientContentBytes = clientContentBundle ? Buffer.from(`${JSON.stringify(clientContentBundle)}\n`, 'utf8') : null;
 if (clientContentBundle) await verifyContentMediaFiles(clientContentBundle, root);
 const port = Number(process.env.HM_PILOT_PORT || 8000);
+const basePath = process.env.HM_PILOT_BASE_PATH || '';
+if (basePath && !/^\/[A-Za-z0-9_-]+$/.test(basePath)) throw new Error('HM_PILOT_BASE_PATH must be one safe path segment without a trailing slash');
 const mimeTypes = new Map([
   ['.html', 'text/html; charset=utf-8'], ['.css', 'text/css; charset=utf-8'],
   ['.js', 'text/javascript; charset=utf-8'], ['.mjs', 'text/javascript; charset=utf-8'],
@@ -47,6 +49,10 @@ const server = createServer(async (req, res) => {
   let pathname;
   try { pathname = decodeURIComponent(new URL(req.url || '/', 'http://127.0.0.1').pathname); }
   catch { res.writeHead(400).end('Bad request'); return; }
+  if (basePath) {
+    if (!pathname.startsWith(`${basePath}/`)) { res.writeHead(404).end('Not found'); return; }
+    pathname = pathname.slice(basePath.length);
+  }
 
   try {
     let body, contentType;
@@ -77,5 +83,5 @@ const server = createServer(async (req, res) => {
 
 server.listen(port, '127.0.0.1', () => {
   const actualPort = server.address()?.port ?? port;
-  process.stdout.write(`Knowledge textbook pilot: http://127.0.0.1:${actualPort}/knowledge-textbook/\n`);
+  process.stdout.write(`Knowledge textbook pilot: http://127.0.0.1:${actualPort}${basePath}/knowledge-textbook/\n`);
 });
