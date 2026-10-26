@@ -6,7 +6,7 @@
   "scripts": {
     "serve": "node scripts/serve-pilot.mjs",
     "lint": "node scripts/lint-pilot.mjs",
-    "test": "node --test tests/catalog.test.mjs tests/fetch-public-wp-inventory.test.mjs tests/reader-browser.test.mjs tests/reading-journey-browser.test.mjs tests/search.test.mjs tests/server.test.mjs tests/content-renderer.test.mjs tests/public-rest-content.test.mjs tests/interactive-browser.test.mjs tests/interactive-registry.test.mjs",
+    "test": "node --test tests/catalog.test.mjs tests/fetch-public-wp-inventory.test.mjs tests/reader-browser.test.mjs tests/reading-journey-browser.test.mjs tests/search.test.mjs tests/server.test.mjs tests/content-renderer.test.mjs tests/public-rest-content.test.mjs tests/interactive-browser.test.mjs tests/interactive-registry.test.mjs tests/evidence-content.test.mjs tests/evidence-path-browser.test.mjs",
     "evaluate": "node tests/evaluate-search.mjs",
     "build": "node scripts/build-pilot.mjs",
     "build:pages": "node scripts/build-pages.mjs",
