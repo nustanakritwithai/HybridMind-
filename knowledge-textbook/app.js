@@ -5,14 +5,15 @@ import { prepareInteractiveEntries } from './labs/registry.mjs';
 import { mountInteractiveLabs, disposeInteractiveLabs } from './labs/manager.mjs';
 
 const $ = (s, root = document) => root.querySelector(s);
-const state = { catalog: null, contentById: new Map(), topicId: null, sectionId: null, pathId: null, invalidSection: false, progressEnabled: false, progressPaused: false };
+const state = { catalog: null, contentById: new Map(), topicId: null, sectionId: null, articleId: null, pathId: null, book: false, invalidSection: false, invalidArticle: false, progressEnabled: false, progressPaused: false };
 const emptyCatalog = { snapshot: { captured_at: null, coverage_complete: false }, topics: [], articles: [], sections: [], learning_paths: [], relationships: [] };
 const text = value => String(value ?? '');
 function el(tag, value, cls) { const n = document.createElement(tag); if (value !== undefined) n.textContent = text(value); if (cls) n.className = cls; return n; }
-function link(href, value, cls) { const a = el('a', value, cls); a.href = href; return a; }
+function link(href, value, cls) { const a = el('a', value, cls); a.href = href; const u = new URL(href, location.href); if (u.origin === location.origin && u.pathname === location.pathname && (u.searchParams.has('topic') || u.searchParams.get('view') === 'book')) a.dataset.readerRoute = 'true'; return a; }
 function isSafeArticle(article) { return article?.status === 'published' && article?.visibility === 'public' && article?.password_protected === false; }
 function canonicalArticleUrl(article) { return safeCanonicalUrl(article?.canonical_url); }
-function route(topicId, sectionId, pathId = null) { const u = new URL(location.href); u.searchParams.delete('topic'); u.searchParams.delete('section'); u.searchParams.delete('path'); if (topicId) u.searchParams.set('topic', topicId); if (sectionId) u.searchParams.set('section', sectionId); if (pathId) u.searchParams.set('path', pathId); return u.pathname + u.search; }
+function route(topicId, sectionId, pathId = null) { const u = new URL(location.href); for (const key of ['topic','section','article','path','view']) u.searchParams.delete(key); if (topicId) u.searchParams.set('topic', topicId); else u.searchParams.set('view', 'book'); if (sectionId) u.searchParams.set('section', sectionId); if (pathId) u.searchParams.set('path', pathId); return u.pathname + u.search; }
+function articleRoute(topicId, articleId, pathId = null) { const u = new URL(route(topicId, null, pathId), location.href); u.searchParams.set('article', articleId); return u.pathname + u.search; }
 function topicLabel(t) { return t?.label_th || t?.label_en || t?.topic_id || 'Untitled topic'; }
 function topicDescription(topic) {
   if (topic?.topic_id === 'hm:topic:verify-ai-work') return 'ฝึกตรวจคำตอบ AI โค้ดที่สร้างขึ้น การอ้างอิง ความสดใหม่ของเอกสาร และการอนุมัติการทำงานของเอเจนต์';
@@ -69,9 +70,10 @@ function completionStatus(topic, progress) {
 function saveProgress(topic) { if (!state.progressEnabled || state.progressPaused || !topic) return; try { const prior = readProgress(topic); localStorage.setItem(progressKey(topic), JSON.stringify({ lastViewedContentRevision: topicContentRevision(topic), lastViewedSectionId: state.sectionId || prior?.lastViewedSectionId || null, completionEvents: prior?.completionEvents ?? [], savedAt: new Date().toISOString() })); } catch {} }
 function searchParamsFromControls() { const u = new URL(location.href); for (const [key, id] of [['q','search-input'],['filterTopic','filter-topic'],['type','filter-type'],['level','filter-level'],['locale','filter-locale'],['sort','filter-sort']]) { const value = $(`#${id}`)?.value || ''; if (value) u.searchParams.set(key, value); else u.searchParams.delete(key); } return u; }
 function syncSearchUrl({ replace = false } = {}) { const u = searchParamsFromControls(); history[replace ? 'replaceState' : 'pushState']({}, '', u); }
-function restoreSearchFromUrl() { const u = new URL(location.href); for (const [key, id] of [['q','search-input'],['filterTopic','filter-topic'],['type','filter-type'],['level','filter-level'],['locale','filter-locale'],['sort','filter-sort']]) { const node = $(`#${id}`); if (node) node.value = u.searchParams.get(key) || ''; } renderSearch(); }
+function restoreSearchFromUrl() { const u = new URL(location.href); for (const [key, id] of [['q','search-input'],['filterTopic','filter-topic'],['type','filter-type'],['level','filter-level'],['locale','filter-locale'],['sort','filter-sort']]) { const node = $(`#${id}`); if (node) node.value = u.searchParams.get(key) || (key === 'sort' ? 'relevance' : ''); } renderSearch(); }
 function renderTopicNav(target) {
   target.replaceChildren();
+  target.append(link(route(null), 'สารบัญทั้งเล่ม', 'book-link'));
   const children = new Map();
   for (const topic of state.catalog.topics) {
     const parentId = topic.parent_topic_id || null, list = children.get(parentId) || [];
@@ -113,22 +115,63 @@ function renderTopicPathChoices(topic) {
   return nav;
 }
 function renderSearch() {
-  const box = $('#search-results'); box.replaceChildren(); const q = $('#search-input').value.trim(); if (!q) return;
+  const box = $('#search-results'); box.replaceChildren(); const q = $('#search-input').value.trim();
+  if (!q && !['filter-topic','filter-type','filter-level','filter-locale'].some(id => $(`#${id}`).value)) return;
   let matches = [], notice = null;
   try { const found = searchCatalog(state.catalog, q, { topicId: $('#filter-topic').value, contentType: $('#filter-type').value, difficulty: $('#filter-level').value, locale: $('#filter-locale').value, sort: document.querySelector('#filter-sort')?.value || 'relevance' }, [...state.contentById.values()]); matches = Array.isArray(found) ? found : found?.results || []; notice = found?.notice ?? null; } catch (err) { console.warn('Keyword search unavailable', err); }
+  // Browsing without a query lists article entry points; headings remain in keyword search and each article's outline.
+  if (!q) matches = matches.filter(result => result.kind === 'article');
   if (!matches.length) {
     if (notice === 'unpublished-content') box.append(el('p', 'ค้นหาเฉพาะบทความที่เผยแพร่สาธารณะ ระบบไม่แสดงฉบับร่างหรือเนื้อหาส่วนตัว', 'proposed-note'));
-    box.append(el('p', 'ไม่พบผลลัพธ์ ลองใช้คำค้นอื่น', 'muted')); return;
+    box.append(el('p', 'ไม่พบผลลัพธ์ ลองใช้คำค้นอื่นหรือเปลี่ยนตัวกรอง', 'muted')); return;
   }
-  box.append(el('p', `พบ ${matches.length} รายการ | ค้นด้วยคำสำคัญ`, 'result-count'));
-  for (const result of matches.slice(0, 12)) {
+  const count = el('p', '', 'result-count'); box.append(count);
+  let shown = 0;
+  const more = el('button', 'แสดงผลเพิ่มเติม', 'search-more'); more.type = 'button';
+  const appendPage = () => { for (const result of matches.slice(shown, shown + 12)) {
     const destination = result.kind === 'topic' ? route(result.id) : result.topicId
-      ? route(result.topicId, result.kind === 'section' ? result.id : null)
+      ? result.kind === 'article' ? articleRoute(result.topicId, result.id) : route(result.topicId, result.id)
       : safeCanonicalUrl(result.url) || route(state.topicId);
     const a = link(destination, '', 'result-card');
     a.append(el('span', ({topic:'หัวข้อ',article:'บทความ',section:'หัวข้อย่อย'}[result.kind] || 'ผลลัพธ์'), 'result-kind'), el('strong', result.title), el('span', result.snippet || '', 'result-snippet'));
     box.append(a);
+  } shown = Math.min(shown + 12, matches.length); count.textContent = `แสดง ${shown} จาก ${matches.length} รายการ | ${q ? 'ค้นด้วยคำสำคัญ' : 'เรียกดูตามตัวกรอง'}`; if (shown < matches.length) box.append(more); else more.remove(); };
+  more.addEventListener('click', appendPage); appendPage();
+}
+function renderBook(out) {
+  const pilot = state.catalog.topics.find(t => t.topic_id === 'hm:topic:verify-ai-work');
+  const count = pilot ? articlesFor(pilot).filter(a => state.contentById.has(a.article_id)).length : 0;
+  out.append(el('p', 'Hybrid Mind · สารบัญความรู้', 'eyebrow'), el('h1', 'เลือกหัวข้อ แล้วเริ่มอ่าน', 'reader-title'), el('p', count ? `เริ่มจากหัวข้อตรวจสอบงาน AI ที่มีบทความเต็ม ${count} เรื่องพร้อมภาพและแบบทดลอง ส่วนหัวข้ออื่นเป็นโครงสร้างที่เสนอและยังรอทบทวน` : 'สารบัญนี้เป็นโครงสร้างที่เสนอ ยังไม่มีเนื้อหาเต็มที่ผ่านการตรวจในข้อมูลชุดนี้ เปิดหัวข้อเพื่อดูข้อมูลและลิงก์ต้นฉบับ', 'lead'));
+  if (count) out.append(link(route(pilot.topic_id), `เริ่มอ่าน: ${topicLabel(pilot)} →`, 'book-start book-open'));
+  const toc = el('nav', undefined, 'book-toc'); toc.id = 'book-toc'; toc.setAttribute('aria-label', 'สารบัญทั้งเล่ม');
+  const filter = $('#filter-topic').value;
+  const ordered = state.catalog.topics.filter(t => !t.parent_topic_id).flatMap(t => [t, ...state.catalog.topics.filter(child => child.parent_topic_id === t.topic_id)]);
+  const topics = ordered.filter(t => !filter || t.topic_id === filter || t.parent_topic_id === filter);
+  for (const topic of topics) {
+    const articles = articlesFor(topic), available = articles.filter(a => state.contentById.has(a.article_id));
+    const card = el('section', undefined, `book-topic-card${topic.parent_topic_id ? ' book-child' : ''}`); card.dataset.topicId = topic.topic_id;
+    card.append(el('p', topic.parent_topic_id ? 'หัวข้อย่อยนำร่อง' : 'หมวดที่เสนอ', 'eyebrow'), el('h2', topicLabel(topic)), el('p', topicDescription(topic)), el('p', available.length ? `อ่านในตำราได้ ${available.length} บทความ · การจัดหัวข้อยังรอทบทวน` : 'ยังไม่มีเนื้อหาเต็มในชุดนำร่องนี้', 'book-coverage'), link(route(topic.topic_id), available.length ? 'เปิดอ่านหัวข้อนี้ →' : 'ดูโครงร่างหัวข้อ →', 'book-open'));
+    if (available.length) { const list = el('ol', undefined, 'book-articles'); for (const article of available) { const item = el('li'); item.append(link(articleRoute(topic.topic_id, article.article_id), article.title)); list.append(item); } card.append(list); }
+    toc.append(card);
   }
+  if (!topics.length) toc.append(el('p', 'ไม่พบหัวข้อในตัวกรองนี้'));
+  out.append(toc);
+}
+function completionControls(topic) {
+  const panel = el('div'); panel.dataset.completionControls = 'true';
+  const completion = completionStatus(topic, readProgress(topic));
+  panel.append(el('p', completion.reviewNeeded ? `Review needed: previously completed at topic revision ${completion.previousCompletion.topicRevision}.` : completion.completed ? `Completed at topic revision ${completion.topicRevision}.` : completion.topicRevision ? `Not completed at topic revision ${completion.topicRevision}.` : 'Completion tracking requires an explicit topic revision.', completion.reviewNeeded ? 'review-needed' : completion.completed ? 'completion-note' : 'progress-note'));
+  const button = el('button', completion.completed ? 'Mark current revision incomplete' : 'Mark current revision complete', 'complete-topic'); button.type = 'button'; button.disabled = completion.topicRevision === null; button.setAttribute('aria-pressed', String(completion.completed));
+  button.addEventListener('click', () => {
+    const prior = readProgress(topic), current = completionStatus(topic, prior); if (current.topicRevision === null) return;
+    try {
+      const events = [...(prior?.completionEvents ?? []), { topicRevision: current.topicRevision, status: current.completed ? 'incomplete' : 'completed', changedAt: new Date().toISOString() }];
+      localStorage.setItem(progressKey(topic), JSON.stringify({ lastViewedContentRevision: topicContentRevision(topic), lastViewedSectionId: state.sectionId || prior?.lastViewedSectionId || null, completionEvents: events, savedAt: new Date().toISOString() }));
+      // Updating completion must not remount labs or jump away from the end of the topic.
+      for (const region of document.querySelectorAll('[data-completion-controls]')) { const focused = region.contains(document.activeElement), replacement = completionControls(topic); region.replaceWith(replacement); if (focused) replacement.querySelector('button').focus({preventScroll:true}); }
+    } catch { panel.append(el('p', 'บันทึกไม่ได้ โปรดตรวจการอนุญาตพื้นที่เก็บข้อมูลของเบราว์เซอร์', 'fallback-note')); }
+  });
+  panel.append(button); return panel;
 }
 function sectionNode(section) {
   const block = el('section', undefined, 'lesson-section'); block.id = `sec-${section.section_id}`;
@@ -139,34 +182,21 @@ function sectionNode(section) {
   if (section.anchor_status !== 'verified' || !section.anchor) block.append(el('small', 'ลิงก์หัวข้อนี้ยังไม่ได้ตรวจยืนยันกับ WordPress', 'proposed-note'));
   return block;
 }
-function renderReader() {
+function renderReader({ navigateScroll = false } = {}) {
   const out = $('#reader-content'); disposeInteractiveLabs(out); out.replaceChildren(); const topic = selectedTopic();
+  if (state.book) { renderBook(out); return; }
+  out.append(link(route(null), '← สารบัญทั้งเล่ม', 'book-link'));
   if (!topic) { const empty = el('div', undefined, 'empty-state'); empty.append(el('h2', 'Choose a topic to begin'), el('p', 'This snapshot may not cover every published article.')); out.append(empty); return; }
   out.append(el('p', topic.status === 'ready' && topic.editorial_status === 'approved' ? 'หัวข้อที่ผ่านการทบทวน' : 'หัวข้อที่เสนอ | รอทบทวนโดยกองบรรณาธิการ', 'eyebrow'), el('h1', topicLabel(topic), 'reader-title'));
   const description = topicDescription(topic);
   if (description) out.append(el('p', description, 'lead'));
-  out.append(el('p', state.contentById.size ? 'แสดงเนื้อหาที่นำเข้าจาก WordPress และผ่านการตรวจสอบสำหรับบทความที่มีข้อมูลเท่านั้น ส่วนองค์ประกอบโต้ตอบที่ไม่รองรับจะแสดงคำอธิบายแบบคงที่; เปิดต้นฉบับเพื่อใช้สื่อโต้ตอบเต็มรูปแบบ' : 'ข้อจำกัดของต้นแบบ: ข้อมูลที่ได้รับมีชื่อเรื่อง บทคัดย่อ และหัวข้อย่อย แต่ไม่มี HTML เนื้อหาเต็ม ไฟล์ภาพ หรือบล็อก Gutenberg ฉบับนี้จึงไม่สร้างบทเรียนทดแทน เปิดบทความต้นฉบับเพื่ออ่านเนื้อหา ภาพ และตัวอย่างโต้ตอบครบถ้วน', 'scope-note'));
-  const prior = readProgress(topic), revision = topicContentRevision(topic), completion = completionStatus(topic, prior);
+  out.append(el('p', state.contentById.size ? 'เนื้อหาและภาพมาจาก snapshot สาธารณะของ WordPress แบบทดลองที่ตรวจทานแล้วทำงานในตำราได้ ส่วนองค์ประกอบที่ยังไม่รองรับจะแสดงคำอธิบายแบบคงที่ ลิงก์ต้นฉบับคงไว้ท้ายแต่ละบทความ' : 'ข้อจำกัดของต้นแบบ: ข้อมูลที่ได้รับมีชื่อเรื่อง บทคัดย่อ และหัวข้อย่อย แต่ไม่มี HTML เนื้อหาเต็ม ไฟล์ภาพ หรือบล็อก Gutenberg ฉบับนี้จึงไม่สร้างบทเรียนทดแทน เปิดบทความต้นฉบับเพื่ออ่านเนื้อหา ภาพ และตัวอย่างโต้ตอบครบถ้วน', 'scope-note'));
+  const prior = readProgress(topic), revision = topicContentRevision(topic);
   if (prior?.lastViewedContentRevision) {
     const viewed = state.catalog.sections.find(sec => sec.section_id === prior.lastViewedSectionId);
     out.append(el('p', prior.lastViewedContentRevision === revision ? `อ่านล่าสุด: ${viewed?.heading_text || 'จุดเริ่มต้นของหัวข้อ'}` : 'หัวข้อนี้มีการปรับปรุงหลังจากอ่านครั้งล่าสุด', prior.lastViewedContentRevision === revision ? 'progress-note' : 'updated-note'));
   }
-  if (state.progressEnabled) {
-    if (completion.reviewNeeded) out.append(el('p', `Review needed: previously completed at topic revision ${completion.previousCompletion.topicRevision}.`, 'review-needed'));
-    else out.append(el('p', completion.completed ? `Completed at topic revision ${completion.topicRevision}.` : completion.topicRevision ? `Not completed at topic revision ${completion.topicRevision}.` : 'Completion tracking requires an explicit topic revision.', completion.completed ? 'completion-note' : 'progress-note'));
-    const button = el('button', completion.completed ? 'Mark current revision incomplete' : 'Mark current revision complete', 'complete-topic'); button.type = 'button';
-    button.disabled = completion.topicRevision === null; button.setAttribute('aria-pressed', String(completion.completed));
-    button.addEventListener('click', () => {
-      if (completion.topicRevision === null) return;
-      try {
-        const events = prior?.completionEvents ?? [];
-        events.push({ topicRevision: completion.topicRevision, status: completion.completed ? 'incomplete' : 'completed', changedAt: new Date().toISOString() });
-        localStorage.setItem(progressKey(topic), JSON.stringify({ lastViewedContentRevision: revision, lastViewedSectionId: state.sectionId || prior?.lastViewedSectionId || null, completionEvents: events, savedAt: new Date().toISOString() }));
-      } catch {}
-      renderReader();
-    });
-    out.append(button);
-  }
+  if (state.progressEnabled) out.append(completionControls(topic));
   const articles = articlesFor(topic), sections = topicSections(topic);
   const subnav = el('nav', undefined, 'in-page-toc'); subnav.setAttribute('aria-label', 'สารบัญหัวข้อย่อยในบทความ');
   subnav.append(el('strong', 'เลือกดูหัวข้อย่อยของบทความ'));
@@ -175,20 +205,22 @@ function renderReader() {
     const headings = sections.filter(s => s.article_id === article.article_id);
     const summary = el('summary', `${article.title} — ${headings.length} หัวข้อย่อย`); outline.append(summary);
     const links = el('div', undefined, 'outline-links');
+    links.append(link(articleRoute(topic.topic_id, article.article_id, state.pathId), 'เริ่มอ่านตั้งแต่ต้นบทความ', 'article-start'));
     headings.forEach(s => links.append(link(route(topic.topic_id, s.section_id, state.pathId), s.heading_text)));
     outline.append(links); subnav.append(outline);
   }
   out.append(subnav);
   const section = sections.find(s => s.section_id === state.sectionId);
+  if (state.invalidArticle) out.append(el('p', 'ไม่พบบทความนี้ในหัวข้อ จึงแสดงหน้าหัวข้อแทน', 'fallback-note'));
   if (state.invalidSection || (state.sectionId && !section)) out.append(el('p', 'ไม่พบรหัสหัวข้อย่อยนี้ จึงแสดงหน้าหัวข้อแทน', 'fallback-note'));
-  if (section && !state.contentById.has(section.article_id)) { const node = sectionNode(section); out.append(node); requestAnimationFrame(() => node.scrollIntoView({ block: 'start', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' })); }
+  if (section && !state.contentById.has(section.article_id)) { const node = sectionNode(section); out.append(node); if (navigateScroll) requestAnimationFrame(() => { if (node.isConnected) node.scrollIntoView({ block: 'start', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' }); }); }
   else if (!section && !state.contentById.size && sections.length) out.append(el('p', 'เลือกหัวข้อย่อยด้านบนเพื่อดูข้อมูลจาก snapshot หรือเปิดบทความต้นฉบับ', 'muted'));
   if (!sections.length) out.append(el('p', 'ไม่พบหัวข้อย่อยในข้อมูลชุดนี้', 'muted'));
   const source = el('div', undefined, 'source-list'); source.append(el('h2', 'บทความต้นฉบับและสื่อ'));
   if (!articles.length) source.append(el('p', 'ยังไม่มีบทความที่เชื่อมกับหัวข้อนี้'));
   articles.forEach((a, articleIndex) => {
-    const card = el('article', undefined, 'source-card');
-    card.append(el('h3', a.title));
+    const card = el('article', undefined, 'source-card'); card.id = 'article-' + a.article_id;
+    const articleTitle = el('h3', a.title); articleTitle.tabIndex = -1; card.append(articleTitle);
     const contentEntry=state.contentById.get(a.article_id); if(contentEntry?.provenance==='wordpress_export') { card.append(el("small", "Public WordPress snapshot: "+new Date(contentEntry.imported_at).toLocaleDateString("th-TH")+" · source revision "+contentEntry.source_revision, "source-meta")); card.append(renderStructuredContent(contentEntry,{document,sourceArticle:a,sections:sections.filter(item=>item.article_id===a.article_id)})); }
     if (topicArticleMapping(topic, a) !== 'approved') card.append(el('span', 'เสนอให้เชื่อมโยง | รอทบทวนโดยกองบรรณาธิการ', 'mapping-note'));
     card.append(el('p', a.summary || 'บทความจาก WordPress'));
@@ -202,37 +234,48 @@ function renderReader() {
     const articlePager = el('nav', undefined, 'article-pager'); articlePager.setAttribute('aria-label', 'Previous and next source articles');
     for (const [label,neighbor] of [['ก่อนหน้า', articles[articleIndex-1]], ['ถัดไป',articles[articleIndex+1]]]) {
       if (!neighbor) continue;
-      const firstSection = sections.find(item=>item.article_id===neighbor.article_id);
-      articlePager.append(link(route(topic.topic_id,firstSection?.section_id,state.pathId), `${label}: ${neighbor.title}`));
+      const step = link(articleRoute(topic.topic_id,neighbor.article_id,state.pathId), `${label}: ${neighbor.title}`); step.rel = label === 'ถัดไป' ? 'next' : 'prev'; articlePager.append(step);
     }
     card.append(articlePager); source.append(card);
   });
   out.append(source);
   mountInteractiveLabs(out);
+  if (navigateScroll && state.articleId && !section) {
+    const articleId = state.articleId, target = document.getElementById('article-' + articleId);
+    requestAnimationFrame(() => { if (target?.isConnected && state.articleId === articleId) { target.scrollIntoView({block:'start',behavior:'instant'}); target.querySelector('h3').focus({preventScroll:true}); } });
+  }
   if (section && state.contentById.has(section.article_id)) {
     const target = document.getElementById("sec-" + section.section_id);
-    if (target) requestAnimationFrame(() => { if (target.isConnected && state.sectionId === section.section_id) target.scrollIntoView({block:"start",behavior:"instant"}); });
-    else out.append(el("p", "This heading changed in the latest source revision. The full article is shown below its title; use its original WordPress link for the source outline.", "fallback-note"));
+    if (target && navigateScroll) requestAnimationFrame(() => { if (target.isConnected && state.sectionId === section.section_id) target.scrollIntoView({block:"start",behavior:"instant"}); });
+    else if (!target) out.append(el("p", "This heading changed in the latest source revision. The full article is shown below its title; use its original WordPress link for the source outline.", "fallback-note"));
     const index = sections.indexOf(section), pager = el("nav", undefined, "topic-pager");
     pager.setAttribute("aria-label", "Previous and next sections");
     for (const [label,item] of [["Previous",sections[index-1]],["Next",sections[index+1]]]) if (item) pager.append(link(route(topic.topic_id,item.section_id,state.pathId), label+": "+item.heading_text));
     out.insertBefore(pager, source);
   }
-  const pathChoice = renderTopicPathChoices(topic); if (pathChoice) out.append(pathChoice);
+  const finish = el('section', undefined, 'topic-finish'); finish.id = 'topic-finish';
+  finish.append(el('h2', `อ่านหัวข้อ “${topicLabel(topic)}” จบแล้ว`));
+  if (state.progressEnabled) finish.append(completionControls(topic));
+  else finish.append(el('p', 'อ่านต่อได้ทันที หากต้องการทำเครื่องหมายว่าอ่านจบ ให้เลือกบันทึกความคืบหน้าบนอุปกรณ์นี้ที่ท้ายหน้า'));
+  finish.append(link(route(null), 'กลับสารบัญทั้งเล่มเพื่อเลือกหัวข้อถัดไป', 'book-link'));
+  out.append(finish);
+  const pathChoice = renderTopicPathChoices(topic); if (pathChoice) finish.append(pathChoice);
   const path = state.catalog.learning_paths.find(p => p.path_id === state.pathId);
   if (path) {
     const sequence = path.ordered_topic_ids || [], ix = sequence.indexOf(topic.topic_id), prev = ix > 0 ? state.catalog.topics.find(t=>t.topic_id===sequence[ix-1]) : null, next = ix >= 0 && ix < sequence.length-1 ? state.catalog.topics.find(t=>t.topic_id===sequence[ix+1]) : null;
     const pager = el('nav', undefined, 'topic-pager'); pager.setAttribute('aria-label', `Previous and next topics in ${path.title}`);
     pager.append(prev ? link(route(prev.topic_id, null, path.path_id), `← ก่อนหน้า: ${topicLabel(prev)}`) : el('span', `จุดเริ่มต้น · ${path.title}`));
-    pager.append(next ? link(route(next.topic_id, null, path.path_id), `ถัดไป: ${topicLabel(next)} →`) : el('span', `สิ้นสุด · ${path.title}`)); out.append(pager);
+    pager.append(next ? link(route(next.topic_id, null, path.path_id), `ถัดไป: ${topicLabel(next)} →`) : el('span', `สิ้นสุด · ${path.title}`)); finish.append(pager);
   }
   if (state.progressEnabled && !state.progressPaused && (!prior || prior.lastViewedContentRevision === revision)) saveProgress(topic);
 }
 function syncRoute({ userNavigation = false } = {}) {
-  const u = new URL(location.href), topics = state.catalog.topics; state.topicId = u.searchParams.get('topic') || topics[0]?.topic_id || null; state.sectionId = u.searchParams.get('section'); const requestedPath=u.searchParams.get('path'); const validPath=state.catalog.learning_paths.find(p=>p.path_id===requestedPath&&(p.ordered_topic_ids||[]).includes(state.topicId)); state.pathId=validPath?.path_id||null; if(requestedPath && !state.pathId){u.searchParams.delete('path');history.replaceState({},'',u);}
+  const u = new URL(location.href); state.book = u.searchParams.get('view') === 'book' || !u.searchParams.has('topic'); state.topicId = state.book ? null : u.searchParams.get('topic'); state.sectionId = state.book ? null : u.searchParams.get('section'); state.articleId = state.book ? null : u.searchParams.get('article'); const requestedPath=u.searchParams.get('path'); const validPath=state.catalog.learning_paths.find(p=>p.path_id===requestedPath&&(p.ordered_topic_ids||[]).includes(state.topicId)); state.pathId=validPath?.path_id||null; if(requestedPath && !state.pathId){u.searchParams.delete('path');history.replaceState({},'',u);}
   const topic = selectedTopic(); state.invalidSection = Boolean(state.sectionId && topic && !topicSections(topic).some(s => s.section_id === state.sectionId));
   if (state.invalidSection) state.sectionId = null;
-  renderTopicNav($('#topic-toc')); renderMobileToc(); renderReader(); state.invalidSection = false;
+  state.invalidArticle = Boolean(state.articleId && topic && !articlesFor(topic).some(a => a.article_id === state.articleId)); if (state.invalidArticle) state.articleId = null;
+  renderTopicNav($('#topic-toc')); renderMobileToc(); renderReader({navigateScroll:true}); state.invalidSection = false; state.invalidArticle = false;
+  if (userNavigation && !state.sectionId && !state.articleId) { window.scrollTo(0,0); $('#reader').focus({preventScroll:true}); }
 }
 function renderMobileToc() {
   const target = $('#mobile-topic-toc'); renderTopicNav(target);
@@ -246,6 +289,7 @@ function renderMobileToc() {
     const headings = sections.filter(s => s.article_id === article.article_id);
     outline.append(el('summary', `${article.title} — ${headings.length} หัวข้อย่อย`));
     const links = el('div', undefined, 'outline-links');
+    links.append(link(articleRoute(topic.topic_id, article.article_id, state.pathId), 'เริ่มอ่านตั้งแต่ต้นบทความ', 'article-start'));
     headings.forEach(s => links.append(link(route(topic.topic_id, s.section_id, state.pathId), s.heading_text)));
     outline.append(links); subnav.append(outline);
   }
@@ -273,10 +317,10 @@ async function start() {
   const filterDisclosure = $('#filter-disclosure'), mobileLayout = matchMedia('(max-width:760px)');
   const syncFilterDisclosure = () => { filterDisclosure.open = !mobileLayout.matches; };
   syncFilterDisclosure(); mobileLayout.addEventListener('change', syncFilterDisclosure);
-  $('#search-form').addEventListener('submit', e => { e.preventDefault(); syncSearchUrl(); renderSearch(); }); $('#search-input').addEventListener('input', () => {renderSearch();syncSearchUrl({replace:true});});
-  ['filter-topic','filter-type','filter-level','filter-locale','filter-sort'].forEach(id => $(`#${id}`)?.addEventListener('change',()=>{renderSearch();syncSearchUrl();}));
+  $('#search-form').addEventListener('submit', e => { e.preventDefault(); syncSearchUrl(); renderSearch(); }); $('#search-input').addEventListener('input', () => {syncSearchUrl({replace:true});renderSearch();});
+  ['filter-topic','filter-type','filter-level','filter-locale','filter-sort'].forEach(id => $(`#${id}`)?.addEventListener('change',()=>{syncSearchUrl();renderSearch();if(state.book)renderReader();}));
   $('#mobile-toc').addEventListener('click', e => { if (e.target.closest('a')) $('#mobile-toc').open = false; });
-  document.addEventListener('click', e => { const a = e.target.closest('a[href*="topic="]'); if (!a || e.ctrlKey || e.metaKey || e.shiftKey || e.altKey) return; const dest = new URL(a.href); if (dest.origin !== location.origin) return; e.preventDefault(); history.pushState({}, '', dest); syncRoute({ userNavigation: true }); window.scrollTo(0,0); });
+  document.addEventListener('click', e => { const a = e.target.closest('a[data-reader-route]'); if (!a || e.button !== 0 || e.ctrlKey || e.metaKey || e.shiftKey || e.altKey) return; const dest = new URL(a.href); if (dest.origin !== location.origin) return; e.preventDefault(); history.pushState({}, '', dest); syncRoute({ userNavigation: true }); });
   window.addEventListener('popstate', () => {restoreSearchFromUrl();syncRoute({userNavigation:true});}); restoreSearchFromUrl(); syncRoute(); renderLearningPaths();
 }
 start();
