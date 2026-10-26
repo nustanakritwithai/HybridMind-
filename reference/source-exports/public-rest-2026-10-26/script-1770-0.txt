@@ -1,0 +1,572 @@
+(function(){'use strict';const C=(function(){'use strict';
+const DATA={
+  "article": "011",
+  "type": "SIMULATION",
+  "fixture": "Atlas Lab / Nova Lab — fictional products and authored claim catalog",
+  "originalAnswer": "Atlas Lab รุ่น2.1 อ่านPDFแบบออฟไลน์ได้เฉพาะบนเดสก์ท็อป และ Atlas Lab รุ่น2.1 ส่งออกCSVได้เมื่อเชื่อมต่อเครือข่าย ส่วน Nova Lab รุ่น1.4 อ่านTXTได้ และ Nova Lab รุ่น1.4 แปลภาษาละตินได้ อีกทั้ง Atlas Lab รุ่น2.1 เก็บประวัติการอ่านไว้30วัน",
+  "originalUnits": [
+    {
+      "id": "U1",
+      "spanText": "Atlas Lab รุ่น2.1 อ่านPDFแบบออฟไลน์ได้เฉพาะบนเดสก์ท็อป",
+      "entity": "Atlas Lab",
+      "version": "2.1",
+      "predicate": "readPDF",
+      "qualifiers": [
+        "OFFLINE",
+        "DESKTOP_ONLY"
+      ],
+      "externalSupport": "SUPPORTED",
+      "referenceIds": [
+        "R1"
+      ],
+      "sourceSpan": {
+        "start": 0,
+        "end": 54,
+        "offsetUnit": "UTF16-code-units",
+        "endExclusive": true
+      }
+    },
+    {
+      "id": "U2",
+      "spanText": "Atlas Lab รุ่น2.1 ส่งออกCSVได้เมื่อเชื่อมต่อเครือข่าย",
+      "entity": "Atlas Lab",
+      "version": "2.1",
+      "predicate": "exportCSV",
+      "qualifiers": [
+        "ONLINE_REQUIRED"
+      ],
+      "externalSupport": "SUPPORTED",
+      "referenceIds": [
+        "R2"
+      ],
+      "sourceSpan": {
+        "start": 59,
+        "end": 112,
+        "offsetUnit": "UTF16-code-units",
+        "endExclusive": true
+      }
+    },
+    {
+      "id": "U3",
+      "spanText": "Nova Lab รุ่น1.4 อ่านTXTได้",
+      "entity": "Nova Lab",
+      "version": "1.4",
+      "predicate": "readTXT",
+      "qualifiers": [],
+      "externalSupport": "SUPPORTED",
+      "referenceIds": [
+        "R4"
+      ],
+      "sourceSpan": {
+        "start": 118,
+        "end": 145,
+        "offsetUnit": "UTF16-code-units",
+        "endExclusive": true
+      }
+    },
+    {
+      "id": "U4",
+      "spanText": "Nova Lab รุ่น1.4 แปลภาษาละตินได้",
+      "entity": "Nova Lab",
+      "version": "1.4",
+      "predicate": "translateLatin",
+      "qualifiers": [],
+      "externalSupport": "NOT_IN_REFERENCE",
+      "referenceIds": [],
+      "sourceSpan": {
+        "start": 150,
+        "end": 182,
+        "offsetUnit": "UTF16-code-units",
+        "endExclusive": true
+      }
+    },
+    {
+      "id": "U5",
+      "spanText": "Atlas Lab รุ่น2.1 เก็บประวัติการอ่านไว้30วัน",
+      "entity": "Atlas Lab",
+      "version": "2.1",
+      "predicate": "keepReadingHistory",
+      "qualifiers": [
+        "30_DAYS"
+      ],
+      "externalSupport": "CONTRADICTED",
+      "referenceIds": [
+        "R3"
+      ],
+      "sourceSpan": {
+        "start": 191,
+        "end": 235,
+        "offsetUnit": "UTF16-code-units",
+        "endExclusive": true
+      }
+    }
+  ],
+  "references": [
+    {
+      "id": "R1",
+      "text": "เอกสารสมมติ Atlas Lab รุ่น2.1: ตัวอ่านPDFออฟไลน์รองรับเฉพาะเดสก์ท็อป ไม่รองรับออฟไลน์บนอุปกรณ์อื่น"
+    },
+    {
+      "id": "R2",
+      "text": "เอกสารสมมติ Atlas Lab รุ่น2.1: ส่งออกCSVได้เมื่อเชื่อมต่อเครือข่าย"
+    },
+    {
+      "id": "R3",
+      "text": "เอกสารสมมติ Atlas Lab รุ่น2.1: ไม่เก็บประวัติการอ่านหลังปิดsession จึงไม่เก็บประวัติไว้30วัน"
+    },
+    {
+      "id": "R4",
+      "text": "เอกสารสมมติ Nova Lab รุ่น1.4: รองรับการอ่านTXT ไม่มีข้อความเรื่องการแปลภาษาละติน"
+    },
+    {
+      "id": "R5",
+      "text": "เอกสารสมมติ Atlas Lab รุ่น2.1: เปิดDOCXได้เมื่อออนไลน์ แต่คุณสมบัตินี้ไม่ได้กล่าวไว้ในคำตอบต้นฉบับ"
+    }
+  ],
+  "candidates": [
+    {
+      "id": "C1",
+      "text": "Atlas Lab รุ่น2.1 อ่านPDFออฟไลน์ได้เฉพาะบนเดสก์ท็อป",
+      "fingerprint": "U1-exact",
+      "preservedUnits": [
+        "U1"
+      ],
+      "sourceSpanUnits": [
+        "U1"
+      ],
+      "entailedByOriginal": true,
+      "atomic": true,
+      "issues": [],
+      "externalSupport": "SUPPORTED",
+      "referenceIds": [
+        "R1"
+      ],
+      "sourceSpans": [
+        {
+          "unit": "U1",
+          "start": 0,
+          "end": 54,
+          "offsetUnit": "UTF16-code-units",
+          "endExclusive": true,
+          "text": "Atlas Lab รุ่น2.1 อ่านPDFแบบออฟไลน์ได้เฉพาะบนเดสก์ท็อป"
+        }
+      ]
+    },
+    {
+      "id": "C2",
+      "text": "Atlas Lab รุ่น2.1 ส่งออกCSVได้เมื่อเชื่อมต่อเครือข่าย",
+      "fingerprint": "U2-exact",
+      "preservedUnits": [
+        "U2"
+      ],
+      "sourceSpanUnits": [
+        "U2"
+      ],
+      "entailedByOriginal": true,
+      "atomic": true,
+      "issues": [],
+      "externalSupport": "SUPPORTED",
+      "referenceIds": [
+        "R2"
+      ],
+      "sourceSpans": [
+        {
+          "unit": "U2",
+          "start": 59,
+          "end": 112,
+          "offsetUnit": "UTF16-code-units",
+          "endExclusive": true,
+          "text": "Atlas Lab รุ่น2.1 ส่งออกCSVได้เมื่อเชื่อมต่อเครือข่าย"
+        }
+      ]
+    },
+    {
+      "id": "C3",
+      "text": "Nova Lab รุ่น1.4 อ่านTXTได้",
+      "fingerprint": "U3-exact",
+      "preservedUnits": [
+        "U3"
+      ],
+      "sourceSpanUnits": [
+        "U3"
+      ],
+      "entailedByOriginal": true,
+      "atomic": true,
+      "issues": [],
+      "externalSupport": "SUPPORTED",
+      "referenceIds": [
+        "R4"
+      ],
+      "sourceSpans": [
+        {
+          "unit": "U3",
+          "start": 118,
+          "end": 145,
+          "offsetUnit": "UTF16-code-units",
+          "endExclusive": true,
+          "text": "Nova Lab รุ่น1.4 อ่านTXTได้"
+        }
+      ]
+    },
+    {
+      "id": "C4",
+      "text": "Nova Lab รุ่น1.4 แปลภาษาละตินได้",
+      "fingerprint": "U4-exact",
+      "preservedUnits": [
+        "U4"
+      ],
+      "sourceSpanUnits": [
+        "U4"
+      ],
+      "entailedByOriginal": true,
+      "atomic": true,
+      "issues": [],
+      "externalSupport": "NOT_IN_REFERENCE",
+      "referenceIds": [],
+      "sourceSpans": [
+        {
+          "unit": "U4",
+          "start": 150,
+          "end": 182,
+          "offsetUnit": "UTF16-code-units",
+          "endExclusive": true,
+          "text": "Nova Lab รุ่น1.4 แปลภาษาละตินได้"
+        }
+      ]
+    },
+    {
+      "id": "C5",
+      "text": "Atlas Lab รุ่น2.1 เก็บประวัติการอ่านไว้30วัน",
+      "fingerprint": "U5-exact",
+      "preservedUnits": [
+        "U5"
+      ],
+      "sourceSpanUnits": [
+        "U5"
+      ],
+      "entailedByOriginal": true,
+      "atomic": true,
+      "issues": [],
+      "externalSupport": "CONTRADICTED",
+      "referenceIds": [
+        "R3"
+      ],
+      "sourceSpans": [
+        {
+          "unit": "U5",
+          "start": 191,
+          "end": 235,
+          "offsetUnit": "UTF16-code-units",
+          "endExclusive": true,
+          "text": "Atlas Lab รุ่น2.1 เก็บประวัติการอ่านไว้30วัน"
+        }
+      ]
+    },
+    {
+      "id": "C6",
+      "text": "เฉพาะเดสก์ท็อปเท่านั้นที่ Atlas Lab รุ่น2.1 อ่านPDFแบบออฟไลน์ได้",
+      "fingerprint": "U1-exact",
+      "preservedUnits": [
+        "U1"
+      ],
+      "sourceSpanUnits": [
+        "U1"
+      ],
+      "entailedByOriginal": true,
+      "atomic": true,
+      "issues": [
+        "DUPLICATE_OF_C1_WHEN_BOTH_SELECTED"
+      ],
+      "externalSupport": "SUPPORTED",
+      "referenceIds": [
+        "R1"
+      ],
+      "sourceSpans": [
+        {
+          "unit": "U1",
+          "start": 0,
+          "end": 54,
+          "offsetUnit": "UTF16-code-units",
+          "endExclusive": true,
+          "text": "Atlas Lab รุ่น2.1 อ่านPDFแบบออฟไลน์ได้เฉพาะบนเดสก์ท็อป"
+        }
+      ]
+    },
+    {
+      "id": "C7",
+      "text": "Atlas Lab รุ่น2.1 อ่านPDFออฟไลน์ได้บนทุกอุปกรณ์",
+      "fingerprint": "U1-scope-broadened",
+      "preservedUnits": [],
+      "sourceSpanUnits": [
+        "U1"
+      ],
+      "entailedByOriginal": false,
+      "atomic": true,
+      "issues": [
+        "DESKTOP_ONLY_QUALIFIER_LOST",
+        "NEW_UNIVERSAL_SCOPE"
+      ],
+      "externalSupport": "CONTRADICTED",
+      "referenceIds": [
+        "R1"
+      ],
+      "sourceSpans": [
+        {
+          "unit": "U1",
+          "start": 0,
+          "end": 54,
+          "offsetUnit": "UTF16-code-units",
+          "endExclusive": true,
+          "text": "Atlas Lab รุ่น2.1 อ่านPDFแบบออฟไลน์ได้เฉพาะบนเดสก์ท็อป"
+        }
+      ]
+    },
+    {
+      "id": "C8",
+      "text": "Atlas Lab รุ่น2.1 เปิดDOCXได้เมื่อออนไลน์",
+      "fingerprint": "novel-DOCX",
+      "preservedUnits": [],
+      "sourceSpanUnits": [],
+      "entailedByOriginal": false,
+      "atomic": true,
+      "issues": [
+        "NOVEL_CLAIM_SUPPORTED_ONLY_BY_REFERENCE"
+      ],
+      "externalSupport": "SUPPORTED",
+      "referenceIds": [
+        "R5"
+      ],
+      "sourceSpans": []
+    },
+    {
+      "id": "C9",
+      "text": "Atlas Lab รุ่น2.1 อ่านTXTได้",
+      "fingerprint": "U3-entity-mixed",
+      "preservedUnits": [],
+      "sourceSpanUnits": [
+        "U3"
+      ],
+      "entailedByOriginal": false,
+      "atomic": true,
+      "issues": [
+        "ENTITY_VERSION_BINDING_MIX"
+      ],
+      "externalSupport": "NOT_IN_REFERENCE",
+      "referenceIds": [],
+      "sourceSpans": [
+        {
+          "unit": "U3",
+          "start": 118,
+          "end": 145,
+          "offsetUnit": "UTF16-code-units",
+          "endExclusive": true,
+          "text": "Nova Lab รุ่น1.4 อ่านTXTได้"
+        }
+      ]
+    },
+    {
+      "id": "C10",
+      "text": "Nova Lab รุ่น2.1 แปลภาษาละตินได้",
+      "fingerprint": "U4-version-changed",
+      "preservedUnits": [],
+      "sourceSpanUnits": [
+        "U4"
+      ],
+      "entailedByOriginal": false,
+      "atomic": true,
+      "issues": [
+        "VERSION_CHANGED"
+      ],
+      "externalSupport": "NOT_IN_REFERENCE",
+      "referenceIds": [],
+      "sourceSpans": [
+        {
+          "unit": "U4",
+          "start": 150,
+          "end": 182,
+          "offsetUnit": "UTF16-code-units",
+          "endExclusive": true,
+          "text": "Nova Lab รุ่น1.4 แปลภาษาละตินได้"
+        }
+      ]
+    },
+    {
+      "id": "C11",
+      "text": "Atlas Lab รุ่น2.1 อ่านPDFออฟไลน์เฉพาะเดสก์ท็อป และ Nova Lab รุ่น1.4 อ่านTXTได้",
+      "fingerprint": "compound-U1-U3",
+      "preservedUnits": [
+        "U1",
+        "U3"
+      ],
+      "sourceSpanUnits": [
+        "U1",
+        "U3"
+      ],
+      "entailedByOriginal": true,
+      "atomic": false,
+      "issues": [
+        "COMPOUND_NOT_ATOMIC"
+      ],
+      "externalSupport": "SUPPORTED",
+      "referenceIds": [
+        "R1",
+        "R4"
+      ],
+      "sourceSpans": [
+        {
+          "unit": "U1",
+          "start": 0,
+          "end": 54,
+          "offsetUnit": "UTF16-code-units",
+          "endExclusive": true,
+          "text": "Atlas Lab รุ่น2.1 อ่านPDFแบบออฟไลน์ได้เฉพาะบนเดสก์ท็อป"
+        },
+        {
+          "unit": "U3",
+          "start": 118,
+          "end": 145,
+          "offsetUnit": "UTF16-code-units",
+          "endExclusive": true,
+          "text": "Nova Lab รุ่น1.4 อ่านTXTได้"
+        }
+      ]
+    }
+  ],
+  "catalogSemantics": "All original-entailment, exactentity/version/qualifier preservation and external-support labels are authored for this finite fixture. No natural-language parser/NLI/LLM is executed. Source spans will storeUTF16start/endexclusive plusquoted spanText; they show intended source anchoring, not automaticsemantic entailmentproof.",
+  "explorer": {
+    "id": "hm-claims-explorer",
+    "strategies": {
+      "faithful": [
+        "C1",
+        "C2",
+        "C3",
+        "C4",
+        "C5"
+      ],
+      "supportedOnly": [
+        "C1",
+        "C2",
+        "C3"
+      ],
+      "addReferencedNovel": [
+        "C1",
+        "C2",
+        "C3",
+        "C4",
+        "C5",
+        "C8"
+      ],
+      "duplicateGaming": [
+        "C1",
+        "C2",
+        "C3",
+        "C4",
+        "C5",
+        "C6"
+      ],
+      "scopeLost": [
+        "C7",
+        "C2",
+        "C3",
+        "C4",
+        "C5"
+      ],
+      "entityMixed": [
+        "C1",
+        "C2",
+        "C9",
+        "C4",
+        "C5"
+      ],
+      "compound": [
+        "C11",
+        "C2",
+        "C4",
+        "C5"
+      ],
+      "empty": []
+    },
+    "initialStrategy": "faithful",
+    "twoChecks": "Originalanswer→candidatepreservation is distinctfrom references→candidateexternalSupport. A faithful decomposition must retain originalcontradicted/unverifiedclaims andmarktheir externalstatus ratherthan removeorrepairthem atthisstage.",
+    "metrics": {
+      "originalPreservation": "Unique entailed candidates / unique selectednormalizedclaims",
+      "originalCoverage": "Union of preservedoriginalunitIDs fromentailedcandidates /5 originalunits",
+      "externalConfirmedSupport": "Unique SUPPORTED candidates /unique selectedclaims, with CONTRADICTED/NOT_IN_REFERENCE counts separately. NOT_IN_REFERENCE isnot false.",
+      "externalRawRate": "Raw SUPPORTED candidate records / rawselectedrecords; shownseparately toexposeduplicate inflation",
+      "empty": "When denominatorzero, preservation/support ratesNA, not100%; fixedoriginalcoverage still0/5."
+    },
+    "normalization": "C1/C6 shareauthoredfingerprint; duplicate wording gets no extrauniqueclaim/coverage credit. CompoundC11 preserves U1/U3 butfails atomicity independently.",
+    "sourceWorldTruth": "UNKNOWN; referencesarefictional, statusesonlywithinthisfixture"
+  },
+  "game": {
+    "id": "hm-claims-game",
+    "capacity": 7,
+    "capacityMeaning": "At most7 rawcandidate slots simultaneously selected; eachcandidate costs1 slot includingduplicate. This isnot token budget, time, money or actualmodelcapacity. Toggling removesreturns slot; annotationsconsume no extra slots.",
+    "presets": {
+      "supportedOnly": {
+        "seed": [
+          "C1",
+          "C2",
+          "C3"
+        ],
+        "label": "อย่าลบข้ออ้างที่ยังไม่มีหลักฐาน"
+      },
+      "qualifierLost": {
+        "seed": [
+          "C7",
+          "C2",
+          "C3",
+          "C4",
+          "C5"
+        ],
+        "label": "คืนqualifierเฉพาะเดสก์ท็อป"
+      },
+      "entityMixed": {
+        "seed": [
+          "C1",
+          "C2",
+          "C9",
+          "C4",
+          "C5"
+        ],
+        "label": "แยกentity/versionให้ตรง"
+      },
+      "duplicateGaming": {
+        "seed": [
+          "C1",
+          "C2",
+          "C3",
+          "C6"
+        ],
+        "label": "สำเนาไม่เติมข้ออ้างที่หาย"
+      }
+    },
+    "goal": "Coverall5 originalunits withonlyentailedatomicclaims, no duplicate ornovel/qualifier/entity/versionerror, within7slots. RetainU4/U5 andcorrectlyannotateNOT_IN_REFERENCE/CONTRADICTED whileU1–U3 markedSUPPORTED; externalconfirmed-support neednot100%foradecompositionwin.",
+    "selectors": "data-config preset; data-candidate C1–C11; data-support C1–C11; data-action grade|reset",
+    "grade": "Endsroundonce whenallselectedclaimsupportannotations present. Emptyselection cannotwin. Retention/fidelity/coverage/atomicity/duplication/annotations evaluatedseparately.",
+    "reset": true
+  },
+  "rootHooks": "hm-claims-explorer andhm-claims-game each expose hmSnapshot()deepcopy",
+  "scientificLimits": [
+    "Authored finitecatalog labels, notactualsemanticverifier",
+    "Faithfulextractiondoesnot implysourceworldtruth",
+    "Supported-referenceclaimC8stillnotentailedbyoriginal andcannotbeintroduced",
+    "Unknownsupportisnotcontradiction",
+    "Ratiosarenamedtoy-preservation/coverage/external-confirmed-support, notactualDecompScore orpaperbenchmark",
+    "No network/LLM/parser/training/weights/persistence"
+  ]
+};
+const clone=v=>JSON.parse(JSON.stringify(v));
+const unique=v=>Array.from(new Set(v));
+function candidate(id){return DATA.candidates.find(c=>c.id===id)||null;}
+function fraction(n,d){return {numerator:n,denominator:d,status:d===0?'NA':'KNOWN',value:d===0?null:n/d};}
+function inspect(selected=DATA.explorer.strategies.faithful){const records=selected.map(candidate).filter(Boolean),groups=[];for(const c of records){let g=groups.find(g=>g.fingerprint===c.fingerprint);if(!g){g={fingerprint:c.fingerprint,representative:clone(c),candidateIds:[]};groups.push(g);}g.candidateIds.push(c.id);}const claims=groups.map(g=>g.representative),entailed=claims.filter(c=>c.entailedByOriginal),covered=unique(entailed.flatMap(c=>c.preservedUnits)),required=DATA.originalUnits.map(u=>u.id),missing=required.filter(id=>!covered.includes(id)),supportCounts={SUPPORTED:0,CONTRADICTED:0,NOT_IN_REFERENCE:0};claims.forEach(c=>supportCounts[c.externalSupport]+=1);const duplicates=records.length-groups.length,unfaithful=claims.filter(c=>!c.entailedByOriginal),compound=claims.filter(c=>!c.atomic),complete=[missing.length===0,unfaithful.length===0,compound.length===0,duplicates===0,records.length!==0].every(Boolean);return {selected:clone(selected),records:clone(records),groups,rawCount:records.length,uniqueCount:claims.length,duplicates,unknownIds:selected.filter(id=>!candidate(id)),coveredUnits:covered,missingUnits:missing,unfaithful:clone(unfaithful),compound:clone(compound),supportCounts,metrics:{originalPreservation:fraction(entailed.length,claims.length),originalCoverage:fraction(covered.filter(id=>required.includes(id)).length,required.length),externalConfirmedSupport:fraction(supportCounts.SUPPORTED,claims.length),externalRawSupport:fraction(records.filter(c=>c.externalSupport==='SUPPORTED').length,records.length),atomicity:fraction(claims.filter(c=>c.atomic).length,claims.length)},completeFaithfulAtomicDecomposition:complete,sourceWorldTruth:'UNKNOWN',semanticVerifier:'AUTHORED_CATALOG_NOT_NLI'};}
+function makeExplorer(strategy='faithful'){if(!DATA.explorer.strategies[strategy])throw Error('unknown strategy');return {strategy,selected:clone(DATA.explorer.strategies[strategy])};}
+function toggle(s,id){if(!candidate(id))return {ok:false,reason:'UNKNOWN_ID'};s.selected=s.selected.includes(id)?s.selected.filter(x=>x!==id):s.selected.concat(id);s.strategy='custom';return {ok:true};}
+function makeGame(preset='supportedOnly'){const p=DATA.game.presets[preset];if(!p)throw Error('unknown preset');return {preset,capacity:DATA.game.capacity,selected:clone(p.seed),annotations:{},ended:false,result:null,trace:[],feedback:'เก็บข้ออ้างต้นฉบับให้ครบ แล้วทำเครื่องหมายสถานะต่อReferenceR โดยไม่ลบข้ออ้างที่ตรวจยาก'};}
+function gameToggle(s,id){if(s.ended)return {ok:false,reason:'ENDED'};if(!candidate(id))return {ok:false,reason:'UNKNOWN_ID'};const present=s.selected.includes(id);if([!present,s.selected.length>=s.capacity].every(Boolean)){s.feedback='ครบ7slotsแล้ว — รายการเดิมไม่เปลี่ยน ลบรายการซ้ำหรือข้ออ้างใหม่ก่อน';return {ok:false,reason:'OVER_CAPACITY'};}s.selected=present?s.selected.filter(x=>x!==id):s.selected.concat(id);delete s.annotations[id];s.trace.push({action:present?'REMOVE':'ADD',id,slots:s.selected.length});s.feedback=(present?'ลบ ':'เพิ่ม ')+id+' • ต้นฉบับและReferenceเป็นคนละการตรวจ';return {ok:true};}
+function annotate(s,id,status){if(s.ended)return {ok:false,reason:'ENDED'};if(!s.selected.includes(id)||!['SUPPORTED','CONTRADICTED','NOT_IN_REFERENCE'].includes(status))return {ok:false,reason:'INVALID_ANNOTATION'};s.annotations[id]=status;return {ok:true};}
+function gameView(s){return {...clone(s),remaining:s.capacity-s.selected.length,evaluation:inspect(s.selected)};}
+function grade(s){if(s.ended)return {ok:false,reason:'ENDED'};if(!s.selected.length)return {ok:false,reason:'EMPTY_SELECTION'};if(!s.selected.every(id=>Boolean(s.annotations[id])))return {ok:false,reason:'ANNOTATE_ALL'};const v=inspect(s.selected),annotations=s.selected.map(id=>({id,expected:candidate(id).externalSupport,actual:s.annotations[id],correct:s.annotations[id]===candidate(id).externalSupport})),annotationsCorrect=annotations.every(a=>a.correct),allOriginalUnits=v.missingUnits.length===0,onlyEntailed=v.unfaithful.length===0,allAtomic=v.compound.length===0,noDuplicates=v.duplicates===0,withinCapacity=s.capacity>=s.selected.length,hardClaimsRetained=['U4','U5'].every(id=>v.coveredUnits.includes(id)),goal=[allOriginalUnits,onlyEntailed,allAtomic,noDuplicates,withinCapacity,hardClaimsRetained,annotationsCorrect].every(Boolean);s.result={goal,allOriginalUnits,onlyEntailed,allAtomic,noDuplicates,withinCapacity,hardClaimsRetained,annotationsCorrect,annotations,sourceConfirmed:v.metrics.externalConfirmedSupport,originalCoverage:v.metrics.originalCoverage};s.ended=true;s.feedback=goal?'ชนะ — แยกต้นฉบับครบและทำเครื่องหมายข้ออ้างที่ไม่ยืนยัน/ขัดกับRโดยไม่ลบทิ้ง':'ยังไม่สำเร็จ — ตรวจข้ออ้างที่หาย ข้ออ้างใหม่ qualifier/entity/atomicity สำเนาและสถานะReference';return {ok:true,result:clone(s.result)};}
+return {DATA,clone,unique,candidate,fraction,inspect,makeExplorer,toggle,makeGame,gameToggle,annotate,gameView,grade};
+})();const root=document.getElementById('hm-claims-explorer');if(!root)return;const node=n=>root.querySelector('[data-state="'+n+'"]'),input=root.querySelector('[data-input="strategy"]');let state=C.makeExplorer();node('original').textContent=C.DATA.originalAnswer;C.DATA.originalUnits.forEach(u=>{const li=document.createElement('li');li.textContent=u.id+' ['+u.sourceSpan.start+','+u.sourceSpan.end+') UTF16 • '+u.spanText+' • qualifier: '+(u.qualifiers.join(', ')||'ไม่มี');node('units').append(li);});C.DATA.references.forEach(r=>{const li=document.createElement('li');li.textContent=r.id+' • '+r.text;node('references').append(li);});C.DATA.candidates.forEach(c=>{const l=document.createElement('label'),box=document.createElement('input'),s=document.createElement('span');l.className='hm-candidate';box.type='checkbox';box.setAttribute('data-candidate',c.id);s.textContent=c.id+' • '+c.text;box.addEventListener('change',()=>{C.toggle(state,c.id);input.value='custom';render();});l.append(box,s);node('candidates').append(l);});function metric(v){return v.status==='NA'?'NA':v.numerator+'/'+v.denominator+' = '+Math.round(v.value*100)+'%';}function render(){const v=C.inspect(state.selected);root.querySelectorAll('[data-candidate]').forEach(b=>{b.checked=state.selected.includes(b.getAttribute('data-candidate'));});node('count').textContent='Raw records '+v.rawCount+' • Unique claims '+v.uniqueCount+' • สำเนา '+v.duplicates;node('coverage').textContent='ต้นฉบับที่เก็บ: '+(v.coveredUnits.join(', ')||'ไม่มี')+' • หาย: '+(v.missingUnits.join(', ')||'ไม่มี');node('issues').textContent='ไม่รองรับโดยA: '+(v.unfaithful.map(c=>c.id).join(', ')||'ไม่มี')+' • ไม่atomic: '+(v.compound.map(c=>c.id).join(', ')||'ไม่มี');node('checks').replaceChildren();v.groups.forEach(g=>{const c=g.representative,a=document.createElement('article'),h=document.createElement('h3'),p=document.createElement('p'),r=document.createElement('p'),s=document.createElement('p');h.textContent=g.candidateIds.join(', ')+' • '+c.text;p.textContent='A→Claim: '+(c.entailedByOriginal?'preserved':'NOT_ENTAILED_BY_ORIGINAL')+' • Atomic: '+String(c.atomic);r.textContent='R→Claim: '+c.externalSupport+' • refs: '+(c.referenceIds.join(', ')||'ไม่มี');s.textContent='Source spans: '+(c.sourceSpans.map(x=>x.unit+'['+x.start+','+x.end+')').join(', ')||'ไม่มีในA');a.append(h,p,r,s);node('checks').append(a);});node('metrics').replaceChildren();[['originalPreservation','Original preservation'],['originalCoverage','Original coverage'],['externalConfirmedSupport','External confirmed support (unique)'],['externalRawSupport','External support raw record rate'],['atomicity','Atomicity (catalog)']].forEach(pair=>{const a=document.createElement('article'),p=document.createElement('p'),s=document.createElement('p');a.setAttribute('data-metric',pair[0]);p.textContent=pair[1];s.className='hm-score';s.textContent=metric(v.metrics[pair[0]]);a.append(p,s);node('metrics').append(a);});node('feedback').textContent=v.completeFaithfulAtomicDecomposition?'รักษาต้นฉบับครบ5หน่วย: C4ยังไม่พบในR และC5ขัดกับR แต่ต้องคงไว้พร้อมสถานะในขั้นdecomposition':'การทำให้R-supportสูงไม่ได้ยืนยันว่ารักษาAครบ ตรวจหน่วยที่หาย ข้ออ้างใหม่ qualifier/entity สำเนาและatomicityแยกกัน';}input.addEventListener('change',()=>{if(input.value==='custom')return;state=C.makeExplorer(input.value);render();});root.querySelector('[data-action="reset"]').addEventListener('click',()=>{state=C.makeExplorer();input.value='faithful';render();});root.hmSnapshot=()=>C.inspect(state.selected);render();})();

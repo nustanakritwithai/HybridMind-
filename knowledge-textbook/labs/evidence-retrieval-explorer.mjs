@@ -1,0 +1,73 @@
+export function mountRetrievalExplorer(root,savedState){'use strict';const controller=new AbortController();const C=(function(){'use strict';
+const DATA={
+  "article": "009",
+  "type": "SIMULATION",
+  "fixture": "พิพิธภัณฑ์โคจร — fictional authored corpus",
+  "corpus": [
+    {"id":"D1","key":"time","text":"นิทรรศการของพิพิธภัณฑ์โคจรเปิดวันเสาร์เวลา10:00 น.","value":"10:00"},
+    {"id":"D2","key":"price","text":"บัตรเข้าชมนิทรรศการสำหรับนักเรียนราคา50บาทเมื่อแสดงบัตรนักเรียน","value":"50"},
+    {"id":"D3","key":"office","text":"สำนักงานพิพิธภัณฑ์เปิด09:00 น. เวลานี้ไม่ใช่เวลาเปิดนิทรรศการ","value":"09:00"},
+    {"id":"D4","key":"adult","text":"บัตรเข้าชมนิทรรศการสำหรับผู้ใหญ่ราคา100บาท ไม่ใช่อัตรานักเรียน","value":"100"},
+    {"id":"D5","key":"decor","text":"ดอกไม้ที่หน้าอาคารมีสีเหลือง","value":"yellow"}
+  ],
+  "questions": [
+    {"id":"Q1","key":"time","question":"นิทรรศการเปิดวันเสาร์กี่โมง?","goldValue":"10:00","goldSource":"D1"},
+    {"id":"Q2","key":"price","question":"ค่าเข้าชมสำหรับนักเรียนที่แสดงบัตรนักเรียนเท่าไร?","goldValue":"50","goldSource":"D2"}
+  ],
+  "ranks": {"bad":["D3","D4","D1","D2","D5"],"good":["D1","D2","D3","D4","D5"]},
+  "explorer": {
+    "id":"hm-retrieval-explorer",
+    "evaluationUnit":"One shared retrieved candidate pool for the two prepared questions together, not macro average of per-query Recall@k",
+    "goldSet":["D1","D2"],
+    "inputs":{"rank":"bad|good","k":"integer1–5","capacity":"integer1–5","answerPolicy":"evidence|wrong|miscite|abstain","goldComplete":"boolean"},
+    "retrieved":"rank.slice(0,k); exactly k unique IDs",
+    "effectiveContext":"retrieved.slice(0,capacity); rank-preserving toy packing of one record per unit; no real tokenization",
+    "recallAtK":"|retrieved intersection G| / |G| only when goldComplete and |G|>0; otherwise UNKNOWN if incomplete or NA if empty",
+    "precisionAtK":"|retrieved intersection G| / |retrieved| only when complete relevance labels; otherwise UNKNOWN",
+    "contextCoverage":"|effectiveContext intersection G| / |G| under the same completeness condition",
+    "answerPolicies":{
+      "evidence":"Answer only if expected source is in effectiveContext, otherwise abstain",
+      "wrong":"Return09:00/100 and cite D3/D4 (wrong field for the prepared question)",
+      "miscite":"Return correct10:00/50 but cite D3/D4, demonstrating correct value without supporting citation",
+      "abstain":"No claim and no citation"
+    },
+    "claimSupport":"For each non-abstained atomic answer, value must match the authored fact and citation must be expected D1/D2 retained in effectiveContext. Empty claims=NA, not100%.",
+    "answerAccuracy":"Correct answered values / answered questions; all abstain=NA. Always show answer coverage answered/2 separately. Not derived from retrieval score.",
+    "groundTruthStatus":"Authored fixed values and source-text rules, not semantic judgment by an LLM or proof of external-world correctness"
+  },
+  "game": {
+    "id":"hm-retrieval-game",
+    "defaultBudget":6,
+    "goal":"Diagnose both original stage failures, repair pipeline within finite toy action budget, then give both correct values and supporting retained source IDs; abstention never counts as full win",
+    "costs":{"rerank":2,"increaseK":1,"increaseCapacity":1,"setEvidencePolicy":1},
+    "diagnosisRules":"retrieval flag if expected source absent from retrieved; context flag only if source retrieved but lost in effective context; answer flag if an active claim is incorrect or unsupported; >=2 flags yields both,0 yields none. These trace rules are not causal attribution of real LLM behavior.",
+    "challenges":{
+      "pipeline":[{"key":"time","rank":"bad","k":2,"capacity":2,"policy":"evidence","diagnosis":"retrieval"},{"key":"price","rank":"good","k":2,"capacity":1,"policy":"evidence","diagnosis":"context"}],
+      "unsupported":[{"key":"time","rank":"good","k":2,"capacity":2,"policy":"miscite","diagnosis":"answer"},{"key":"price","rank":"good","k":2,"capacity":2,"policy":"wrong","diagnosis":"answer"}],
+      "mixed":[{"key":"time","rank":"bad","k":4,"capacity":2,"policy":"miscite","diagnosis":"both"},{"key":"price","rank":"bad","k":1,"capacity":1,"policy":"evidence","diagnosis":"retrieval"}]
+    },
+    "selectors":"data-config challenge; data-action rerank-time|rerank-price|k-time|k-price|capacity-time|capacity-price|evidence-time|evidence-price|grade|reset; data-diagnosis time|price; data-answer time|price; data-source time|price",
+    "state":"Budget remaining/spent, original trace, current rank/k/capacity/policy per question, packed source IDs, diagnosis choices, submitted answers, terminal result"
+  },
+  "reset":true,
+  "qaHook":"Each DOM root hmSnapshot() returns a deep copy; no global state",
+  "scientificLimitations":["No embedding model, reranker, LLM, API calls, training or weight updates","Static ranks are authored; one record equals one toy context unit","Complete gold fixture is not evidence that real corpora have complete qrels","Citation support and answer correctness are explicitly separate and authored","Results do not imply a universal k, context limit or real-system causal explanation"]
+}
+;
+const DOCS=DATA.corpus,QUESTIONS=DATA.questions,RANKS=DATA.ranks;
+const clone=x=>JSON.parse(JSON.stringify(x));
+function fraction(n,d,status='KNOWN'){return {status:d===0?'NA':status,numerator:n,denominator:d,value:[status==='KNOWN',d!==0].every(Boolean)?n/d:null};}
+function coverage(ids,gold=['D1','D2'],complete=true){if(!complete)return fraction(ids.filter(id=>gold.includes(id)).length,gold.length,'UNKNOWN');return fraction(ids.filter(id=>gold.includes(id)).length,gold.length);}
+function pipeline(config){if(!RANKS[config.rank])throw Error('invalid rank');if(!Number.isInteger(config.k)||1>config.k||config.k>5)throw Error('invalid k');if(!Number.isInteger(config.capacity)||1>config.capacity||config.capacity>5)throw Error('invalid capacity');if(!['evidence','wrong','miscite','abstain'].includes(config.policy))throw Error('invalid policy');const retrieved=RANKS[config.rank].slice(0,config.k),context=retrieved.slice(0,config.capacity);return {...clone(config),retrieved,context};}
+function reply(p,q){let value=null,source=null;if(p.policy==='evidence'){if(p.context.includes(q.goldSource)){value=q.goldValue;source=q.goldSource;}}if(p.policy==='wrong'){value=q.key==='time'?'09:00':'100';source=q.key==='time'?'D3':'D4';}if(p.policy==='miscite'){value=q.goldValue;source=q.key==='time'?'D3':'D4';}const claim=value!==null,correct=claim?value===q.goldValue:null,supported=claim?[value===q.goldValue,source===q.goldSource,p.context.includes(source)].every(Boolean):null;return {key:q.key,question:q.question,value,source,claim,correct,supported,retrievedGold:p.retrieved.includes(q.goldSource),contextGold:p.context.includes(q.goldSource)};}
+function inspect(config={rank:'bad',k:4,capacity:2,policy:'miscite',goldComplete:true},gold=['D1','D2']){const p=pipeline(config),answers=QUESTIONS.map(q=>reply(p,q)),claims=answers.filter(a=>a.claim);return {...p,gold:clone(gold),goldComplete:config.goldComplete!==false,answers,metrics:{recall:coverage(p.retrieved,gold,config.goldComplete!==false),precision:gold.length===0?fraction(0,0):fraction(p.retrieved.filter(id=>gold.includes(id)).length,p.retrieved.length,config.goldComplete===false?'UNKNOWN':'KNOWN'),contextCoverage:coverage(p.context,gold,config.goldComplete!==false),answerCoverage:fraction(claims.length,QUESTIONS.length),answerAccuracy:fraction(claims.filter(a=>a.correct).length,claims.length),claimSupport:fraction(claims.filter(a=>a.supported).length,claims.length)}};}
+function diagnose(p,q){const a=reply(p,q),flags=[];if(!a.retrievedGold)flags.push('retrieval');if([a.retrievedGold,!a.contextGold].every(Boolean))flags.push('context');if(a.claim){if(!a.correct||!a.supported)flags.push('answer');}return {flags,label:flags.length>1?'both':flags[0]||'none',answer:a};}
+function makeGame(challenge='pipeline'){if(!DATA.game.challenges[challenge])throw Error('unknown challenge');const tasks=DATA.game.challenges[challenge].map(c=>({key:c.key,original:clone(c),current:clone(c),diagnosis:'',value:'',source:''}));return {challenge,budget:DATA.game.defaultBudget,spent:0,tasks,trace:[],ended:false,result:null,feedback:'อ่านร่องรอยเดิม วินิจฉัยทั้งสองข้อ แล้วซ่อม pipeline ในงบ6หน่วย'};}
+function taskOf(s,key){return s.tasks.find(t=>t.key===key);}
+function questionOf(key){return QUESTIONS.find(q=>q.key===key);}
+function fix(s,key,action){const t=taskOf(s,key);if(!t||s.ended)return {ok:false,reason:'NO_ACTION'};let cost=0;if(action==='rerank'){if(t.current.rank==='good')return {ok:false,reason:'ALREADY_FIXED'};cost=2;}else if(action==='k'){if(t.current.k===5)return {ok:false,reason:'AT_LIMIT'};cost=1;}else if(action==='capacity'){if(t.current.capacity===5)return {ok:false,reason:'AT_LIMIT'};cost=1;}else if(action==='evidence'){if(t.current.policy==='evidence')return {ok:false,reason:'ALREADY_FIXED'};cost=1;}else return {ok:false,reason:'INVALID_ACTION'};if(s.spent+cost>s.budget){s.feedback='งบไม่พอ — pipeline เดิมไม่เปลี่ยน';return {ok:false,reason:'OVER_BUDGET'};}const before=pipeline(t.current);s.spent+=cost;if(action==='rerank')t.current.rank='good';if(action==='k')t.current.k+=1;if(action==='capacity')t.current.capacity+=1;if(action==='evidence')t.current.policy='evidence';const after=pipeline(t.current);s.trace.push({key,action,cost,before:{retrieved:before.retrieved,context:before.context,policy:before.policy},after:{retrieved:after.retrieved,context:after.context,policy:after.policy},spent:s.spent});s.feedback='แก้ '+key+' ด้วย '+action+' ใช้'+cost+'หน่วย ตรวจ context และผลตอบอีกครั้ง';return {ok:true,cost};}
+function setResponse(s,key,field,value){if(s.ended)return {ok:false,reason:'ENDED'};const t=taskOf(s,key);if(!t||!['diagnosis','value','source'].includes(field))return {ok:false,reason:'INVALID_FIELD'};t[field]=value;return {ok:true};}
+function gameView(s){return {...clone(s),remaining:s.budget-s.spent,tasks:s.tasks.map(t=>({...clone(t),originalTrace:pipeline(t.original),originalDiagnosis:diagnose(pipeline(t.original),questionOf(t.key)),currentTrace:pipeline(t.current),currentAnswer:reply(pipeline(t.current),questionOf(t.key))}))};}
+function grade(s){if(s.ended)return {ok:false,reason:'ENDED'};if(!s.tasks.every(t=>[t.diagnosis,t.value,t.source].every(Boolean)))return {ok:false,reason:'ANSWER_ALL'};const rows=s.tasks.map(t=>{const q=questionOf(t.key),original=diagnose(pipeline(t.original),q),p=pipeline(t.current),a=reply(p,q),diagnosisCorrect=t.diagnosis===original.label,answerCorrect=t.value===q.goldValue,sourceCorrect=t.source===q.goldSource,evidenceRetained=p.context.includes(t.source),pipelineCorrect=[a.claim,a.correct,a.supported].every(Boolean);return {key:t.key,diagnosisCorrect,expectedDiagnosis:original.label,answerCorrect,sourceCorrect,evidenceRetained,pipelineCorrect,pass:[diagnosisCorrect,answerCorrect,sourceCorrect,evidenceRetained,pipelineCorrect].every(Boolean)};});s.result={rows,score:rows.filter(r=>r.pass).length,goal:rows.every(r=>r.pass),spent:s.spent,budget:s.budget};s.ended=true;s.feedback=s.result.goal?'ชนะ — วินิจฉัยและซ่อมทั้งสอง pipeline พร้อมคำตอบและหลักฐาน':'ยังไม่สำเร็จ — ตรวจ stage ที่พลาด ผลตอบ และ source ที่อยู่ใน context';return {ok:true,result:clone(s.result)};}
+return {DATA,DOCS,QUESTIONS,RANKS,clone,fraction,coverage,pipeline,reply,inspect,diagnose,makeGame,taskOf,questionOf,fix,setResponse,gameView,grade};
+})();const input=n=>root.querySelector('[data-input="'+n+'"]'),node=n=>root.querySelector('[data-state="'+n+'"]');let state;C.DOCS.forEach(d=>{const li=root.ownerDocument.createElement('li');li.textContent=d.id+' • '+d.text;node('corpus').append(li);});function metric(m){return m.status==='KNOWN'?m.numerator+'/'+m.denominator+' = '+Math.round(m.value*100)+'%':m.status;}function render(){state=C.inspect({rank:input('rank').value,k:Number(input('k').value),capacity:Number(input('capacity').value),policy:input('policy').value,goldComplete:input('goldComplete').checked});node('retrieved').textContent=state.retrieved.join(' → ');node('context').textContent=state.context.join(' → ');node('answers').replaceChildren();state.answers.forEach(a=>{const box=root.ownerDocument.createElement('article'),h=root.ownerDocument.createElement('h3'),p=root.ownerDocument.createElement('p'),s=root.ownerDocument.createElement('p');h.textContent=a.question;p.textContent=a.claim?'คำตอบ '+a.value+' • cite '+a.source:'ABSTAIN — ไม่มี claim และ citation';s.textContent='ค่าตรงอ้างอิง: '+(a.correct===null?'NA':a.correct?'ใช่':'ไม่')+' | หลักฐานรองรับ: '+(a.supported===null?'NA':a.supported?'ใช่':'ไม่');box.append(h,p,s);node('answers').append(box);});node('metrics').replaceChildren();[['recall','Recall@k'],['precision','Precision@k'],['contextCoverage','Gold ใน context'],['answerCoverage','Answer coverage'],['answerAccuracy','Answer accuracy'],['claimSupport','Claim support']].forEach(pair=>{const box=root.ownerDocument.createElement('article'),p=root.ownerDocument.createElement('p'),n=root.ownerDocument.createElement('p');box.setAttribute('data-metric',pair[0]);p.textContent=pair[1];n.className='hm-score';n.textContent=metric(state.metrics[pair[0]]);box.append(p,n);node('metrics').append(box);});node('feedback').textContent=!state.goldComplete?'Relevance labels ไม่ครบ: recall/precision/context coverage เป็น UNKNOWN แม้เห็น D1/D2 บางส่วน ไม่ตีความว่า0%':state.answers.every(a=>!a.claim)?'งดตอบทุกข้อ: accuracy/support = NA และ answer coverage0/2 จึงยังไม่ใช่ผลสำเร็จ':[state.metrics.recall.value===1,state.metrics.contextCoverage.value!==1].every(Boolean)?'ค้นครบ gold แต่ prefix context ตัดหลักฐานออก จึงต้องแยกคะแนน retrieval กับสิ่งที่ส่งให้ระบบตอบ':'ค่าคำตอบและ source support เป็นคนละการตรวจ ลองตอบค่าถูกแต่ citeผิด แล้วเทียบกับ evidence-only';}['rank','k','capacity','policy','goldComplete'].forEach(n=>input(n).addEventListener('change',render,{signal:controller.signal}));root.querySelector('[data-action="reset"]').addEventListener('click',()=>{input('rank').value='bad';input('k').value='4';input('capacity').value='2';input('policy').value='miscite';input('goldComplete').checked=true;render();},{signal:controller.signal});root.hmSnapshot=()=>C.clone(state);render();if(savedState&&typeof savedState==='object'){for(const k of ['rank','k','capacity','policy','goldComplete']){const n=root.querySelector('[data-input="'+k+'"]');if(n&&savedState[k]!==undefined){if(k==='goldComplete')n.checked=savedState[k]===true;else n.value=String(savedState[k]);}}render();}root.hmSnapshot=()=>C.clone(state);return {getState:()=>({rank:state.rank,k:state.k,capacity:state.capacity,policy:state.policy,goldComplete:state.goldComplete}),dispose:()=>controller.abort()};}

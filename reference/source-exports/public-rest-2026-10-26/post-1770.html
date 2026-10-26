@@ -1,0 +1,1597 @@
+
+<div class="wp-block-group is-layout-flow wp-block-group-is-layout-flow" id="hm-claims-article" lang="th">
+
+<style>#hm-claims-article{overflow-wrap:anywhere;line-height:1.85}#hm-claims-article .wp-block-image img{width:100%;height:auto;display:block}#hm-claims-article figcaption{font-size:.92em;line-height:1.7}#hm-claims-article .wp-block-table{max-width:100%;overflow-x:auto}#hm-claims-article table{width:100%;border-collapse:collapse;min-width:600px}#hm-claims-article th,#hm-claims-article td{padding:.7em;text-align:left;vertical-align:top;border:1px solid var(--wp--preset--color--theme-3,#bbb)}#hm-claims-article pre{white-space:pre-wrap;overflow-wrap:anywhere;padding:1em;border:1px solid var(--wp--preset--color--theme-3,#bbb)}#hm-claims-article code{overflow-wrap:anywhere}</style>
+
+
+
+<p class="wp-block-paragraph"><strong>คำตอบโดยตรง:</strong> Claim Decomposition คือการแยกคำตอบยาวเป็นข้อกล่าวอ้างย่อยเพื่อให้ตรวจทีละข้อ แต่ต้องตรวจการแยกก่อนตรวจความจริง: แต่ละข้อยังตรงกับข้อความเดิมหรือไม่ เก็บเนื้อหาครบหรือไม่ และรักษาบุคคล รุ่น เงื่อนไขกับขอบเขตหรือไม่ จากนั้นจึงตรวจข้อย่อยกับแหล่งอ้างอิงแยกอีกชั้น ข้อที่มีหลักฐานรองรับภายนอกอาจเป็นข้อใหม่ที่คำตอบเดิมไม่เคยกล่าว ข้อที่แยกตรงต้นฉบับก็อาจยังไม่มีหลักฐานหรือขัดกับแหล่งข้อมูลได้</p>
+
+
+
+<p class="wp-block-paragraph">บทความมี <strong>Conceptual Architecture / HYPOTHESIS</strong> สำหรับผู้สร้าง Agent พร้อม Interactive และเกม <strong>SIMULATION</strong> สำรวจความต่างของการแยกกับการตรวจหลักฐาน ตัวจำลองใช้รายการข้อกล่าวอ้างที่ผู้เขียนกำหนด ไม่เรียก LLM, parser หรือ NLI และไม่สร้างผล benchmark ของ AI</p>
+
+
+
+<figure class="wp-block-image size-full"><a href="https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-claims-011-01-cover.png?ssl=1"><img data-recalc-dims="1" fetchpriority="high" data-attachment-id="1765" data-permalink="https://hybridmind.online/hm-claims-011-01-cover/" data-orig-file="https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-claims-011-01-cover.png?fit=1600%2C900&amp;ssl=1" data-orig-size="1600,900" data-comments-opened="1" data-image-title="Claim Decomposition: ตรวจต้นฉบับกับตรวจหลักฐานคนละทิศทาง" data-image-description="" data-image-caption="&lt;p&gt;แยก OriginalAnswer→Subclaim เพื่อดู preservation ออกจาก ReferenceSource→Subclaim เพื่อดู support SIMULATION: C8 มี R5 รองรับแต่ต้นฉบับไม่กล่าว จึงเป็นข้ออ้างใหม่ในการแยก&lt;/p&gt;
+" data-large-file="https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-claims-011-01-cover.png?fit=1024%2C576&amp;ssl=1" src="https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-claims-011-01-cover.png?resize=1600%2C900&#038;ssl=1" alt="สองกล่อง Original Answer ชี้ไป Subclaim และ Reference Source ชี้ไป Subclaim พร้อมตัวอย่างสมมติ C8 DOCX ที่ reference รองรับแต่ต้นฉบับไม่กล่าว" width="1600" height="900" class="wp-image-1765" loading="eager" decoding="async" srcset="https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-claims-011-01-cover.png?w=1600&amp;ssl=1 1600w, https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-claims-011-01-cover.png?resize=300%2C169&amp;ssl=1 300w, https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-claims-011-01-cover.png?resize=1024%2C576&amp;ssl=1 1024w, https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-claims-011-01-cover.png?resize=768%2C432&amp;ssl=1 768w, https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-claims-011-01-cover.png?resize=1536%2C864&amp;ssl=1 1536w" sizes="(max-width: 1000px) 100vw, 1000px" /></a><figcaption><strong>Claim Decomposition: ตรวจต้นฉบับกับตรวจหลักฐานคนละทิศทาง</strong> — แยก OriginalAnswer→Subclaim เพื่อดู preservation ออกจาก ReferenceSource→Subclaim เพื่อดู support SIMULATION: C8 มี R5 รองรับแต่ต้นฉบับไม่กล่าว จึงเป็นข้ออ้างใหม่ในการแยก · <a href="https://aclanthology.org/2023.emnlp-main.741/">แหล่งแนวคิด 1</a> · <a href="https://aclanthology.org/2024.starsem-1.13/">แหล่งแนวคิด 2</a> · <a href="https://aclanthology.org/2025.emnlp-main.1205/">แหล่งแนวคิด 3</a></figcaption></figure>
+
+
+
+<h2 class="wp-block-heading" id="hm-claims-section-1">ทำไมตัวตรวจความจริงต้องตรวจตัวแยกข้อความด้วย</h2>
+
+
+
+<p class="wp-block-paragraph">สมมติคำตอบบอกว่า “Atlas Lab รุ่น2.1 อ่าน PDF ออฟไลน์ได้เฉพาะบนเดสก์ท็อป” ถ้าตัวแยกสร้างข้อย่อยว่า “อ่าน PDF ออฟไลน์ได้บนทุกอุปกรณ์” มันไม่ได้เพียงทำประโยคให้สั้นลง แต่เพิ่มขอบเขตที่คำตอบไม่ได้รับรอง ตัวตรวจปลายทางจึงกำลังตรวจข้อความอีกเรื่องหนึ่ง</p>
+
+
+
+<p class="wp-block-paragraph">อีกกรณีคือมีห้าข้อในคำตอบ แต่ตัวแยกส่งต่อเฉพาะสามข้อที่ตรวจแล้วว่ามีหลักฐาน คะแนนในกลุ่มที่เหลืออาจเต็ม แม้ข้อที่ยังไม่มีหลักฐานและข้อที่ขัดกับเอกสารถูกทำหาย การมีคะแนนสูงจึงอาจสะท้อนสิ่งที่ไม่ได้ถูกส่งไปตรวจด้วย</p>
+
+
+
+<p class="wp-block-paragraph">ให้ Agent เก็บต้นฉบับกับรายการข้อย่อยแยกกัน ไม่ใช้รายการที่ระบบสร้างแทนต้นฉบับแล้วถือว่าตรวจครบ ต้องดูสิ่งที่ไม่ได้ถูกส่งไปตรวจด้วย</p>
+
+
+
+<p class="wp-block-paragraph">บทความนี้เจาะคุณภาพตัวแยก ต่างจาก <a href="https://hybridmind.online/2026/10/14/ai-agent-retrieval-evaluation-evidence-answer-errors/">Retrieval Evaluation</a> ที่ตรวจผลค้น/บริบท/คำตอบ และ <a href="https://hybridmind.online/2026/10/14/ai-agent-evidence-sufficiency-multi-hop-proof-sets/">Evidence Sufficiency</a> ที่ตรวจว่าข้อเชื่อมพอสำหรับคำถามหรือไม่</p>
+
+
+
+<h2 class="wp-block-heading" id="hm-claims-section-2">Scientific Foundations: Atomic Claim เป็นหน่วยตรวจ ไม่ใช่ใบรับรองความจริง</h2>
+
+
+
+<p class="wp-block-paragraph"><strong>FACT:</strong> งาน <strong>FActScore</strong> แยกข้อความเป็น atomic facts แล้วประเมินสัดส่วนที่แหล่งความรู้ที่กำหนดรองรับ โดยสูตรหลักคิดสัดส่วนต่อคำตอบและเฉลี่ยเหนือคำตอบที่ตอบจริง งานนี้ศึกษาชีวประวัติภาษาอังกฤษกับ Wikipedia จึงเป็นการตรวจ precision ตามแหล่งและเงื่อนไขของงาน ไม่ใช่ความครบหรือความจริงทั่วโลก <a href="https://aclanthology.org/2023.emnlp-main.741/">FActScore, EMNLP 2023</a></p>
+
+
+
+<p class="wp-block-paragraph">งาน <strong>A Closer Look at Claim Decomposition</strong> แยกคุณภาพตัวแยกเป็น coverage, coherence และ atomicity และเสนอ <strong>DecompScore</strong> ที่ใช้ข้อความต้นฉบับเป็นแหล่งตรวจ สูตรดั้งเดิมเป็นจำนวนข้อย่อยที่ต้นฉบับรองรับโดยเฉลี่ยต่อ passage ไม่ใช่เปอร์เซ็นต์ความจริงจากเอกสารภายนอก การแยกผิดสามารถเปลี่ยนผลประเมินข้อความเดิมได้ <a href="https://aclanthology.org/2024.starsem-1.13/">DecompScore, *SEM 2024</a></p>
+
+
+
+<p class="wp-block-paragraph">Coverage ถามว่าเก็บสาระเดิมครบเพียงใด Coherence ถามว่าข้อที่แยกยังสอดคล้องกับสิ่งที่ต้นฉบับกล่าวหรือไม่ Atomicity ถามว่าแยกย่อยพอให้ระบุตำแหน่งปัญหาได้หรือยัง ทั้งสามไม่ได้แทนกัน รายการที่ตรงต้นฉบับแต่ขาดหลายข้อยัง coverage ต่ำ ส่วนประโยคที่รวมหลายข้ออาจตรงแต่ระบุข้อผิดพลาดรายส่วนได้ยาก</p>
+
+
+
+<p class="wp-block-paragraph">Atomic ต้องผูกกับเกณฑ์งาน “ออฟไลน์เฉพาะเดสก์ท็อป” ต้องรักษาเงื่อนไขกับความสามารถ การแยกคำเงื่อนไขลอย ๆ ไม่ได้ทำให้ตรวจดีขึ้น</p>
+
+
+
+<h2 class="wp-block-heading" id="hm-claims-section-3">ตรวจสองทิศ: คำตอบเดิมกับหลักฐานภายนอก</h2>
+
+
+
+<p class="wp-block-paragraph">ชั้นแรกตรวจ <strong>Original Answer → Subclaim</strong> ถามว่าคำตอบเดิมกล่าวข้อย่อยนี้ด้วย entity รุ่น และเงื่อนไขใด การผ่านชั้นนี้หมายถึงแยกตรงในขอบเขตที่ตรวจ ไม่ได้หมายถึงเนื้อหานั้นจริง</p>
+
+
+
+<p class="wp-block-paragraph">ชั้นสองตรวจ <strong>Reference Source → Subclaim</strong> ถามว่าแหล่งที่กำหนดรองรับ ขัดแย้ง หรือยังไม่มีข้อมูลสำหรับข้อย่อยนั้น ต้องเก็บ reference IDs และช่วงข้อความที่ใช้ต่างจาก source spans ของคำตอบเดิม เพราะเป็นคนละต้นทาง</p>
+
+
+
+<p class="wp-block-paragraph">ตัวอย่างสมมติ C8 บอกว่า Atlas Lab รุ่น2.1 เปิด DOCX เมื่อออนไลน์ มี R5 รองรับ แต่ต้นฉบับไม่เคยกล่าวคุณสมบัตินี้ C8 จึงผ่านเรื่องหลักฐานภายนอกและไม่ผ่านเรื่องการแยก การเพิ่มข้อที่เอกสารรองรับก็ยังเป็นเนื้อหาใหม่</p>
+
+
+
+<p class="wp-block-paragraph">ในทางกลับกัน ข้อ “Nova Lab รุ่น1.4 แปลภาษาละตินได้” อยู่ในคำตอบเดิม แต่เอกสารสมมติไม่มีข้อมูลยืนยัน ควรเก็บข้อย่อยนี้พร้อมสถานะ NOT_IN_REFERENCE ไม่ลบให้คะแนนดูดี ส่วน “เก็บประวัติ30วัน” อยู่ในต้นฉบับแต่ขัดกับ R3 จึงต้องเก็บพร้อม CONTRADICTED การแก้ข้อความให้ตรงเอกสารเป็นขั้นแก้คำตอบอีกงานหนึ่ง</p>
+
+
+
+<h2 class="wp-block-heading" id="hm-claims-section-4">ตัวอย่าง Atlas Lab / Nova Lab: เก็บอะไรไว้บ้าง</h2>
+
+
+
+<p class="wp-block-paragraph">ผลิตภัณฑ์ทั้งหมดต่อไปนี้เป็น <strong>SIMULATION</strong> คำตอบต้นฉบับมีห้าหน่วย U1–U5 และชุดเอกสาร R1–R5 ที่ผู้เขียนกำหนด ไม่ใช่ข้อเท็จจริงของซอฟต์แวร์ที่จำหน่ายจริง</p>
+
+
+
+<figure class="wp-block-table"><table><thead><tr><th scope="col">หน่วยเดิม</th><th scope="col">ข้อความที่ต้องรักษา</th><th scope="col">ผลเทียบเอกสารสมมติ</th></tr></thead><tbody><tr><td>U1</td><td>Atlas Lab 2.1 อ่าน PDF ออฟไลน์เฉพาะเดสก์ท็อป</td><td>SUPPORTED โดย R1</td></tr><tr><td>U2</td><td>Atlas Lab 2.1 ส่งออก CSV เมื่อเชื่อมต่อเครือข่าย</td><td>SUPPORTED โดย R2</td></tr><tr><td>U3</td><td>Nova Lab 1.4 อ่าน TXT</td><td>SUPPORTED โดย R4</td></tr><tr><td>U4</td><td>Nova Lab 1.4 แปลภาษาละติน</td><td>NOT_IN_REFERENCE</td></tr><tr><td>U5</td><td>Atlas Lab 2.1 เก็บประวัติการอ่าน30วัน</td><td>CONTRADICTED โดย R3 ซึ่งระบุไม่เก็บหลังปิด session</td></tr></tbody></table></figure>
+
+
+
+<p class="wp-block-paragraph">source span คือช่วงของข้อความเดิมที่ข้อย่อยอ้างว่าแยกออกมา ให้เก็บข้อความช่วงนั้นพร้อม start/end และหน่วยตำแหน่ง ใน Lab ใช้ UTF-16 code units และ end แบบไม่รวมตำแหน่งสุดท้าย การมีตำแหน่งถูกยืนยันแค่การอ้างช่วง ไม่พิสูจน์ว่าการตีความช่วงนั้นถูก</p>
+
+
+
+<p class="wp-block-paragraph">Record ควรมี claim ID, original version, entity, predicate, qualifiers, spans และผลสองชั้น ห้ามผสม Atlas2.1กับNova1.4 การแก้สรรพนามต้องอิงต้นฉบับและคงความกำกวมเมื่อแก้ไม่ได้</p>
+
+
+
+<h2 class="wp-block-heading" id="hm-claims-section-5">Interactive: คะแนนสูงขึ้นเพราะเนื้อหาถูกทำหายหรือไม่</h2>
+
+
+
+<p class="wp-block-paragraph">เริ่มจากข้อย่อย C1–C5 ที่รักษาห้าหน่วยเดิม ลองเปลี่ยนเป็นโหมดเลือกเฉพาะข้อที่เอกสารรองรับ C1–C3 แล้วดู <strong>Original Coverage</strong> แม้สัดส่วนที่เอกสารยืนยันจะเป็น3/3 แต่เนื้อหาคงเหลือเพียง3/5ของคำตอบเดิม ผลนี้ไม่ใช่การตรวจครบ</p>
+
+
+
+<p class="wp-block-paragraph">ลองโหมดเพิ่มข้อใหม่ C8 แล้วดูว่ามีหลักฐาน R5 แต่ไม่มี source span ในคำตอบเดิม หรือเลือก C7 ที่เปลี่ยน “เฉพาะเดสก์ท็อป” เป็น “ทุกอุปกรณ์” ส่วน C9/C10 แสดงการสลับผลิตภัณฑ์และเปลี่ยนรุ่น</p>
+
+
+
+<section id="hm-claims-explorer" aria-label="ทดลองแยกข้ออ้างโดยตรวจต้นฉบับและReferenceแยกกัน"><style>#hm-claims-explorer{box-sizing:border-box;background:#07162d;color:#eef8ff;border:1px solid #2567ae;border-radius:18px;padding:clamp(16px,3vw,28px);margin:32px 0;font-family:system-ui,sans-serif;line-height:1.65;overflow-wrap:anywhere}#hm-claims-explorer *{box-sizing:border-box}#hm-claims-explorer h2,#hm-claims-explorer h3{color:#eef8ff!important;line-height:1.4;margin:16px 0 12px}#hm-claims-explorer h2{font-size:clamp(23px,3vw,32px)}#hm-claims-explorer h3{font-size:19px}#hm-claims-explorer p,#hm-claims-explorer li{color:#d5e7fa}#hm-claims-explorer .hm-top{display:flex;gap:12px;align-items:center;flex-wrap:wrap;font-size:13px;color:#a9cdea}#hm-claims-explorer .hm-badge{display:inline-block;background:#123d68;color:#82efff;border:1px solid #3daee7;border-radius:99px;padding:4px 12px;font-weight:800}#hm-claims-explorer .hm-inputs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin:18px 0}#hm-claims-explorer label{display:block;font-weight:600}#hm-claims-explorer select{display:block;width:100%;background:#102c4d;color:#eef8ff;min-height:46px;padding:9px;border:1px solid #4a82b2;border-radius:8px;font:inherit;font-size:15px}#hm-claims-explorer input[type=range]{width:100%;min-height:44px;accent-color:#40d9f2}#hm-claims-explorer output{font-size:20px;color:#77e5ff}#hm-claims-explorer .hm-rows,#hm-claims-explorer .hm-card-grid,#hm-claims-explorer .hm-quiz{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}#hm-claims-explorer article,#hm-claims-explorer .hm-memory{background:#0e2642;border:1px solid #326186;border-radius:12px;padding:14px;min-width:0}#hm-claims-explorer .hm-memory p{margin:8px 0}#hm-claims-explorer .hm-score{font-size:20px;color:#7bedff!important;font-weight:750}#hm-claims-explorer ul,#hm-claims-explorer ol{padding-left:22px}#hm-claims-explorer li{margin:10px 0;font-size:14px}#hm-claims-explorer button{width:100%;min-height:46px;background:#164c80;border:1px solid #419ce2;border-radius:9px;color:#eef8ff;cursor:pointer;font:inherit;font-size:14px;padding:11px 12px;margin:5px 0;white-space:pre-line;text-align:left}#hm-claims-explorer .hm-card-grid button{background:#102b49;border-color:#315b82}#hm-claims-explorer button[aria-pressed=true]{background:#145365;border:2px solid #78edff}#hm-claims-explorer button:focus-visible,#hm-claims-explorer select:focus-visible,#hm-claims-explorer input:focus-visible{outline:3px solid #82efff;outline-offset:3px}#hm-claims-explorer button:disabled{opacity:.5;cursor:not-allowed}#hm-claims-explorer [hidden]{display:none!important}#hm-claims-explorer .hm-actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:16px 0}#hm-claims-explorer .hm-feedback,#hm-claims-explorer .hm-result{background:#123859;border-left:3px solid #42daed;border-radius:6px;padding:12px;min-height:44px}#hm-claims-explorer .hm-note{font-size:13px;color:#b5cede}#hm-claims-explorer details{border:1px solid #31587c;border-radius:8px;padding:12px;margin:16px 0}#hm-claims-explorer summary{cursor:pointer;color:#8de8ff;font-weight:700;min-height:28px}#hm-claims-explorer pre{white-space:pre-wrap;overflow-wrap:anywhere;font-size:12px;color:#d2e7f7}#hm-claims-explorer .hm-quiz label{margin:10px 0} @media(max-width:700px){#hm-claims-explorer .hm-inputs,#hm-claims-explorer .hm-rows,#hm-claims-explorer .hm-card-grid,#hm-claims-explorer .hm-quiz,#hm-claims-explorer .hm-actions{grid-template-columns:1fr}#hm-claims-explorer button{font-size:15px}}#hm-claims-explorer .hm-candidate{display:flex;gap:12px;align-items:flex-start;background:#102b49;border:1px solid #315b82;border-radius:10px;padding:12px;font-weight:400;min-width:0}#hm-claims-explorer .hm-candidate span{font-size:14px}#hm-claims-explorer input[type=checkbox]{width:24px;min-width:24px;height:44px;flex-shrink:0;accent-color:#36d9f4}#hm-claims-explorer .hm-original{border-left:3px solid #76eaff;background:#102e49;padding:14px}#hm-claims-explorer .hm-metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:16px 0}#hm-claims-explorer [data-support]{margin-top:8px} @media(max-width:700px){#hm-claims-explorer .hm-metrics{grid-template-columns:1fr}}</style>
+<div class="hm-top"><span class="hm-badge">SIMULATION</span><span>Authored claim catalog • ไม่มีNLI/LLM/parserจริง</span></div><h2>ทดลอง: แยกถูกจากต้นฉบับ ยังอาจมีข้ออ้างผิดอยู่</h2><p>Atlas LabและNova Labเป็นผลิตภัณฑ์สมมติ ต้นฉบับมี5หน่วยข้ออ้าง การแยกต้องรักษาentity/version/qualifier และเก็บข้ออ้างที่Referenceยังไม่ยืนยันหรือขัดแย้งไว้พร้อมสถานะ ไม่ใช่ลบเพื่อให้คะแนนดูสูง</p>
+<h3>Input A: คำตอบต้นฉบับและsource spans</h3><p class="hm-original" data-state="original"></p><details><summary>เปิดU1–U5พร้อมoffsetและqualifier</summary><ol data-state="units"></ol></details><details><summary>Input R: เอกสารอ้างอิงสมมติR1–R5</summary><ol data-state="references"></ol></details>
+<label>วิธีแยกที่กำหนดไว้ (เปลี่ยนแล้วเลือกชุดใหม่)<select data-input="strategy"><option value="faithful">รักษาทั้ง5หน่วยพร้อมสถานะ</option><option value="supportedOnly">เก็บเฉพาะข้ออ้างที่Rรองรับ</option><option value="addReferencedNovel">เพิ่มDOCXจากRที่ต้นฉบับไม่ได้พูด</option><option value="duplicateGaming">เพิ่มสำเนาข้ออ้างที่รองรับ</option><option value="scopeLost">ตกหล่นข้อจำกัดdesktop→ทุกอุปกรณ์</option><option value="entityMixed">ปนentity/version</option><option value="compound">รวมสองหน่วยไว้เป็นcompound</option><option value="empty">ชุดว่าง</option><option value="custom" disabled>Custom —เลือกการ์ดเอง</option></select></label>
+<h3>เลือกcandidate claims</h3><div class="hm-card-grid" data-state="candidates"></div><h3>State: เก็บหน่วยใด / มีสำเนาหรือข้ออ้างใหม่ไหม?</h3><p class="hm-score" data-state="count"></p><p data-state="coverage"></p><p data-state="issues"></p>
+<h3>Output: A→Claim กับ R→Claim</h3><div class="hm-card-grid" data-state="checks"></div><div class="hm-metrics" data-state="metrics"></div><p class="hm-feedback" data-state="feedback" aria-live="polite"></p>
+<details><summary>สูตร กติกาและข้อจำกัด</summary><p>Original preservation = uniqueclaimsที่Aรองรับ / uniqueclaimsที่เลือก • Original coverage = originalunitsที่ยังอยู่ /5 • External confirmed support = uniqueclaimsที่Rรองรับ / uniqueclaimsที่เลือก แสดง rawrecordrateแยกเพื่อเห็นการเพิ่มสำเนา UNKNOWN/NOT_IN_REFERENCEไม่เท่ากับเท็จ ชุดว่างมีpreservation/support NA แต่coverage0/5</p><p>C1/C6ใช้fingerprintที่ผู้เขียนกำหนดร่วมกัน ไม่ใช่semanticclusteringจริง C11ยังรักษาU1/U3แต่ไม่atomic C7ขยายเฉพาะdesktopเป็นทุกอุปกรณ์ C8มีR5รองรับแต่Aไม่ได้พูดจึงเป็นข้ออ้างใหม่ Source spanเป็นanchorที่ตั้งไว้ ไม่ยืนยันentailmentอัตโนมัติ</p><p>Labelsทั้งหมดมาจากcatalogที่เขียนไว้ ไม่ใช่ผลNLI/DecompScore/FActScoreจริง Source-world truthยังUNKNOWN และการแยกที่ครบไม่จำเป็นต้องมีexternal support100%</p></details><button type="button" data-action="reset">Reset —รักษาทั้ง5หน่วย</button>
+<script>(function(){'use strict';const C=(function(){'use strict';
+const DATA={
+  "article": "011",
+  "type": "SIMULATION",
+  "fixture": "Atlas Lab / Nova Lab — fictional products and authored claim catalog",
+  "originalAnswer": "Atlas Lab รุ่น2.1 อ่านPDFแบบออฟไลน์ได้เฉพาะบนเดสก์ท็อป และ Atlas Lab รุ่น2.1 ส่งออกCSVได้เมื่อเชื่อมต่อเครือข่าย ส่วน Nova Lab รุ่น1.4 อ่านTXTได้ และ Nova Lab รุ่น1.4 แปลภาษาละตินได้ อีกทั้ง Atlas Lab รุ่น2.1 เก็บประวัติการอ่านไว้30วัน",
+  "originalUnits": [
+    {
+      "id": "U1",
+      "spanText": "Atlas Lab รุ่น2.1 อ่านPDFแบบออฟไลน์ได้เฉพาะบนเดสก์ท็อป",
+      "entity": "Atlas Lab",
+      "version": "2.1",
+      "predicate": "readPDF",
+      "qualifiers": [
+        "OFFLINE",
+        "DESKTOP_ONLY"
+      ],
+      "externalSupport": "SUPPORTED",
+      "referenceIds": [
+        "R1"
+      ],
+      "sourceSpan": {
+        "start": 0,
+        "end": 54,
+        "offsetUnit": "UTF16-code-units",
+        "endExclusive": true
+      }
+    },
+    {
+      "id": "U2",
+      "spanText": "Atlas Lab รุ่น2.1 ส่งออกCSVได้เมื่อเชื่อมต่อเครือข่าย",
+      "entity": "Atlas Lab",
+      "version": "2.1",
+      "predicate": "exportCSV",
+      "qualifiers": [
+        "ONLINE_REQUIRED"
+      ],
+      "externalSupport": "SUPPORTED",
+      "referenceIds": [
+        "R2"
+      ],
+      "sourceSpan": {
+        "start": 59,
+        "end": 112,
+        "offsetUnit": "UTF16-code-units",
+        "endExclusive": true
+      }
+    },
+    {
+      "id": "U3",
+      "spanText": "Nova Lab รุ่น1.4 อ่านTXTได้",
+      "entity": "Nova Lab",
+      "version": "1.4",
+      "predicate": "readTXT",
+      "qualifiers": [],
+      "externalSupport": "SUPPORTED",
+      "referenceIds": [
+        "R4"
+      ],
+      "sourceSpan": {
+        "start": 118,
+        "end": 145,
+        "offsetUnit": "UTF16-code-units",
+        "endExclusive": true
+      }
+    },
+    {
+      "id": "U4",
+      "spanText": "Nova Lab รุ่น1.4 แปลภาษาละตินได้",
+      "entity": "Nova Lab",
+      "version": "1.4",
+      "predicate": "translateLatin",
+      "qualifiers": [],
+      "externalSupport": "NOT_IN_REFERENCE",
+      "referenceIds": [],
+      "sourceSpan": {
+        "start": 150,
+        "end": 182,
+        "offsetUnit": "UTF16-code-units",
+        "endExclusive": true
+      }
+    },
+    {
+      "id": "U5",
+      "spanText": "Atlas Lab รุ่น2.1 เก็บประวัติการอ่านไว้30วัน",
+      "entity": "Atlas Lab",
+      "version": "2.1",
+      "predicate": "keepReadingHistory",
+      "qualifiers": [
+        "30_DAYS"
+      ],
+      "externalSupport": "CONTRADICTED",
+      "referenceIds": [
+        "R3"
+      ],
+      "sourceSpan": {
+        "start": 191,
+        "end": 235,
+        "offsetUnit": "UTF16-code-units",
+        "endExclusive": true
+      }
+    }
+  ],
+  "references": [
+    {
+      "id": "R1",
+      "text": "เอกสารสมมติ Atlas Lab รุ่น2.1: ตัวอ่านPDFออฟไลน์รองรับเฉพาะเดสก์ท็อป ไม่รองรับออฟไลน์บนอุปกรณ์อื่น"
+    },
+    {
+      "id": "R2",
+      "text": "เอกสารสมมติ Atlas Lab รุ่น2.1: ส่งออกCSVได้เมื่อเชื่อมต่อเครือข่าย"
+    },
+    {
+      "id": "R3",
+      "text": "เอกสารสมมติ Atlas Lab รุ่น2.1: ไม่เก็บประวัติการอ่านหลังปิดsession จึงไม่เก็บประวัติไว้30วัน"
+    },
+    {
+      "id": "R4",
+      "text": "เอกสารสมมติ Nova Lab รุ่น1.4: รองรับการอ่านTXT ไม่มีข้อความเรื่องการแปลภาษาละติน"
+    },
+    {
+      "id": "R5",
+      "text": "เอกสารสมมติ Atlas Lab รุ่น2.1: เปิดDOCXได้เมื่อออนไลน์ แต่คุณสมบัตินี้ไม่ได้กล่าวไว้ในคำตอบต้นฉบับ"
+    }
+  ],
+  "candidates": [
+    {
+      "id": "C1",
+      "text": "Atlas Lab รุ่น2.1 อ่านPDFออฟไลน์ได้เฉพาะบนเดสก์ท็อป",
+      "fingerprint": "U1-exact",
+      "preservedUnits": [
+        "U1"
+      ],
+      "sourceSpanUnits": [
+        "U1"
+      ],
+      "entailedByOriginal": true,
+      "atomic": true,
+      "issues": [],
+      "externalSupport": "SUPPORTED",
+      "referenceIds": [
+        "R1"
+      ],
+      "sourceSpans": [
+        {
+          "unit": "U1",
+          "start": 0,
+          "end": 54,
+          "offsetUnit": "UTF16-code-units",
+          "endExclusive": true,
+          "text": "Atlas Lab รุ่น2.1 อ่านPDFแบบออฟไลน์ได้เฉพาะบนเดสก์ท็อป"
+        }
+      ]
+    },
+    {
+      "id": "C2",
+      "text": "Atlas Lab รุ่น2.1 ส่งออกCSVได้เมื่อเชื่อมต่อเครือข่าย",
+      "fingerprint": "U2-exact",
+      "preservedUnits": [
+        "U2"
+      ],
+      "sourceSpanUnits": [
+        "U2"
+      ],
+      "entailedByOriginal": true,
+      "atomic": true,
+      "issues": [],
+      "externalSupport": "SUPPORTED",
+      "referenceIds": [
+        "R2"
+      ],
+      "sourceSpans": [
+        {
+          "unit": "U2",
+          "start": 59,
+          "end": 112,
+          "offsetUnit": "UTF16-code-units",
+          "endExclusive": true,
+          "text": "Atlas Lab รุ่น2.1 ส่งออกCSVได้เมื่อเชื่อมต่อเครือข่าย"
+        }
+      ]
+    },
+    {
+      "id": "C3",
+      "text": "Nova Lab รุ่น1.4 อ่านTXTได้",
+      "fingerprint": "U3-exact",
+      "preservedUnits": [
+        "U3"
+      ],
+      "sourceSpanUnits": [
+        "U3"
+      ],
+      "entailedByOriginal": true,
+      "atomic": true,
+      "issues": [],
+      "externalSupport": "SUPPORTED",
+      "referenceIds": [
+        "R4"
+      ],
+      "sourceSpans": [
+        {
+          "unit": "U3",
+          "start": 118,
+          "end": 145,
+          "offsetUnit": "UTF16-code-units",
+          "endExclusive": true,
+          "text": "Nova Lab รุ่น1.4 อ่านTXTได้"
+        }
+      ]
+    },
+    {
+      "id": "C4",
+      "text": "Nova Lab รุ่น1.4 แปลภาษาละตินได้",
+      "fingerprint": "U4-exact",
+      "preservedUnits": [
+        "U4"
+      ],
+      "sourceSpanUnits": [
+        "U4"
+      ],
+      "entailedByOriginal": true,
+      "atomic": true,
+      "issues": [],
+      "externalSupport": "NOT_IN_REFERENCE",
+      "referenceIds": [],
+      "sourceSpans": [
+        {
+          "unit": "U4",
+          "start": 150,
+          "end": 182,
+          "offsetUnit": "UTF16-code-units",
+          "endExclusive": true,
+          "text": "Nova Lab รุ่น1.4 แปลภาษาละตินได้"
+        }
+      ]
+    },
+    {
+      "id": "C5",
+      "text": "Atlas Lab รุ่น2.1 เก็บประวัติการอ่านไว้30วัน",
+      "fingerprint": "U5-exact",
+      "preservedUnits": [
+        "U5"
+      ],
+      "sourceSpanUnits": [
+        "U5"
+      ],
+      "entailedByOriginal": true,
+      "atomic": true,
+      "issues": [],
+      "externalSupport": "CONTRADICTED",
+      "referenceIds": [
+        "R3"
+      ],
+      "sourceSpans": [
+        {
+          "unit": "U5",
+          "start": 191,
+          "end": 235,
+          "offsetUnit": "UTF16-code-units",
+          "endExclusive": true,
+          "text": "Atlas Lab รุ่น2.1 เก็บประวัติการอ่านไว้30วัน"
+        }
+      ]
+    },
+    {
+      "id": "C6",
+      "text": "เฉพาะเดสก์ท็อปเท่านั้นที่ Atlas Lab รุ่น2.1 อ่านPDFแบบออฟไลน์ได้",
+      "fingerprint": "U1-exact",
+      "preservedUnits": [
+        "U1"
+      ],
+      "sourceSpanUnits": [
+        "U1"
+      ],
+      "entailedByOriginal": true,
+      "atomic": true,
+      "issues": [
+        "DUPLICATE_OF_C1_WHEN_BOTH_SELECTED"
+      ],
+      "externalSupport": "SUPPORTED",
+      "referenceIds": [
+        "R1"
+      ],
+      "sourceSpans": [
+        {
+          "unit": "U1",
+          "start": 0,
+          "end": 54,
+          "offsetUnit": "UTF16-code-units",
+          "endExclusive": true,
+          "text": "Atlas Lab รุ่น2.1 อ่านPDFแบบออฟไลน์ได้เฉพาะบนเดสก์ท็อป"
+        }
+      ]
+    },
+    {
+      "id": "C7",
+      "text": "Atlas Lab รุ่น2.1 อ่านPDFออฟไลน์ได้บนทุกอุปกรณ์",
+      "fingerprint": "U1-scope-broadened",
+      "preservedUnits": [],
+      "sourceSpanUnits": [
+        "U1"
+      ],
+      "entailedByOriginal": false,
+      "atomic": true,
+      "issues": [
+        "DESKTOP_ONLY_QUALIFIER_LOST",
+        "NEW_UNIVERSAL_SCOPE"
+      ],
+      "externalSupport": "CONTRADICTED",
+      "referenceIds": [
+        "R1"
+      ],
+      "sourceSpans": [
+        {
+          "unit": "U1",
+          "start": 0,
+          "end": 54,
+          "offsetUnit": "UTF16-code-units",
+          "endExclusive": true,
+          "text": "Atlas Lab รุ่น2.1 อ่านPDFแบบออฟไลน์ได้เฉพาะบนเดสก์ท็อป"
+        }
+      ]
+    },
+    {
+      "id": "C8",
+      "text": "Atlas Lab รุ่น2.1 เปิดDOCXได้เมื่อออนไลน์",
+      "fingerprint": "novel-DOCX",
+      "preservedUnits": [],
+      "sourceSpanUnits": [],
+      "entailedByOriginal": false,
+      "atomic": true,
+      "issues": [
+        "NOVEL_CLAIM_SUPPORTED_ONLY_BY_REFERENCE"
+      ],
+      "externalSupport": "SUPPORTED",
+      "referenceIds": [
+        "R5"
+      ],
+      "sourceSpans": []
+    },
+    {
+      "id": "C9",
+      "text": "Atlas Lab รุ่น2.1 อ่านTXTได้",
+      "fingerprint": "U3-entity-mixed",
+      "preservedUnits": [],
+      "sourceSpanUnits": [
+        "U3"
+      ],
+      "entailedByOriginal": false,
+      "atomic": true,
+      "issues": [
+        "ENTITY_VERSION_BINDING_MIX"
+      ],
+      "externalSupport": "NOT_IN_REFERENCE",
+      "referenceIds": [],
+      "sourceSpans": [
+        {
+          "unit": "U3",
+          "start": 118,
+          "end": 145,
+          "offsetUnit": "UTF16-code-units",
+          "endExclusive": true,
+          "text": "Nova Lab รุ่น1.4 อ่านTXTได้"
+        }
+      ]
+    },
+    {
+      "id": "C10",
+      "text": "Nova Lab รุ่น2.1 แปลภาษาละตินได้",
+      "fingerprint": "U4-version-changed",
+      "preservedUnits": [],
+      "sourceSpanUnits": [
+        "U4"
+      ],
+      "entailedByOriginal": false,
+      "atomic": true,
+      "issues": [
+        "VERSION_CHANGED"
+      ],
+      "externalSupport": "NOT_IN_REFERENCE",
+      "referenceIds": [],
+      "sourceSpans": [
+        {
+          "unit": "U4",
+          "start": 150,
+          "end": 182,
+          "offsetUnit": "UTF16-code-units",
+          "endExclusive": true,
+          "text": "Nova Lab รุ่น1.4 แปลภาษาละตินได้"
+        }
+      ]
+    },
+    {
+      "id": "C11",
+      "text": "Atlas Lab รุ่น2.1 อ่านPDFออฟไลน์เฉพาะเดสก์ท็อป และ Nova Lab รุ่น1.4 อ่านTXTได้",
+      "fingerprint": "compound-U1-U3",
+      "preservedUnits": [
+        "U1",
+        "U3"
+      ],
+      "sourceSpanUnits": [
+        "U1",
+        "U3"
+      ],
+      "entailedByOriginal": true,
+      "atomic": false,
+      "issues": [
+        "COMPOUND_NOT_ATOMIC"
+      ],
+      "externalSupport": "SUPPORTED",
+      "referenceIds": [
+        "R1",
+        "R4"
+      ],
+      "sourceSpans": [
+        {
+          "unit": "U1",
+          "start": 0,
+          "end": 54,
+          "offsetUnit": "UTF16-code-units",
+          "endExclusive": true,
+          "text": "Atlas Lab รุ่น2.1 อ่านPDFแบบออฟไลน์ได้เฉพาะบนเดสก์ท็อป"
+        },
+        {
+          "unit": "U3",
+          "start": 118,
+          "end": 145,
+          "offsetUnit": "UTF16-code-units",
+          "endExclusive": true,
+          "text": "Nova Lab รุ่น1.4 อ่านTXTได้"
+        }
+      ]
+    }
+  ],
+  "catalogSemantics": "All original-entailment, exactentity/version/qualifier preservation and external-support labels are authored for this finite fixture. No natural-language parser/NLI/LLM is executed. Source spans will storeUTF16start/endexclusive plusquoted spanText; they show intended source anchoring, not automaticsemantic entailmentproof.",
+  "explorer": {
+    "id": "hm-claims-explorer",
+    "strategies": {
+      "faithful": [
+        "C1",
+        "C2",
+        "C3",
+        "C4",
+        "C5"
+      ],
+      "supportedOnly": [
+        "C1",
+        "C2",
+        "C3"
+      ],
+      "addReferencedNovel": [
+        "C1",
+        "C2",
+        "C3",
+        "C4",
+        "C5",
+        "C8"
+      ],
+      "duplicateGaming": [
+        "C1",
+        "C2",
+        "C3",
+        "C4",
+        "C5",
+        "C6"
+      ],
+      "scopeLost": [
+        "C7",
+        "C2",
+        "C3",
+        "C4",
+        "C5"
+      ],
+      "entityMixed": [
+        "C1",
+        "C2",
+        "C9",
+        "C4",
+        "C5"
+      ],
+      "compound": [
+        "C11",
+        "C2",
+        "C4",
+        "C5"
+      ],
+      "empty": []
+    },
+    "initialStrategy": "faithful",
+    "twoChecks": "Originalanswer→candidatepreservation is distinctfrom references→candidateexternalSupport. A faithful decomposition must retain originalcontradicted/unverifiedclaims andmarktheir externalstatus ratherthan removeorrepairthem atthisstage.",
+    "metrics": {
+      "originalPreservation": "Unique entailed candidates / unique selectednormalizedclaims",
+      "originalCoverage": "Union of preservedoriginalunitIDs fromentailedcandidates /5 originalunits",
+      "externalConfirmedSupport": "Unique SUPPORTED candidates /unique selectedclaims, with CONTRADICTED/NOT_IN_REFERENCE counts separately. NOT_IN_REFERENCE isnot false.",
+      "externalRawRate": "Raw SUPPORTED candidate records / rawselectedrecords; shownseparately toexposeduplicate inflation",
+      "empty": "When denominatorzero, preservation/support ratesNA, not100%; fixedoriginalcoverage still0/5."
+    },
+    "normalization": "C1/C6 shareauthoredfingerprint; duplicate wording gets no extrauniqueclaim/coverage credit. CompoundC11 preserves U1/U3 butfails atomicity independently.",
+    "sourceWorldTruth": "UNKNOWN; referencesarefictional, statusesonlywithinthisfixture"
+  },
+  "game": {
+    "id": "hm-claims-game",
+    "capacity": 7,
+    "capacityMeaning": "At most7 rawcandidate slots simultaneously selected; eachcandidate costs1 slot includingduplicate. This isnot token budget, time, money or actualmodelcapacity. Toggling removesreturns slot; annotationsconsume no extra slots.",
+    "presets": {
+      "supportedOnly": {
+        "seed": [
+          "C1",
+          "C2",
+          "C3"
+        ],
+        "label": "อย่าลบข้ออ้างที่ยังไม่มีหลักฐาน"
+      },
+      "qualifierLost": {
+        "seed": [
+          "C7",
+          "C2",
+          "C3",
+          "C4",
+          "C5"
+        ],
+        "label": "คืนqualifierเฉพาะเดสก์ท็อป"
+      },
+      "entityMixed": {
+        "seed": [
+          "C1",
+          "C2",
+          "C9",
+          "C4",
+          "C5"
+        ],
+        "label": "แยกentity/versionให้ตรง"
+      },
+      "duplicateGaming": {
+        "seed": [
+          "C1",
+          "C2",
+          "C3",
+          "C6"
+        ],
+        "label": "สำเนาไม่เติมข้ออ้างที่หาย"
+      }
+    },
+    "goal": "Coverall5 originalunits withonlyentailedatomicclaims, no duplicate ornovel/qualifier/entity/versionerror, within7slots. RetainU4/U5 andcorrectlyannotateNOT_IN_REFERENCE/CONTRADICTED whileU1–U3 markedSUPPORTED; externalconfirmed-support neednot100%foradecompositionwin.",
+    "selectors": "data-config preset; data-candidate C1–C11; data-support C1–C11; data-action grade|reset",
+    "grade": "Endsroundonce whenallselectedclaimsupportannotations present. Emptyselection cannotwin. Retention/fidelity/coverage/atomicity/duplication/annotations evaluatedseparately.",
+    "reset": true
+  },
+  "rootHooks": "hm-claims-explorer andhm-claims-game each expose hmSnapshot()deepcopy",
+  "scientificLimits": [
+    "Authored finitecatalog labels, notactualsemanticverifier",
+    "Faithfulextractiondoesnot implysourceworldtruth",
+    "Supported-referenceclaimC8stillnotentailedbyoriginal andcannotbeintroduced",
+    "Unknownsupportisnotcontradiction",
+    "Ratiosarenamedtoy-preservation/coverage/external-confirmed-support, notactualDecompScore orpaperbenchmark",
+    "No network/LLM/parser/training/weights/persistence"
+  ]
+};
+const clone=v=>JSON.parse(JSON.stringify(v));
+const unique=v=>Array.from(new Set(v));
+function candidate(id){return DATA.candidates.find(c=>c.id===id)||null;}
+function fraction(n,d){return {numerator:n,denominator:d,status:d===0?'NA':'KNOWN',value:d===0?null:n/d};}
+function inspect(selected=DATA.explorer.strategies.faithful){const records=selected.map(candidate).filter(Boolean),groups=[];for(const c of records){let g=groups.find(g=>g.fingerprint===c.fingerprint);if(!g){g={fingerprint:c.fingerprint,representative:clone(c),candidateIds:[]};groups.push(g);}g.candidateIds.push(c.id);}const claims=groups.map(g=>g.representative),entailed=claims.filter(c=>c.entailedByOriginal),covered=unique(entailed.flatMap(c=>c.preservedUnits)),required=DATA.originalUnits.map(u=>u.id),missing=required.filter(id=>!covered.includes(id)),supportCounts={SUPPORTED:0,CONTRADICTED:0,NOT_IN_REFERENCE:0};claims.forEach(c=>supportCounts[c.externalSupport]+=1);const duplicates=records.length-groups.length,unfaithful=claims.filter(c=>!c.entailedByOriginal),compound=claims.filter(c=>!c.atomic),complete=[missing.length===0,unfaithful.length===0,compound.length===0,duplicates===0,records.length!==0].every(Boolean);return {selected:clone(selected),records:clone(records),groups,rawCount:records.length,uniqueCount:claims.length,duplicates,unknownIds:selected.filter(id=>!candidate(id)),coveredUnits:covered,missingUnits:missing,unfaithful:clone(unfaithful),compound:clone(compound),supportCounts,metrics:{originalPreservation:fraction(entailed.length,claims.length),originalCoverage:fraction(covered.filter(id=>required.includes(id)).length,required.length),externalConfirmedSupport:fraction(supportCounts.SUPPORTED,claims.length),externalRawSupport:fraction(records.filter(c=>c.externalSupport==='SUPPORTED').length,records.length),atomicity:fraction(claims.filter(c=>c.atomic).length,claims.length)},completeFaithfulAtomicDecomposition:complete,sourceWorldTruth:'UNKNOWN',semanticVerifier:'AUTHORED_CATALOG_NOT_NLI'};}
+function makeExplorer(strategy='faithful'){if(!DATA.explorer.strategies[strategy])throw Error('unknown strategy');return {strategy,selected:clone(DATA.explorer.strategies[strategy])};}
+function toggle(s,id){if(!candidate(id))return {ok:false,reason:'UNKNOWN_ID'};s.selected=s.selected.includes(id)?s.selected.filter(x=>x!==id):s.selected.concat(id);s.strategy='custom';return {ok:true};}
+function makeGame(preset='supportedOnly'){const p=DATA.game.presets[preset];if(!p)throw Error('unknown preset');return {preset,capacity:DATA.game.capacity,selected:clone(p.seed),annotations:{},ended:false,result:null,trace:[],feedback:'เก็บข้ออ้างต้นฉบับให้ครบ แล้วทำเครื่องหมายสถานะต่อReferenceR โดยไม่ลบข้ออ้างที่ตรวจยาก'};}
+function gameToggle(s,id){if(s.ended)return {ok:false,reason:'ENDED'};if(!candidate(id))return {ok:false,reason:'UNKNOWN_ID'};const present=s.selected.includes(id);if([!present,s.selected.length>=s.capacity].every(Boolean)){s.feedback='ครบ7slotsแล้ว — รายการเดิมไม่เปลี่ยน ลบรายการซ้ำหรือข้ออ้างใหม่ก่อน';return {ok:false,reason:'OVER_CAPACITY'};}s.selected=present?s.selected.filter(x=>x!==id):s.selected.concat(id);delete s.annotations[id];s.trace.push({action:present?'REMOVE':'ADD',id,slots:s.selected.length});s.feedback=(present?'ลบ ':'เพิ่ม ')+id+' • ต้นฉบับและReferenceเป็นคนละการตรวจ';return {ok:true};}
+function annotate(s,id,status){if(s.ended)return {ok:false,reason:'ENDED'};if(!s.selected.includes(id)||!['SUPPORTED','CONTRADICTED','NOT_IN_REFERENCE'].includes(status))return {ok:false,reason:'INVALID_ANNOTATION'};s.annotations[id]=status;return {ok:true};}
+function gameView(s){return {...clone(s),remaining:s.capacity-s.selected.length,evaluation:inspect(s.selected)};}
+function grade(s){if(s.ended)return {ok:false,reason:'ENDED'};if(!s.selected.length)return {ok:false,reason:'EMPTY_SELECTION'};if(!s.selected.every(id=>Boolean(s.annotations[id])))return {ok:false,reason:'ANNOTATE_ALL'};const v=inspect(s.selected),annotations=s.selected.map(id=>({id,expected:candidate(id).externalSupport,actual:s.annotations[id],correct:s.annotations[id]===candidate(id).externalSupport})),annotationsCorrect=annotations.every(a=>a.correct),allOriginalUnits=v.missingUnits.length===0,onlyEntailed=v.unfaithful.length===0,allAtomic=v.compound.length===0,noDuplicates=v.duplicates===0,withinCapacity=s.capacity>=s.selected.length,hardClaimsRetained=['U4','U5'].every(id=>v.coveredUnits.includes(id)),goal=[allOriginalUnits,onlyEntailed,allAtomic,noDuplicates,withinCapacity,hardClaimsRetained,annotationsCorrect].every(Boolean);s.result={goal,allOriginalUnits,onlyEntailed,allAtomic,noDuplicates,withinCapacity,hardClaimsRetained,annotationsCorrect,annotations,sourceConfirmed:v.metrics.externalConfirmedSupport,originalCoverage:v.metrics.originalCoverage};s.ended=true;s.feedback=goal?'ชนะ — แยกต้นฉบับครบและทำเครื่องหมายข้ออ้างที่ไม่ยืนยัน/ขัดกับRโดยไม่ลบทิ้ง':'ยังไม่สำเร็จ — ตรวจข้ออ้างที่หาย ข้ออ้างใหม่ qualifier/entity/atomicity สำเนาและสถานะReference';return {ok:true,result:clone(s.result)};}
+return {DATA,clone,unique,candidate,fraction,inspect,makeExplorer,toggle,makeGame,gameToggle,annotate,gameView,grade};
+})();const root=document.getElementById('hm-claims-explorer');if(!root)return;const node=n=>root.querySelector('[data-state="'+n+'"]'),input=root.querySelector('[data-input="strategy"]');let state=C.makeExplorer();node('original').textContent=C.DATA.originalAnswer;C.DATA.originalUnits.forEach(u=>{const li=document.createElement('li');li.textContent=u.id+' ['+u.sourceSpan.start+','+u.sourceSpan.end+') UTF16 • '+u.spanText+' • qualifier: '+(u.qualifiers.join(', ')||'ไม่มี');node('units').append(li);});C.DATA.references.forEach(r=>{const li=document.createElement('li');li.textContent=r.id+' • '+r.text;node('references').append(li);});C.DATA.candidates.forEach(c=>{const l=document.createElement('label'),box=document.createElement('input'),s=document.createElement('span');l.className='hm-candidate';box.type='checkbox';box.setAttribute('data-candidate',c.id);s.textContent=c.id+' • '+c.text;box.addEventListener('change',()=>{C.toggle(state,c.id);input.value='custom';render();});l.append(box,s);node('candidates').append(l);});function metric(v){return v.status==='NA'?'NA':v.numerator+'/'+v.denominator+' = '+Math.round(v.value*100)+'%';}function render(){const v=C.inspect(state.selected);root.querySelectorAll('[data-candidate]').forEach(b=>{b.checked=state.selected.includes(b.getAttribute('data-candidate'));});node('count').textContent='Raw records '+v.rawCount+' • Unique claims '+v.uniqueCount+' • สำเนา '+v.duplicates;node('coverage').textContent='ต้นฉบับที่เก็บ: '+(v.coveredUnits.join(', ')||'ไม่มี')+' • หาย: '+(v.missingUnits.join(', ')||'ไม่มี');node('issues').textContent='ไม่รองรับโดยA: '+(v.unfaithful.map(c=>c.id).join(', ')||'ไม่มี')+' • ไม่atomic: '+(v.compound.map(c=>c.id).join(', ')||'ไม่มี');node('checks').replaceChildren();v.groups.forEach(g=>{const c=g.representative,a=document.createElement('article'),h=document.createElement('h3'),p=document.createElement('p'),r=document.createElement('p'),s=document.createElement('p');h.textContent=g.candidateIds.join(', ')+' • '+c.text;p.textContent='A→Claim: '+(c.entailedByOriginal?'preserved':'NOT_ENTAILED_BY_ORIGINAL')+' • Atomic: '+String(c.atomic);r.textContent='R→Claim: '+c.externalSupport+' • refs: '+(c.referenceIds.join(', ')||'ไม่มี');s.textContent='Source spans: '+(c.sourceSpans.map(x=>x.unit+'['+x.start+','+x.end+')').join(', ')||'ไม่มีในA');a.append(h,p,r,s);node('checks').append(a);});node('metrics').replaceChildren();[['originalPreservation','Original preservation'],['originalCoverage','Original coverage'],['externalConfirmedSupport','External confirmed support (unique)'],['externalRawSupport','External support raw record rate'],['atomicity','Atomicity (catalog)']].forEach(pair=>{const a=document.createElement('article'),p=document.createElement('p'),s=document.createElement('p');a.setAttribute('data-metric',pair[0]);p.textContent=pair[1];s.className='hm-score';s.textContent=metric(v.metrics[pair[0]]);a.append(p,s);node('metrics').append(a);});node('feedback').textContent=v.completeFaithfulAtomicDecomposition?'รักษาต้นฉบับครบ5หน่วย: C4ยังไม่พบในR และC5ขัดกับR แต่ต้องคงไว้พร้อมสถานะในขั้นdecomposition':'การทำให้R-supportสูงไม่ได้ยืนยันว่ารักษาAครบ ตรวจหน่วยที่หาย ข้ออ้างใหม่ qualifier/entity สำเนาและatomicityแยกกัน';}input.addEventListener('change',()=>{if(input.value==='custom')return;state=C.makeExplorer(input.value);render();});root.querySelector('[data-action="reset"]').addEventListener('click',()=>{state=C.makeExplorer();input.value='faithful';render();});root.hmSnapshot=()=>C.inspect(state.selected);render();})();</script></section>
+
+
+
+
+<p class="wp-block-paragraph">โหมดสำเนาเพิ่ม C6 ซึ่งสื่อเรื่องเดียวกับ C1 อัตราบนรายการดิบจะเปลี่ยนได้ แต่จำนวนข้อไม่ซ้ำและ coverage ไม่เพิ่ม ส่วน C11 รวม U1 กับ U3: รักษาเนื้อหาได้แต่ยังเป็น compound ที่ไม่ผ่านเกณฑ์ atomicity ของตัวอย่าง กด Reset เพื่อกลับสู่ชุดเริ่มต้น</p>
+
+
+
+<p class="wp-block-paragraph">ผลประเมินความสัมพันธ์ทั้งหมดเป็น labels ที่กำหนดใน fixture ไม่ได้เกิดจาก parser หรือ semantic entailment model การเปรียบ C1/C6 ใช้ fingerprint ที่ผู้เขียนให้ ไม่ใช่ระบบรู้ว่าข้อความภาษาไทยทุกคู่มีความหมายเท่ากัน ความจริงภายนอกผลิตภัณฑ์สมมติยัง UNKNOWN</p>
+
+
+
+<h2 class="wp-block-heading" id="hm-claims-section-6">นิยามตัวหารให้เห็นทั้งการรักษาและการตกหล่น</h2>
+
+
+
+<p class="wp-block-paragraph">ให้ A เป็นชุดหน่วยเดิมห้าข้อ D เป็นรายการข้อที่เลือก D* เป็นข้อไม่ซ้ำตาม fingerprint และ P เป็นข้อใน D* ที่ labels สมมติบอกว่าตรงกับต้นฉบับ ตัวอย่างนิยามดังนี้</p>
+
+
+
+<pre class="wp-block-code"><code>Toy Preservation = จำนวนข้อใน P / จำนวนข้อใน D*
+Toy Original Coverage = จำนวน U ที่ข้อใน P รักษาไว้ / 5
+Toy Confirmed Support = จำนวนข้อ SUPPORTED ใน D* / จำนวนข้อใน D*
+Toy Raw Support = จำนวนรายการ SUPPORTED ใน D / จำนวนรายการใน D</code></pre>
+
+
+
+<p class="wp-block-paragraph">การนับ coverage ใช้ union ของ U ที่รักษา ไม่บวก U1 ซ้ำจาก C1/C6 สัดส่วน support ต้องแสดงจำนวน CONTRADICTED และ NOT_IN_REFERENCE คู่กัน เพราะการยังไม่พบในเอกสารไม่เท่ากับพบว่าขัดแย้ง ถ้าไม่มีข้อให้ตรวจ ตัวหาร preservation/support เป็นศูนย์จึงแสดง N/A ส่วน coverage ยังเป็น0/5</p>
+
+
+
+<p class="wp-block-paragraph">ชุด C1–C5 ได้ preservation และ coverage ครบ แต่ confirmed support เพียง3/5หรือ60%ตาม fixture นี่เป็นผลการแยกที่ดีแม้คำตอบเดิมยังมีปัญหา ตัวเลขทั้งหมดเป็น <strong>SIMULATION</strong> ไม่ใช่ FActScore หรือ DecompScore ที่เรารันกับโมเดลจริง</p>
+
+
+
+<p class="wp-block-paragraph">ต้องแยกสูตรออกจาก implementation ด้วย เช่น repo FActScore ที่ตรวจมี default length penalty gamma10 และ init_score สำหรับคะแนนก่อน penalty การอ่านเพียงชื่อ score ไม่รับรองว่าเป็น raw fraction <a href="https://github.com/shmsw25/FActScore">FActScore code</a></p>
+
+
+
+<h2 class="wp-block-heading" id="hm-claims-section-7">System Architecture: แยกหน้าที่ก่อนรวมคะแนน</h2>
+
+
+
+<p class="wp-block-paragraph">แผนต่อไปนี้เป็น <strong>Conceptual Architecture / HYPOTHESIS</strong> สำหรับ application ที่ตรวจคำตอบ Agent ไม่ใช่ implementation ที่งานวิจัยทั้งห้าใช้ร่วมกัน และยังต้องทดสอบการแยกภาษาไทยกับข้อมูลจริง</p>
+
+
+
+<figure class="wp-block-image size-full"><a href="https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-claims-011-02-architecture.png?ssl=1"><img data-recalc-dims="1" data-attachment-id="1766" data-permalink="https://hybridmind.online/hm-claims-011-02-architecture/" data-orig-file="https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-claims-011-02-architecture.png?fit=1800%2C1150&amp;ssl=1" data-orig-size="1800,1150" data-comments-opened="1" data-image-title="Conceptual Claim Decomposition Architecture: เจ็ดหน้าที่ในหกกลุ่ม" data-image-description="" data-image-caption="&lt;p&gt;HYPOTHESIS: AnswerCapture→Decomposer→PreservationAuditor→ContextBinder/RedundancySelector→ReferenceVerifier→Report/Memory โดยกลุ่ม 4 รวมสองหน้าที่ ReferenceVerifier รับหลักฐานต่างหาก; trace และ memory ไม่ใช่ hidden thoughts หรือการฝึก weights&lt;/p&gt;
+" data-large-file="https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-claims-011-02-architecture.png?fit=1024%2C654&amp;ssl=1" src="https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-claims-011-02-architecture.png?resize=1800%2C1150&#038;ssl=1" alt="หกกลุ่ม AnswerCapture Decomposer PreservationAuditor ContextBinder รวม RedundancySelector ReferenceVerifier และ Report Memory มี input external sources แยกจาก original answer พร้อมข้อความ Conceptual Architecture HYPOTHESIS" width="1800" height="1150" class="wp-image-1766" loading="lazy" decoding="async" srcset="https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-claims-011-02-architecture.png?w=1800&amp;ssl=1 1800w, https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-claims-011-02-architecture.png?resize=300%2C192&amp;ssl=1 300w, https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-claims-011-02-architecture.png?resize=1024%2C654&amp;ssl=1 1024w, https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-claims-011-02-architecture.png?resize=768%2C491&amp;ssl=1 768w, https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-claims-011-02-architecture.png?resize=1536%2C981&amp;ssl=1 1536w" sizes="auto, (max-width: 1000px) 100vw, 1000px" /></a><figcaption><strong>Conceptual Claim Decomposition Architecture: เจ็ดหน้าที่ในหกกลุ่ม</strong> — HYPOTHESIS: AnswerCapture→Decomposer→PreservationAuditor→ContextBinder/RedundancySelector→ReferenceVerifier→Report/Memory โดยกลุ่ม 4 รวมสองหน้าที่ ReferenceVerifier รับหลักฐานต่างหาก; trace และ memory ไม่ใช่ hidden thoughts หรือการฝึก weights · <a href="https://aclanthology.org/2023.emnlp-main.741/">แหล่งแนวคิด 1</a> · <a href="https://aclanthology.org/2024.starsem-1.13/">แหล่งแนวคิด 2</a> · <a href="https://aclanthology.org/2025.emnlp-main.1205/">แหล่งแนวคิด 3</a> · <a href="https://aclanthology.org/2024.findings-acl.160/">แหล่งแนวคิด 4</a> · <a href="https://aclanthology.org/2025.findings-acl.1018/">แหล่งแนวคิด 5</a></figcaption></figure>
+
+
+
+<figure class="wp-block-table"><table><thead><tr><th scope="col">Module</th><th scope="col">Input → Output และ State</th><th scope="col">จุดตรวจ / Failure</th></tr></thead><tbody><tr><td>AnswerCapture</td><td>คำตอบเดิม → immutable snapshot, version, spans</td><td>ถ้าต้นฉบับถูกแก้แล้ว spans เก่าอาจชี้ข้อความคนละส่วน</td></tr><tr><td>Decomposer</td><td>snapshot → candidate claims และ mapping</td><td>อาจละข้อยาก เพิ่มข้อที่คุ้น หรือทำ qualifier หาย</td></tr><tr><td>PreservationAuditor</td><td>ต้นฉบับกับ candidates → preserved/introduced/ambiguous และช่องตกหล่น</td><td>มีหลักฐานภายนอกไม่ช่วยรับรองว่าข้อนั้นอยู่ในคำตอบเดิม</td></tr><tr><td>ContextBinder</td><td>สรรพนาม entity รุ่น เงื่อนไข → claim/context pair</td><td>การเติมภูมิหลังเพื่ออ่านรู้เรื่องอาจกลายเป็นข้อใหม่ที่ถูกนับซ้ำ</td></tr><tr><td>RedundancySelector</td><td>ข้อที่ audit แล้ว → ข้อเก็บ/ข้อซ้ำ พร้อมเหตุ</td><td>exact string หรือ fingerprint ไม่แทน semantic equivalence ในงานจริง</td></tr><tr><td>ReferenceVerifier</td><td>target claim, context และเอกสาร → source-relative status, evidence spans</td><td>ตรวจผลิตภัณฑ์หรือรุ่นผิดแม้ประโยคดูคล้ายกัน</td></tr><tr><td>Report + Memory</td><td>ผลสองชั้นและรายการที่หาย → report/claim ledger/version</td><td>ถ้ารวมสถานะเป็น “ผ่าน” ช่องเดียวจะซ่อน extraction error</td></tr></tbody></table></figure>
+
+
+
+<p class="wp-block-paragraph">ผังรวม ContextBinder กับ RedundancySelector เป็นหนึ่งกลุ่ม แต่ตารางแยกหน้าที่ชัด ควรเก็บข้อที่ถูกปฏิเสธหรือไม่แน่ชัดไว้ใน audit record พร้อมเหตุ ไม่ลบทิ้งจนตรวจย้อนหลังไม่ได้</p>
+
+
+
+<p class="wp-block-paragraph">Report + Memory ต้องเก็บข้อเดิมพร้อมสถานะและ provenance ใน audit record การรักษาข้อที่ขัดแหล่งหรือยังไม่ยืนยันไม่ได้อนุญาตให้เผยแพร่หรือใช้เป็น trusted fact รอบถัดไป การแก้ไข/อนุมัติต้องเป็น revisionและสถานะที่ตรวจใหม่</p>
+
+
+
+<p class="wp-block-paragraph">Ledger เป็น <strong>External Memory</strong> ข้อมูลที่นำมาอ่านเป็น <strong>Retrieved Context</strong> ใน <strong>Context Window</strong> การเขียนไฟล์/เปลี่ยนpromptไม่อัปเดต <strong>Model Weights</strong> การฝึกevaluatorต้องระบุtraining dataและประเมินแยก</p>
+
+
+
+<h2 class="wp-block-heading" id="hm-claims-section-8">Operational Flow: ตรวจต้นฉบับก่อนตรวจเอกสาร</h2>
+
+
+
+<p class="wp-block-paragraph">ขั้นแรก เก็บคำตอบต้นฉบับและขอบเขตงาน เช่นต้องแยกทุก assertion หรือเฉพาะข้อที่ตรวจสอบได้ อย่าใช้เอกสารภายนอกเขียนต้นฉบับใหม่ก่อน audit เพราะจะไม่เห็นข้อที่โมเดลกล่าวเกิน</p>
+
+
+
+<p class="wp-block-paragraph">ขั้นสอง สร้าง candidate พร้อม source spans และเก็บ entity/version/qualifiers ถ้าระบุต้นทางไม่ได้ให้ส่ง ambiguous หรือ introduced เพื่อทบทวน การมี JSON fields ครบไม่รับรองว่าค่าใน fields รักษาความหมาย</p>
+
+
+
+<p class="wp-block-paragraph">ขั้นสาม ตรวจทั้งข้อที่เพิ่มและข้อที่หาย ต้องดู original→candidate และ original coverage ด้วย ผล audit ไม่ควรตัดสินความจริง ถ้าคำตอบเดิมมีข้อผิด ให้เก็บข้อผิดนั้นตรง ๆ เพื่อส่งไปตรวจ</p>
+
+
+
+<p class="wp-block-paragraph">ขั้นสี่ เติมบริบทโดยแยก target กับ background พร้อม provenance ถ้า target/entity/qualifiersเปลี่ยนให้ตรวจเทียบต้นฉบับใหม่ บริบทจากแหล่งอื่นต้องมีtag ไม่ถูกนับเป็นข้อเดิมโดยเงียบ ๆ จากนั้นคัดข้อซ้ำพร้อมเก็บraw/rejectionlogและคำนวณ originalcoverageหลังคัดใหม่</p>
+
+
+
+<p class="wp-block-paragraph">ขั้นห้า ตรวจ target กับแหล่งที่ระบุ รวมรุ่น วันที่และ evidence spans แยก SUPPORTED, CONTRADICTED และยังไม่มีข้อมูล อย่าอ้างความจริงสากลจากผลเทียบชุดเอกสารที่จำกัด</p>
+
+
+
+<p class="wp-block-paragraph">ขั้นสุดท้าย รายงาน extraction กับ evidence แยกกัน ถ้าจะปรับคำตอบ ให้สร้าง revision ใหม่และ audit ใหม่ ไม่ใช้การลบข้อที่ไม่มีหลักฐานแทนการประเมินว่าคำตอบเดิมกล่าวอะไร Trace ของงานคือ source spans/คำสั่ง/ผลเครื่องมือ ไม่ใช่หลักฐานร่องรอยความคิดภายในโมเดล</p>
+
+
+
+<figure class="wp-block-image size-full"><a href="https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-claims-011-03-operational-flow.png?ssl=1"><img data-recalc-dims="1" data-attachment-id="1767" data-permalink="https://hybridmind.online/hm-claims-011-03-operational-flow/" data-orig-file="https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-claims-011-03-operational-flow.png?fit=1600%2C1120&amp;ssl=1" data-orig-size="1600,1120" data-comments-opened="1" data-image-title="SIMULATION: C8 มี Reference Support แต่ไม่รักษาต้นฉบับ" data-image-description="" data-image-caption="&lt;p&gt;C8 ไม่มี original span จึงไม่ผ่าน preservation แม้ R5 รองรับ DOCX ออนไลน์ ส่วน C4/C5 อยู่ใน original ต้องรักษาไว้พร้อม NOT_IN_REFERENCE/CONTRADICTED; การแก้คำตอบจริงเป็นขั้นต่างหาก&lt;/p&gt;
+" data-large-file="https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-claims-011-03-operational-flow.png?fit=1024%2C717&amp;ssl=1" src="https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-claims-011-03-operational-flow.png?resize=1600%2C1120&#038;ssl=1" alt="หกขั้นต้นฉบับ U1 U5 candidate C8 original entailment ไม่ผ่าน reference R5 support ผ่าน และรายงานการเพิ่มข้ออ้าง พร้อมคง C4 ที่ยังไม่พบหลักฐานและ C5 ที่ถูกโต้แย้ง" width="1600" height="1120" class="wp-image-1767" loading="lazy" decoding="async" srcset="https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-claims-011-03-operational-flow.png?w=1600&amp;ssl=1 1600w, https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-claims-011-03-operational-flow.png?resize=300%2C210&amp;ssl=1 300w, https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-claims-011-03-operational-flow.png?resize=1024%2C717&amp;ssl=1 1024w, https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-claims-011-03-operational-flow.png?resize=768%2C538&amp;ssl=1 768w, https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-claims-011-03-operational-flow.png?resize=1536%2C1075&amp;ssl=1 1536w" sizes="auto, (max-width: 1000px) 100vw, 1000px" /></a><figcaption><strong>SIMULATION: C8 มี Reference Support แต่ไม่รักษาต้นฉบับ</strong> — C8 ไม่มี original span จึงไม่ผ่าน preservation แม้ R5 รองรับ DOCX ออนไลน์ ส่วน C4/C5 อยู่ใน original ต้องรักษาไว้พร้อม NOT_IN_REFERENCE/CONTRADICTED; การแก้คำตอบจริงเป็นขั้นต่างหาก · <a href="https://aclanthology.org/2023.emnlp-main.741/">แหล่งแนวคิด 1</a> · <a href="https://aclanthology.org/2024.starsem-1.13/">แหล่งแนวคิด 2</a> · <a href="https://aclanthology.org/2025.emnlp-main.1205/">แหล่งแนวคิด 3</a> · <a href="https://aclanthology.org/2024.findings-acl.160/">แหล่งแนวคิด 4</a></figcaption></figure>
+
+
+
+<pre class="wp-block-code"><code># CONCEPTUAL pseudocode — ไม่ใช่โค้ด production ที่รันทดสอบแล้ว
+original = capture_answer_snapshot(answer)
+candidates = decompose_with_spans(original)
+audit = check_preservation_and_missing_units(original, candidates)
+if audit.mapping_unknown:
+    return review_request_with_original_and_candidates(audit)
+pairs = bind_target_and_minimal_context(candidates, original)
+bound_audit = reaudit_targets_and_context_provenance(original, pairs)
+if bound_audit.target_or_context_unresolved:
+    return review_request(bound_audit)
+selected, rejected = select_nonredundant_units_with_audit(pairs)
+selection_audit = check_original_coverage_after_selection(original, selected)
+evidence_results = verify_targets_against_versioned_references(selected)
+return report_separate_extraction_evidence_and_limits(
+    original, audit, bound_audit, selection_audit, selected, rejected,
+    evidence_results)</code></pre>
+
+
+
+<p class="wp-block-paragraph">originalคือsnapshot candidatesคือข้อเสนอ pairsแยกtarget/บริบท bound_auditตรวจหลังbinding selection_auditตรวจcoverageหลังคัด และevidence_resultsเทียบเอกสาร ฟังก์ชันเป็นข้อเสนอ ไม่รับรองsemantic auditที่รันจริง</p>
+
+
+
+<h2 class="wp-block-heading" id="hm-claims-section-9">Technical Comparison: หน่วยประโยค หน่วยเล็ก และหน่วยที่ผ่าน audit</h2>
+
+
+
+<figure class="wp-block-table"><table><thead><tr><th scope="col">แนวทาง</th><th scope="col">ประโยชน์</th><th scope="col">ความเสี่ยงที่ต้องตรวจ</th></tr></thead><tbody><tr><td>แบ่งระดับประโยคหรือ bundle</td><td>ผูกช่วงต้นฉบับง่าย เก็บบริบทใกล้เคียง</td><td>ประโยคเดียวอาจรวมข้อมีหลักฐานและไม่มีหลักฐาน ระบุผิดเฉพาะส่วนยาก</td></tr><tr><td>แยก atomic claims ด้วยโมเดล</td><td>ตรวจรายข้อและระบุตำแหน่งปัญหาได้ละเอียด</td><td>อาจเติมข้อ ละข้อ หรือสูญเงื่อนไข พร้อมเปลี่ยนจำนวนหน่วยในคะแนน</td></tr><tr><td>แยกพร้อม context binding และ preservation audit</td><td>แสดงต้นทาง target/บริบท และความครบแยกจากหลักฐาน</td><td>เพิ่มขั้น/ต้นทุนและมีความผิดพลาดของผู้ตรวจ ไม่รับรอง entailment ทุกภาษา</td></tr></tbody></table></figure>
+
+
+
+<figure class="wp-block-image size-full"><a href="https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-claims-011-04-comparison.png?ssl=1"><img data-recalc-dims="1" data-attachment-id="1768" data-permalink="https://hybridmind.online/hm-claims-011-04-comparison/" data-orig-file="https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-claims-011-04-comparison.png?fit=1800%2C1190&amp;ssl=1" data-orig-size="1800,1190" data-comments-opened="1" data-image-title="Sentence Bundle เทียบ Naive Atomic Split และ Audited Contextual Split" data-image-description="" data-image-caption="&lt;p&gt;ANALYSIS: Sentence bundle เก็บบริบทแต่ไม่ atomic; naive split ทำให้ตรวจทีละข้อสะดวกแต่เสี่ยง scope/entity/addition; audited split เพิ่มการผูกบริบทและตรวจแยก support ทุกแนวทางมีต้นทุนและ judge limits โดยไม่จัดอันดับ paper&lt;/p&gt;
+" data-large-file="https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-claims-011-04-comparison.png?fit=1024%2C677&amp;ssl=1" src="https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-claims-011-04-comparison.png?resize=1800%2C1190&#038;ssl=1" alt="สามคอลัมน์ Sentence Bundle Naive Atomic Split และ Audited Contextual Split เปรียบเทียบข้อดีจุดตรวจ failure และต้นทุน พร้อมเตือน DecompScore ดั้งเดิมเป็นจำนวนเฉลี่ยไม่ใช่เปอร์เซ็นต์ความจริง" width="1800" height="1190" class="wp-image-1768" loading="lazy" decoding="async" srcset="https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-claims-011-04-comparison.png?w=1800&amp;ssl=1 1800w, https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-claims-011-04-comparison.png?resize=300%2C198&amp;ssl=1 300w, https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-claims-011-04-comparison.png?resize=1024%2C677&amp;ssl=1 1024w, https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-claims-011-04-comparison.png?resize=768%2C508&amp;ssl=1 768w, https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-claims-011-04-comparison.png?resize=1536%2C1015&amp;ssl=1 1536w" sizes="auto, (max-width: 1000px) 100vw, 1000px" /></a><figcaption><strong>Sentence Bundle เทียบ Naive Atomic Split และ Audited Contextual Split</strong> — ANALYSIS: Sentence bundle เก็บบริบทแต่ไม่ atomic; naive split ทำให้ตรวจทีละข้อสะดวกแต่เสี่ยง scope/entity/addition; audited split เพิ่มการผูกบริบทและตรวจแยก support ทุกแนวทางมีต้นทุนและ judge limits โดยไม่จัดอันดับ paper · <a href="https://aclanthology.org/2023.emnlp-main.741/">แหล่งแนวคิด 1</a> · <a href="https://aclanthology.org/2024.starsem-1.13/">แหล่งแนวคิด 2</a> · <a href="https://aclanthology.org/2025.emnlp-main.1205/">แหล่งแนวคิด 3</a> · <a href="https://aclanthology.org/2024.findings-acl.160/">แหล่งแนวคิด 4</a> · <a href="https://aclanthology.org/2025.findings-acl.1018/">แหล่งแนวคิด 5</a></figcaption></figure>
+
+
+
+<p class="wp-block-paragraph">ตารางเป็น <strong>ANALYSIS</strong> ไม่ใช่ benchmark จัดอันดับ การทำหน่วยเล็กมากไม่ได้ดีเสมอเมื่อขาดบริบท ส่วนการเก็บหน่วยใหญ่ก็ไม่ได้ผิดเสมอ แต่ให้ความละเอียดในการวินิจฉัยต่างกัน ต้องเลือกพร้อมเกณฑ์ completeness และงบของงาน</p>
+
+
+
+<p class="wp-block-paragraph">งาน <strong>DnDScore</strong> เสนอการสร้างคู่ subclaim กับข้อความที่เติมบริบท และให้ verifier ตรวจ target แยกจากพื้นหลัง เพื่อลดปัญหาการตรวจข้อมูลร่วมซ้ำ การเติมบริบทเองก็อาจผิด งานศึกษา English biographies/LFQA กับแหล่งคงที่ ไม่ยืนยันผลกับทุกภาษา <a href="https://aclanthology.org/2025.emnlp-main.1205/">DnDScore, EMNLP 2025</a></p>
+
+
+
+<p class="wp-block-paragraph">DecompScoreดั้งเดิมเป็นจำนวนเฉลี่ย แต่ตารางDnDScoreรายงานเป็นเปอร์เซ็นต์ ความสัมพันธ์ของ normalization ยัง <strong>UNKNOWN</strong> จึงไม่รวมสเกลหรือใช้สัดส่วนLabแทนต้นฉบับ</p>
+
+
+
+<h2 class="wp-block-heading" id="hm-claims-section-10">Entity และหน่วยซ้ำ: ทุกข้อผ่าน แต่ข้อความรวมยังทำให้เข้าใจผิดได้</h2>
+
+
+
+<p class="wp-block-paragraph">งาน <strong>D-FActScore</strong> ศึกษากรณีคนชื่อเดียวกันที่ข้อเท็จจริงรายข้อรองรับได้จากคนละคน แต่ข้อความรวมทำให้ผู้อ่านคิดว่าเป็นคนเดียว จึงจัดกลุ่มตามบุคคลที่ผู้อ่านเข้าใจและจำกัดแหล่งตรวจภายในกลุ่ม ข้อนี้เตือนให้ตรวจการผูก entity ระดับข้อความด้วย <a href="https://aclanthology.org/2024.findings-acl.160/">Merging Facts, Crafting Fallacies, Findings ACL 2024</a></p>
+
+
+
+<p class="wp-block-paragraph">งาน <strong>Core</strong> เพิ่มการคัดข้อระหว่าง decomposition กับ verification โดยพิจารณาการรองรับจากต้นฉบับ redundancy แบบ entailment และน้ำหนัก informativeness ใน constrained selection เพื่อรับมือข้อซ้ำหรือข้อความง่ายที่ดันคะแนน การทำนี้มากกว่าลบ string ซ้ำ และไม่รับรองเก็บทุกข้อเดิมครบ <a href="https://aclanthology.org/2025.findings-acl.1018/">Core, Findings ACL 2025</a></p>
+
+
+
+<p class="wp-block-paragraph">ใน Lab การรู้ว่า C1/C6 เป็นหน่วยเดียวกันเป็น labels ที่กำหนดไว้ ไม่รัน entailment model หรือ MILP ของ Core ในระบบจริงควรเก็บทั้งสิ่งที่เลือกและไม่เลือก เพื่อให้ตรวจได้ว่าหน่วยสำคัญหายระหว่างคัดหรือไม่</p>
+
+
+
+<h2 class="wp-block-heading" id="hm-claims-section-11">เกมจำลอง: รักษาข้อที่ยังไม่มีหลักฐานให้ครบด้วย</h2>
+
+
+
+<p class="wp-block-paragraph">เกมมีสี่โจทย์เริ่มต้น: เลือกแต่ข้อที่รองรับ ทำ qualifier หาย ผสมผลิตภัณฑ์ และใช้สำเนาแทนข้อที่ยังขาด คุณเลือกได้ไม่เกิน7 raw candidate slots แต่ละข้อรวมสำเนาใช้หนึ่งช่อง การยกเลิกคืนช่อง ส่วนการระบุสถานะหลักฐานไม่ใช้ช่องเพิ่ม ตัวเลขนี้ไม่ใช่ tokens เวลา ค่า API หรืองบค้นจริง</p>
+
+
+
+<section id="hm-claims-game" aria-label="เกมเก็บข้ออ้างต้นฉบับและทำเครื่องหมายหลักฐาน"><style>#hm-claims-game{box-sizing:border-box;background:#07162d;color:#eef8ff;border:1px solid #2567ae;border-radius:18px;padding:clamp(16px,3vw,28px);margin:32px 0;font-family:system-ui,sans-serif;line-height:1.65;overflow-wrap:anywhere}#hm-claims-game *{box-sizing:border-box}#hm-claims-game h2,#hm-claims-game h3{color:#eef8ff!important;line-height:1.4;margin:16px 0 12px}#hm-claims-game h2{font-size:clamp(23px,3vw,32px)}#hm-claims-game h3{font-size:19px}#hm-claims-game p,#hm-claims-game li{color:#d5e7fa}#hm-claims-game .hm-top{display:flex;gap:12px;align-items:center;flex-wrap:wrap;font-size:13px;color:#a9cdea}#hm-claims-game .hm-badge{display:inline-block;background:#123d68;color:#82efff;border:1px solid #3daee7;border-radius:99px;padding:4px 12px;font-weight:800}#hm-claims-game .hm-inputs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin:18px 0}#hm-claims-game label{display:block;font-weight:600}#hm-claims-game select{display:block;width:100%;background:#102c4d;color:#eef8ff;min-height:46px;padding:9px;border:1px solid #4a82b2;border-radius:8px;font:inherit;font-size:15px}#hm-claims-game input[type=range]{width:100%;min-height:44px;accent-color:#40d9f2}#hm-claims-game output{font-size:20px;color:#77e5ff}#hm-claims-game .hm-rows,#hm-claims-game .hm-card-grid,#hm-claims-game .hm-quiz{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}#hm-claims-game article,#hm-claims-game .hm-memory{background:#0e2642;border:1px solid #326186;border-radius:12px;padding:14px;min-width:0}#hm-claims-game .hm-memory p{margin:8px 0}#hm-claims-game .hm-score{font-size:20px;color:#7bedff!important;font-weight:750}#hm-claims-game ul,#hm-claims-game ol{padding-left:22px}#hm-claims-game li{margin:10px 0;font-size:14px}#hm-claims-game button{width:100%;min-height:46px;background:#164c80;border:1px solid #419ce2;border-radius:9px;color:#eef8ff;cursor:pointer;font:inherit;font-size:14px;padding:11px 12px;margin:5px 0;white-space:pre-line;text-align:left}#hm-claims-game .hm-card-grid button{background:#102b49;border-color:#315b82}#hm-claims-game button[aria-pressed=true]{background:#145365;border:2px solid #78edff}#hm-claims-game button:focus-visible,#hm-claims-game select:focus-visible,#hm-claims-game input:focus-visible{outline:3px solid #82efff;outline-offset:3px}#hm-claims-game button:disabled{opacity:.5;cursor:not-allowed}#hm-claims-game [hidden]{display:none!important}#hm-claims-game .hm-actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:16px 0}#hm-claims-game .hm-feedback,#hm-claims-game .hm-result{background:#123859;border-left:3px solid #42daed;border-radius:6px;padding:12px;min-height:44px}#hm-claims-game .hm-note{font-size:13px;color:#b5cede}#hm-claims-game details{border:1px solid #31587c;border-radius:8px;padding:12px;margin:16px 0}#hm-claims-game summary{cursor:pointer;color:#8de8ff;font-weight:700;min-height:28px}#hm-claims-game pre{white-space:pre-wrap;overflow-wrap:anywhere;font-size:12px;color:#d2e7f7}#hm-claims-game .hm-quiz label{margin:10px 0} @media(max-width:700px){#hm-claims-game .hm-inputs,#hm-claims-game .hm-rows,#hm-claims-game .hm-card-grid,#hm-claims-game .hm-quiz,#hm-claims-game .hm-actions{grid-template-columns:1fr}#hm-claims-game button{font-size:15px}}#hm-claims-game .hm-candidate{display:flex;gap:12px;align-items:flex-start;background:#102b49;border:1px solid #315b82;border-radius:10px;padding:12px;font-weight:400;min-width:0}#hm-claims-game .hm-candidate span{font-size:14px}#hm-claims-game input[type=checkbox]{width:24px;min-width:24px;height:44px;flex-shrink:0;accent-color:#36d9f4}#hm-claims-game .hm-original{border-left:3px solid #76eaff;background:#102e49;padding:14px}#hm-claims-game .hm-metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:16px 0}#hm-claims-game [data-support]{margin-top:8px} @media(max-width:700px){#hm-claims-game .hm-metrics{grid-template-columns:1fr}}</style>
+<div class="hm-top"><span class="hm-badge">SIMULATION GAME</span><span>Capacity7slots • Catalogที่กำหนดไว้</span></div><h2>เกม: เก็บต้นฉบับให้ครบ แม้บางข้ออ้างยังไม่ผ่านReference</h2><p>เลือกข้ออ้างatomicให้ครบ5หน่วย ไม่มีข้ออ้างใหม่ สำเนา หรือentity/qualifierผิด แล้วทำเครื่องหมายสถานะต่อRให้ถูก ต้องเก็บU4ที่ยังไม่พบในRและU5ที่ขัดกับRไว้ ไม่ลบทิ้งเพื่อไล่คะแนน100%</p>
+<div class="hm-inputs"><label>ชุดปัญหา (เปลี่ยนแล้วเริ่มใหม่)<select data-config="preset"><option value="supportedOnly">อย่าลบข้ออ้างที่ยังไม่มีหลักฐาน</option><option value="qualifierLost">คืนqualifierเฉพาะเดสก์ท็อป</option><option value="entityMixed">แยกentity/versionให้ตรง</option><option value="duplicateGaming">สำเนาไม่เติมข้ออ้างที่หาย</option></select></label><p class="hm-note">ถือcandidateได้พร้อมกันไม่เกิน7slots หนึ่งการ์ดใช้1slot ลบแล้วคืนslot การทำเครื่องหมายไม่ใช้slotเพิ่ม นี่ไม่ใช่token latencyเงินหรืองบจำนวนคลิก</p></div>
+<details><summary>อ่านต้นฉบับAและReferenceR1–R5</summary><p data-state="original"></p><ol data-state="references"></ol></details><p class="hm-score" data-state="capacity"></p><h3>Input: เพิ่ม/ลบcandidate claims</h3><div class="hm-card-grid" data-state="choices"></div>
+<h3>State: หน่วยต้นฉบับที่ยังอยู่</h3><p data-state="coverage"></p><p data-state="issues"></p><h3>Output: ทำเครื่องหมายต่อReferenceทุกclaimที่เลือก</h3><div class="hm-card-grid" data-state="annotations"></div>
+<p class="hm-feedback" data-state="feedback" aria-live="polite"></p><div class="hm-actions"><button type="button" data-action="grade">ตรวจdecompositionและสถานะReference</button><button type="button" data-action="reset">Reset —เริ่มชุดปัญหาเดิมใหม่</button></div><div class="hm-result" data-state="result" hidden aria-live="polite"></div>
+<details><summary>กติกาและร่องรอยที่ตรวจได้</summary><p>ชนะเมื่อoriginalunitsทั้ง5ยังอยู่ในclaimsที่Aรองรับและatomic ไม่มีduplicates/extra claims ไม่เกิน7slots และlabelsSUPPORTED/CONTRADICTED/NOT_IN_REFERENCEตรงcatalogทุกclaim External confirmed support3/5ก็ชนะได้ ไม่จำเป็นต้อง100% การแยกต้นฉบับกับการแก้คำตอบเป็นคนละขั้น</p><pre data-state="trace"></pre></details><p class="hm-note">ผลิตภัณฑ์ เอกสาร และassignmentsเป็นข้อมูลสมมติ ไม่ใช้NLI/LLM/parserจริง ไม่ยืนยันsource-worldtruth ไม่ใช่DecompScoreหรือbenchmarkจากpaper ไม่มีnetwork/training/persistence</p>
+<script>(function(){'use strict';const C=(function(){'use strict';
+const DATA={
+  "article": "011",
+  "type": "SIMULATION",
+  "fixture": "Atlas Lab / Nova Lab — fictional products and authored claim catalog",
+  "originalAnswer": "Atlas Lab รุ่น2.1 อ่านPDFแบบออฟไลน์ได้เฉพาะบนเดสก์ท็อป และ Atlas Lab รุ่น2.1 ส่งออกCSVได้เมื่อเชื่อมต่อเครือข่าย ส่วน Nova Lab รุ่น1.4 อ่านTXTได้ และ Nova Lab รุ่น1.4 แปลภาษาละตินได้ อีกทั้ง Atlas Lab รุ่น2.1 เก็บประวัติการอ่านไว้30วัน",
+  "originalUnits": [
+    {
+      "id": "U1",
+      "spanText": "Atlas Lab รุ่น2.1 อ่านPDFแบบออฟไลน์ได้เฉพาะบนเดสก์ท็อป",
+      "entity": "Atlas Lab",
+      "version": "2.1",
+      "predicate": "readPDF",
+      "qualifiers": [
+        "OFFLINE",
+        "DESKTOP_ONLY"
+      ],
+      "externalSupport": "SUPPORTED",
+      "referenceIds": [
+        "R1"
+      ],
+      "sourceSpan": {
+        "start": 0,
+        "end": 54,
+        "offsetUnit": "UTF16-code-units",
+        "endExclusive": true
+      }
+    },
+    {
+      "id": "U2",
+      "spanText": "Atlas Lab รุ่น2.1 ส่งออกCSVได้เมื่อเชื่อมต่อเครือข่าย",
+      "entity": "Atlas Lab",
+      "version": "2.1",
+      "predicate": "exportCSV",
+      "qualifiers": [
+        "ONLINE_REQUIRED"
+      ],
+      "externalSupport": "SUPPORTED",
+      "referenceIds": [
+        "R2"
+      ],
+      "sourceSpan": {
+        "start": 59,
+        "end": 112,
+        "offsetUnit": "UTF16-code-units",
+        "endExclusive": true
+      }
+    },
+    {
+      "id": "U3",
+      "spanText": "Nova Lab รุ่น1.4 อ่านTXTได้",
+      "entity": "Nova Lab",
+      "version": "1.4",
+      "predicate": "readTXT",
+      "qualifiers": [],
+      "externalSupport": "SUPPORTED",
+      "referenceIds": [
+        "R4"
+      ],
+      "sourceSpan": {
+        "start": 118,
+        "end": 145,
+        "offsetUnit": "UTF16-code-units",
+        "endExclusive": true
+      }
+    },
+    {
+      "id": "U4",
+      "spanText": "Nova Lab รุ่น1.4 แปลภาษาละตินได้",
+      "entity": "Nova Lab",
+      "version": "1.4",
+      "predicate": "translateLatin",
+      "qualifiers": [],
+      "externalSupport": "NOT_IN_REFERENCE",
+      "referenceIds": [],
+      "sourceSpan": {
+        "start": 150,
+        "end": 182,
+        "offsetUnit": "UTF16-code-units",
+        "endExclusive": true
+      }
+    },
+    {
+      "id": "U5",
+      "spanText": "Atlas Lab รุ่น2.1 เก็บประวัติการอ่านไว้30วัน",
+      "entity": "Atlas Lab",
+      "version": "2.1",
+      "predicate": "keepReadingHistory",
+      "qualifiers": [
+        "30_DAYS"
+      ],
+      "externalSupport": "CONTRADICTED",
+      "referenceIds": [
+        "R3"
+      ],
+      "sourceSpan": {
+        "start": 191,
+        "end": 235,
+        "offsetUnit": "UTF16-code-units",
+        "endExclusive": true
+      }
+    }
+  ],
+  "references": [
+    {
+      "id": "R1",
+      "text": "เอกสารสมมติ Atlas Lab รุ่น2.1: ตัวอ่านPDFออฟไลน์รองรับเฉพาะเดสก์ท็อป ไม่รองรับออฟไลน์บนอุปกรณ์อื่น"
+    },
+    {
+      "id": "R2",
+      "text": "เอกสารสมมติ Atlas Lab รุ่น2.1: ส่งออกCSVได้เมื่อเชื่อมต่อเครือข่าย"
+    },
+    {
+      "id": "R3",
+      "text": "เอกสารสมมติ Atlas Lab รุ่น2.1: ไม่เก็บประวัติการอ่านหลังปิดsession จึงไม่เก็บประวัติไว้30วัน"
+    },
+    {
+      "id": "R4",
+      "text": "เอกสารสมมติ Nova Lab รุ่น1.4: รองรับการอ่านTXT ไม่มีข้อความเรื่องการแปลภาษาละติน"
+    },
+    {
+      "id": "R5",
+      "text": "เอกสารสมมติ Atlas Lab รุ่น2.1: เปิดDOCXได้เมื่อออนไลน์ แต่คุณสมบัตินี้ไม่ได้กล่าวไว้ในคำตอบต้นฉบับ"
+    }
+  ],
+  "candidates": [
+    {
+      "id": "C1",
+      "text": "Atlas Lab รุ่น2.1 อ่านPDFออฟไลน์ได้เฉพาะบนเดสก์ท็อป",
+      "fingerprint": "U1-exact",
+      "preservedUnits": [
+        "U1"
+      ],
+      "sourceSpanUnits": [
+        "U1"
+      ],
+      "entailedByOriginal": true,
+      "atomic": true,
+      "issues": [],
+      "externalSupport": "SUPPORTED",
+      "referenceIds": [
+        "R1"
+      ],
+      "sourceSpans": [
+        {
+          "unit": "U1",
+          "start": 0,
+          "end": 54,
+          "offsetUnit": "UTF16-code-units",
+          "endExclusive": true,
+          "text": "Atlas Lab รุ่น2.1 อ่านPDFแบบออฟไลน์ได้เฉพาะบนเดสก์ท็อป"
+        }
+      ]
+    },
+    {
+      "id": "C2",
+      "text": "Atlas Lab รุ่น2.1 ส่งออกCSVได้เมื่อเชื่อมต่อเครือข่าย",
+      "fingerprint": "U2-exact",
+      "preservedUnits": [
+        "U2"
+      ],
+      "sourceSpanUnits": [
+        "U2"
+      ],
+      "entailedByOriginal": true,
+      "atomic": true,
+      "issues": [],
+      "externalSupport": "SUPPORTED",
+      "referenceIds": [
+        "R2"
+      ],
+      "sourceSpans": [
+        {
+          "unit": "U2",
+          "start": 59,
+          "end": 112,
+          "offsetUnit": "UTF16-code-units",
+          "endExclusive": true,
+          "text": "Atlas Lab รุ่น2.1 ส่งออกCSVได้เมื่อเชื่อมต่อเครือข่าย"
+        }
+      ]
+    },
+    {
+      "id": "C3",
+      "text": "Nova Lab รุ่น1.4 อ่านTXTได้",
+      "fingerprint": "U3-exact",
+      "preservedUnits": [
+        "U3"
+      ],
+      "sourceSpanUnits": [
+        "U3"
+      ],
+      "entailedByOriginal": true,
+      "atomic": true,
+      "issues": [],
+      "externalSupport": "SUPPORTED",
+      "referenceIds": [
+        "R4"
+      ],
+      "sourceSpans": [
+        {
+          "unit": "U3",
+          "start": 118,
+          "end": 145,
+          "offsetUnit": "UTF16-code-units",
+          "endExclusive": true,
+          "text": "Nova Lab รุ่น1.4 อ่านTXTได้"
+        }
+      ]
+    },
+    {
+      "id": "C4",
+      "text": "Nova Lab รุ่น1.4 แปลภาษาละตินได้",
+      "fingerprint": "U4-exact",
+      "preservedUnits": [
+        "U4"
+      ],
+      "sourceSpanUnits": [
+        "U4"
+      ],
+      "entailedByOriginal": true,
+      "atomic": true,
+      "issues": [],
+      "externalSupport": "NOT_IN_REFERENCE",
+      "referenceIds": [],
+      "sourceSpans": [
+        {
+          "unit": "U4",
+          "start": 150,
+          "end": 182,
+          "offsetUnit": "UTF16-code-units",
+          "endExclusive": true,
+          "text": "Nova Lab รุ่น1.4 แปลภาษาละตินได้"
+        }
+      ]
+    },
+    {
+      "id": "C5",
+      "text": "Atlas Lab รุ่น2.1 เก็บประวัติการอ่านไว้30วัน",
+      "fingerprint": "U5-exact",
+      "preservedUnits": [
+        "U5"
+      ],
+      "sourceSpanUnits": [
+        "U5"
+      ],
+      "entailedByOriginal": true,
+      "atomic": true,
+      "issues": [],
+      "externalSupport": "CONTRADICTED",
+      "referenceIds": [
+        "R3"
+      ],
+      "sourceSpans": [
+        {
+          "unit": "U5",
+          "start": 191,
+          "end": 235,
+          "offsetUnit": "UTF16-code-units",
+          "endExclusive": true,
+          "text": "Atlas Lab รุ่น2.1 เก็บประวัติการอ่านไว้30วัน"
+        }
+      ]
+    },
+    {
+      "id": "C6",
+      "text": "เฉพาะเดสก์ท็อปเท่านั้นที่ Atlas Lab รุ่น2.1 อ่านPDFแบบออฟไลน์ได้",
+      "fingerprint": "U1-exact",
+      "preservedUnits": [
+        "U1"
+      ],
+      "sourceSpanUnits": [
+        "U1"
+      ],
+      "entailedByOriginal": true,
+      "atomic": true,
+      "issues": [
+        "DUPLICATE_OF_C1_WHEN_BOTH_SELECTED"
+      ],
+      "externalSupport": "SUPPORTED",
+      "referenceIds": [
+        "R1"
+      ],
+      "sourceSpans": [
+        {
+          "unit": "U1",
+          "start": 0,
+          "end": 54,
+          "offsetUnit": "UTF16-code-units",
+          "endExclusive": true,
+          "text": "Atlas Lab รุ่น2.1 อ่านPDFแบบออฟไลน์ได้เฉพาะบนเดสก์ท็อป"
+        }
+      ]
+    },
+    {
+      "id": "C7",
+      "text": "Atlas Lab รุ่น2.1 อ่านPDFออฟไลน์ได้บนทุกอุปกรณ์",
+      "fingerprint": "U1-scope-broadened",
+      "preservedUnits": [],
+      "sourceSpanUnits": [
+        "U1"
+      ],
+      "entailedByOriginal": false,
+      "atomic": true,
+      "issues": [
+        "DESKTOP_ONLY_QUALIFIER_LOST",
+        "NEW_UNIVERSAL_SCOPE"
+      ],
+      "externalSupport": "CONTRADICTED",
+      "referenceIds": [
+        "R1"
+      ],
+      "sourceSpans": [
+        {
+          "unit": "U1",
+          "start": 0,
+          "end": 54,
+          "offsetUnit": "UTF16-code-units",
+          "endExclusive": true,
+          "text": "Atlas Lab รุ่น2.1 อ่านPDFแบบออฟไลน์ได้เฉพาะบนเดสก์ท็อป"
+        }
+      ]
+    },
+    {
+      "id": "C8",
+      "text": "Atlas Lab รุ่น2.1 เปิดDOCXได้เมื่อออนไลน์",
+      "fingerprint": "novel-DOCX",
+      "preservedUnits": [],
+      "sourceSpanUnits": [],
+      "entailedByOriginal": false,
+      "atomic": true,
+      "issues": [
+        "NOVEL_CLAIM_SUPPORTED_ONLY_BY_REFERENCE"
+      ],
+      "externalSupport": "SUPPORTED",
+      "referenceIds": [
+        "R5"
+      ],
+      "sourceSpans": []
+    },
+    {
+      "id": "C9",
+      "text": "Atlas Lab รุ่น2.1 อ่านTXTได้",
+      "fingerprint": "U3-entity-mixed",
+      "preservedUnits": [],
+      "sourceSpanUnits": [
+        "U3"
+      ],
+      "entailedByOriginal": false,
+      "atomic": true,
+      "issues": [
+        "ENTITY_VERSION_BINDING_MIX"
+      ],
+      "externalSupport": "NOT_IN_REFERENCE",
+      "referenceIds": [],
+      "sourceSpans": [
+        {
+          "unit": "U3",
+          "start": 118,
+          "end": 145,
+          "offsetUnit": "UTF16-code-units",
+          "endExclusive": true,
+          "text": "Nova Lab รุ่น1.4 อ่านTXTได้"
+        }
+      ]
+    },
+    {
+      "id": "C10",
+      "text": "Nova Lab รุ่น2.1 แปลภาษาละตินได้",
+      "fingerprint": "U4-version-changed",
+      "preservedUnits": [],
+      "sourceSpanUnits": [
+        "U4"
+      ],
+      "entailedByOriginal": false,
+      "atomic": true,
+      "issues": [
+        "VERSION_CHANGED"
+      ],
+      "externalSupport": "NOT_IN_REFERENCE",
+      "referenceIds": [],
+      "sourceSpans": [
+        {
+          "unit": "U4",
+          "start": 150,
+          "end": 182,
+          "offsetUnit": "UTF16-code-units",
+          "endExclusive": true,
+          "text": "Nova Lab รุ่น1.4 แปลภาษาละตินได้"
+        }
+      ]
+    },
+    {
+      "id": "C11",
+      "text": "Atlas Lab รุ่น2.1 อ่านPDFออฟไลน์เฉพาะเดสก์ท็อป และ Nova Lab รุ่น1.4 อ่านTXTได้",
+      "fingerprint": "compound-U1-U3",
+      "preservedUnits": [
+        "U1",
+        "U3"
+      ],
+      "sourceSpanUnits": [
+        "U1",
+        "U3"
+      ],
+      "entailedByOriginal": true,
+      "atomic": false,
+      "issues": [
+        "COMPOUND_NOT_ATOMIC"
+      ],
+      "externalSupport": "SUPPORTED",
+      "referenceIds": [
+        "R1",
+        "R4"
+      ],
+      "sourceSpans": [
+        {
+          "unit": "U1",
+          "start": 0,
+          "end": 54,
+          "offsetUnit": "UTF16-code-units",
+          "endExclusive": true,
+          "text": "Atlas Lab รุ่น2.1 อ่านPDFแบบออฟไลน์ได้เฉพาะบนเดสก์ท็อป"
+        },
+        {
+          "unit": "U3",
+          "start": 118,
+          "end": 145,
+          "offsetUnit": "UTF16-code-units",
+          "endExclusive": true,
+          "text": "Nova Lab รุ่น1.4 อ่านTXTได้"
+        }
+      ]
+    }
+  ],
+  "catalogSemantics": "All original-entailment, exactentity/version/qualifier preservation and external-support labels are authored for this finite fixture. No natural-language parser/NLI/LLM is executed. Source spans will storeUTF16start/endexclusive plusquoted spanText; they show intended source anchoring, not automaticsemantic entailmentproof.",
+  "explorer": {
+    "id": "hm-claims-explorer",
+    "strategies": {
+      "faithful": [
+        "C1",
+        "C2",
+        "C3",
+        "C4",
+        "C5"
+      ],
+      "supportedOnly": [
+        "C1",
+        "C2",
+        "C3"
+      ],
+      "addReferencedNovel": [
+        "C1",
+        "C2",
+        "C3",
+        "C4",
+        "C5",
+        "C8"
+      ],
+      "duplicateGaming": [
+        "C1",
+        "C2",
+        "C3",
+        "C4",
+        "C5",
+        "C6"
+      ],
+      "scopeLost": [
+        "C7",
+        "C2",
+        "C3",
+        "C4",
+        "C5"
+      ],
+      "entityMixed": [
+        "C1",
+        "C2",
+        "C9",
+        "C4",
+        "C5"
+      ],
+      "compound": [
+        "C11",
+        "C2",
+        "C4",
+        "C5"
+      ],
+      "empty": []
+    },
+    "initialStrategy": "faithful",
+    "twoChecks": "Originalanswer→candidatepreservation is distinctfrom references→candidateexternalSupport. A faithful decomposition must retain originalcontradicted/unverifiedclaims andmarktheir externalstatus ratherthan removeorrepairthem atthisstage.",
+    "metrics": {
+      "originalPreservation": "Unique entailed candidates / unique selectednormalizedclaims",
+      "originalCoverage": "Union of preservedoriginalunitIDs fromentailedcandidates /5 originalunits",
+      "externalConfirmedSupport": "Unique SUPPORTED candidates /unique selectedclaims, with CONTRADICTED/NOT_IN_REFERENCE counts separately. NOT_IN_REFERENCE isnot false.",
+      "externalRawRate": "Raw SUPPORTED candidate records / rawselectedrecords; shownseparately toexposeduplicate inflation",
+      "empty": "When denominatorzero, preservation/support ratesNA, not100%; fixedoriginalcoverage still0/5."
+    },
+    "normalization": "C1/C6 shareauthoredfingerprint; duplicate wording gets no extrauniqueclaim/coverage credit. CompoundC11 preserves U1/U3 butfails atomicity independently.",
+    "sourceWorldTruth": "UNKNOWN; referencesarefictional, statusesonlywithinthisfixture"
+  },
+  "game": {
+    "id": "hm-claims-game",
+    "capacity": 7,
+    "capacityMeaning": "At most7 rawcandidate slots simultaneously selected; eachcandidate costs1 slot includingduplicate. This isnot token budget, time, money or actualmodelcapacity. Toggling removesreturns slot; annotationsconsume no extra slots.",
+    "presets": {
+      "supportedOnly": {
+        "seed": [
+          "C1",
+          "C2",
+          "C3"
+        ],
+        "label": "อย่าลบข้ออ้างที่ยังไม่มีหลักฐาน"
+      },
+      "qualifierLost": {
+        "seed": [
+          "C7",
+          "C2",
+          "C3",
+          "C4",
+          "C5"
+        ],
+        "label": "คืนqualifierเฉพาะเดสก์ท็อป"
+      },
+      "entityMixed": {
+        "seed": [
+          "C1",
+          "C2",
+          "C9",
+          "C4",
+          "C5"
+        ],
+        "label": "แยกentity/versionให้ตรง"
+      },
+      "duplicateGaming": {
+        "seed": [
+          "C1",
+          "C2",
+          "C3",
+          "C6"
+        ],
+        "label": "สำเนาไม่เติมข้ออ้างที่หาย"
+      }
+    },
+    "goal": "Coverall5 originalunits withonlyentailedatomicclaims, no duplicate ornovel/qualifier/entity/versionerror, within7slots. RetainU4/U5 andcorrectlyannotateNOT_IN_REFERENCE/CONTRADICTED whileU1–U3 markedSUPPORTED; externalconfirmed-support neednot100%foradecompositionwin.",
+    "selectors": "data-config preset; data-candidate C1–C11; data-support C1–C11; data-action grade|reset",
+    "grade": "Endsroundonce whenallselectedclaimsupportannotations present. Emptyselection cannotwin. Retention/fidelity/coverage/atomicity/duplication/annotations evaluatedseparately.",
+    "reset": true
+  },
+  "rootHooks": "hm-claims-explorer andhm-claims-game each expose hmSnapshot()deepcopy",
+  "scientificLimits": [
+    "Authored finitecatalog labels, notactualsemanticverifier",
+    "Faithfulextractiondoesnot implysourceworldtruth",
+    "Supported-referenceclaimC8stillnotentailedbyoriginal andcannotbeintroduced",
+    "Unknownsupportisnotcontradiction",
+    "Ratiosarenamedtoy-preservation/coverage/external-confirmed-support, notactualDecompScore orpaperbenchmark",
+    "No network/LLM/parser/training/weights/persistence"
+  ]
+};
+const clone=v=>JSON.parse(JSON.stringify(v));
+const unique=v=>Array.from(new Set(v));
+function candidate(id){return DATA.candidates.find(c=>c.id===id)||null;}
+function fraction(n,d){return {numerator:n,denominator:d,status:d===0?'NA':'KNOWN',value:d===0?null:n/d};}
+function inspect(selected=DATA.explorer.strategies.faithful){const records=selected.map(candidate).filter(Boolean),groups=[];for(const c of records){let g=groups.find(g=>g.fingerprint===c.fingerprint);if(!g){g={fingerprint:c.fingerprint,representative:clone(c),candidateIds:[]};groups.push(g);}g.candidateIds.push(c.id);}const claims=groups.map(g=>g.representative),entailed=claims.filter(c=>c.entailedByOriginal),covered=unique(entailed.flatMap(c=>c.preservedUnits)),required=DATA.originalUnits.map(u=>u.id),missing=required.filter(id=>!covered.includes(id)),supportCounts={SUPPORTED:0,CONTRADICTED:0,NOT_IN_REFERENCE:0};claims.forEach(c=>supportCounts[c.externalSupport]+=1);const duplicates=records.length-groups.length,unfaithful=claims.filter(c=>!c.entailedByOriginal),compound=claims.filter(c=>!c.atomic),complete=[missing.length===0,unfaithful.length===0,compound.length===0,duplicates===0,records.length!==0].every(Boolean);return {selected:clone(selected),records:clone(records),groups,rawCount:records.length,uniqueCount:claims.length,duplicates,unknownIds:selected.filter(id=>!candidate(id)),coveredUnits:covered,missingUnits:missing,unfaithful:clone(unfaithful),compound:clone(compound),supportCounts,metrics:{originalPreservation:fraction(entailed.length,claims.length),originalCoverage:fraction(covered.filter(id=>required.includes(id)).length,required.length),externalConfirmedSupport:fraction(supportCounts.SUPPORTED,claims.length),externalRawSupport:fraction(records.filter(c=>c.externalSupport==='SUPPORTED').length,records.length),atomicity:fraction(claims.filter(c=>c.atomic).length,claims.length)},completeFaithfulAtomicDecomposition:complete,sourceWorldTruth:'UNKNOWN',semanticVerifier:'AUTHORED_CATALOG_NOT_NLI'};}
+function makeExplorer(strategy='faithful'){if(!DATA.explorer.strategies[strategy])throw Error('unknown strategy');return {strategy,selected:clone(DATA.explorer.strategies[strategy])};}
+function toggle(s,id){if(!candidate(id))return {ok:false,reason:'UNKNOWN_ID'};s.selected=s.selected.includes(id)?s.selected.filter(x=>x!==id):s.selected.concat(id);s.strategy='custom';return {ok:true};}
+function makeGame(preset='supportedOnly'){const p=DATA.game.presets[preset];if(!p)throw Error('unknown preset');return {preset,capacity:DATA.game.capacity,selected:clone(p.seed),annotations:{},ended:false,result:null,trace:[],feedback:'เก็บข้ออ้างต้นฉบับให้ครบ แล้วทำเครื่องหมายสถานะต่อReferenceR โดยไม่ลบข้ออ้างที่ตรวจยาก'};}
+function gameToggle(s,id){if(s.ended)return {ok:false,reason:'ENDED'};if(!candidate(id))return {ok:false,reason:'UNKNOWN_ID'};const present=s.selected.includes(id);if([!present,s.selected.length>=s.capacity].every(Boolean)){s.feedback='ครบ7slotsแล้ว — รายการเดิมไม่เปลี่ยน ลบรายการซ้ำหรือข้ออ้างใหม่ก่อน';return {ok:false,reason:'OVER_CAPACITY'};}s.selected=present?s.selected.filter(x=>x!==id):s.selected.concat(id);delete s.annotations[id];s.trace.push({action:present?'REMOVE':'ADD',id,slots:s.selected.length});s.feedback=(present?'ลบ ':'เพิ่ม ')+id+' • ต้นฉบับและReferenceเป็นคนละการตรวจ';return {ok:true};}
+function annotate(s,id,status){if(s.ended)return {ok:false,reason:'ENDED'};if(!s.selected.includes(id)||!['SUPPORTED','CONTRADICTED','NOT_IN_REFERENCE'].includes(status))return {ok:false,reason:'INVALID_ANNOTATION'};s.annotations[id]=status;return {ok:true};}
+function gameView(s){return {...clone(s),remaining:s.capacity-s.selected.length,evaluation:inspect(s.selected)};}
+function grade(s){if(s.ended)return {ok:false,reason:'ENDED'};if(!s.selected.length)return {ok:false,reason:'EMPTY_SELECTION'};if(!s.selected.every(id=>Boolean(s.annotations[id])))return {ok:false,reason:'ANNOTATE_ALL'};const v=inspect(s.selected),annotations=s.selected.map(id=>({id,expected:candidate(id).externalSupport,actual:s.annotations[id],correct:s.annotations[id]===candidate(id).externalSupport})),annotationsCorrect=annotations.every(a=>a.correct),allOriginalUnits=v.missingUnits.length===0,onlyEntailed=v.unfaithful.length===0,allAtomic=v.compound.length===0,noDuplicates=v.duplicates===0,withinCapacity=s.capacity>=s.selected.length,hardClaimsRetained=['U4','U5'].every(id=>v.coveredUnits.includes(id)),goal=[allOriginalUnits,onlyEntailed,allAtomic,noDuplicates,withinCapacity,hardClaimsRetained,annotationsCorrect].every(Boolean);s.result={goal,allOriginalUnits,onlyEntailed,allAtomic,noDuplicates,withinCapacity,hardClaimsRetained,annotationsCorrect,annotations,sourceConfirmed:v.metrics.externalConfirmedSupport,originalCoverage:v.metrics.originalCoverage};s.ended=true;s.feedback=goal?'ชนะ — แยกต้นฉบับครบและทำเครื่องหมายข้ออ้างที่ไม่ยืนยัน/ขัดกับRโดยไม่ลบทิ้ง':'ยังไม่สำเร็จ — ตรวจข้ออ้างที่หาย ข้ออ้างใหม่ qualifier/entity/atomicity สำเนาและสถานะReference';return {ok:true,result:clone(s.result)};}
+return {DATA,clone,unique,candidate,fraction,inspect,makeExplorer,toggle,makeGame,gameToggle,annotate,gameView,grade};
+})();const root=document.getElementById('hm-claims-game');if(!root)return;const node=n=>root.querySelector('[data-state="'+n+'"]'),button=n=>root.querySelector('[data-action="'+n+'"]'),config=root.querySelector('[data-config="preset"]');let state;node('original').textContent=C.DATA.originalAnswer;C.DATA.references.forEach(r=>{const li=document.createElement('li');li.textContent=r.id+' • '+r.text;node('references').append(li);});C.DATA.candidates.forEach(c=>{const b=document.createElement('button');b.type='button';b.setAttribute('data-candidate',c.id);b.setAttribute('aria-pressed','false');b.textContent=c.id+' • 1slot\n'+c.text;b.addEventListener('click',()=>{C.gameToggle(state,c.id);render();});node('choices').append(b);});function reset(){state=C.makeGame(config.value);render();}function render(){const v=C.gameView(state),e=v.evaluation;node('capacity').textContent='ใช้ '+e.rawCount+' / '+v.capacity+'slots • เหลือ '+v.remaining+' • Unique '+e.uniqueCount+' • สำเนา '+e.duplicates;node('coverage').textContent='เก็บ '+e.coveredUnits.join(', ')+' • หาย '+(e.missingUnits.join(', ')||'ไม่มี')+' • External confirmed support '+(e.metrics.externalConfirmedSupport.status==='NA'?'NA':e.metrics.externalConfirmedSupport.numerator+'/'+e.metrics.externalConfirmedSupport.denominator);node('issues').textContent='Aไม่รองรับ: '+(e.unfaithful.map(c=>c.id).join(', ')||'ไม่มี')+' • ไม่atomic: '+(e.compound.map(c=>c.id).join(', ')||'ไม่มี');root.querySelectorAll('[data-candidate]').forEach(b=>{b.setAttribute('aria-pressed',String(v.selected.includes(b.getAttribute('data-candidate'))));b.disabled=v.ended;});config.disabled=v.ended?false:v.trace.length!==0;node('annotations').replaceChildren();v.selected.forEach(id=>{const c=C.candidate(id),a=document.createElement('article'),h=document.createElement('h3'),l=document.createElement('label'),s=document.createElement('select');h.textContent=id+' • '+c.text;l.textContent='R→Claim status';s.setAttribute('data-support',id);[['','เลือกสถานะ'],['SUPPORTED','SUPPORTED —Rรองรับ'],['CONTRADICTED','CONTRADICTED —ขัดกับR'],['NOT_IN_REFERENCE','NOT_IN_REFERENCE —ยังไม่พบในRชุดนี้']].forEach(pair=>{const o=document.createElement('option');o.value=pair[0];o.textContent=pair[1];s.append(o);});s.value=v.annotations[id]||'';s.disabled=v.ended;s.addEventListener('change',()=>{C.annotate(state,id,s.value);render();});l.append(s);a.append(h,l);node('annotations').append(a);});button('grade').disabled=v.ended;node('feedback').textContent=v.feedback;node('result').hidden=!v.result;node('result').replaceChildren();if(v.result){const h=document.createElement('h3');h.textContent=v.result.goal?'ชนะ —รักษาAและทำเครื่องหมายRครบ':'ยังไม่สำเร็จ';node('result').append(h);[['allOriginalUnits','Original coverage'],['onlyEntailed','A→Claims'],['allAtomic','Atomicity'],['noDuplicates','ไม่มีสำเนา'],['hardClaimsRetained','เก็บU4/U5'],['annotationsCorrect','R-status labels'],['withinCapacity','Capacity']].forEach(pair=>{const p=document.createElement('p');p.textContent=pair[1]+': '+(v.result[pair[0]]?'ผ่าน':'ไม่ผ่าน');node('result').append(p);});const p=document.createElement('p');p.textContent='External confirmed support: '+v.result.sourceConfirmed.numerator+'/'+v.result.sourceConfirmed.denominator+' (ไม่ต้อง100%เพื่อdecompositionที่ครบ)';node('result').append(p);}node('trace').textContent=JSON.stringify({preset:v.preset,seed:C.DATA.game.presets[v.preset].seed,selected:v.selected,trace:v.trace,sourceWorldTruth:'UNKNOWN'},null,2);}config.addEventListener('change',reset);button('grade').addEventListener('click',()=>{const r=C.grade(state);if(r.reason==='ANNOTATE_ALL')state.feedback='เลือกR-statusให้ครบทุกclaimก่อนตรวจ';if(r.reason==='EMPTY_SELECTION')state.feedback='ชุดว่างไม่รักษาต้นฉบับ เลือกclaimก่อน';render();});button('reset').addEventListener('click',reset);root.hmSnapshot=()=>C.gameView(state);reset();})();</script></section>
+
+
+
+
+<p class="wp-block-paragraph"><strong>เป้าหมาย:</strong> ครอบคลุม U1–U5 ด้วยข้อ atomic ที่ตรงต้นฉบับ ไม่มีสำเนา/ข้อใหม่/entity/รุ่น/qualifierผิด แล้วระบุสถานะเทียบเอกสารให้ถูก การเลือก C1–C5 หรือใช้ C6แทนC1อย่างไม่ซ้ำยังต้องเก็บ U4 และ U5 พร้อม NOT_IN_REFERENCE/CONTRADICTED แม้ confirmed support ไม่เต็ม</p>
+
+
+
+<p class="wp-block-paragraph">กดตรวจคำตอบเมื่อกำหนดสถานะทุกข้อที่เลือกแล้วเพื่อจบรอบ Empty selection ชนะไม่ได้ และ Reset เริ่มใหม่ได้ การได้ผลครบในเกมรับรองเพียงการเลือก/annotationตาม fixture ไม่วัดความสามารถแยกข้อความของโมเดลหรือการตรวจความจริงภาษาไทย</p>
+
+
+
+<h2 class="wp-block-heading" id="hm-claims-section-12">Applications และเกณฑ์นำไปใช้จริง</h2>
+
+
+
+<p class="wp-block-paragraph">Agent ที่สร้างรายงานจากเอกสารสามารถเก็บ claim ledger เพื่อให้บรรณาธิการเห็นข้อที่เพิ่มหรือละพร้อม source spans งานสรุปคุณสมบัติผลิตภัณฑ์ควรรักษาเลขรุ่น เงื่อนไขการใช้งานและ entity pairing ส่วนงานเผยแพร่บทความอาจแยก extraction audit ออกจาก evidence review ก่อนแก้ต้นฉบับ นี่เป็นการประยุกต์ที่เสนอ ไม่อ้างระบบผลิตที่ติดตั้งแล้ว</p>
+
+
+
+<p class="wp-block-paragraph">ควรสร้างชุดตรวจตัวแยกโดยให้มนุษย์อ่าน original แล้วระบุสาระที่ต้องรักษา รวมประโยคผสม ข้อที่ขัดเอกสาร ชื่อซ้ำ สรรพนาม เงื่อนไข และข้อความที่ตรวจไม่ได้ เปรียบเทียบการตกหล่นกับการเพิ่มข้อใหม่แยกกัน ไม่ใช้เฉพาะอัตราข้อที่ผ่านการตรวจภายนอก</p>
+
+
+
+<p class="wp-block-paragraph">มนุษย์อาจเห็นต่างเรื่อง atomicity จึงต้องมีคู่มือและตัวอย่าง ไม่ถือคำตอบของ LLM อีกตัวเป็น gold โดยไม่ตรวจ ดู <a href="https://hybridmind.online/2026/10/13/verify-ai-answers-facts-numbers-citations/">คู่มือตรวจคำตอบ AI</a> สำหรับการอ่านแหล่งและตรวจตัวเลขหลังแยก</p>
+
+
+
+<h2 class="wp-block-heading" id="hm-claims-section-13">Limitations / Failure Modes</h2>
+
+
+
+<p class="wp-block-paragraph"><strong>Qualifier หาย:</strong> คำว่าเฉพาะ เมื่อ หรือรุ่นใดจำกัดข้อกล่าวอ้าง การตัดออกอาจขยายขอบเขต ต้องเก็บความสัมพันธ์ ไม่เก็บคำเงื่อนไขเป็นข้อความลอย ๆ</p>
+
+
+
+<p class="wp-block-paragraph"><strong>Reference ปะปนกับต้นฉบับ:</strong> ข้อมูลจากเอกสารที่ถูกเติมเข้า extraction อาจจริงตามแหล่งแต่ไม่ได้กล่าวในคำตอบ ให้ตรวจ provenance ของ record และแยกการแก้เนื้อหา</p>
+
+
+
+<p class="wp-block-paragraph"><strong>ข้อมูลซ้ำกับตัวหาร:</strong> การนับ paraphraseเป็นหลายหน่วยหรือทิ้งข้อยากทำให้ supportratioเปลี่ยนโดยสาระไม่ดีขึ้น เก็บ raw/normalized counts และ coverageคู่กัน</p>
+
+
+
+<p class="wp-block-paragraph"><strong>Span ถูกแต่ตีความผิด:</strong> การอ้าง offsetsและquoteไม่ได้รับรอง entitybindingหรือentailment และoffsetต่างระบบอาจเป็นbytes/codepoints/UTF-16 ต้องระบุหน่วยกับเวอร์ชัน</p>
+
+
+
+<p class="wp-block-paragraph"><strong>ผู้ตรวจ semantic ผิด:</strong> ทั้ง extractor และ verifier มี error model ข้อมูลภาษาไทย/โดเมนใหม่ยังต้องตรวจ ไม่อนุมานผลทุกภาษาจากการทดลองภาษาอังกฤษ</p>
+
+
+
+<p class="wp-block-paragraph"><strong>เอกสารไม่ครบหรือผิด:</strong> NOT_IN_REFERENCE ไม่แปลว่าfalse และ SUPPORTED ไม่แปลว่าพิสูจน์โลกจริง ต้องรายงานขอบเขตแหล่งรวมความขัดแย้งที่พบ</p>
+
+
+
+<h2 class="wp-block-heading" id="hm-claims-section-14">Future Directions และ Practical Takeaways</h2>
+
+
+
+<p class="wp-block-paragraph">ควรทดสอบ audit ข้อเพิ่ม/ขาดพร้อม uncertainty การรักษา entity/qualifiers และการตรวจใหม่เมื่อต้นทางเปลี่ยน ข้อเสนอเป็น <strong>HYPOTHESIS</strong> ยังไม่พิสูจน์ผลกับ Agentจริง</p>
+
+
+
+<figure class="wp-block-image size-full"><a href="https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-claims-011-05-takeaways.png?ssl=1"><img data-recalc-dims="1" data-attachment-id="1769" data-permalink="https://hybridmind.online/hm-claims-011-05-takeaways/" data-orig-file="https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-claims-011-05-takeaways.png?fit=1600%2C1030&amp;ssl=1" data-orig-size="1600,1030" data-comments-opened="1" data-image-title="หกหลักการรักษาความหมายในการแยกข้ออ้างของ Agent" data-image-description="" data-image-caption="&lt;p&gt;ตรวจ original preservation และ external support แยกกัน รักษา entity/version/qualifier ติดตาม omission, coverage, duplicate และ atomicity; quoted span เป็น anchor ไม่ใช่ semantic proof และ memory update ไม่เท่ากับฝึกน้ำหนัก&lt;/p&gt;
+" data-large-file="https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-claims-011-05-takeaways.png?fit=1024%2C659&amp;ssl=1" src="https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-claims-011-05-takeaways.png?resize=1600%2C1030&#038;ssl=1" alt="หกกล่อง Original Subclaim Reference Subclaim Qualifiers Entity Coverage Omissions Duplicates Atomicity และ Trace Revisions พร้อมตัวอย่าง C4 C5 C8 และ U1 U5" width="1600" height="1030" class="wp-image-1769" loading="lazy" decoding="async" srcset="https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-claims-011-05-takeaways.png?w=1600&amp;ssl=1 1600w, https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-claims-011-05-takeaways.png?resize=300%2C193&amp;ssl=1 300w, https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-claims-011-05-takeaways.png?resize=1024%2C659&amp;ssl=1 1024w, https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-claims-011-05-takeaways.png?resize=768%2C494&amp;ssl=1 768w, https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-claims-011-05-takeaways.png?resize=1536%2C989&amp;ssl=1 1536w" sizes="auto, (max-width: 1000px) 100vw, 1000px" /></a><figcaption><strong>หกหลักการรักษาความหมายในการแยกข้ออ้างของ Agent</strong> — ตรวจ original preservation และ external support แยกกัน รักษา entity/version/qualifier ติดตาม omission, coverage, duplicate และ atomicity; quoted span เป็น anchor ไม่ใช่ semantic proof และ memory update ไม่เท่ากับฝึกน้ำหนัก · <a href="https://aclanthology.org/2023.emnlp-main.741/">แหล่งแนวคิด 1</a> · <a href="https://aclanthology.org/2024.starsem-1.13/">แหล่งแนวคิด 2</a> · <a href="https://aclanthology.org/2025.emnlp-main.1205/">แหล่งแนวคิด 3</a> · <a href="https://aclanthology.org/2024.findings-acl.160/">แหล่งแนวคิด 4</a> · <a href="https://aclanthology.org/2025.findings-acl.1018/">แหล่งแนวคิด 5</a></figcaption></figure>
+
+
+
+<p class="wp-block-paragraph">เก็บoriginal/span mapping ดูการรักษา ความครบ atomicityและหลักฐานแยกกัน เก็บrejectionlogและcoverageหลังคัด คะแนนเดียวไม่รับรองว่าข้อเพิ่ม/ตกหล่นดีขึ้น</p>
+
+
+
+<p class="wp-block-paragraph">หลักใช้งานคือ <strong>แยกให้ตรงก่อนตรวจให้จริง</strong> เก็บแม้ข้อที่ยังไม่มีหลักฐานหรือขัดแหล่งเพื่อประเมินต้นฉบับตามจริง แล้วจึงสร้างคำตอบ revisionที่แก้ไขอย่างมีบันทึก อย่าใช้การแยกเป็นช่องทางเขียนเนื้อหาใหม่โดยไม่มีร่องรอย</p>
+
+
+
+<h2 class="wp-block-heading" id="hm-claims-section-15">FAQ</h2>
+
+
+
+<h3 class="wp-block-heading" id="hm-claims-section-16">Claim Decomposition คืออะไร?</h3>
+
+
+
+<p class="wp-block-paragraph">การแยกคำตอบเป็นข้อกล่าวอ้างย่อยเพื่อให้ตรวจได้ละเอียด ต้องรักษาสาระ entity และเงื่อนไขของต้นฉบับ ไม่ใช่แค่แบ่งตามจุดจบประโยค</p>
+
+
+
+<h3 class="wp-block-heading" id="hm-claims-section-17">ข้อย่อยมีหลักฐานภายนอกแล้วถือว่าแยกถูกหรือไม่?</h3>
+
+
+
+<p class="wp-block-paragraph">ไม่ ต้องตรวจว่าข้อนั้นอยู่ในคำตอบเดิมด้วย C8ในตัวอย่างมีR5รองรับแต่เป็นเนื้อหาใหม่ที่ต้นฉบับไม่ได้กล่าว</p>
+
+
+
+<h3 class="wp-block-heading" id="hm-claims-section-18">ควรลบข้อที่ไม่มีหลักฐานระหว่างการแยกหรือไม่?</h3>
+
+
+
+<p class="wp-block-paragraph">ถ้าประเมินต้นฉบับให้เก็บพร้อมสถานะ การลบทำให้ตรวจความครบไม่ได้ การแก้คำตอบเป็นrevisionแยกต่างหาก</p>
+
+
+
+<h3 class="wp-block-heading" id="hm-claims-section-19">DecompScore กับ FActScore วัดสิ่งเดียวกันหรือไม่?</h3>
+
+
+
+<p class="wp-block-paragraph">DecompScoreดั้งเดิมใช้ต้นฉบับตรวจคุณภาพการแยกเป็นจำนวนข้อเฉลี่ย ส่วนFActScoreประเมินสัดส่วนsupportจากknowledge source ต้องระบุรุ่น/สูตรimplementationด้วย</p>
+
+
+
+<h3 class="wp-block-heading" id="hm-claims-section-20">ลบข้อซ้ำรับรองว่าประเมินครบหรือไม่?</h3>
+
+
+
+<p class="wp-block-paragraph">ไม่ อาจเหลือชุดไม่ซ้ำแต่มีข้อที่ตกหล่น ต้องตรวจ originalcoverageด้วย และไม่ถือfingerprintสมมติเป็นsemantic equivalenceทั่วไป</p>
+
+
+
+<h3 class="wp-block-heading" id="hm-claims-section-21">เกมฝึกตัวแยกหรือรันงานวิจัยจริงหรือไม่?</h3>
+
+
+
+<p class="wp-block-paragraph">เป็นJavaScriptSIMULATIONของcatalogและlabelsที่กำหนด ไม่รันLLM/parser/NLI/MILP ไม่อัปเดตweights และไม่ทำซ้ำbenchmarkต้นฉบับ</p>
+
+
+
+<h2 class="wp-block-heading" id="hm-claims-section-22">References และขอบเขตหลักฐาน</h2>
+
+
+
+<ul class="wp-block-list">
+<li><a href="https://aclanthology.org/2023.emnlp-main.741/">FActScore, EMNLP2023</a> — อ่านนิยาม/data/estimator/ข้อจำกัดและ <a href="https://github.com/shmsw25/FActScore">authorcode</a>; gamma/rawscoreขึ้นกับimplementation ไม่รันทำซ้ำ</li>
+
+
+<li><a href="https://aclanthology.org/2024.starsem-1.13/">A Closer Look at Claim Decomposition, *SEM2024</a> — อ่านcoverage/coherence/atomicity, DecompScoreและวิธีแยก; exactauthorrunnable repoยังUNKNOWN</li>
+
+
+<li><a href="https://aclanthology.org/2025.emnlp-main.1205/">DnDScore, EMNLP2025</a> — อ่านtarget/contextpair วิธีตรวจและข้อจำกัด; appendixpromptsมี แต่exactauthorrepoยังUNKNOWN ไม่รวมสเกลDecompScoreที่ยังไม่ชัด</li>
+
+
+<li><a href="https://aclanthology.org/2024.findings-acl.160/">Merging Facts, Crafting Fallacies, FindingsACL2024</a> — อ่านentitygroupingและข้อจำกัด พร้อม <a href="https://github.com/d223302/Merging-Facts-Crafting-Fallacies">authorrepo</a></li>
+
+
+<li><a href="https://aclanthology.org/2025.findings-acl.1018/">Core, FindingsACL2025</a> — อ่านsemanticconstraints/selection/weightsและ <a href="https://github.com/zipJiang/Core">README</a>; defaultuniformweightsต่างจากcustomUNLIsetting ไม่มีการรันpackage</li>
+</ul>
+
+
+
+<p class="wp-block-paragraph"><strong>สถานะ:</strong> FACTคือวิธีและนิยามที่ต้นฉบับระบุ REPORTED CLAIMจำกัดผลไว้กับข้อมูล/โมเดลยุคที่ศึกษา ANALYSISคือการเทียบหน้าที่ HYPOTHESISคือแผนapplication SIMULATIONคือInteractive/เกม/สัดส่วนจากcatalogสมมติ ไม่มีindependentbenchmarkreproduction ผลทดลองLLMภาษาไทย หรือtoken/cost/latencyจริงของHYBRID MINDในบทความนี้</p>
+
+</div>

@@ -1,0 +1,62 @@
+
+> hybridmind-knowledge-textbook-phase1@1.0.0 test
+> node --test tests/catalog.test.mjs tests/fetch-public-wp-inventory.test.mjs tests/reader-browser.test.mjs tests/reading-journey-browser.test.mjs tests/search.test.mjs tests/server.test.mjs tests/content-renderer.test.mjs tests/public-rest-content.test.mjs tests/interactive-browser.test.mjs tests/interactive-registry.test.mjs tests/evidence-content.test.mjs tests/evidence-path-browser.test.mjs
+
+โ” catalog conforms to schema and all stable references resolve (13.0732ms)
+โ” snapshot unknown visibility is retained for coverage but cannot enter the public index (0.6143ms)
+โ” public projection removes unknown records, their sections, and their relationship edges (6.1403ms)
+โ” fixture exercises every supported block and is explicitly synthetic (4.8478ms)
+โ” renderer creates only text and allowlisted elements; untrusted text remains inert (1.4553ms)
+โ” URL policy rejects unsafe links, hosts, credentials, ports and image paths (0.5012ms)
+โ” malicious block URLs are rejected and source metadata must match public projection (1.0632ms)
+โ” importer normalizes Gutenberg blocks and maps unknown block to static fallback without HTML (2.6814ms)
+โ” normalizer preserves only supported fields and defaults unknown Gutenberg types safely (0.2367ms)
+โ” new three article capture is public, complete and byte-for-byte attributable (239.8717ms)
+โ” original five article metadata, sections, topics, path and bodies retain their revisions (7.8123ms)
+โ” proposed three-step sequence and difficulty remain explicit and separate from source approval (1.6195ms)
+โ” new title/body keyword queries, topic and level filters resolve real source entries (618.5497ms)
+โ” expanded corpus keeps all seven historical expected sections in top five (136.9253ms)
+โ” new source mutations cannot enable reviewed local runtime and no imported script is evaluated (27.2405ms)
+โ” evidence learning path, six source simulations, mobile accessibility and revision-safe navigation (14006.5906ms)
+โน Evidence path proof: C:\Users\Administrator\Documents\Codex\2026-10-19\task\hybridmind-knowledge-evidence-path\artifacts\evidence-path\verification.json
+โ” public capture checkpoints after each page, pauses on 429, and excludes unknown/protected bodies (157.0732ms)
+โ” article interactive controls, responsive state, remounts, and source safety (25854.2345ms)
+โน Interactive screenshots: C:\Users\Administrator\Documents\Codex\2026-10-19\task\hybridmind-knowledge-evidence-path\artifacts\interactive\hm-article-2241-video-desktop.png, C:\Users\Administrator\Documents\Codex\2026-10-19\task\hybridmind-knowledge-evidence-path\artifacts\interactive\hm-article-2241-citation-desktop.png, C:\Users\Administrator\Documents\Codex\2026-10-19\task\hybridmind-knowledge-evidence-path\artifacts\interactive\hm-article-2241-video-scene-desktop.png, C:\Users\Administrator\Documents\Codex\2026-10-19\task\hybridmind-knowledge-evidence-path\artifacts\interactive\hm-article-2241-video-prompt-desktop.png, C:\Users\Administrator\Documents\Codex\2026-10-19\task\hybridmind-knowledge-evidence-path\artifacts\interactive\hm-article-2241-video-cost-desktop.png, C:\Users\Administrator\Documents\Codex\2026-10-19\task\hybridmind-knowledge-evidence-path\artifacts\interactive\hm-article-2310-authorization-desktop.png, C:\Users\Administrator\Documents\Codex\2026-10-19\task\hybridmind-knowledge-evidence-path\artifacts\interactive\hm-article-2310-video-desktop.png, C:\Users\Administrator\Documents\Codex\2026-10-19\task\hybridmind-knowledge-evidence-path\artifacts\interactive\hm-article-2310-video-scene-desktop.png, C:\Users\Administrator\Documents\Codex\2026-10-19\task\hybridmind-knowledge-evidence-path\artifacts\interactive\hm-article-2310-video-prompt-desktop.png, C:\Users\Administrator\Documents\Codex\2026-10-19\task\hybridmind-knowledge-evidence-path\artifacts\interactive\hm-article-2310-video-cost-desktop.png, C:\Users\Administrator\Documents\Codex\2026-10-19\task\hybridmind-knowledge-evidence-path\artifacts\interactive\hm-article-2494-approval-desktop.png, C:\Users\Administrator\Documents\Codex\2026-10-19\task\hybridmind-knowledge-evidence-path\artifacts\interactive\hm-article-2494-video-desktop.png, C:\Users\Administrator\Documents\Codex\2026-10-19\task\hybridmind-knowledge-evidence-path\artifacts\interactive\hm-article-2494-video-scene-desktop.png, C:\Users\Administrator\Documents\Codex\2026-10-19\task\hybridmind-knowledge-evidence-path\artifacts\interactive\hm-article-2494-video-prompt-desktop.png, C:\Users\Administrator\Documents\Codex\2026-10-19\task\hybridmind-knowledge-evidence-path\artifacts\interactive\hm-article-2494-video-cost-desktop.png, C:\Users\Administrator\Documents\Codex\2026-10-19\task\hybridmind-knowledge-evidence-path\artifacts\interactive\hm-article-2241-video-mobile.png, C:\Users\Administrator\Documents\Codex\2026-10-19\task\hybridmind-knowledge-evidence-path\artifacts\interactive\hm-article-2241-citation-mobile.png, C:\Users\Administrator\Documents\Codex\2026-10-19\task\hybridmind-knowledge-evidence-path\artifacts\interactive\hm-article-2241-video-scene-mobile.png, C:\Users\Administrator\Documents\Codex\2026-10-19\task\hybridmind-knowledge-evidence-path\artifacts\interactive\hm-article-2241-video-prompt-mobile.png, C:\Users\Administrator\Documents\Codex\2026-10-19\task\hybridmind-knowledge-evidence-path\artifacts\interactive\hm-article-2241-video-cost-mobile.png, C:\Users\Administrator\Documents\Codex\2026-10-19\task\hybridmind-knowledge-evidence-path\artifacts\interactive\hm-article-2310-authorization-mobile.png, C:\Users\Administrator\Documents\Codex\2026-10-19\task\hybridmind-knowledge-evidence-path\artifacts\interactive\hm-article-2310-video-mobile.png, C:\Users\Administrator\Documents\Codex\2026-10-19\task\hybridmind-knowledge-evidence-path\artifacts\interactive\hm-article-2310-video-scene-mobile.png, C:\Users\Administrator\Documents\Codex\2026-10-19\task\hybridmind-knowledge-evidence-path\artifacts\interactive\hm-article-2310-video-prompt-mobile.png, C:\Users\Administrator\Documents\Codex\2026-10-19\task\hybridmind-knowledge-evidence-path\artifacts\interactive\hm-article-2310-video-cost-mobile.png, C:\Users\Administrator\Documents\Codex\2026-10-19\task\hybridmind-knowledge-evidence-path\artifacts\interactive\hm-article-2494-approval-mobile.png, C:\Users\Administrator\Documents\Codex\2026-10-19\task\hybridmind-knowledge-evidence-path\artifacts\interactive\hm-article-2494-video-mobile.png, C:\Users\Administrator\Documents\Codex\2026-10-19\task\hybridmind-knowledge-evidence-path\artifacts\interactive\hm-article-2494-video-scene-mobile.png, C:\Users\Administrator\Documents\Codex\2026-10-19\task\hybridmind-knowledge-evidence-path\artifacts\interactive\hm-article-2494-video-prompt-mobile.png, C:\Users\Administrator\Documents\Codex\2026-10-19\task\hybridmind-knowledge-evidence-path\artifacts\interactive\hm-article-2494-video-cost-mobile.png
+โ” only the six exact reviewed article HTML hashes activate known local labs (30.3649ms)
+โ” copied source metadata cannot authorize altered HTML or a different source identity (17.0015ms)
+โ” approval is bound to the checked object and immutable HTML value, not a transferable flag (13.1942ms)
+โ” mutating verification status or block type revokes a previously approved entry (12.6695ms)
+โ” reviewed runtime does not contain imported script execution, networking or persistence (10.5752ms)
+โ” eight full public bodies retain exact REST rendered bytes, canonical identity and UTC revision (61.5244ms)
+โ” all 35 local image files match recorded hashes and every inline source image has metadata (202.6084ms)
+โ” public body keyword search finds code details without indexing script or navigation content (188.936ms)
+โ” responsive reader navigation, search, progress, missing anchors, and safe text (18399.9271ms)
+โน {"textLength":140240,"images":23,"headings":138,"duplicateIds":[],"active":0}
+โน Screenshots saved under artifacts\screenshots
+โ” bounded book-to-article reading journey, browser history, completion, and responsive layout (16283.4874ms)
+โน Reading journey screenshots: C:\Users\Administrator\Documents\Codex\2026-10-19\task\hybridmind-knowledge-evidence-path\artifacts\reading-journey\book-desktop.png, C:\Users\Administrator\Documents\Codex\2026-10-19\task\hybridmind-knowledge-evidence-path\artifacts\reading-journey\book-mobile.png, C:\Users\Administrator\Documents\Codex\2026-10-19\task\hybridmind-knowledge-evidence-path\artifacts\reading-journey\book-filtered-desktop.png, C:\Users\Administrator\Documents\Codex\2026-10-19\task\hybridmind-knowledge-evidence-path\artifacts\reading-journey\book-filtered-mobile.png, C:\Users\Administrator\Documents\Codex\2026-10-19\task\hybridmind-knowledge-evidence-path\artifacts\reading-journey\article-start-desktop.png, C:\Users\Administrator\Documents\Codex\2026-10-19\task\hybridmind-knowledge-evidence-path\artifacts\reading-journey\article-start-mobile.png, C:\Users\Administrator\Documents\Codex\2026-10-19\task\hybridmind-knowledge-evidence-path\artifacts\reading-journey\article-end-desktop.png, C:\Users\Administrator\Documents\Codex\2026-10-19\task\hybridmind-knowledge-evidence-path\artifacts\reading-journey\article-end-mobile.png; evidence: C:\Users\Administrator\Documents\Codex\2026-10-19\task\hybridmind-knowledge-evidence-path\artifacts\reading-journey\verification.json
+โ” indexes only public published articles, but searches topics and sections too (6.0056ms)
+โ” matches keyword concepts across article and section fields (2.8624ms)
+โ” uses a topic-to-article relationship when direct topic fields are empty (0.6364ms)
+โ” applies topic, type, difficulty, locale and date filters (1.664ms)
+โ” empty and no-result queries are safe, and no-answer queries do not invent matches (3.9405ms)
+โ” Meilisearch adapter uses injected client and normalizes results (0.5868ms)
+โ” Typesense adapter uses injected client and normalizes results (0.5432ms)
+โ” excludes published articles with unknown password state and their sections (0.6581ms)
+โ” keeps generic navigation headings out of section search (0.8481ms)
+โ” topic filters honor every proposed relation and route through the filtered topic (0.7386ms)
+โ” canonical URL policy accepts only credential-free HTTPS hybridmind.online links (0.2948ms)
+โ” search results never return an unsafe source URL (0.5664ms)
+โ” general public questions about draft policy remain searchable (0.6263ms)
+โ” private draft snippet retrieval returns an empty generic response without private indexing (0.2529ms)
+โ” actual five-source corpus returns zero for unsupported and unpublished-content requests (216.9861ms)
+โ” held-out judgments resolve only against the five-source public projection (84.5948ms)
+โ” server exposes only fixed assets and an explicitly public catalog projection (716.3828ms)
+โน tests 45
+โน suites 0
+โน pass 45
+โน fail 0
+โน cancelled 0
+โน skipped 0
+โน todo 0
+โน duration_ms 79360.9241

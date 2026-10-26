@@ -1,0 +1,5 @@
+
+> hybridmind-knowledge-textbook-phase1@1.0.0 lint
+> node scripts/lint-pilot.mjs
+
+Lint passed (49 JavaScript files); schema and reference checks passed.

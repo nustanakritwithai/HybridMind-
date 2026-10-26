@@ -347,7 +347,7 @@ function copyReviewedAttributes(source,target,idMap) {
     const ids=source.getAttribute(attr).split(/\s+/).map(id=>idMap.get(id)).filter(Boolean);
     if(ids.length)target.setAttribute(attr,ids.join(' '));
   }
-  for(const attr of ['data-camera','data-stage','data-platform','data-value','data-state','data-view','data-card']) {
+  for(const attr of ['data-camera','data-stage','data-platform','data-value','data-state','data-view','data-card','data-input','data-config','data-action','data-diagnosis','data-answer','data-source','data-candidate','data-fact','data-support']) {
     const value=source.getAttribute(attr);if(value!==null&&/^[a-zA-Z0-9_-]{1,60}$/.test(value))target.setAttribute(attr,value);
   }
   if(source.hasAttribute('hidden'))target.hidden=true;

@@ -1,0 +1,29 @@
+{
+  "baseline_commit": "30caf8d412ccf7e5ed71bb9afd83b871fb16a96f",
+  "article_ids": [
+    "hm:article:2494",
+    "hm:article:2310",
+    "hm:article:2241",
+    "hm:article:1077",
+    "hm:article:1073"
+  ],
+  "topic_ids": [
+    "hm:topic:ai-foundations-verification",
+    "hm:topic:ai-agents-automation",
+    "hm:topic:ai-tools-development",
+    "hm:topic:ai-research-safety",
+    "hm:topic:ai-news-industry",
+    "hm:topic:technology-daily-life",
+    "hm:topic:smart-buying",
+    "hm:topic:ai-technology-history",
+    "hm:topic:verify-ai-work"
+  ],
+  "path_ids": [
+    "hm:path:verify-ai-work-basics"
+  ],
+  "articles_sha256": "db8b7f36ada72edca9743947a874eaec6719e11cafc41916e8d100e80b9421bb",
+  "sections_sha256": "26fd76906311fc28234d0504ddcce2547fe9098b7f3b92feac721d1a7a373cf3",
+  "topics_sha256": "22247d5a3934e0b62255534656744e1a8e024bcc5e6a9a54ff505e35bd1be89e",
+  "paths_sha256": "a585e7582027fd6c1c45e692a64136602ca68c247950d7e825550011078f138e",
+  "bodies_sha256": "b7f59c7fac101893cd308dc478c74a8da5065eb2104434e7ee54c397eda64536"
+}

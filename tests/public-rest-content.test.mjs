@@ -15,11 +15,12 @@ const base = await readJson(existsSync(resolve(root,'offline/pilot-catalog-full.
 const overlayPath = resolve(root,'offline/public-rest-revision-overlay.json');
 const catalog = applyContentRevisionOverlay(base, existsSync(overlayPath) ? await readJson('offline/public-rest-revision-overlay.json') : null);
 
-test('five full public bodies retain exact REST rendered bytes, canonical identity and UTC revision', async () => {
+test('eight full public bodies retain exact REST rendered bytes, canonical identity and UTC revision', async () => {
   validateContentBundle(bundle,{catalog}); verifyContentBundleDigests(bundle);
-  assert.deepEqual(bundle.articles.map(entry=>entry.article_id).sort(),[1073,1077,2241,2310,2494].map(id=>`hm:article:${id}`));
+  assert.deepEqual(bundle.articles.map(entry=>entry.article_id).sort(),[1073,1077,1740,1755,1770,2241,2310,2494].map(id=>`hm:article:${id}`));
   for(const entry of bundle.articles) {
-    const sourcePath=`reference/source-exports/public-rest-2026-10-25/post-${entry.article_id.split(':').at(-1)}.json`;
+    const capture=[1740,1755,1770].some(id=>entry.article_id===`hm:article:${id}`) ? '2026-10-26' : '2026-10-25';
+    const sourcePath=`reference/source-exports/public-rest-${capture}/post-${entry.article_id.split(':').at(-1)}.json`;
     if(existsSync(resolve(root,sourcePath))) {
       const source=await readJson(sourcePath);
       assert.equal(source.status,'publish'); assert.equal(source.content.protected,false);
@@ -34,7 +35,7 @@ test('five full public bodies retain exact REST rendered bytes, canonical identi
   }
 });
 
-test('all 20 local image files match recorded hashes and every inline source image has metadata', async () => {
+test('all 35 local image files match recorded hashes and every inline source image has metadata', async () => {
   const ids=new Set(); let inlineCount=0;
   for(const entry of bundle.articles) {
     const inline=[...entry.blocks[0].html.matchAll(/<img\b[^>]*data-attachment-id="(\d+)"/gi)].map(match=>Number(match[1]));
@@ -46,7 +47,7 @@ test('all 20 local image files match recorded hashes and every inline source ima
       assert.equal(bytes.length,media.byte_length); assert.equal('sha256:'+sha256Hex(bytes),media.sha256);
     }
   }
-  assert.equal(ids.size,20); assert.equal(inlineCount,18);
+  assert.equal(ids.size,35); assert.equal(inlineCount,33);
 });
 
 test('public body keyword search finds code details without indexing script or navigation content', () => {

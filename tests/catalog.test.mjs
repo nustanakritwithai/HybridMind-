@@ -19,13 +19,13 @@ test('catalog conforms to schema and all stable references resolve', () => {
 
 test('snapshot unknown visibility is retained for coverage but cannot enter the public index', () => {
   let expectedUnverifiedRows;
-  if (catalog.articles.length > 5) {
+  if (existsSync(offlinePath)) {
     assert.equal(catalog.articles.length, 248);
-    assert.equal(catalog.articles.filter(a => a.password_protected === false && a.visibility === 'public').length, 5);
-    assert.equal(catalog.articles.filter(a => a.password_protected === null && a.visibility === 'unknown').length, 243);
-    expectedUnverifiedRows = 243;
+    assert.equal(catalog.articles.filter(a => a.password_protected === false && a.visibility === 'public').length, 8);
+    assert.equal(catalog.articles.filter(a => a.password_protected === null && a.visibility === 'unknown').length, 240);
+    expectedUnverifiedRows = 240;
   } else {
-    assert.equal(catalog.articles.length, 5);
+    assert.equal(catalog.articles.length, 8);
     assert.ok(catalog.articles.every(a => a.status === 'published' && a.visibility === 'public' && a.password_protected === false));
     expectedUnverifiedRows = 0;
   }
@@ -34,7 +34,7 @@ test('snapshot unknown visibility is retained for coverage but cannot enter the 
 
 test('public projection removes unknown records, their sections, and their relationship edges', () => {
   const projected = projectPublicCatalog(catalog);
-  assert.equal(projected.articles.length, 5);
+  assert.equal(projected.articles.length, 8);
   assert.ok(projected.articles.every(a => a.visibility === 'public' && a.password_protected === false));
   const articleIds = new Set(projected.articles.map(a => a.article_id));
   const topicIds = new Set(projected.topics.map(t => t.topic_id));

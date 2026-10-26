@@ -151,7 +151,13 @@ test('held-out judgments resolve only against the five-source public projection'
  const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
  const offlinePath = resolve(root, 'offline/pilot-catalog-full.json');
  const catalogPath = existsSync(offlinePath) ? offlinePath : resolve(root, 'data/pilot-catalog.json');
- const corpus = projectPublicCatalog(JSON.parse(readFileSync(catalogPath, 'utf8')));
+ const baseline = JSON.parse(readFileSync(catalogPath, 'utf8'));
+ // Freeze this historical benchmark's five-source scope. New corpus metrics
+ // are reported separately by evaluate-search; adding documents changes IDF.
+ const originalIds = new Set([1077,1073,2241,2310,2494].map(id=>`hm:article:${id}`));
+ baseline.articles = baseline.articles.filter(a=>originalIds.has(a.article_id));
+ baseline.topics = baseline.topics.filter(t=>!['hm:topic:retrieval-evaluation','hm:topic:evidence-sufficiency','hm:topic:claim-decomposition'].includes(t.topic_id));
+ const corpus = projectPublicCatalog(baseline);
  const fixture = JSON.parse(readFileSync(new URL('./fixtures/heldout-search.json', import.meta.url), 'utf8'));
  const judged = fixture.cases.filter(item => item.answerable);
  let sourceHitAt1 = 0, sourceHitAt5 = 0, sectionHitAt1 = 0, sectionHitAt5 = 0;

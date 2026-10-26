@@ -1,0 +1,597 @@
+
+<div class="wp-block-group is-layout-flow wp-block-group-is-layout-flow" id="hm-sufficiency-article" lang="th">
+
+<style>#hm-sufficiency-article{overflow-wrap:anywhere;line-height:1.85}#hm-sufficiency-article .wp-block-image img{width:100%;height:auto;display:block}#hm-sufficiency-article figcaption{font-size:.92em;line-height:1.7}#hm-sufficiency-article .wp-block-table{max-width:100%;overflow-x:auto}#hm-sufficiency-article table{width:100%;border-collapse:collapse;min-width:600px}#hm-sufficiency-article th,#hm-sufficiency-article td{padding:.7em;text-align:left;vertical-align:top;border:1px solid var(--wp--preset--color--theme-3,#bbb)}#hm-sufficiency-article pre{white-space:pre-wrap;overflow-wrap:anywhere;padding:1em;border:1px solid var(--wp--preset--color--theme-3,#bbb)}#hm-sufficiency-article code{overflow-wrap:anywhere}</style>
+
+
+
+<p class="wp-block-paragraph"><strong>คำตอบโดยตรง:</strong> Evidence Sufficiency คือการตรวจว่าข้อมูลที่ Agent ได้รับมีข้อเท็จจริงและข้อเชื่อมเพียงพอสำหรับคำถามนั้นหรือยัง จำนวนเอกสาร ความคล้าย หรือคำตอบที่ฟังมั่นใจยังไม่รับรองความพอ ต้องระบุสิ่งที่คำถามต้องการ ตรวจว่ามีชุดหลักฐานที่เชื่อมกันครบอย่างน้อยหนึ่งทาง และระบุข้อที่ขาดเพื่อค้นต่อหรือหยุดตอบ ทั้งนี้ หลักฐานพอในบริบทไม่รับประกันว่าแหล่งข้อมูลจริงหรือโมเดลจะใช้ข้อมูลถูก</p>
+
+
+
+<p class="wp-block-paragraph">บทความมีแผนสถาปัตยกรรม <strong>Conceptual Architecture / HYPOTHESIS</strong> พร้อม Interactive สำรวจข้อเชื่อม และเกม <strong>SIMULATION</strong> ที่มีเป้าหมาย งบการค้น และ Reset ตัวจำลองใช้ข้อมูลสมมติและกฎที่กำหนดไว้ ไม่เรียก LLM หรือสร้างผล benchmark ของ AI</p>
+
+
+
+<figure class="wp-block-image size-full"><a href="https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-sufficiency-010-01-cover.png?ssl=1"><img data-recalc-dims="1" fetchpriority="high" data-attachment-id="1750" data-permalink="https://hybridmind.online/hm-sufficiency-010-01-cover/" data-orig-file="https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-sufficiency-010-01-cover.png?fit=1600%2C900&amp;ssl=1" data-orig-size="1600,900" data-comments-opened="1" data-image-title="Evidence Sufficiency: จำนวนเอกสารไม่เท่ากับหลักฐานครบ" data-image-description="" data-image-caption="&lt;p&gt;SIMULATION: E1+E2 เป็นกิ่ง AND ที่ join ผ่าน SunRoute ส่วน E3+E4 เป็นกิ่ง OR ทางเลือกที่ครบก็พอ E5 ระบุห้องโดยตรงจึงพอสำหรับ room-only แต่ไม่ตอบ intermediate+room; witness ใน formal toy ไม่ยืนยันความจริงภายนอก&lt;/p&gt;
+" data-large-file="https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-sufficiency-010-01-cover.png?fit=1024%2C576&amp;ssl=1" src="https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-sufficiency-010-01-cover.png?resize=1600%2C900&#038;ssl=1" alt="สามกล่อง AND กิ่ง E1 E2 ผ่าน SunRoute OR กิ่ง E3 E4 ผ่าน OrbitBuilding และ Query Scope ที่ E5 บอก A3 แต่ไม่บอกทางกลาง พร้อมกำกับ SIMULATION" width="1600" height="900" class="wp-image-1750" loading="eager" decoding="async" srcset="https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-sufficiency-010-01-cover.png?w=1600&amp;ssl=1 1600w, https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-sufficiency-010-01-cover.png?resize=300%2C169&amp;ssl=1 300w, https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-sufficiency-010-01-cover.png?resize=1024%2C576&amp;ssl=1 1024w, https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-sufficiency-010-01-cover.png?resize=768%2C432&amp;ssl=1 768w, https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-sufficiency-010-01-cover.png?resize=1536%2C864&amp;ssl=1 1536w" sizes="(max-width: 1000px) 100vw, 1000px" /></a><figcaption><strong>Evidence Sufficiency: จำนวนเอกสารไม่เท่ากับหลักฐานครบ</strong> — SIMULATION: E1+E2 เป็นกิ่ง AND ที่ join ผ่าน SunRoute ส่วน E3+E4 เป็นกิ่ง OR ทางเลือกที่ครบก็พอ E5 ระบุห้องโดยตรงจึงพอสำหรับ room-only แต่ไม่ตอบ intermediate+room; witness ใน formal toy ไม่ยืนยันความจริงภายนอก · <a href="https://proceedings.iclr.cc/paper_files/paper/2025/hash/33dffa2e3d2ab74a783d1a8c292f66d9-Abstract-Conference.html">แหล่งแนวคิด 1</a> · <a href="https://aclanthology.org/D18-1259/">แหล่งแนวคิด 2</a> · <a href="https://aclanthology.org/2022.tacl-1.31/">แหล่งแนวคิด 3</a> · <a href="https://aclanthology.org/N18-1074/">แหล่งแนวคิด 4</a></figcaption></figure>
+
+
+
+<h2 class="wp-block-heading" id="hm-sufficiency-section-1">ทำไมค้นเจอหลายชิ้นแล้ว Agent ยังควรงดตอบ</h2>
+
+
+
+<p class="wp-block-paragraph">ลองให้ Agent ช่วยผู้เข้าชมนิทรรศการตอบว่า “บัตรสีน้ำเงินไปห้องใด” เอกสารหนึ่งระบุว่าบัตรนี้ใช้เส้นทางสุริยะ อีกชิ้นบอกว่าอาคารวงโคจรนำไปห้อง A3 ทั้งสองมีคำใกล้หัวข้อ แต่ยังไม่มีข้อความเชื่อมเส้นทางสุริยะกับห้อง A3 การนำสองชิ้นมาวางติดกันไม่ได้สร้างความสัมพันธ์ที่หายไป</p>
+
+
+
+<p class="wp-block-paragraph">เอกสารเรื่องดอกไม้สีน้ำเงินหรือบัตรสีแดงและข้อความซ้ำอาจเพิ่มยอด แต่ไม่เพิ่ม premise หรือข้อเท็จจริงตั้งต้นที่จำเป็น ผู้สร้าง Agent จึงควรเปลี่ยน “ค้นเพิ่ม” เป็น “ค้นข้อเชื่อมนี้” พร้อมแจ้งข้อที่ขาดเมื่อหาไม่พบภายใต้งบ</p>
+
+
+
+<p class="wp-block-paragraph">เรื่องนี้ต่อจาก <a href="https://hybridmind.online/2026/10/14/ai-agent-retrieval-evaluation-evidence-answer-errors/">Retrieval Evaluation</a> ซึ่งแยกผลค้น บริบท และคำตอบ แต่คำถามในบทความนี้เจาะอีกระดับ: ข้อความที่อยู่ในบริบทต่อกันเป็นเหตุผลพอสำหรับงานที่ผู้ใช้ถามหรือยัง</p>
+
+
+
+<h2 class="wp-block-heading" id="hm-sufficiency-section-2">แยกความพอ ความจริง และความสามารถของโมเดล</h2>
+
+
+
+<h3 class="wp-block-heading" id="hm-sufficiency-section-3">ความพอในบริบทขึ้นกับคำถาม</h3>
+
+
+
+<p class="wp-block-paragraph">ให้ Q เป็นคำถาม และ C เป็นบริบทที่ได้รับ การตรวจ sufficiency ถามว่ามีข้อมูลให้สร้างคำตอบตามขอบเขต Q จาก C หรือไม่ ต้องดูคู่คำถามกับบริบทเสมอ ข้อความที่พอสำหรับ “ไปห้องไหน” อาจไม่พอสำหรับ “ผ่านเส้นทางอะไรแล้วไปห้องไหน” เพราะคำถามหลังต้องการผลลัพธ์เพิ่ม</p>
+
+
+
+<p class="wp-block-paragraph">งาน <strong>Sufficient Context</strong> ตีพิมพ์ที่ ICLR 2025 นิยามความพอโดยไม่ต้องทราบคำตอบอ้างอิงล่วงหน้า และอนุญาตให้บริบทมีข้อมูลที่ผิดได้ จึงแยกการมีข้อมูลพอออกจากความจริงภายนอก ผู้วิจัยใช้ autorater และศึกษาการคัดเลือกตอบด้วยสัญญาณความพอร่วมกับความมั่นใจของโมเดล <a href="https://proceedings.iclr.cc/paper_files/paper/2025/hash/33dffa2e3d2ab74a783d1a8c292f66d9-Abstract-Conference.html">Sufficient Context</a></p>
+
+
+
+<h3 class="wp-block-heading" id="hm-sufficiency-section-4">แหล่งข้อมูลจริงเป็นอีกจุดตรวจ</h3>
+
+
+
+<p class="wp-block-paragraph">แผนผังชัดเจนอาจเป็นฉบับเก่าหรืออยู่นอกขอบเขต ต้องตรวจผู้รับผิดชอบ เวอร์ชัน วันที่มีผล และต้นฉบับแยกจากความครบ การผ่านกฎรับเอกสารไม่พิสูจน์ความจริงทุกด้าน ในตัวจำลอง สถานะ APPROVED/CURRENT เป็นเงื่อนไขที่ผู้เขียนกำหนดให้โจทย์ ไม่ใช่การตรวจแหล่งจริง</p>
+
+
+
+<h3 class="wp-block-heading" id="hm-sufficiency-section-5">บริบทพอก็ยังใช้ข้อมูลผิดได้</h3>
+
+
+
+<p class="wp-block-paragraph">แม้ข้อเชื่อมอยู่ครบ โมเดลอาจสลับบุคคล คำนวณผิด หรือให้เหตุผลเกินข้อความที่มี จึงต้องตรวจคำตอบหลังสร้างอีกครั้ง ผล “เพียงพอ” เป็นสิทธิ์ให้พิจารณาตอบตามนโยบาย ไม่ใช่ใบรับรองคำตอบที่ยังไม่เกิดขึ้น การอธิบายเหตุผลของโมเดลก็ไม่ยืนยันว่าโมเดลใช้ข้อมูลตามคำอธิบายจริง</p>
+
+
+
+<p class="wp-block-paragraph">คำตอบถูกที่ไม่มีหลักฐานค้นมารองรับอาจมาจากความรู้ในน้ำหนักหรือการเลือกถูก งานบังคับตรวจที่มายังต้องแสดงข้อจำกัดนี้</p>
+
+
+
+<h2 class="wp-block-heading" id="hm-sufficiency-section-6">Scientific Foundations: หลักฐานหลายขั้นต้องเชื่อมอย่างไร</h2>
+
+
+
+<p class="wp-block-paragraph"><strong>FACT เกี่ยวกับงานวิจัย:</strong> HotpotQA เป็นชุดงาน multi-hop QA ที่เก็บ supporting facts ระดับประโยค พร้อมโจทย์เชื่อมข้อมูลและเปรียบเทียบ มีการประเมินคำตอบและหลักฐานแยกกันและร่วมกัน จึงทำให้เห็นว่าคำตอบตรงเพียงอย่างเดียวยังไม่ครอบคลุมเป้าหมายด้านหลักฐาน <a href="https://aclanthology.org/D18-1259/">HotpotQA, EMNLP 2018</a></p>
+
+
+
+<p class="wp-block-paragraph">MuSiQue สร้างคำถามหลายขั้นจากคำถามขั้นเดียว โดยมุ่งให้คำตอบของขั้นก่อนจำเป็นต่อขั้นถัดไป และมีบริบทคู่ที่ตัดข้อมูลจำเป็นออกเพื่อทดสอบการตอบไม่ได้ งานนี้ช่วยเตือนว่าต้องตรวจ dependency จริง ไม่สมมติว่าทุกโจทย์ที่เรียกว่า multi-hop บังคับโมเดลใช้ทุกขั้น <a href="https://aclanthology.org/2022.tacl-1.31/">MuSiQue, TACL 2022</a></p>
+
+
+
+<p class="wp-block-paragraph">FEVER แยก SUPPORTED, REFUTED และ NOT ENOUGH INFO ในการตรวจข้อกล่าวอ้างกับหลักฐาน Wikipedia การประเมินแบบ strict ต้องมีชุดหลักฐานที่ครบ โดยยอมรับหนึ่งชุดจากหลายทางเลือกที่ระบุไว้ NOT ENOUGH INFO จึงเป็นการขาดข้อมูลรองรับ ไม่ใช่คำตัดสินว่าเรื่องนั้นเท็จ <a href="https://aclanthology.org/N18-1074/">FEVER, NAACL 2018</a></p>
+
+
+
+<p class="wp-block-paragraph"><strong>ANALYSIS:</strong> งานเหล่านี้มีเกณฑ์เฉพาะ บทความนำแนวคิด dependency และชุดหลักฐานมาสร้างตัวอย่างการศึกษา ไม่ใช่การรันหรือทำซ้ำ benchmark ต้นฉบับ</p>
+
+
+
+<h2 class="wp-block-heading" id="hm-sufficiency-section-7">AND ภายในชุด OR ระหว่างทางเลือก</h2>
+
+
+
+<p class="wp-block-paragraph">ในศูนย์นิทรรศการออโรราซึ่งเป็นข้อมูลสมมติ E1 ระบุว่าบัตรสีน้ำเงินใช้เส้นทางสุริยะ และ E2 ระบุว่าเส้นทางสุริยะนำไปห้อง A3 ต้องมี E1 <strong>และ</strong> E2 พร้อมตรวจว่าชื่อเส้นทางตรงกัน จึงเชื่อมถึงห้องได้ การมีเพียงต้นทางหรือปลายทางยังไม่ครบกิ่งนี้</p>
+
+
+
+<p class="wp-block-paragraph">อีกทางคือ E3 ระบุว่าบัตรสีน้ำเงินใช้ทางผ่านอาคารวงโคจร และ E4 ระบุว่าอาคารนั้นนำไปห้อง A3 ทางเลือกนี้ครบได้โดยไม่ต้องค้น E1 และ E2 ด้วย ส่วน E5 เป็นแผนผังที่อนุมัติซึ่งระบุตรงว่าบัตรสีน้ำเงินไปห้อง A3 แต่ไม่ได้บอกทางผ่าน</p>
+
+
+
+<p class="wp-block-paragraph">สำหรับคำถามที่ต้องการเพียงห้อง เราเขียนแบบจำลองชุดหลักฐานได้ดังนี้</p>
+
+
+
+<pre class="wp-block-code"><code>P(Qห้อง) = { {E5}, {E1,E2}, {E3,E4} }
+SufficientToy(Q,C) = มีชุด S ใน P(Q) ที่ทุกข้ออยู่ใน C
+                    และผ่านกฎขอบเขตกับการเชื่อมที่กำหนด</code></pre>
+
+
+
+<p class="wp-block-paragraph">Q คือคำถาม C คือ ID ของหลักฐานที่เลือก P(Q) คือรายการชุดที่ตอบโจทย์ตามกฎสมมติ S คือหนึ่งชุดในรายการ เครื่องหมาย AND อยู่ภายใน S และ OR อยู่ระหว่างชุด การมีชุดที่ครบหนึ่งชุดพอสำหรับเกณฑ์นี้ ไม่ต้องมีทุกทางพร้อมกัน</p>
+
+
+
+<p class="wp-block-paragraph">สมการนี้เป็น <strong>HYPOTHESIS / formal toy verifier</strong> สำหรับหลักฐานที่เขียนและจัดความสัมพันธ์ไว้แล้ว ไม่ใช่นิยามสมบูรณ์ของ sufficiency ในภาษาธรรมชาติ หาก mapper ไม่ทราบว่าข้อความรองรับ premise ใด หรือไม่ทราบว่ารายการชุดครบหรือไม่ ควรส่ง UNKNOWN แทนสรุปจากช่องที่ว่างว่าไม่มีทางตอบ</p>
+
+
+
+<p class="wp-block-paragraph">เมื่อเปลี่ยนคำถามเป็น “ผ่านเส้นทางหรืออาคารกลางใด และไปห้องใด” ชุด {E5} ใช้ไม่ได้ เพราะไม่มี intermediate หรือจุดกลาง เหลือ {E1,E2} และ {E3,E4} เป็นทางที่ครบ ผล sufficiency จึงเปลี่ยนได้แม้ C ไม่เปลี่ยน การเพิ่มข้อกำหนดของคำถามต้องสร้างหรือตรวจชุดหลักฐานใหม่ด้วย</p>
+
+
+
+<h2 class="wp-block-heading" id="hm-sufficiency-section-8">Interactive: สำรวจหลักฐานที่มีและข้อเชื่อมที่ขาด</h2>
+
+
+
+<p class="wp-block-paragraph">เลือก E1–E8 และเปลี่ยนโหมดคำถามเพื่อดูผลในบริบทเดียวกัน จุดเริ่มต้นมี E1 ซึ่งยังขาด E2 ให้ลองเพิ่ม E4 แทน E2: จำนวนชิ้นเพิ่ม แต่ปลาย E1 คือเส้นทางสุริยะ ส่วนต้น E4 คืออาคารวงโคจร จึงต่อกันไม่ได้ การเพิ่ม E2 หรือเพิ่ม E3 จึงเป็นคนละวิธีเติมกิ่งให้ครบ</p>
+
+
+
+<p class="wp-block-paragraph">ลอง E5 เพียงชิ้นเดียวแล้วเปลี่ยนจากถามห้องเป็นถามทางผ่านพร้อมห้อง ความพอจะหาย ปุ่มคัดลอก E1 เพิ่มรายการดิบ แต่ตัวตรวจใช้ ID ไม่ซ้ำ การคัดลอกจึงไม่เติม premise ที่ขาด</p>
+
+
+
+<p class="wp-block-paragraph">E6 พูดถึงบัตรสีแดง E7 พูดถึงดอกไม้สีน้ำเงิน และ E8 เป็นร่างผังเก่าที่ไม่ผ่าน APPROVED/CURRENT โหมดสาธิตการละเลย metadata จะแสดง candidate ที่ไม่ปลอดภัยให้เห็น แต่ไม่ยกระดับ E8 เป็นหลักฐานผ่านกฎจริงของโจทย์</p>
+
+
+
+<section id="hm-sufficiency-explorer" aria-label="ทดลองความครบของproofsetตามคำถาม"><style>#hm-sufficiency-explorer{box-sizing:border-box;background:#07162d;color:#eef8ff;border:1px solid #2567ae;border-radius:18px;padding:clamp(16px,3vw,28px);margin:32px 0;font-family:system-ui,sans-serif;line-height:1.65;overflow-wrap:anywhere}#hm-sufficiency-explorer *{box-sizing:border-box}#hm-sufficiency-explorer h2,#hm-sufficiency-explorer h3{color:#eef8ff!important;line-height:1.4;margin:16px 0 12px}#hm-sufficiency-explorer h2{font-size:clamp(23px,3vw,32px)}#hm-sufficiency-explorer h3{font-size:19px}#hm-sufficiency-explorer p,#hm-sufficiency-explorer li{color:#d5e7fa}#hm-sufficiency-explorer .hm-top{display:flex;gap:12px;align-items:center;flex-wrap:wrap;font-size:13px;color:#a9cdea}#hm-sufficiency-explorer .hm-badge{display:inline-block;background:#123d68;color:#82efff;border:1px solid #3daee7;border-radius:99px;padding:4px 12px;font-weight:800}#hm-sufficiency-explorer .hm-inputs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin:18px 0}#hm-sufficiency-explorer label{display:block;font-weight:600}#hm-sufficiency-explorer select{display:block;width:100%;background:#102c4d;color:#eef8ff;min-height:46px;padding:9px;border:1px solid #4a82b2;border-radius:8px;font:inherit;font-size:15px}#hm-sufficiency-explorer input[type=range]{width:100%;min-height:44px;accent-color:#40d9f2}#hm-sufficiency-explorer output{font-size:20px;color:#77e5ff}#hm-sufficiency-explorer .hm-rows,#hm-sufficiency-explorer .hm-card-grid,#hm-sufficiency-explorer .hm-quiz{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}#hm-sufficiency-explorer article,#hm-sufficiency-explorer .hm-memory{background:#0e2642;border:1px solid #326186;border-radius:12px;padding:14px;min-width:0}#hm-sufficiency-explorer .hm-memory p{margin:8px 0}#hm-sufficiency-explorer .hm-score{font-size:20px;color:#7bedff!important;font-weight:750}#hm-sufficiency-explorer ul,#hm-sufficiency-explorer ol{padding-left:22px}#hm-sufficiency-explorer li{margin:10px 0;font-size:14px}#hm-sufficiency-explorer button{width:100%;min-height:46px;background:#164c80;border:1px solid #419ce2;border-radius:9px;color:#eef8ff;cursor:pointer;font:inherit;font-size:14px;padding:11px 12px;margin:5px 0;white-space:pre-line;text-align:left}#hm-sufficiency-explorer .hm-card-grid button{background:#102b49;border-color:#315b82}#hm-sufficiency-explorer button[aria-pressed=true]{background:#145365;border:2px solid #78edff}#hm-sufficiency-explorer button:focus-visible,#hm-sufficiency-explorer select:focus-visible,#hm-sufficiency-explorer input:focus-visible{outline:3px solid #82efff;outline-offset:3px}#hm-sufficiency-explorer button:disabled{opacity:.5;cursor:not-allowed}#hm-sufficiency-explorer [hidden]{display:none!important}#hm-sufficiency-explorer .hm-actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:16px 0}#hm-sufficiency-explorer .hm-feedback,#hm-sufficiency-explorer .hm-result{background:#123859;border-left:3px solid #42daed;border-radius:6px;padding:12px;min-height:44px}#hm-sufficiency-explorer .hm-note{font-size:13px;color:#b5cede}#hm-sufficiency-explorer details{border:1px solid #31587c;border-radius:8px;padding:12px;margin:16px 0}#hm-sufficiency-explorer summary{cursor:pointer;color:#8de8ff;font-weight:700;min-height:28px}#hm-sufficiency-explorer pre{white-space:pre-wrap;overflow-wrap:anywhere;font-size:12px;color:#d2e7f7}#hm-sufficiency-explorer .hm-quiz label{margin:10px 0} @media(max-width:700px){#hm-sufficiency-explorer .hm-inputs,#hm-sufficiency-explorer .hm-rows,#hm-sufficiency-explorer .hm-card-grid,#hm-sufficiency-explorer .hm-quiz,#hm-sufficiency-explorer .hm-actions{grid-template-columns:1fr}#hm-sufficiency-explorer button{font-size:15px}}#hm-sufficiency-explorer .hm-two{grid-template-columns:repeat(2,minmax(0,1fr))}#hm-sufficiency-explorer .hm-fact{display:flex;gap:12px;align-items:flex-start;background:#102b49;border:1px solid #315b82;border-radius:10px;padding:12px;font-weight:400;min-width:0}#hm-sufficiency-explorer .hm-fact span{white-space:pre-line;font-size:14px}#hm-sufficiency-explorer input[type=checkbox]{width:24px;min-width:24px;height:44px;flex-shrink:0;accent-color:#36d9f4}#hm-sufficiency-explorer .hm-question{border-left:3px solid #72eaff;padding:12px;background:#102d49}#hm-sufficiency-explorer .hm-warning{padding:12px;border:1px solid #e5ad64;background:#3b2b20;color:#ffdcad} @media(max-width:700px){#hm-sufficiency-explorer .hm-two{grid-template-columns:1fr}}</style>
+<div class="hm-top"><span class="hm-badge">SIMULATION</span><span>Formal factsที่กำหนดไว้ • ไม่มีLLM/NLIจริง</span></div><h2>ทดลอง: หลายชิ้นยังไม่เท่ากับproofที่ครบ</h2>
+<p>ศูนย์นิทรรศการออโรราเป็นข้อมูลสมมติ เลือกsourceแล้วดูว่าเชื่อมจากบัตรสีน้ำเงินไปห้องได้ครบหรือยัง ANDต้องมีpremiseทั้งกิ่ง ORยอมรับทางเลือกที่ครบเพียงหนึ่งกิ่ง</p>
+<div class="hm-inputs"><label>คำถามที่ต้องตอบ<select data-input="mode"><option value="roomOnly">ถามห้องปลายทางเท่านั้น</option><option value="routeAndRoom">ถามเส้นทาง/อาคารกลางและห้อง</option></select></label><label>การสาธิตmetadata<select data-input="policy"><option value="strict">กรองAPPROVED/CURRENT</option><option value="ignore-demo">แสดงcandidateเมื่อละเลยmetadata</option></select></label></div>
+<p class="hm-question" data-state="question"></p><h3>Input: เลือกformal factsและsource IDs</h3><div class="hm-card-grid" data-state="facts"></div>
+<div class="hm-actions"><button type="button" data-action="copy">คัดลอกE1อีกหนึ่งrecord</button><button type="button" data-action="reset">Reset — E1 / ถามห้อง / metadataเคร่งครัด</button></div>
+<h3>State: Selected records / Premises / Witnesses</h3><p class="hm-score" data-state="count"></p><p data-state="selected"></p><div class="hm-rows hm-two"><article><h3>กิ่งที่พิจารณาและpremiseที่ขาด</h3><div data-state="branches"></div></article><article><h3>Complete applicable witnesses</h3><div data-state="witnesses"></div></article></div>
+<p class="hm-feedback" data-state="status" aria-live="polite"></p><p data-state="rejected"></p><div class="hm-warning" data-state="unsafe" hidden></div>
+<details><summary>กฎที่ตรวจได้และขอบเขตการสาธิต</summary><p>เริ่มจากBlueBadgeด้วยassignedTo ถ้าปลายทางเป็นห้องใช้direct edgeได้เมื่อถามห้อง ถ้าผ่านroute/building ต้องjoin objectของedgeแรกกับsubjectของleadsToถัดไปให้ตรง และจบที่room ข้อเท็จจริงที่ใช้ต้องAPPROVEDและCURRENT</p><p>E1+E4ไม่ต่อกัน: SunRouteไม่ใช่OrbitBuilding สำเนาE1ไม่เติมE2 E5ไม่บอกintermediate E8เป็นDRAFT/PREVIOUS_LAYOUTจึงไม่ผ่านpolicy การเปิดignore-demoแสดงcandidateที่ผิดกติกาเท่านั้น ไม่ยกระดับร่างเป็นหลักฐานที่ใช้ตอบได้</p><p>ไม่มีwitnessในselectedcontext = INSUFFICIENT_IN_THIS_SELECTED_CONTEXT ไม่ใช่ข้ออ้างเท็จหรือค้นจากทั้งโลกไม่ได้ Source-world truthและความสามารถโมเดลจริงยังUNKNOWN แม้proofจำลองครบ</p></details>
+<p class="hm-note">กฎนี้ตรวจgraphที่เขียนไว้ ไม่ตีความข้อความเปิดด้วยNLI ไม่จำลองretrieval/semanticentailmentทั่วไป ไม่มีmodelweightupdateหรือpersistence</p>
+<script>(function(){'use strict';const C=(function(){'use strict';
+const DATA={
+  "article":"010",
+  "type":"SIMULATION",
+  "fixture":"ศูนย์นิทรรศการออโรรา — fictional authored graph and metadata",
+  "nodes":{"BlueBadge":"badge","RedBadge":"badge","SunRoute":"route","OrbitBuilding":"building","RoomA3":"room","RoomB2":"room","BlueFlowers":"decor"},
+  "facts":[
+    {"id":"E1","subject":"BlueBadge","predicate":"assignedTo","object":"SunRoute","status":"APPROVED","applicability":"CURRENT","cost":1,"text":"บัตรสีน้ำเงินใช้เส้นทางสุริยะ (SunRoute)"},
+    {"id":"E2","subject":"SunRoute","predicate":"leadsTo","object":"RoomA3","status":"APPROVED","applicability":"CURRENT","cost":1,"text":"เส้นทางสุริยะนำไปห้องA3"},
+    {"id":"E3","subject":"BlueBadge","predicate":"assignedTo","object":"OrbitBuilding","status":"APPROVED","applicability":"CURRENT","cost":1,"text":"บัตรสีน้ำเงินใช้ทางผ่านอาคารวงโคจร (OrbitBuilding)"},
+    {"id":"E4","subject":"OrbitBuilding","predicate":"leadsTo","object":"RoomA3","status":"APPROVED","applicability":"CURRENT","cost":1,"text":"อาคารวงโคจรนำไปห้องA3"},
+    {"id":"E5","subject":"BlueBadge","predicate":"assignedTo","object":"RoomA3","status":"APPROVED","applicability":"CURRENT","cost":3,"text":"แผนผังที่อนุมัติยืนยันตรงว่าบัตรสีน้ำเงินไปห้องA3 แต่ไม่ได้ระบุเส้นทางหรืออาคารกลาง"},
+    {"id":"E6","subject":"RedBadge","predicate":"assignedTo","object":"RoomB2","status":"APPROVED","applicability":"CURRENT","cost":1,"text":"บัตรสีแดงไปห้องB2 ไม่ใช่บัตรสีน้ำเงิน"},
+    {"id":"E7","subject":"BlueFlowers","predicate":"decorates","object":"RoomA3","status":"APPROVED","applicability":"CURRENT","cost":1,"text":"ดอกไม้สีน้ำเงินตกแต่งห้องA3 ไม่ใช่ความสัมพันธ์การใช้บัตร"},
+    {"id":"E8","subject":"BlueBadge","predicate":"assignedTo","object":"RoomB2","status":"DRAFT","applicability":"PREVIOUS_LAYOUT","cost":1,"text":"ร่างแผนผังเก่าบอกบัตรสีน้ำเงินไปห้องB2 ยังไม่อนุมัติและไม่ใช้กับผังปัจจุบัน"}
+  ],
+  "queryModes":{
+    "roomOnly":{"question":"บัตรสีน้ำเงินไปห้องใดตามแผนผังที่อนุมัติและใช้ปัจจุบัน?","required":"room","proofSets":[["E5"],["E1","E2"],["E3","E4"]]},
+    "routeAndRoom":{"question":"บัตรสีน้ำเงินผ่านเส้นทางหรืออาคารกลางใด และไปห้องใดตามผังที่อนุมัติและใช้ปัจจุบัน?","required":"intermediate+room","proofSets":[["E1","E2"],["E3","E4"]]}
+  },
+  "formalRules":"OnlyAPPROVED/CURRENT facts are eligible. First edge is assignedTo fromBlueBadge. Direct room edge answersroomOnly. Two-edge witness requires first object ofroute/building type tojoin exactly the leadsTo subject, endingatroom node. routeAndRoom requires that explicit intermediate. Metadata is a separate applicability rule, not source-world-truth verification or timestampmax authority.",
+  "proofOptions":{"direct":["E5"],"sun":["E1","E2"],"orbit":["E3","E4"],"cross":["E1","E4"],"draft":["E8"]},
+  "explorer":{
+    "id":"hm-sufficiency-explorer",
+    "initialSelected":["E1"],
+    "inputs":["roomOnly/routeAndRoom","SelectE1–E8","CopyE1 one moretime","strict/ignore-demo metadata displaypolicy"],
+    "selectedSet":"Unique IDs determine required-premise presence; raw duplicates are displayed separately and cannot complete a missing premise.",
+    "AND":"All required facts ofone witness must be present andjoin underformalrules.",
+    "OR":"Anyone complete applicable proof-set suffices; alternatives neednotall be retrieved.",
+    "scopeChange":"E5 alone is enough forroomOnly butinsufficientforrouteAndRoom; missingintermediate cannotbeinferred froma directedge.",
+    "metadataDemo":"strict excludesE8. ignore-demo showsformal candidates fromignoredmetadata, suchasBlueBadge→RoomB2, labeledunsafe/unapproved; finalapplicablewitness resultalwaysenforcesAPPROVED/CURRENT. ItdoesnotpromoteDRAFTtocertifiedtruth.",
+    "output":"Completeapplicablewitnesses withsourceIDs, branch-specific missingpremises, rejectedfacts/scope, selectedrawcountvsuniqueIDs; ifnone INSUFFICIENT_IN_THIS_SELECTED_CONTEXT, notgloballyfalse orimpossible.",
+    "outsideContextAnswerability":"UNKNOWN whenno selectedwitness; no exhaustiveworldsearch orclosed-worldfalse claim.",
+    "sourceWorldTruth":"UNKNOWN evenifformal fixturewitnesscomplete; no externalverification orLLMsemanticentailment.",
+    "reset":true
+  },
+  "game":{
+    "id":"hm-sufficiency-game",
+    "budget":6,
+    "presets":{
+      "missingAND":{"mode":"roomOnly","seed":["E1"],"label":"ขาดpremiseในกิ่งAND","winningExample":"FetchE2(cost1), choose sun, answerRoomA3"},
+      "mixedBranches":{"mode":"roomOnly","seed":["E1","E4"],"label":"หยิบคนละกิ่ง","winningExample":"FetchE2(cost1)forsun orE3(cost1)fororbit; crossE1+E4 alonefails"},
+      "scopeChanged":{"mode":"routeAndRoom","seed":["E5"],"label":"คำถามเพิ่มintermediate","winningExample":"FetchE1+E2(cost2), choose sun, answerintermediateSunRouteandRoomA3; directE5alonefails"}
+    },
+    "costs":"Fetchperfactcost storedinfacts: E1–E4/E6–E8 cost1, E5 cost3. CopyexistingE1 costs1. Seedfactsareprovidedfree. Costsareauthoredtoyactions, notrealretrievalcost/token/money/latency.",
+    "goal":"Withinbudget, chosenproofIDs mustmatchanapplicablecompletewitnessforcurrentquestion; answerroommustmatchwitness, andintermediate requiredforrouteAndRoommustmatchthat samewitness. Counts/copies/mixedbranches/draftmetadata/correctroomguesswithoutproof cannotwin.",
+    "termination":"Grade requires witnessandroom plusintermediate whenasked; endsroundonce. Budgetzero blocksfurtherfetch/copy butstillallowsgrade/Reset.",
+    "selectors":"data-config preset; data-fetch E1–E8; data-action copy|grade|reset; data-answer witness|room|intermediate",
+    "reset":true
+  },
+  "qaHook":"Eachroot hmSnapshot() returnsdeepcopy",
+  "scientificLimits":["Authored formal graph, not NLI/LLMsemanticverification","Evidence-in-context sufficiency differsfromworldtruth andmodelability","Missingwitness inselectedcontext doesnot establishclaimfalse orgloballyunanswerable","Onlya maximumtwo-edge grammar issimulated","NoactualLLM/API/training/weights/persistence","Metadataacceptance reflectsdeclaredtaskpolicy, notscientificsourceauthority"]
+}
+;
+const clone=v=>JSON.parse(JSON.stringify(v));
+const unique=v=>Array.from(new Set(v));
+function eligible(f){return [f.status==='APPROVED',f.applicability==='CURRENT'].every(Boolean);}
+function paths(facts){const out=[];for(const first of facts){if(first.subject!=='BlueBadge'||first.predicate!=='assignedTo')continue;const type=DATA.nodes[first.object];if(type==='room')out.push({ids:[first.id],intermediate:null,room:first.object,metadataValid:eligible(first)});if(['route','building'].includes(type)){for(const second of facts){if(second.subject!==first.object||second.predicate!=='leadsTo'||DATA.nodes[second.object]!=='room')continue;out.push({ids:[first.id,second.id],intermediate:first.object,room:second.object,metadataValid:[eligible(first),eligible(second)].every(Boolean)});}}}return out.sort((a,b)=>a.ids.length-b.ids.length||a.ids.join().localeCompare(b.ids.join()));}
+function inScope(p,mode){return mode==='roomOnly'||p.intermediate!==null;}
+function approvedPaths(mode){return paths(DATA.facts.filter(eligible)).filter(p=>inScope(p,mode));}
+function inspect(selected=['E1'],mode='roomOnly',policy='strict'){if(!DATA.queryModes[mode])throw Error('invalid querymode');if(!['strict','ignore-demo'].includes(policy))throw Error('invalid policy');const ids=unique(selected),facts=DATA.facts.filter(f=>ids.includes(f.id)),usable=facts.filter(eligible),complete=paths(usable).filter(p=>inScope(p,mode)),branches=approvedPaths(mode).map(p=>({...p,missing:p.ids.filter(id=>!ids.includes(id)),complete:p.ids.every(id=>ids.includes(id))}));return {selected:clone(selected),uniqueIds:ids,rawCount:selected.length,uniqueCount:ids.length,copies:selected.length-ids.length,mode,policy,question:DATA.queryModes[mode].question,formalFacts:clone(facts),usableIds:usable.map(f=>f.id),rejectedFacts:facts.filter(f=>!eligible(f)).map(f=>({id:f.id,status:f.status,applicability:f.applicability,reason:'NOT_APPROVED_CURRENT'})),unknownIds:ids.filter(id=>!DATA.facts.some(f=>f.id===id)),completeWitnesses:complete,branches,scopeRejected:paths(usable).filter(p=>!inScope(p,mode)),unsafeCandidates:policy==='ignore-demo'?paths(facts).filter(p=>[!p.metadataValid,inScope(p,mode)].every(Boolean)):[],status:complete.length?'SUFFICIENT_IN_THIS_CONTEXT':'INSUFFICIENT_IN_THIS_SELECTED_CONTEXT',sourceWorldTruth:'UNKNOWN',modelAnswerability:'UNKNOWN',outsideSelectedContext:'UNKNOWN'};}
+function choicePath(name){const ids=DATA.proofOptions[name];if(!ids)return null;return paths(DATA.facts).find(p=>p.ids.join('|')===ids.join('|'))||null;}
+function makeExplorer(){return {selected:['E1'],mode:'roomOnly',policy:'strict'};}
+function toggle(s,id){if(!DATA.facts.some(f=>f.id===id))return {ok:false,reason:'UNKNOWN_ID'};s.selected=s.selected.includes(id)?s.selected.filter(x=>x!==id):s.selected.concat(id);return {ok:true};}
+function copyE1(s){if(!s.selected.includes('E1'))return {ok:false,reason:'E1_REQUIRED'};s.selected.push('E1');return {ok:true};}
+function makeGame(preset='missingAND'){const p=DATA.game.presets[preset];if(!p)throw Error('unknown preset');return {preset,mode:p.mode,selected:clone(p.seed),budget:DATA.game.budget,spent:0,answers:{witness:'',room:'',intermediate:''},ended:false,result:null,trace:[],feedback:'ตรวจpremiseที่มี แล้วเลือกหลักฐานที่ต่อกิ่งเดียวกันในงบ6หน่วย'};}
+function fetchFact(s,id){if(s.ended)return {ok:false,reason:'ENDED'};const f=DATA.facts.find(x=>x.id===id);if(!f)return {ok:false,reason:'UNKNOWN_ID'};if(s.selected.includes(id))return {ok:false,reason:'ALREADY_HAVE'};if(s.spent+f.cost>s.budget){s.feedback='งบไม่พอ — ชุดหลักฐานเดิมไม่เปลี่ยน';return {ok:false,reason:'OVER_BUDGET'};}s.spent+=f.cost;s.selected.push(id);s.trace.push({action:'FETCH',id,cost:f.cost,spent:s.spent,uniqueIds:unique(s.selected)});s.feedback='เก็บ '+id+' ใช้'+f.cost+'หน่วย ตรวจว่าjoinกับpremiseเดิมได้หรือไม่';return {ok:true,cost:f.cost};}
+function gameCopy(s){if(s.ended)return {ok:false,reason:'ENDED'};if(!s.selected.includes('E1'))return {ok:false,reason:'E1_REQUIRED'};if(s.spent+1>s.budget){s.feedback='งบหมด สำเนาเพิ่มไม่ได้';return {ok:false,reason:'OVER_BUDGET'};}s.spent+=1;s.selected.push('E1');s.trace.push({action:'COPY',id:'E1',cost:1,spent:s.spent,uniqueIds:unique(s.selected)});s.feedback='สำเนาE1เพิ่มจำนวนrecord แต่ไม่ได้เพิ่มpremiseที่ขาด';return {ok:true,cost:1};}
+function setAnswer(s,field,value){if(s.ended)return {ok:false,reason:'ENDED'};if(!['witness','room','intermediate'].includes(field))return {ok:false,reason:'INVALID_FIELD'};s.answers[field]=value;return {ok:true};}
+function gameView(s){return {...clone(s),remaining:s.budget-s.spent,evidence:inspect(s.selected,s.mode,'strict')};}
+function grade(s){if(s.ended)return {ok:false,reason:'ENDED'};const required=s.mode==='routeAndRoom'?['witness','room','intermediate']:['witness','room'];if(!required.every(f=>Boolean(s.answers[f])))return {ok:false,reason:'ANSWER_ALL'};const ids=DATA.proofOptions[s.answers.witness]||[],p=choicePath(s.answers.witness),joined=Boolean(p),retained=ids.length!==0?ids.every(id=>s.selected.includes(id)):false,metadataValid=p?p.metadataValid:false,scopeValid=p?inScope(p,s.mode):false,roomCorrect=p?p.room===s.answers.room:false,intermediateCorrect=s.mode==='roomOnly'?true:p?p.intermediate===s.answers.intermediate:false,withinBudget=s.budget>=s.spent;const goal=[joined,retained,metadataValid,scopeValid,roomCorrect,intermediateCorrect,withinBudget].every(Boolean);s.result={goal,chosenIds:clone(ids),joined,retained,metadataValid,scopeValid,roomCorrect,intermediateCorrect,withinBudget,spent:s.spent,budget:s.budget};s.ended=true;s.feedback=goal?'ชนะ — proofครบและใช้ได้กับคำถาม พร้อมคำตอบที่ตรงwitness':'ยังไม่สำเร็จ — ตรวจjoin premise metadata ขอบเขตคำถาม และค่าคำตอบ';return {ok:true,result:clone(s.result)};}
+return {DATA,clone,unique,eligible,paths,inScope,approvedPaths,inspect,choicePath,makeExplorer,toggle,copyE1,makeGame,fetchFact,gameCopy,setAnswer,gameView,grade};
+})();const root=document.getElementById('hm-sufficiency-explorer');if(!root)return;const node=n=>root.querySelector('[data-state="'+n+'"]'),input=n=>root.querySelector('[data-input="'+n+'"]');let state=C.makeExplorer();C.DATA.facts.forEach(f=>{const l=document.createElement('label'),c=document.createElement('input'),span=document.createElement('span');l.className='hm-fact';c.type='checkbox';c.setAttribute('data-fact',f.id);span.textContent=f.id+' • '+f.text+'\n'+f.subject+' —'+f.predicate+'→ '+f.object+'\n'+f.status+' / '+f.applicability;c.addEventListener('change',()=>{C.toggle(state,f.id);render();});l.append(c,span);node('facts').append(l);});function line(target,text){const p=document.createElement('p');p.textContent=text;target.append(p);}function render(){const v=C.inspect(state.selected,state.mode,state.policy);root.querySelectorAll('[data-fact]').forEach(c=>{c.checked=v.uniqueIds.includes(c.getAttribute('data-fact'));});node('question').textContent=v.question;node('count').textContent='Records '+v.rawCount+' • Unique source IDs '+v.uniqueCount+' • สำเนา '+v.copies;node('selected').textContent='Selected: '+v.uniqueIds.join(', ')+' | ใช้ได้ตามmetadata: '+(v.usableIds.join(', ')||'ไม่มี');node('branches').replaceChildren();v.branches.forEach(b=>line(node('branches'),'{'+b.ids.join(', ')+'} → '+(b.missing.length?'ขาด '+b.missing.join(', '):'ครบกิ่งนี้')));node('witnesses').replaceChildren();v.completeWitnesses.forEach(w=>line(node('witnesses'),'{'+w.ids.join(', ')+'} • '+(w.intermediate?w.intermediate+' → ':'')+w.room));if(!v.completeWitnesses.length)line(node('witnesses'),'ยังไม่มีwitnessที่ใช้ได้กับคำถามนี้');node('status').textContent=v.status+' • Source-world truth: UNKNOWN • Model ability: UNKNOWN';node('rejected').textContent=v.rejectedFacts.map(f=>f.id+' ถูกกรอง: '+f.status+'/'+f.applicability).concat(v.scopeRejected.map(w=>'{'+w.ids.join(', ')+'} ยังไม่ระบุintermediateที่คำถามต้องการ')).join(' • ');node('unsafe').hidden=state.policy!=='ignore-demo';node('unsafe').textContent='IGNORE-METADATA DEMO: '+(v.unsafeCandidates.length?v.unsafeCandidates.map(w=>'{'+w.ids.join(', ')+'} → '+w.room+' ไม่ผ่านAPPROVED/CURRENT').join(' • '):'ยังไม่มีcandidateที่ไม่ผ่านmetadataในชุดนี้')+' • ผลwitnessที่ใช้ตอบด้านบนยังกรองmetadataตามกติกา';root.querySelector('[data-action="copy"]').disabled=!v.uniqueIds.includes('E1');}input('mode').addEventListener('change',()=>{state.mode=input('mode').value;render();});input('policy').addEventListener('change',()=>{state.policy=input('policy').value;render();});root.querySelector('[data-action="copy"]').addEventListener('click',()=>{C.copyE1(state);render();});root.querySelector('[data-action="reset"]').addEventListener('click',()=>{state=C.makeExplorer();input('mode').value='roomOnly';input('policy').value='strict';render();});root.hmSnapshot=()=>C.inspect(state.selected,state.mode,state.policy);render();})();</script></section>
+
+
+
+
+<p class="wp-block-paragraph"><strong>อ่านผลอย่างไร:</strong> complete witness คือชุดที่ครบภายใต้กฎที่กำหนด missing premise คือข้อที่ยังขาดในแต่ละกิ่ง ส่วน rejected fact อธิบายเหตุที่ใช้ไม่ได้ ถ้าไม่มี witness ผลหมายถึง “ข้อมูลที่เลือกนี้ยังไม่พอ” ความจริงในโลกและการตอบได้จากข้อมูลนอกชุดยังเป็น UNKNOWN กด Reset เพื่อกลับสู่จุดเริ่มต้นได้</p>
+
+
+
+<h2 class="wp-block-heading" id="hm-sufficiency-section-9">System Architecture: ออกแบบ Gate ที่ตรวจได้</h2>
+
+
+
+<p class="wp-block-paragraph">แผนต่อไปนี้เป็น <strong>Conceptual Architecture / HYPOTHESIS</strong> สำหรับ application ที่มีความจำภายนอกและงานถามตอบหลายขั้น ต้องทดสอบ extraction และนโยบายของงานจริงก่อนใช้กับการตัดสินใจ ไม่มีงานต้นฉบับใดในบทความยืนยันว่าสถาปัตยกรรมรวมนี้พร้อมใช้งานทุกโดเมน</p>
+
+
+
+<figure class="wp-block-image size-full"><a href="https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-sufficiency-010-02-architecture.png?ssl=1"><img data-recalc-dims="1" data-attachment-id="1751" data-permalink="https://hybridmind.online/hm-sufficiency-010-02-architecture/" data-orig-file="https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-sufficiency-010-02-architecture.png?fit=1800%2C1150&amp;ssl=1" data-orig-size="1800,1150" data-comments-opened="1" data-image-title="Conceptual Evidence Sufficiency Architecture และ Source Trace" data-image-description="" data-image-caption="&lt;p&gt;HYPOTHESIS: ผังรวม 7 หน้าที่ใน 6 กล่อง โดยรวม GapSearch กับ BudgetController ในกล่อง 5; complete ไป Answer ได้เลย และ missing จึงค้นตามงบหรือ abstain ไม่ใช่ผังทดลองต้นฉบับ Sufficient Context และไม่ยืนยันว่า NL parser/targeted iterative retrieval พร้อมใช้; source trace ไม่ใช่ hidden thoughts หรือ weight training&lt;/p&gt;
+" data-large-file="https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-sufficiency-010-02-architecture.png?fit=1024%2C654&amp;ssl=1" src="https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-sufficiency-010-02-architecture.png?resize=1800%2C1150&#038;ssl=1" alt="หกกล่อง TaskSpec EvidenceStore PremiseMapper SufficiencyGate GapSearch รวม BudgetController และ Answer Trace มีทาง complete ไป answer โดยตรง ทาง missing ค้น gap เมื่อมีงบ และทาง stop ที่ abstain พร้อมคำอธิบายการรวม 7 หน้าที่" width="1800" height="1150" class="wp-image-1751" loading="lazy" decoding="async" srcset="https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-sufficiency-010-02-architecture.png?w=1800&amp;ssl=1 1800w, https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-sufficiency-010-02-architecture.png?resize=300%2C192&amp;ssl=1 300w, https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-sufficiency-010-02-architecture.png?resize=1024%2C654&amp;ssl=1 1024w, https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-sufficiency-010-02-architecture.png?resize=768%2C491&amp;ssl=1 768w, https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-sufficiency-010-02-architecture.png?resize=1536%2C981&amp;ssl=1 1536w" sizes="auto, (max-width: 1000px) 100vw, 1000px" /></a><figcaption><strong>Conceptual Evidence Sufficiency Architecture และ Source Trace</strong> — HYPOTHESIS: ผังรวม 7 หน้าที่ใน 6 กล่อง โดยรวม GapSearch กับ BudgetController ในกล่อง 5; complete ไป Answer ได้เลย และ missing จึงค้นตามงบหรือ abstain ไม่ใช่ผังทดลองต้นฉบับ Sufficient Context และไม่ยืนยันว่า NL parser/targeted iterative retrieval พร้อมใช้; source trace ไม่ใช่ hidden thoughts หรือ weight training · <a href="https://proceedings.iclr.cc/paper_files/paper/2025/hash/33dffa2e3d2ab74a783d1a8c292f66d9-Abstract-Conference.html">แหล่งแนวคิด 1</a> · <a href="https://aclanthology.org/D18-1259/">แหล่งแนวคิด 2</a> · <a href="https://aclanthology.org/2022.tacl-1.31/">แหล่งแนวคิด 3</a> · <a href="https://aclanthology.org/N18-1074/">แหล่งแนวคิด 4</a> · <a href="https://aclanthology.org/2020.acl-main.503/">แหล่งแนวคิด 5</a></figcaption></figure>
+
+
+
+<figure class="wp-block-table"><table><thead><tr><th scope="col">Module</th><th scope="col">Input → Output และ State</th><th scope="col">จุดตรวจและตัวอย่าง Failure</th></tr></thead><tbody><tr><td>TaskSpec</td><td>คำถาม ขอบเขต เวลา → required outputs, entity IDs, policy version</td><td>ถ้าผู้ใช้เพิ่มทางผ่าน แต่ยังใช้ spec ถามห้อง จะรับหลักฐานไม่ครบ</td></tr><tr><td>EvidenceStore</td><td>เอกสารหรือ memory records → source spans, ID, version, applicability</td><td>การตัดประโยคเงื่อนไขหรือใช้ร่างเก่าทำให้ record ดูครบเกินต้นฉบับ</td></tr><tr><td>PremiseMapper</td><td>TaskSpec กับ spans → relations, candidate proof sets, mapping status</td><td>ชื่อคล้ายกันไม่ได้หมายถึง entity เดียว ต้องเก็บ UNKNOWN เมื่อเชื่อมไม่ได้</td></tr><tr><td>SufficiencyGate</td><td>proof sets กับบริบทจริง → witnesses, branch-specific gaps, rejected facts</td><td>ห้ามหยิบต้นทางจากกิ่งหนึ่งไปต่อปลายอีกกิ่งโดยไม่มี relation รองรับ</td></tr><tr><td>GapSearch</td><td>ข้อที่ขาดและแหล่งอนุญาต → targeted query, candidate records</td><td>ค้นเรื่องเดิมซ้ำโดยไม่ได้ premise ที่ขาดทำให้งบหมดโดยไม่คืบหน้า</td></tr><tr><td>BudgetController</td><td>ค่าใช้จ่ายจริง deadline และประวัติ → continue, clarify หรือ stop</td><td>จำนวนรอบต่ำไม่ได้รับรองครบ ต้องหยุดพร้อมแสดงข้อจำกัดที่เหลือ</td></tr><tr><td>Answer + Trace</td><td>witness หรือเหตุหยุด → scoped answer, source IDs, audit record</td><td>คำตอบที่เสริมข้อมูลใหม่หลัง Gate ต้องตรวจใหม่ แม้ส่วนแรกผ่านแล้ว</td></tr></tbody></table></figure>
+
+
+
+<p class="wp-block-paragraph">ผังรวม GapSearch กับ BudgetController เป็นกลุ่มควบคุมการค้น ตารางแยกหน้าที่ ส่วน State ควรเก็บ snapshot ของคำถาม กฎ บริบท และ source mapping รอบนั้น</p>
+
+
+
+<p class="wp-block-paragraph">EvidenceStore เป็น <strong>External Memory</strong> ข้อมูลที่คัดออกมาเป็น <strong>Retrieved Context</strong> และส่วนที่ส่งให้โมเดลอยู่ภายใน <strong>Context Window</strong> การเขียน record หรือปรับ prompt ไม่ได้เปลี่ยน <strong>Model Weights</strong> ถ้าฝึก classifier หรือ fine-tune โมเดล ต้องระบุ dataset เป้าหมาย loss และการประเมินแยกจากการอัปเดตความจำ</p>
+
+
+
+<h2 class="wp-block-heading" id="hm-sufficiency-section-10">Operational Flow: ค้นเพื่อเติมช่อง ไม่ค้นเพื่อเพิ่มยอด</h2>
+
+
+
+<p class="wp-block-paragraph">ขั้นแรก ทำ TaskSpec ให้เห็น output ที่ต้องส่ง และขอให้ผู้ใช้ชี้แจงเมื่อชื่อ ขอบเขต หรือคำถามกำกวม ถ้าถามทั้งทางผ่านและห้อง ให้เก็บทั้งสองข้อ อย่าทำ specification ให้แคบลงเพียงเพื่อให้หลักฐานเดิมผ่าน</p>
+
+
+
+<p class="wp-block-paragraph">ขั้นสอง อ่านเอกสารตามสิทธิ์และ snapshot เก็บข้อความกับ metadata และตรวจบริบทหลังตัดทอน การมี document ID ใน memory ไม่รับรองว่าประโยคจำเป็นมาถึงตัวตรวจ</p>
+
+
+
+<p class="wp-block-paragraph">ขั้นสาม map premise และ entity พร้อม source spans แยกบัตรไปทางใดจากทางนำไปห้องใด คำว่า A3 เหมือนกันไม่รับรองว่า record กล่าวถึงบัตรเดียวกัน</p>
+
+
+
+<p class="wp-block-paragraph">ขั้นสี่ ตรวจ witness แต่ละทางภายใต้นโยบายของ TaskSpec ถ้ามีทางที่ครบ ให้เก็บ IDs ที่รองรับทางนั้น ถ้ามีแต่ข้อกระจัดกระจาย ให้ส่ง gaps ของแต่ละกิ่ง การคำนวณนี้ต้องไม่สร้าง relation ใหม่จากความคล้ายของคำ</p>
+
+
+
+<p class="wp-block-paragraph">ขั้นห้า เลือกช่องค้นต่อ เช่นมี E1 แล้วจึงหาปลายของเส้นทางสุริยะ ปฏิเสธข้อมูลซ้ำ เกินสิทธิ์ หรืออยู่นอกผัง พร้อมบันทึกเหตุ</p>
+
+
+
+<p class="wp-block-paragraph">ขั้นสุดท้าย หยุดตามงบหรือ deadline เมื่อยังไม่มี witness และแจ้งข้อที่ขาด ถ้ามี witness ให้สร้างคำตอบจำกัดตามข้อที่รองรับแล้วตรวจ claim/source หลังสร้าง Trace คือรายการหลักฐาน คำสั่ง และผลเครื่องมือที่เกิดขึ้น ไม่ใช่การรับรองร่องรอยความคิดภายในโมเดล</p>
+
+
+
+<figure class="wp-block-image size-full"><a href="https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-sufficiency-010-03-operational-flow.png?ssl=1"><img data-recalc-dims="1" data-attachment-id="1752" data-permalink="https://hybridmind.online/hm-sufficiency-010-03-operational-flow/" data-orig-file="https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-sufficiency-010-03-operational-flow.png?fit=1600%2C1120&amp;ssl=1" data-orig-size="1600,1120" data-comments-opened="1" data-image-title="SIMULATION: เติม Premise ที่หาย และตรวจ Join ก่อนตอบ" data-image-description="" data-image-caption="&lt;p&gt;SIMULATION: เลือก E1 แล้วเติม E2 ตาม fixture ตรวจ join ที่ SunRoute และ APPROVED/CURRENT จึงตอบ SunRoute/RoomA3 พร้อม witness E1,E2 Copy E1 หรือใช้ E1+E4 ไม่ครบ witness; ไม่พอใน selected context ไม่เท่ากับ false/impossible และ source-world truth ยัง UNKNOWN&lt;/p&gt;
+" data-large-file="https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-sufficiency-010-03-operational-flow.png?fit=1024%2C717&amp;ssl=1" src="https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-sufficiency-010-03-operational-flow.png?resize=1600%2C1120&#038;ssl=1" alt="หกขั้นตอน query ทางกลางและห้อง เลือก E1 ตรวจ missing premise หยิบ E2 ตรวจ node SunRoute ตรงกันและ metadata แล้วตอบ SunRoute A3 ด้วย source IDs E1 E2 พร้อมแสดงกิ่งไขว้และ copy ที่ยังไม่พอ" width="1600" height="1120" class="wp-image-1752" loading="lazy" decoding="async" srcset="https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-sufficiency-010-03-operational-flow.png?w=1600&amp;ssl=1 1600w, https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-sufficiency-010-03-operational-flow.png?resize=300%2C210&amp;ssl=1 300w, https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-sufficiency-010-03-operational-flow.png?resize=1024%2C717&amp;ssl=1 1024w, https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-sufficiency-010-03-operational-flow.png?resize=768%2C538&amp;ssl=1 768w, https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-sufficiency-010-03-operational-flow.png?resize=1536%2C1075&amp;ssl=1 1536w" sizes="auto, (max-width: 1000px) 100vw, 1000px" /></a><figcaption><strong>SIMULATION: เติม Premise ที่หาย และตรวจ Join ก่อนตอบ</strong> — SIMULATION: เลือก E1 แล้วเติม E2 ตาม fixture ตรวจ join ที่ SunRoute และ APPROVED/CURRENT จึงตอบ SunRoute/RoomA3 พร้อม witness E1,E2 Copy E1 หรือใช้ E1+E4 ไม่ครบ witness; ไม่พอใน selected context ไม่เท่ากับ false/impossible และ source-world truth ยัง UNKNOWN · <a href="https://proceedings.iclr.cc/paper_files/paper/2025/hash/33dffa2e3d2ab74a783d1a8c292f66d9-Abstract-Conference.html">แหล่งแนวคิด 1</a> · <a href="https://aclanthology.org/D18-1259/">แหล่งแนวคิด 2</a> · <a href="https://aclanthology.org/2022.tacl-1.31/">แหล่งแนวคิด 3</a> · <a href="https://aclanthology.org/N18-1074/">แหล่งแนวคิด 4</a></figcaption></figure>
+
+
+
+<pre class="wp-block-code"><code># CONCEPTUAL pseudocode — ไม่ใช่โค้ด production ที่รันทดสอบแล้ว
+spec = parse_or_clarify(question, task_policy)
+while budget_remaining:
+    mapped = map_premises(spec, effective_context)
+    if mapped.status == UNKNOWN:
+        return clarify_or_escalate_with_limits(mapped)
+    result = check_applicable_complete_witnesses(spec, mapped)
+    if result.has_witness:
+        answer = compose_scoped_answer(result.witness)
+        return audit_answer_against_sources(answer, result.witness)
+    if no_permitted_search_target(result.gaps):
+        break
+    effective_context += search_missing_premise(result.gaps)
+    debit_actual_budget_and_record_trace()
+return abstain_with_missing_premises_and_search_scope()</code></pre>
+
+
+
+<p class="wp-block-paragraph">budget คือทรัพยากรที่กำหนด effective_context คือข้อมูลใช้ตรวจ mapped.status บอกความแน่ชัดของ premise mapping และ witness คือชุดที่ครบตาม spec การค้นเพิ่มเป็นข้อเสนอของบทความ ไม่ใช่ผลทดลองต้นฉบับ</p>
+
+
+
+<h2 class="wp-block-heading" id="hm-sufficiency-section-11">Technical Comparison: ใช้อะไรตัดสินว่าพอ</h2>
+
+
+
+<figure class="wp-block-table"><table><thead><tr><th scope="col">วิธี</th><th scope="col">สิ่งที่ตรวจได้</th><th scope="col">ต้นทุนและข้อจำกัด</th></tr></thead><tbody><tr><td>จำนวนชิ้น / Similarity heuristic</td><td>ปริมาณและความใกล้หัวข้อ ใช้กรอง candidate เบื้องต้น</td><td>ทำง่าย แต่ข้อความซ้ำ คนละ entity และกิ่งที่ขาดข้อเชื่อมยังมีคะแนนสูงได้</td></tr><tr><td>Formal Toy Verifier</td><td>relation และชุดทางเลือกที่กำหนดชัด ตรวจ join และ metadata ซ้ำได้</td><td>รับรองเฉพาะกฎ/fixture; การแปลงภาษาธรรมชาติและความครบของ proof sets ต้องตรวจแยก</td></tr><tr><td>Sufficiency LLM Judge + policy งดตอบ</td><td>ประเมิน Q กับ C เชิงภาษาและใช้สัญญาณคัดเลือกตอบ</td><td>มีค่า model calls และความผิดพลาดของผู้ตรวจ ต้องปรับเกณฑ์ด้วยงานจริง ไม่รับรองโลกภายนอก</td></tr></tbody></table></figure>
+
+
+
+<figure class="wp-block-image size-full"><a href="https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-sufficiency-010-04-comparison.png?ssl=1"><img data-recalc-dims="1" data-attachment-id="1753" data-permalink="https://hybridmind.online/hm-sufficiency-010-04-comparison/" data-orig-file="https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-sufficiency-010-04-comparison.png?fit=1800%2C1190&amp;ssl=1" data-orig-size="1800,1190" data-comments-opened="1" data-image-title="Count/Similarity เทียบ Formal Verifier และ LLM Sufficiency Rater" data-image-description="" data-image-caption="&lt;p&gt;ANALYSIS: Count/similarity ช่วยหา candidate, formal verifier ตรวจกฎ/joins ที่กำหนด และ Sufficient Context ICLR 2025 ใช้ LLM autorater ร่วม selective answering ทั้งสามมีข้อจำกัด; external calibrator ฝึกแยกจาก LLM และ targeted iterative retrieval ที่บทความเสนอไม่ใช่ผลทดลองใน paper&lt;/p&gt;
+" data-large-file="https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-sufficiency-010-04-comparison.png?fit=1024%2C677&amp;ssl=1" src="https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-sufficiency-010-04-comparison.png?resize=1800%2C1190&#038;ssl=1" alt="สามคอลัมน์ Count Similarity Author Formal Verifier และ LLM Sufficiency Rater ICLR 2025 เปรียบเทียบ input การตรวจ failure scope selective answering และกระบวนการ calibrator ที่แยกจาก LLM self-training" width="1800" height="1190" class="wp-image-1753" loading="lazy" decoding="async" srcset="https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-sufficiency-010-04-comparison.png?w=1800&amp;ssl=1 1800w, https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-sufficiency-010-04-comparison.png?resize=300%2C198&amp;ssl=1 300w, https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-sufficiency-010-04-comparison.png?resize=1024%2C677&amp;ssl=1 1024w, https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-sufficiency-010-04-comparison.png?resize=768%2C508&amp;ssl=1 768w, https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-sufficiency-010-04-comparison.png?resize=1536%2C1015&amp;ssl=1 1536w" sizes="auto, (max-width: 1000px) 100vw, 1000px" /></a><figcaption><strong>Count/Similarity เทียบ Formal Verifier และ LLM Sufficiency Rater</strong> — ANALYSIS: Count/similarity ช่วยหา candidate, formal verifier ตรวจกฎ/joins ที่กำหนด และ Sufficient Context ICLR 2025 ใช้ LLM autorater ร่วม selective answering ทั้งสามมีข้อจำกัด; external calibrator ฝึกแยกจาก LLM และ targeted iterative retrieval ที่บทความเสนอไม่ใช่ผลทดลองใน paper · <a href="https://proceedings.iclr.cc/paper_files/paper/2025/hash/33dffa2e3d2ab74a783d1a8c292f66d9-Abstract-Conference.html">แหล่งแนวคิด 1</a> · <a href="https://aclanthology.org/D18-1259/">แหล่งแนวคิด 2</a> · <a href="https://aclanthology.org/2022.tacl-1.31/">แหล่งแนวคิด 3</a> · <a href="https://aclanthology.org/N18-1074/">แหล่งแนวคิด 4</a> · <a href="https://aclanthology.org/2020.acl-main.503/">แหล่งแนวคิด 5</a></figcaption></figure>
+
+
+
+<p class="wp-block-paragraph">ตารางเป็น <strong>ANALYSIS</strong> ไม่ใช่ benchmark จัดอันดับของเรา Verifier ตรวจถูกตามกฎได้แต่ premise อาจ map ผิด ส่วน label ของ LLM judge เป็นผลประเมิน ไม่ใช่ข้อพิสูจน์ที่ตรวจครบ</p>
+
+
+
+<p class="wp-block-paragraph">วิธี selective RAG ใน Sufficient Context ฝึกตัวคัดเลือกภายนอกแบบ logistic regression จากสัญญาณ autorater กับ self-rated confidence จึงต้องมีข้อมูลตรวจและเกณฑ์ของโดเมน ไม่ควรสรุปว่าให้โมเดลตอบ “มั่นใจหรือไม่” ครั้งเดียวแล้วได้ความสามารถแบบงานนั้น <a href="https://arxiv.org/html/2411.06037v3">วิธี selective RAG §5.1</a></p>
+
+
+
+<h2 class="wp-block-heading" id="hm-sufficiency-section-12">เกมจำลอง: ใช้งบเพื่อสร้างชุดหลักฐานที่ตอบได้</h2>
+
+
+
+<p class="wp-block-paragraph">เกมใช้ข้อมูลออโรราชุดเดียวกับ Interactive มีสามโจทย์: เริ่มจาก E1 ที่ขาดข้อเชื่อม เริ่มจาก E1+E4 ที่มาจากคนละกิ่ง และเริ่มจาก E5 เมื่อคำถามเปลี่ยนเป็นต้องการทางผ่านกับห้อง ข้อมูลตั้งต้นให้ฟรี แต่การค้นใหม่ใช้หน่วย action ตามที่กำหนด</p>
+
+
+
+<p class="wp-block-paragraph">คุณมีงบ 6 หน่วย ค้น E1–E4 และ E6–E8 ใช้ชิ้นละ 1 หน่วย ค้น E5 ใช้ 3 หน่วย ส่วนการคัดลอก E1 ใช้ 1 หน่วย ตัวเลขนี้เป็นต้นทุนสมมติของเกม ไม่ใช่ tokens เวลา ราคา API หรือสัดส่วนค่าใช้จ่ายจริง</p>
+
+
+
+<section id="hm-sufficiency-game" aria-label="เกมเติมpremiseและเลือกproofให้ตรงคำถาม"><style>#hm-sufficiency-game{box-sizing:border-box;background:#07162d;color:#eef8ff;border:1px solid #2567ae;border-radius:18px;padding:clamp(16px,3vw,28px);margin:32px 0;font-family:system-ui,sans-serif;line-height:1.65;overflow-wrap:anywhere}#hm-sufficiency-game *{box-sizing:border-box}#hm-sufficiency-game h2,#hm-sufficiency-game h3{color:#eef8ff!important;line-height:1.4;margin:16px 0 12px}#hm-sufficiency-game h2{font-size:clamp(23px,3vw,32px)}#hm-sufficiency-game h3{font-size:19px}#hm-sufficiency-game p,#hm-sufficiency-game li{color:#d5e7fa}#hm-sufficiency-game .hm-top{display:flex;gap:12px;align-items:center;flex-wrap:wrap;font-size:13px;color:#a9cdea}#hm-sufficiency-game .hm-badge{display:inline-block;background:#123d68;color:#82efff;border:1px solid #3daee7;border-radius:99px;padding:4px 12px;font-weight:800}#hm-sufficiency-game .hm-inputs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin:18px 0}#hm-sufficiency-game label{display:block;font-weight:600}#hm-sufficiency-game select{display:block;width:100%;background:#102c4d;color:#eef8ff;min-height:46px;padding:9px;border:1px solid #4a82b2;border-radius:8px;font:inherit;font-size:15px}#hm-sufficiency-game input[type=range]{width:100%;min-height:44px;accent-color:#40d9f2}#hm-sufficiency-game output{font-size:20px;color:#77e5ff}#hm-sufficiency-game .hm-rows,#hm-sufficiency-game .hm-card-grid,#hm-sufficiency-game .hm-quiz{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}#hm-sufficiency-game article,#hm-sufficiency-game .hm-memory{background:#0e2642;border:1px solid #326186;border-radius:12px;padding:14px;min-width:0}#hm-sufficiency-game .hm-memory p{margin:8px 0}#hm-sufficiency-game .hm-score{font-size:20px;color:#7bedff!important;font-weight:750}#hm-sufficiency-game ul,#hm-sufficiency-game ol{padding-left:22px}#hm-sufficiency-game li{margin:10px 0;font-size:14px}#hm-sufficiency-game button{width:100%;min-height:46px;background:#164c80;border:1px solid #419ce2;border-radius:9px;color:#eef8ff;cursor:pointer;font:inherit;font-size:14px;padding:11px 12px;margin:5px 0;white-space:pre-line;text-align:left}#hm-sufficiency-game .hm-card-grid button{background:#102b49;border-color:#315b82}#hm-sufficiency-game button[aria-pressed=true]{background:#145365;border:2px solid #78edff}#hm-sufficiency-game button:focus-visible,#hm-sufficiency-game select:focus-visible,#hm-sufficiency-game input:focus-visible{outline:3px solid #82efff;outline-offset:3px}#hm-sufficiency-game button:disabled{opacity:.5;cursor:not-allowed}#hm-sufficiency-game [hidden]{display:none!important}#hm-sufficiency-game .hm-actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:16px 0}#hm-sufficiency-game .hm-feedback,#hm-sufficiency-game .hm-result{background:#123859;border-left:3px solid #42daed;border-radius:6px;padding:12px;min-height:44px}#hm-sufficiency-game .hm-note{font-size:13px;color:#b5cede}#hm-sufficiency-game details{border:1px solid #31587c;border-radius:8px;padding:12px;margin:16px 0}#hm-sufficiency-game summary{cursor:pointer;color:#8de8ff;font-weight:700;min-height:28px}#hm-sufficiency-game pre{white-space:pre-wrap;overflow-wrap:anywhere;font-size:12px;color:#d2e7f7}#hm-sufficiency-game .hm-quiz label{margin:10px 0} @media(max-width:700px){#hm-sufficiency-game .hm-inputs,#hm-sufficiency-game .hm-rows,#hm-sufficiency-game .hm-card-grid,#hm-sufficiency-game .hm-quiz,#hm-sufficiency-game .hm-actions{grid-template-columns:1fr}#hm-sufficiency-game button{font-size:15px}}#hm-sufficiency-game .hm-two{grid-template-columns:repeat(2,minmax(0,1fr))}#hm-sufficiency-game .hm-fact{display:flex;gap:12px;align-items:flex-start;background:#102b49;border:1px solid #315b82;border-radius:10px;padding:12px;font-weight:400;min-width:0}#hm-sufficiency-game .hm-fact span{white-space:pre-line;font-size:14px}#hm-sufficiency-game input[type=checkbox]{width:24px;min-width:24px;height:44px;flex-shrink:0;accent-color:#36d9f4}#hm-sufficiency-game .hm-question{border-left:3px solid #72eaff;padding:12px;background:#102d49}#hm-sufficiency-game .hm-warning{padding:12px;border:1px solid #e5ad64;background:#3b2b20;color:#ffdcad} @media(max-width:700px){#hm-sufficiency-game .hm-two{grid-template-columns:1fr}}</style>
+<div class="hm-top"><span class="hm-badge">SIMULATION GAME</span><span>หลักฐานสมมติ • กฎgraphที่กำหนดไว้</span></div><h2>เกม: เติมกิ่งให้ครบ แล้วตอบด้วยwitnessเดียวกัน</h2><p>งบ6หน่วยสำหรับfetchหรือสำเนา เลือกหลักฐานที่ขาดให้ต่อกันจริง จากนั้นเลือกproofsetและคำตอบ เป้าหมายไม่ใช่สะสมrecordให้มาก แต่ให้proofตรงคำถามและmetadata</p>
+<div class="hm-inputs"><label>ชุดปัญหา (เปลี่ยนแล้วเริ่มใหม่)<select data-config="preset"><option value="missingAND">ขาดpremiseในกิ่งAND</option><option value="mixedBranches">หยิบคนละกิ่ง</option><option value="scopeChanged">คำถามเพิ่มintermediate</option></select></label><p class="hm-note">FetchE1–E4/E6–E8ครั้งละ1หน่วย E5ครั้งละ3หน่วย สำเนาE1ครั้งละ1หน่วย Seedเริ่มต้นให้ฟรี ทั้งหมดเป็นต้นทุนสมมติ ไม่ใช่tokenเงินจริงหรือlatency</p></div>
+<p class="hm-question" data-state="question"></p><p class="hm-score" data-state="budget"></p><h3>Input: Fetchหลักฐานที่ต้องการ</h3><div class="hm-card-grid" data-state="fetch"></div><button type="button" data-action="copy">คัดลอกE1 —1หน่วย (ไม่เพิ่มpremise)</button>
+<h3>State: สิ่งที่มี / สิ่งที่ขาด</h3><p data-state="selected"></p><div class="hm-rows hm-two"><article><h3>Missing premises</h3><div data-state="missing"></div></article><article><h3>Applicable witnesses</h3><div data-state="witnesses"></div></article></div><p data-state="rejected"></p>
+<h3>Output: เลือกproofและคำตอบ</h3><div class="hm-inputs"><label>Proofsetที่ใช้ตอบ<select data-answer="witness"><option value="">เลือกproof</option><option value="direct">{E5} —direct</option><option value="sun">{E1,E2} —SunRoute</option><option value="orbit">{E3,E4} —OrbitBuilding</option><option value="cross">{E1,E4} —คนละกิ่ง</option><option value="draft">{E8} —ร่างเก่า</option></select></label><label>ห้องปลายทาง<select data-answer="room"><option value="">เลือกห้อง</option><option value="RoomA3">RoomA3</option><option value="RoomB2">RoomB2</option><option value="abstain">ABSTAIN —ยังตอบไม่ได้</option></select></label><label>เส้นทางหรืออาคารกลาง (เมื่อคำถามขอ)<select data-answer="intermediate"><option value="">เลือกintermediate</option><option value="SunRoute">SunRoute</option><option value="OrbitBuilding">OrbitBuilding</option><option value="none">ไม่มีข้อมูลintermediate</option></select></label></div>
+<p class="hm-feedback" data-state="feedback" aria-live="polite"></p><div class="hm-actions"><button type="button" data-action="grade">ตรวจproofและคำตอบ</button><button type="button" data-action="reset">Reset —เริ่มชุดปัญหาเดิมใหม่</button></div><div class="hm-result" data-state="result" hidden aria-live="polite"></div>
+<details><summary>กติกาและร่องรอยการกระทำ</summary><p>ชนะเมื่อsourceIDsของproofที่เลือกยังอยู่ครบในcontext ต่อedgeตรงกัน ผ่านAPPROVED/CURRENT ใช้ได้กับคำถาม และค่าห้อง/intermediateตรงกับwitnessเดียวกัน E8ไม่ได้ถูกเลื่อนเป็นหลักฐานที่รับรองได้แม้fetchมา E1+E4ไม่ต่อกัน สำเนาไม่เพิ่มpremise และE5ไม่บอกintermediate</p><pre data-state="trace"></pre></details><p class="hm-note">เกมตรวจformalfixture ไม่พิสูจน์ความจริงนอกข้อมูลหรือความสามารถLLMจริง ไม่มีwitnessในcontextไม่ได้หมายความว่าคำตอบทั่วโลกไม่มี Stateอยู่เฉพาะหน้าเว็บและไม่ฝึกน้ำหนัก</p>
+<script>(function(){'use strict';const C=(function(){'use strict';
+const DATA={
+  "article":"010",
+  "type":"SIMULATION",
+  "fixture":"ศูนย์นิทรรศการออโรรา — fictional authored graph and metadata",
+  "nodes":{"BlueBadge":"badge","RedBadge":"badge","SunRoute":"route","OrbitBuilding":"building","RoomA3":"room","RoomB2":"room","BlueFlowers":"decor"},
+  "facts":[
+    {"id":"E1","subject":"BlueBadge","predicate":"assignedTo","object":"SunRoute","status":"APPROVED","applicability":"CURRENT","cost":1,"text":"บัตรสีน้ำเงินใช้เส้นทางสุริยะ (SunRoute)"},
+    {"id":"E2","subject":"SunRoute","predicate":"leadsTo","object":"RoomA3","status":"APPROVED","applicability":"CURRENT","cost":1,"text":"เส้นทางสุริยะนำไปห้องA3"},
+    {"id":"E3","subject":"BlueBadge","predicate":"assignedTo","object":"OrbitBuilding","status":"APPROVED","applicability":"CURRENT","cost":1,"text":"บัตรสีน้ำเงินใช้ทางผ่านอาคารวงโคจร (OrbitBuilding)"},
+    {"id":"E4","subject":"OrbitBuilding","predicate":"leadsTo","object":"RoomA3","status":"APPROVED","applicability":"CURRENT","cost":1,"text":"อาคารวงโคจรนำไปห้องA3"},
+    {"id":"E5","subject":"BlueBadge","predicate":"assignedTo","object":"RoomA3","status":"APPROVED","applicability":"CURRENT","cost":3,"text":"แผนผังที่อนุมัติยืนยันตรงว่าบัตรสีน้ำเงินไปห้องA3 แต่ไม่ได้ระบุเส้นทางหรืออาคารกลาง"},
+    {"id":"E6","subject":"RedBadge","predicate":"assignedTo","object":"RoomB2","status":"APPROVED","applicability":"CURRENT","cost":1,"text":"บัตรสีแดงไปห้องB2 ไม่ใช่บัตรสีน้ำเงิน"},
+    {"id":"E7","subject":"BlueFlowers","predicate":"decorates","object":"RoomA3","status":"APPROVED","applicability":"CURRENT","cost":1,"text":"ดอกไม้สีน้ำเงินตกแต่งห้องA3 ไม่ใช่ความสัมพันธ์การใช้บัตร"},
+    {"id":"E8","subject":"BlueBadge","predicate":"assignedTo","object":"RoomB2","status":"DRAFT","applicability":"PREVIOUS_LAYOUT","cost":1,"text":"ร่างแผนผังเก่าบอกบัตรสีน้ำเงินไปห้องB2 ยังไม่อนุมัติและไม่ใช้กับผังปัจจุบัน"}
+  ],
+  "queryModes":{
+    "roomOnly":{"question":"บัตรสีน้ำเงินไปห้องใดตามแผนผังที่อนุมัติและใช้ปัจจุบัน?","required":"room","proofSets":[["E5"],["E1","E2"],["E3","E4"]]},
+    "routeAndRoom":{"question":"บัตรสีน้ำเงินผ่านเส้นทางหรืออาคารกลางใด และไปห้องใดตามผังที่อนุมัติและใช้ปัจจุบัน?","required":"intermediate+room","proofSets":[["E1","E2"],["E3","E4"]]}
+  },
+  "formalRules":"OnlyAPPROVED/CURRENT facts are eligible. First edge is assignedTo fromBlueBadge. Direct room edge answersroomOnly. Two-edge witness requires first object ofroute/building type tojoin exactly the leadsTo subject, endingatroom node. routeAndRoom requires that explicit intermediate. Metadata is a separate applicability rule, not source-world-truth verification or timestampmax authority.",
+  "proofOptions":{"direct":["E5"],"sun":["E1","E2"],"orbit":["E3","E4"],"cross":["E1","E4"],"draft":["E8"]},
+  "explorer":{
+    "id":"hm-sufficiency-explorer",
+    "initialSelected":["E1"],
+    "inputs":["roomOnly/routeAndRoom","SelectE1–E8","CopyE1 one moretime","strict/ignore-demo metadata displaypolicy"],
+    "selectedSet":"Unique IDs determine required-premise presence; raw duplicates are displayed separately and cannot complete a missing premise.",
+    "AND":"All required facts ofone witness must be present andjoin underformalrules.",
+    "OR":"Anyone complete applicable proof-set suffices; alternatives neednotall be retrieved.",
+    "scopeChange":"E5 alone is enough forroomOnly butinsufficientforrouteAndRoom; missingintermediate cannotbeinferred froma directedge.",
+    "metadataDemo":"strict excludesE8. ignore-demo showsformal candidates fromignoredmetadata, suchasBlueBadge→RoomB2, labeledunsafe/unapproved; finalapplicablewitness resultalwaysenforcesAPPROVED/CURRENT. ItdoesnotpromoteDRAFTtocertifiedtruth.",
+    "output":"Completeapplicablewitnesses withsourceIDs, branch-specific missingpremises, rejectedfacts/scope, selectedrawcountvsuniqueIDs; ifnone INSUFFICIENT_IN_THIS_SELECTED_CONTEXT, notgloballyfalse orimpossible.",
+    "outsideContextAnswerability":"UNKNOWN whenno selectedwitness; no exhaustiveworldsearch orclosed-worldfalse claim.",
+    "sourceWorldTruth":"UNKNOWN evenifformal fixturewitnesscomplete; no externalverification orLLMsemanticentailment.",
+    "reset":true
+  },
+  "game":{
+    "id":"hm-sufficiency-game",
+    "budget":6,
+    "presets":{
+      "missingAND":{"mode":"roomOnly","seed":["E1"],"label":"ขาดpremiseในกิ่งAND","winningExample":"FetchE2(cost1), choose sun, answerRoomA3"},
+      "mixedBranches":{"mode":"roomOnly","seed":["E1","E4"],"label":"หยิบคนละกิ่ง","winningExample":"FetchE2(cost1)forsun orE3(cost1)fororbit; crossE1+E4 alonefails"},
+      "scopeChanged":{"mode":"routeAndRoom","seed":["E5"],"label":"คำถามเพิ่มintermediate","winningExample":"FetchE1+E2(cost2), choose sun, answerintermediateSunRouteandRoomA3; directE5alonefails"}
+    },
+    "costs":"Fetchperfactcost storedinfacts: E1–E4/E6–E8 cost1, E5 cost3. CopyexistingE1 costs1. Seedfactsareprovidedfree. Costsareauthoredtoyactions, notrealretrievalcost/token/money/latency.",
+    "goal":"Withinbudget, chosenproofIDs mustmatchanapplicablecompletewitnessforcurrentquestion; answerroommustmatchwitness, andintermediate requiredforrouteAndRoommustmatchthat samewitness. Counts/copies/mixedbranches/draftmetadata/correctroomguesswithoutproof cannotwin.",
+    "termination":"Grade requires witnessandroom plusintermediate whenasked; endsroundonce. Budgetzero blocksfurtherfetch/copy butstillallowsgrade/Reset.",
+    "selectors":"data-config preset; data-fetch E1–E8; data-action copy|grade|reset; data-answer witness|room|intermediate",
+    "reset":true
+  },
+  "qaHook":"Eachroot hmSnapshot() returnsdeepcopy",
+  "scientificLimits":["Authored formal graph, not NLI/LLMsemanticverification","Evidence-in-context sufficiency differsfromworldtruth andmodelability","Missingwitness inselectedcontext doesnot establishclaimfalse orgloballyunanswerable","Onlya maximumtwo-edge grammar issimulated","NoactualLLM/API/training/weights/persistence","Metadataacceptance reflectsdeclaredtaskpolicy, notscientificsourceauthority"]
+}
+;
+const clone=v=>JSON.parse(JSON.stringify(v));
+const unique=v=>Array.from(new Set(v));
+function eligible(f){return [f.status==='APPROVED',f.applicability==='CURRENT'].every(Boolean);}
+function paths(facts){const out=[];for(const first of facts){if(first.subject!=='BlueBadge'||first.predicate!=='assignedTo')continue;const type=DATA.nodes[first.object];if(type==='room')out.push({ids:[first.id],intermediate:null,room:first.object,metadataValid:eligible(first)});if(['route','building'].includes(type)){for(const second of facts){if(second.subject!==first.object||second.predicate!=='leadsTo'||DATA.nodes[second.object]!=='room')continue;out.push({ids:[first.id,second.id],intermediate:first.object,room:second.object,metadataValid:[eligible(first),eligible(second)].every(Boolean)});}}}return out.sort((a,b)=>a.ids.length-b.ids.length||a.ids.join().localeCompare(b.ids.join()));}
+function inScope(p,mode){return mode==='roomOnly'||p.intermediate!==null;}
+function approvedPaths(mode){return paths(DATA.facts.filter(eligible)).filter(p=>inScope(p,mode));}
+function inspect(selected=['E1'],mode='roomOnly',policy='strict'){if(!DATA.queryModes[mode])throw Error('invalid querymode');if(!['strict','ignore-demo'].includes(policy))throw Error('invalid policy');const ids=unique(selected),facts=DATA.facts.filter(f=>ids.includes(f.id)),usable=facts.filter(eligible),complete=paths(usable).filter(p=>inScope(p,mode)),branches=approvedPaths(mode).map(p=>({...p,missing:p.ids.filter(id=>!ids.includes(id)),complete:p.ids.every(id=>ids.includes(id))}));return {selected:clone(selected),uniqueIds:ids,rawCount:selected.length,uniqueCount:ids.length,copies:selected.length-ids.length,mode,policy,question:DATA.queryModes[mode].question,formalFacts:clone(facts),usableIds:usable.map(f=>f.id),rejectedFacts:facts.filter(f=>!eligible(f)).map(f=>({id:f.id,status:f.status,applicability:f.applicability,reason:'NOT_APPROVED_CURRENT'})),unknownIds:ids.filter(id=>!DATA.facts.some(f=>f.id===id)),completeWitnesses:complete,branches,scopeRejected:paths(usable).filter(p=>!inScope(p,mode)),unsafeCandidates:policy==='ignore-demo'?paths(facts).filter(p=>[!p.metadataValid,inScope(p,mode)].every(Boolean)):[],status:complete.length?'SUFFICIENT_IN_THIS_CONTEXT':'INSUFFICIENT_IN_THIS_SELECTED_CONTEXT',sourceWorldTruth:'UNKNOWN',modelAnswerability:'UNKNOWN',outsideSelectedContext:'UNKNOWN'};}
+function choicePath(name){const ids=DATA.proofOptions[name];if(!ids)return null;return paths(DATA.facts).find(p=>p.ids.join('|')===ids.join('|'))||null;}
+function makeExplorer(){return {selected:['E1'],mode:'roomOnly',policy:'strict'};}
+function toggle(s,id){if(!DATA.facts.some(f=>f.id===id))return {ok:false,reason:'UNKNOWN_ID'};s.selected=s.selected.includes(id)?s.selected.filter(x=>x!==id):s.selected.concat(id);return {ok:true};}
+function copyE1(s){if(!s.selected.includes('E1'))return {ok:false,reason:'E1_REQUIRED'};s.selected.push('E1');return {ok:true};}
+function makeGame(preset='missingAND'){const p=DATA.game.presets[preset];if(!p)throw Error('unknown preset');return {preset,mode:p.mode,selected:clone(p.seed),budget:DATA.game.budget,spent:0,answers:{witness:'',room:'',intermediate:''},ended:false,result:null,trace:[],feedback:'ตรวจpremiseที่มี แล้วเลือกหลักฐานที่ต่อกิ่งเดียวกันในงบ6หน่วย'};}
+function fetchFact(s,id){if(s.ended)return {ok:false,reason:'ENDED'};const f=DATA.facts.find(x=>x.id===id);if(!f)return {ok:false,reason:'UNKNOWN_ID'};if(s.selected.includes(id))return {ok:false,reason:'ALREADY_HAVE'};if(s.spent+f.cost>s.budget){s.feedback='งบไม่พอ — ชุดหลักฐานเดิมไม่เปลี่ยน';return {ok:false,reason:'OVER_BUDGET'};}s.spent+=f.cost;s.selected.push(id);s.trace.push({action:'FETCH',id,cost:f.cost,spent:s.spent,uniqueIds:unique(s.selected)});s.feedback='เก็บ '+id+' ใช้'+f.cost+'หน่วย ตรวจว่าjoinกับpremiseเดิมได้หรือไม่';return {ok:true,cost:f.cost};}
+function gameCopy(s){if(s.ended)return {ok:false,reason:'ENDED'};if(!s.selected.includes('E1'))return {ok:false,reason:'E1_REQUIRED'};if(s.spent+1>s.budget){s.feedback='งบหมด สำเนาเพิ่มไม่ได้';return {ok:false,reason:'OVER_BUDGET'};}s.spent+=1;s.selected.push('E1');s.trace.push({action:'COPY',id:'E1',cost:1,spent:s.spent,uniqueIds:unique(s.selected)});s.feedback='สำเนาE1เพิ่มจำนวนrecord แต่ไม่ได้เพิ่มpremiseที่ขาด';return {ok:true,cost:1};}
+function setAnswer(s,field,value){if(s.ended)return {ok:false,reason:'ENDED'};if(!['witness','room','intermediate'].includes(field))return {ok:false,reason:'INVALID_FIELD'};s.answers[field]=value;return {ok:true};}
+function gameView(s){return {...clone(s),remaining:s.budget-s.spent,evidence:inspect(s.selected,s.mode,'strict')};}
+function grade(s){if(s.ended)return {ok:false,reason:'ENDED'};const required=s.mode==='routeAndRoom'?['witness','room','intermediate']:['witness','room'];if(!required.every(f=>Boolean(s.answers[f])))return {ok:false,reason:'ANSWER_ALL'};const ids=DATA.proofOptions[s.answers.witness]||[],p=choicePath(s.answers.witness),joined=Boolean(p),retained=ids.length!==0?ids.every(id=>s.selected.includes(id)):false,metadataValid=p?p.metadataValid:false,scopeValid=p?inScope(p,s.mode):false,roomCorrect=p?p.room===s.answers.room:false,intermediateCorrect=s.mode==='roomOnly'?true:p?p.intermediate===s.answers.intermediate:false,withinBudget=s.budget>=s.spent;const goal=[joined,retained,metadataValid,scopeValid,roomCorrect,intermediateCorrect,withinBudget].every(Boolean);s.result={goal,chosenIds:clone(ids),joined,retained,metadataValid,scopeValid,roomCorrect,intermediateCorrect,withinBudget,spent:s.spent,budget:s.budget};s.ended=true;s.feedback=goal?'ชนะ — proofครบและใช้ได้กับคำถาม พร้อมคำตอบที่ตรงwitness':'ยังไม่สำเร็จ — ตรวจjoin premise metadata ขอบเขตคำถาม และค่าคำตอบ';return {ok:true,result:clone(s.result)};}
+return {DATA,clone,unique,eligible,paths,inScope,approvedPaths,inspect,choicePath,makeExplorer,toggle,copyE1,makeGame,fetchFact,gameCopy,setAnswer,gameView,grade};
+})();const root=document.getElementById('hm-sufficiency-game');if(!root)return;const node=n=>root.querySelector('[data-state="'+n+'"]'),button=n=>root.querySelector('[data-action="'+n+'"]'),config=root.querySelector('[data-config="preset"]');let state;C.DATA.facts.forEach(f=>{const b=document.createElement('button');b.type='button';b.setAttribute('data-fetch',f.id);b.textContent=f.id+' • '+f.cost+'หน่วย\n'+f.text+'\n'+f.subject+' —'+f.predicate+'→ '+f.object+'\n'+f.status+'/'+f.applicability;b.addEventListener('click',()=>{C.fetchFact(state,f.id);render();});node('fetch').append(b);});function line(target,text){const p=document.createElement('p');p.textContent=text;target.append(p);}function reset(){state=C.makeGame(config.value);root.querySelectorAll('[data-answer]').forEach(s=>{s.value='';});render();}function render(){const v=C.gameView(state),e=v.evidence;node('question').textContent=e.question;node('budget').textContent='เหลือ '+v.remaining+' / '+v.budget+'หน่วย • ใช้แล้ว'+v.spent;node('selected').textContent='Records '+e.rawCount+' / Unique IDs '+e.uniqueCount+' / สำเนา '+e.copies+' • Selected: '+e.uniqueIds.join(', ');node('missing').replaceChildren();e.branches.forEach(b=>line(node('missing'),'{'+b.ids.join(', ')+'}: '+(b.missing.length?'ขาด '+b.missing.join(', '):'ครบ')));node('witnesses').replaceChildren();e.completeWitnesses.forEach(w=>line(node('witnesses'),'{'+w.ids.join(', ')+'} • '+(w.intermediate?w.intermediate+' → ':'')+w.room));if(!e.completeWitnesses.length)line(node('witnesses'),'INSUFFICIENT_IN_THIS_SELECTED_CONTEXT');node('rejected').textContent=e.rejectedFacts.map(f=>f.id+' ไม่ผ่านmetadata').concat(e.scopeRejected.map(p=>'{'+p.ids.join(', ')+'} ไม่ตอบintermediate')).join(' • ');root.querySelectorAll('[data-fetch]').forEach(b=>{const f=C.DATA.facts.find(f=>f.id===b.getAttribute('data-fetch'));b.disabled=[v.ended,e.uniqueIds.includes(f.id),f.cost>v.remaining].some(Boolean);});button('copy').disabled=[v.ended,!e.uniqueIds.includes('E1'),v.remaining===0].some(Boolean);root.querySelectorAll('[data-answer]').forEach(s=>{s.disabled=v.ended||(s.getAttribute('data-answer')==='intermediate'?v.mode==='roomOnly':false);});config.disabled=[v.spent!==0,!v.ended].every(Boolean);button('grade').disabled=v.ended;node('feedback').textContent=v.feedback;node('result').hidden=!v.result;node('result').replaceChildren();if(v.result){const h=document.createElement('h3');h.textContent=v.result.goal?'ชนะ —proofและคำตอบผ่าน':'ยังไม่สำเร็จ';node('result').append(h);[['joined','Join'],['retained','Sourceอยู่ครบ'],['metadataValid','Metadata'],['scopeValid','Query scope'],['roomCorrect','ห้อง'],['intermediateCorrect','Intermediate'],['withinBudget','งบ']].forEach(pair=>line(node('result'),pair[1]+': '+(v.result[pair[0]]?'ผ่าน':'ไม่ผ่าน')));}node('trace').textContent=JSON.stringify({mode:v.mode,seed:C.DATA.game.presets[v.preset].seed,actions:v.trace,selected:v.selected,sourceWorldTruth:'UNKNOWN'},null,2);}config.addEventListener('change',reset);button('copy').addEventListener('click',()=>{C.gameCopy(state);render();});root.querySelectorAll('[data-answer]').forEach(s=>s.addEventListener('change',()=>{C.setAnswer(state,s.getAttribute('data-answer'),s.value);render();}));button('grade').addEventListener('click',()=>{const r=C.grade(state);if(r.reason==='ANSWER_ALL')state.feedback='เลือกproof ห้อง และintermediateที่คำถามต้องการให้ครบ';render();});button('reset').addEventListener('click',reset);root.hmSnapshot=()=>C.gameView(state);reset();})();</script></section>
+
+
+
+
+<p class="wp-block-paragraph"><strong>เป้าหมาย:</strong> เลือก proof set ที่ใช้ได้และตอบห้อง A3 ภายในงบ ถ้าโจทย์ถามจุดกลางด้วย ต้องตอบเส้นทางสุริยะหรืออาคารวงโคจรให้ตรงกับ witness เดียวกัน การเดาห้องถูก เลือก E1+E4 หรืออ้างร่าง E8 ยังไม่ชนะ กดตรวจคำตอบเพื่อจบรอบ แล้ว Reset เพื่อเริ่มใหม่ เมื่องบหมดจะค้นเพิ่มไม่ได้ แต่ยังส่งคำตอบและรีเซ็ตได้</p>
+
+
+
+<p class="wp-block-paragraph">ตัวอย่างกลยุทธ์สำหรับโจทย์แรกคือค้น E2 เพื่อเติมกิ่งสุริยะ สำหรับโจทย์กิ่งปะปน ให้เติม E2 หรือ E3 ให้ครบกิ่งใดกิ่งหนึ่ง ส่วนโจทย์ที่เพิ่มทางผ่านต้องค้นกิ่งสองขั้น ไม่อาศัย E5 เพียงชิ้นเดียว ผลชนะยืนยันเฉพาะกฎสมมติ ไม่วัดว่า LLM จริงคิดหรือค้นได้ดีขึ้น</p>
+
+
+
+<h2 class="wp-block-heading" id="hm-sufficiency-section-13">Applications และการประเมินที่ใช้กับงานจริง</h2>
+
+
+
+<p class="wp-block-paragraph">ฐานความรู้ภายในอาจใช้ premise map แยกสถานที่กับวิธีเข้าถึง งานตรวจข้อกล่าวอ้างใช้ evidence groups ตามแนว FEVER และงานหลายขั้นทดสอบตัดข้อเชื่อมแบบ MuSiQue นี่เป็นการประยุกต์ที่เสนอ ไม่อ้างผลิตภัณฑ์ติดตั้งแล้ว</p>
+
+
+
+<p class="wp-block-paragraph">เมื่อนำไปเชื่อมความจำ Agent ให้เก็บข้อมูลต้นทางไว้ การย่อ record อาจเก็บปลายทางแต่ทำข้อเชื่อมหาย ควรตรวจข้อกำหนดคำถามกับ summary อีกครั้ง ดู <a href="https://hybridmind.online/2026/10/14/ai-agent-memory-consolidation-lossy-summary-provenance/">Memory Consolidation</a> เพื่อแยกการย่อความจำออกจากการฝึกน้ำหนัก</p>
+
+
+
+<p class="wp-block-paragraph">ต้องแยกหลักฐานพอให้ตอบจากข้อจำกัดที่อนุญาตให้ทำ การรู้เส้นทางไม่อนุญาตทุก action ดูจุดตรวจแผนใน <a href="https://hybridmind.online/2026/10/14/ai-agent-constraint-aware-planning-validation/">Constraint-aware Planning</a></p>
+
+
+
+<p class="wp-block-paragraph">ชุดทดสอบ sufficiency ควรมีทั้งกิ่งครบ กิ่งขาดหนึ่งข้อ ทางเลือกที่ครบคนละชุด ข้อมูลซ้ำ ชื่อคล้าย relation ผิด และกรณีเปลี่ยนคำถามโดยคง C เดิม ให้ผู้ตรวจระบุว่าขาดข้อใด ไม่วัดแค่จำนวนครั้งที่ตอบ “พอ” เพราะตัวตรวจที่ยอมทุกครั้งหรือปฏิเสธทุกครั้งอาจดูดีบนข้อมูลด้านเดียว</p>
+
+
+
+<p class="wp-block-paragraph">การงดตอบต้องดูผลควบคู่กับสัดส่วนคำถามที่ระบบตอบ งาน <strong>Selective Question Answering under Domain Shift</strong> แยกการตอบไม่ได้จากบริบทออกจากการคัดเลือกงดตอบเมื่อโมเดลอาจผิด และศึกษาข้อจำกัดของ confidence เมื่อโดเมนเปลี่ยน <a href="https://aclanthology.org/2020.acl-main.503/">Selective QA, ACL 2020</a></p>
+
+
+
+<p class="wp-block-paragraph">รายงานความถูกต้องเฉพาะที่ตอบควบคู่จำนวนที่ตอบและทั้งหมด ถ้าไม่ตอบเลยให้เป็น N/A ไม่ใช่เต็มคะแนน เก็บทั้งการงดตอบเมื่อหลักฐานครบและการตอบเมื่อยังขาด เลือกเกณฑ์ตามผลเสียของงาน</p>
+
+
+
+<h2 class="wp-block-heading" id="hm-sufficiency-section-14">Limitations และ Failure Modes</h2>
+
+
+
+<p class="wp-block-paragraph"><strong>Premise ที่ตกหล่น:</strong> mapper อาจไม่เก็บคำว่า “เฉพาะวันเสาร์” หรือ “เมื่อได้รับอนุมัติ” ทำให้ proof set ดูครบโดยเงื่อนไขไม่ครบ ต้องรักษา source spans และให้ตรวจ mapping ย้อนกลับได้</p>
+
+
+
+<p class="wp-block-paragraph"><strong>Entity ที่รวมผิด:</strong> ชื่อคล้ายไม่ยืนยัน entity เดียว ต้องมี ID หรือหลักฐานเชื่อม มิฉะนั้นคงความกำกวม</p>
+
+
+
+<p class="wp-block-paragraph"><strong>หลักฐานขัดกัน:</strong> fixture นี้มีร่างเก่าที่ตัดด้วยกฎชัด จึงไม่ได้จำลองเอกสารอนุมัติสองฉบับที่ขัดกัน ระบบจริงต้องแสดง conflict และตรวจอำนาจ/ขอบเขต ไม่เลือกข้อความใดเพียงเพราะอยู่ท้าย prompt</p>
+
+
+
+<p class="wp-block-paragraph"><strong>ชุดทางเลือกไม่ครบ:</strong> รายการ P(Q) อาจพลาดหลักฐานที่ใช้ได้จริง ผู้ตรวจไม่พบ witness จึงไม่พิสูจน์ว่าไม่มีหลักฐานอยู่ที่อื่น รวมถึง annotation ของ benchmark ที่อาจไม่ระบุทุกชุด</p>
+
+
+
+<p class="wp-block-paragraph"><strong>งบหมด:</strong> การหยุดค้นในขอบเขตไม่พิสูจน์ความไม่มีทั่วโลก ให้บอกแหล่งที่อ่านและข้อที่ขาด</p>
+
+
+
+<p class="wp-block-paragraph"><strong>ความมั่นใจที่ย้ายโดเมนไม่ได้:</strong> threshold ที่พัฒนากับข้อความสั้นอาจใช้ไม่ได้กับข้อกำหนดยาวหรือข้อมูลอีกภาษา ต้องตรวจข้อมูลใหม่ แยก label ของผู้ตรวจออกจากความจริงที่ผ่านการยืนยันแล้ว</p>
+
+
+
+<h2 class="wp-block-heading" id="hm-sufficiency-section-15">Future Directions และ Practical Takeaways</h2>
+
+
+
+<p class="wp-block-paragraph">แนวทางที่ยังต้องทดสอบคือให้ mapper คืน premise พร้อม uncertainty และ source spans แล้วใช้ผู้ตรวจอิสระตรวจ relation ก่อนสร้าง witness รวมถึงค้นกิ่งทางเลือกตามต้นทุนจริงและทบทวนเมื่อ TaskSpec เปลี่ยน นี่เป็น <strong>HYPOTHESIS</strong> ไม่ใช่ architecture ที่พิสูจน์ว่าเหนือกว่าระบบอื่นแล้ว</p>
+
+
+
+<figure class="wp-block-image size-full"><a href="https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-sufficiency-010-05-takeaways.png?ssl=1"><img data-recalc-dims="1" data-attachment-id="1754" data-permalink="https://hybridmind.online/hm-sufficiency-010-05-takeaways/" data-orig-file="https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-sufficiency-010-05-takeaways.png?fit=1600%2C1030&amp;ssl=1" data-orig-size="1600,1030" data-comments-opened="1" data-image-title="หกหลักการตรวจ Evidence Sufficiency ของ Agent" data-image-description="" data-image-caption="&lt;p&gt;ตรวจ AND ให้ครบ เลือก OR ที่ครบอย่างน้อยหนึ่งกิ่ง และเปลี่ยน requirement เมื่อ query scope เปลี่ยน ใช้ metadata ตามงานโดยแยกจาก world truth; แสดง source IDs/missing/decision และแยก insufficient here ออกจาก false/impossible โดยไม่อ้าง trace เป็น hidden thoughts หรือการฝึกน้ำหนัก&lt;/p&gt;
+" data-large-file="https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-sufficiency-010-05-takeaways.png?fit=1024%2C659&amp;ssl=1" src="https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-sufficiency-010-05-takeaways.png?resize=1600%2C1030&#038;ssl=1" alt="หกกล่อง AND All Premises OR One Complete Set Query Scope Changes Metadata Rule Insufficient Here และ Trace Risk Coverage" width="1600" height="1030" class="wp-image-1754" loading="lazy" decoding="async" srcset="https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-sufficiency-010-05-takeaways.png?w=1600&amp;ssl=1 1600w, https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-sufficiency-010-05-takeaways.png?resize=300%2C193&amp;ssl=1 300w, https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-sufficiency-010-05-takeaways.png?resize=1024%2C659&amp;ssl=1 1024w, https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-sufficiency-010-05-takeaways.png?resize=768%2C494&amp;ssl=1 768w, https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-sufficiency-010-05-takeaways.png?resize=1536%2C989&amp;ssl=1 1536w" sizes="auto, (max-width: 1000px) 100vw, 1000px" /></a><figcaption><strong>หกหลักการตรวจ Evidence Sufficiency ของ Agent</strong> — ตรวจ AND ให้ครบ เลือก OR ที่ครบอย่างน้อยหนึ่งกิ่ง และเปลี่ยน requirement เมื่อ query scope เปลี่ยน ใช้ metadata ตามงานโดยแยกจาก world truth; แสดง source IDs/missing/decision และแยก insufficient here ออกจาก false/impossible โดยไม่อ้าง trace เป็น hidden thoughts หรือการฝึกน้ำหนัก · <a href="https://proceedings.iclr.cc/paper_files/paper/2025/hash/33dffa2e3d2ab74a783d1a8c292f66d9-Abstract-Conference.html">แหล่งแนวคิด 1</a> · <a href="https://aclanthology.org/D18-1259/">แหล่งแนวคิด 2</a> · <a href="https://aclanthology.org/2022.tacl-1.31/">แหล่งแนวคิด 3</a> · <a href="https://aclanthology.org/N18-1074/">แหล่งแนวคิด 4</a> · <a href="https://aclanthology.org/2020.acl-main.503/">แหล่งแนวคิด 5</a></figcaption></figure>
+
+
+
+<p class="wp-block-paragraph">เริ่มจากงานที่ขอบเขตชัดและตรวจด้วยมนุษย์ได้ เก็บ TaskSpec, บริบทที่ใช้จริง และ witness อย่างน้อยหนึ่งทาง ทำกรณีทดสอบตัดข้อเชื่อมแล้วดูว่า Gate แจ้งส่วนที่ขาดถูกหรือไม่ เมื่อเอากลับต้องผ่านได้โดยไม่บังคับให้ค้นทุกทางเลือก</p>
+
+
+
+<p class="wp-block-paragraph">หลักใช้งานคือ <strong>AND ให้ครบภายในกิ่ง OR ให้มีทางเลือกที่ครบอย่างน้อยหนึ่งกิ่ง และขอบเขตให้ตรงคำถาม</strong> การตอบเพียงบางส่วนทำได้เมื่อระบุส่วนที่ยืนยันกับส่วนที่ยัง UNKNOWN ชัดเจน ถ้าไม่มีหลักฐานครบ ให้หยุดพร้อมเหตุผลที่ตรวจได้แทนเติม relation เอง</p>
+
+
+
+<h2 class="wp-block-heading" id="hm-sufficiency-section-16">FAQ</h2>
+
+
+
+<h3 class="wp-block-heading" id="hm-sufficiency-section-17">Evidence Sufficiency คืออะไร?</h3>
+
+
+
+<p class="wp-block-paragraph">คือการตรวจว่าบริบทมีข้อมูลและข้อเชื่อมพอสำหรับคำถามที่กำหนด ไม่ใช้จำนวนเอกสารหรือความคล้ายแทนความครบ</p>
+
+
+
+<h3 class="wp-block-heading" id="hm-sufficiency-section-18">มีหลักฐานพอแปลว่าคำตอบจริงแน่นอนหรือไม่?</h3>
+
+
+
+<p class="wp-block-paragraph">ไม่ ต้องตรวจความจริงของแหล่งและคำตอบแยก บริบทอาจมีข้อมูลผิด และโมเดลอาจใช้ข้อมูลครบแต่ผิดได้</p>
+
+
+
+<h3 class="wp-block-heading" id="hm-sufficiency-section-19">ต้องค้นทุกชุดหลักฐานทางเลือกหรือไม่?</h3>
+
+
+
+<p class="wp-block-paragraph">ในเกณฑ์ตัวอย่าง มีหนึ่งชุดที่ครบและใช้ได้ก็พอสำหรับคำถามนั้น แต่ทุกข้อภายในชุดต้องต่อกันและผ่านขอบเขต</p>
+
+
+
+<h3 class="wp-block-heading" id="hm-sufficiency-section-20">ไม่มี witness แปลว่าข้อกล่าวอ้างเท็จหรือไม่?</h3>
+
+
+
+<p class="wp-block-paragraph">ไม่ หมายถึงยังไม่พบชุดที่ครบในบริบทและกฎที่ตรวจ อาจมีหลักฐานอยู่นอกชุด NOT ENOUGH INFO ไม่ใช่ REFUTED</p>
+
+
+
+<h3 class="wp-block-heading" id="hm-sufficiency-section-21">LLM Judge แทน Formal Verifier ได้ทันทีหรือไม่?</h3>
+
+
+
+<p class="wp-block-paragraph">เป็นผู้ประเมินข้อความเชิงภาษา ส่วน verifier ตรวจกฎที่ map ไว้ ทั้งสองมีข้อผิดพลาดคนละแบบ ต้องตรวจ mapping และเกณฑ์กับงานจริง</p>
+
+
+
+<h3 class="wp-block-heading" id="hm-sufficiency-section-22">Interactive กับเกมฝึก AI หรือรัน benchmark หรือไม่?</h3>
+
+
+
+<p class="wp-block-paragraph">เป็น JavaScript SIMULATION ของ fixture ออโรรา ไม่เรียก LLM ไม่อัปเดตน้ำหนัก และไม่รัน benchmark ต้นฉบับ ผลชนะใช้เฉพาะกฎเกม</p>
+
+
+
+<h2 class="wp-block-heading" id="hm-sufficiency-section-23">References และขอบเขตหลักฐาน</h2>
+
+
+
+<ul class="wp-block-list">
+<li><a href="https://proceedings.iclr.cc/paper_files/paper/2025/hash/33dffa2e3d2ab74a783d1a8c292f66d9-Abstract-Conference.html">Sufficient Context, ICLR 2025</a> — อ่านนิยาม autorater selective generation และข้อจำกัด พร้อม <a href="https://arxiv.org/html/2411.06037v3">arXiv v3, 23 เมษายน 2025</a> และ <a href="https://github.com/hljoren/sufficientcontext">repo ผู้วิจัย</a></li>
+
+
+<li><a href="https://aclanthology.org/D18-1259/">HotpotQA, EMNLP 2018</a> — อ่านการสร้างโจทย์ supporting facts และเกณฑ์ประเมิน; มี <a href="https://hotpotqa.github.io/">ข้อมูลและโค้ดทางการ</a></li>
+
+
+<li><a href="https://aclanthology.org/2022.tacl-1.31/">MuSiQue, TACL 2022</a> — อ่าน connected reasoning และคู่ answerable/unanswerable; <a href="https://github.com/StonyBrookNLP/musique">repo ผู้วิจัย</a></li>
+
+
+<li><a href="https://aclanthology.org/N18-1074/">FEVER, NAACL 2018</a> — อ่าน labels และ complete evidence groups พร้อม <a href="https://github.com/sheffieldnlp/fever-scorer">scorer source</a></li>
+
+
+<li><a href="https://aclanthology.org/2020.acl-main.503/">Selective Question Answering under Domain Shift, ACL 2020</a> — อ่านความต่าง answerability/selective prediction วิธี calibrator และ risk/coverage</li>
+</ul>
+
+
+
+<p class="wp-block-paragraph"><strong>สถานะหลักฐาน:</strong> FACT ระบุวิธีและเกณฑ์ที่ต้นฉบับบันทึก REPORTED CLAIM จำกัดผลทดลองไว้กับโมเดล/ข้อมูลที่ผู้วิจัยศึกษา ANALYSIS คือการตีความเพื่อออกแบบงาน HYPOTHESIS คือแผน application และ verifier ที่เสนอ SIMULATION คือ Interactive/เกมข้อมูลสมมติ ไม่มีผลทำซ้ำ benchmark หรือผลทดสอบ LLM อิสระของ HYBRID MIND ในบทความนี้</p>
+
+
+
+<p class="wp-block-paragraph"><strong>โค้ดและรุ่น:</strong> มี repo/prompts ของ Sufficient Context, baseline/evaluator ของ HotpotQA, MuSiQue และ FEVER scorer แต่ไม่ได้ติดตั้งหรือรันทำซ้ำ MuSiQue ระบุชุด dependency ยุคงาน เช่น AllenNLP 2.1.0/Transformers 4.7.0 ซึ่งไม่เท่ากับแพ็กเกจปัจจุบัน ส่วน repo ผู้วิจัยของ Selective QA ยัง UNKNOWN ในการตรวจนี้</p>
+
+</div>

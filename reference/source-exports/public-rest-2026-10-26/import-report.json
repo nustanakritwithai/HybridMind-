@@ -1,0 +1,73 @@
+{
+  "captured_at": "2026-10-26T13:50:42.469Z",
+  "source": "anonymous public WordPress REST GET",
+  "scope": "Three additional existing public articles; editorial topic order is proposed; original five bodies and all their revisions are unchanged.",
+  "articles": [
+    {
+      "article_id": "hm:article:1740",
+      "canonical_url": "https://hybridmind.online/2026/10/14/ai-agent-retrieval-evaluation-evidence-answer-errors/",
+      "source_revision": "2026-10-19T00:49:20.000Z",
+      "source_hash": "sha256:1dcc08498c97ef66151096854735aabcb2708d2a00b27f440a23f86a899e1679",
+      "response_sha256": "669ae486635970b50608f4ab62dc726849c9e9d730a7ab600afc935121fcfc9b",
+      "body_bytes": 115950,
+      "headings": 30,
+      "inline_images": 5,
+      "media_ids": [
+        1734,
+        1735,
+        1736,
+        1737,
+        1738
+      ],
+      "duplicate_ids": [],
+      "missing_anchors": [],
+      "editorial_level": "beginner",
+      "editorial_status": "proposed"
+    },
+    {
+      "article_id": "hm:article:1755",
+      "canonical_url": "https://hybridmind.online/2026/10/14/ai-agent-evidence-sufficiency-multi-hop-proof-sets/",
+      "source_revision": "2026-10-19T00:50:54.000Z",
+      "source_hash": "sha256:8e9e381fd1cac1ba1db472ba7b134e2aec6c20465b88296bd1784297ea85b0c4",
+      "response_sha256": "d71d092f7a293f3089035c812ff6d4db1f2b3b35e7dcbfb94371319fd3ab2f85",
+      "body_bytes": 117417,
+      "headings": 34,
+      "inline_images": 5,
+      "media_ids": [
+        1750,
+        1751,
+        1752,
+        1753,
+        1754
+      ],
+      "duplicate_ids": [],
+      "missing_anchors": [],
+      "editorial_level": "intermediate",
+      "editorial_status": "proposed"
+    },
+    {
+      "article_id": "hm:article:1770",
+      "canonical_url": "https://hybridmind.online/2026/10/14/ai-agent-claim-decomposition-preservation-factual-support/",
+      "source_revision": "2026-10-14T06:43:29.000Z",
+      "source_hash": "sha256:52999018856072efb4f790e3b18b2d85efd020c09596a3386f3d7d9d81aebd3b",
+      "response_sha256": "b38ba0b73bbec5b9d386be4582ecc9542d3bfef4ee95abea2cd2cc2fbdf3b627",
+      "body_bytes": 136154,
+      "headings": 31,
+      "inline_images": 5,
+      "media_ids": [
+        1765,
+        1766,
+        1767,
+        1768,
+        1769
+      ],
+      "duplicate_ids": [],
+      "missing_anchors": [],
+      "editorial_level": "advanced",
+      "editorial_status": "proposed"
+    }
+  ],
+  "total_articles": 8,
+  "total_sections": 233,
+  "total_media": 35
+}

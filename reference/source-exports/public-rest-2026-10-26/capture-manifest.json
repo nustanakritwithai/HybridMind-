@@ -1,0 +1,174 @@
+{
+  "source": "anonymous public WordPress REST GET",
+  "captured_at": "2026-10-26T13:50:42.469Z",
+  "posts": [
+    {
+      "id": 1740,
+      "url": "https://hybridmind.online/wp-json/wp/v2/posts/1740",
+      "canonical_url": "https://hybridmind.online/2026/10/14/ai-agent-retrieval-evaluation-evidence-answer-errors/",
+      "source_revision": "2026-10-19T00:49:20Z",
+      "response_sha256": "669ae486635970b50608f4ab62dc726849c9e9d730a7ab600afc935121fcfc9b",
+      "body_sha256": "1dcc08498c97ef66151096854735aabcb2708d2a00b27f440a23f86a899e1679",
+      "body_bytes": 115950,
+      "captured_at": "2026-10-26T13:45:48.099Z"
+    },
+    {
+      "id": 1755,
+      "url": "https://hybridmind.online/wp-json/wp/v2/posts/1755",
+      "canonical_url": "https://hybridmind.online/2026/10/14/ai-agent-evidence-sufficiency-multi-hop-proof-sets/",
+      "source_revision": "2026-10-19T00:50:54Z",
+      "response_sha256": "d71d092f7a293f3089035c812ff6d4db1f2b3b35e7dcbfb94371319fd3ab2f85",
+      "body_sha256": "8e9e381fd1cac1ba1db472ba7b134e2aec6c20465b88296bd1784297ea85b0c4",
+      "body_bytes": 117417,
+      "captured_at": "2026-10-26T13:45:51.897Z"
+    },
+    {
+      "id": 1770,
+      "url": "https://hybridmind.online/wp-json/wp/v2/posts/1770",
+      "canonical_url": "https://hybridmind.online/2026/10/14/ai-agent-claim-decomposition-preservation-factual-support/",
+      "source_revision": "2026-10-14T06:43:29Z",
+      "response_sha256": "b38ba0b73bbec5b9d386be4582ecc9542d3bfef4ee95abea2cd2cc2fbdf3b627",
+      "body_sha256": "52999018856072efb4f790e3b18b2d85efd020c09596a3386f3d7d9d81aebd3b",
+      "body_bytes": 136154,
+      "captured_at": "2026-10-26T13:45:55.354Z"
+    }
+  ],
+  "media": [
+    {
+      "attachment_id": 1734,
+      "filename": "1734.png",
+      "source_url": "https://hybridmind.online/wp-content/uploads/2026/10/hm-retrieval-009-01-cover.png",
+      "mime_type": "image/png",
+      "byte_length": 242539,
+      "sha256": "827b4fe08d0a448619efd00e04402b07c031157ac8636ce9a26c803710f40399",
+      "metadata_sha256": "fd342f83b40e3da2f2114770d3f9d2075a34d78d02acb4c7acf41d5ed13dae0c"
+    },
+    {
+      "attachment_id": 1735,
+      "filename": "1735.png",
+      "source_url": "https://hybridmind.online/wp-content/uploads/2026/10/hm-retrieval-009-02-architecture.png",
+      "mime_type": "image/png",
+      "byte_length": 347150,
+      "sha256": "b58687d0bd5488f10853cc0de543a75f35fbaaa821e33e8cfdb622bf568ce033",
+      "metadata_sha256": "da26dacbf443aab695a4ff1d7c30ef726205a55f8b3d749f9b29b8d7b3aef167"
+    },
+    {
+      "attachment_id": 1736,
+      "filename": "1736.png",
+      "source_url": "https://hybridmind.online/wp-content/uploads/2026/10/hm-retrieval-009-03-operational-flow.png",
+      "mime_type": "image/png",
+      "byte_length": 266467,
+      "sha256": "b7ad7bbebc8fde11c59a8b1441d5ce76430d498411f4d3c2543aff4f15b8414b",
+      "metadata_sha256": "f73010f38fee5b020e96baff9a6dc63802cd9d4788673245a162bcf6eb973cb6"
+    },
+    {
+      "attachment_id": 1737,
+      "filename": "1737.png",
+      "source_url": "https://hybridmind.online/wp-content/uploads/2026/10/hm-retrieval-009-04-comparison.png",
+      "mime_type": "image/png",
+      "byte_length": 339118,
+      "sha256": "9237714ec6459270ebc5831a37740f1a2ab2d5ce86a6aa9ae6ad80d749dd4f1c",
+      "metadata_sha256": "7e70db337b90ce4ad81ad2546376d388d3de0f91f4d2360f94b7b60992d3e3f7"
+    },
+    {
+      "attachment_id": 1738,
+      "filename": "1738.png",
+      "source_url": "https://hybridmind.online/wp-content/uploads/2026/10/hm-retrieval-009-05-takeaways.png",
+      "mime_type": "image/png",
+      "byte_length": 255797,
+      "sha256": "a14b0a3892763ff8ac5942665de1f46fda40ae6a6e6098e0085af5b607303918",
+      "metadata_sha256": "69ea199af325af66322f995db98607127cdf5046fa09056a3338082efa4beaa0"
+    },
+    {
+      "attachment_id": 1750,
+      "filename": "1750.png",
+      "source_url": "https://hybridmind.online/wp-content/uploads/2026/10/hm-sufficiency-010-01-cover.png",
+      "mime_type": "image/png",
+      "byte_length": 246489,
+      "sha256": "104c3d17e90a35ed7053ccf02c65ff3b112149a43fc11f9de432a81fceaed633",
+      "metadata_sha256": "41f9fc377280dd7627280d42997a315603ae189b5316d670abcfa3817e8a62ce"
+    },
+    {
+      "attachment_id": 1751,
+      "filename": "1751.png",
+      "source_url": "https://hybridmind.online/wp-content/uploads/2026/10/hm-sufficiency-010-02-architecture.png",
+      "mime_type": "image/png",
+      "byte_length": 358873,
+      "sha256": "3a261879fa18be81acf9e0e42aa861679097514f76e0c20d66789f06b6378bbc",
+      "metadata_sha256": "3de8fd688072b74c6008a05a4086da4219f05f6d09c60076738a9240bf4654c8"
+    },
+    {
+      "attachment_id": 1752,
+      "filename": "1752.png",
+      "source_url": "https://hybridmind.online/wp-content/uploads/2026/10/hm-sufficiency-010-03-operational-flow.png",
+      "mime_type": "image/png",
+      "byte_length": 269588,
+      "sha256": "56e288dbda805db4f128da3508b5aed432bc013943528393d82001876d71ee80",
+      "metadata_sha256": "3e732477dbe4cd4e7c457da7eeb0d6535329113e1b18a162aab2b353f8347c79"
+    },
+    {
+      "attachment_id": 1753,
+      "filename": "1753.png",
+      "source_url": "https://hybridmind.online/wp-content/uploads/2026/10/hm-sufficiency-010-04-comparison.png",
+      "mime_type": "image/png",
+      "byte_length": 334367,
+      "sha256": "a6d24885792d8201772f7695c2d7a9d9cb061a672771e0fba5ecbcea7bb6a443",
+      "metadata_sha256": "10c16b006b04c0ef895e2a7735542eabc56d85a3dbf808a25e76632d873e4727"
+    },
+    {
+      "attachment_id": 1754,
+      "filename": "1754.png",
+      "source_url": "https://hybridmind.online/wp-content/uploads/2026/10/hm-sufficiency-010-05-takeaways.png",
+      "mime_type": "image/png",
+      "byte_length": 252189,
+      "sha256": "fb8acf88b0fd07e573d7524aa019bf0f88f310bf5ea6cb1bb9298cab2d140589",
+      "metadata_sha256": "452bb84cd5aa52b316a94756c415c331dd8d34155f5ed0e511a38d841fc97a57"
+    },
+    {
+      "attachment_id": 1765,
+      "filename": "1765.png",
+      "source_url": "https://hybridmind.online/wp-content/uploads/2026/10/hm-claims-011-01-cover.png",
+      "mime_type": "image/png",
+      "byte_length": 240793,
+      "sha256": "e973f88947d09611938e7e82e3fbec615a9d8ff762a00bb0b4abcfd34b65031d",
+      "metadata_sha256": "03a380191014d90211628aba3b31e30c51b6ac31182946939df417edb6b7eff0"
+    },
+    {
+      "attachment_id": 1766,
+      "filename": "1766.png",
+      "source_url": "https://hybridmind.online/wp-content/uploads/2026/10/hm-claims-011-02-architecture.png",
+      "mime_type": "image/png",
+      "byte_length": 359748,
+      "sha256": "5c8af23aed072c7c9264591debd62ab4e468bac816a4f6244163e40e4b9820c7",
+      "metadata_sha256": "5ed0a62e0045fc157d9242c49662be74bbe5f24ef93b6298dd1e4b142a3c7705"
+    },
+    {
+      "attachment_id": 1767,
+      "filename": "1767.png",
+      "source_url": "https://hybridmind.online/wp-content/uploads/2026/10/hm-claims-011-03-operational-flow.png",
+      "mime_type": "image/png",
+      "byte_length": 286977,
+      "sha256": "fa3688ad03560bc1fbd93f2958802c888cdf0b78c403e920503b9779c71e904a",
+      "metadata_sha256": "33c4a724a3280786ad2acbe119328a8c4ebd979cea283d9b176ce252ce2e347c"
+    },
+    {
+      "attachment_id": 1768,
+      "filename": "1768.png",
+      "source_url": "https://hybridmind.online/wp-content/uploads/2026/10/hm-claims-011-04-comparison.png",
+      "mime_type": "image/png",
+      "byte_length": 326311,
+      "sha256": "77c61149fd6b60e2d9db57847e5f95101101ca2a4b2779c75be572456300cf17",
+      "metadata_sha256": "3493ed5fc132614883bee724bc8bf5166df98af1f6540160e7710ebcd656b3c6"
+    },
+    {
+      "attachment_id": 1769,
+      "filename": "1769.png",
+      "source_url": "https://hybridmind.online/wp-content/uploads/2026/10/hm-claims-011-05-takeaways.png",
+      "mime_type": "image/png",
+      "byte_length": 261291,
+      "sha256": "d54c3092a1bfbb7a9e6a966a3769e4d4d5e3887bfbc05d039239708209311e77",
+      "metadata_sha256": "023e683d349c760b308af35b5e2c9c92e549abf09186615b57a208579de3db41"
+    }
+  ],
+  "complete": true
+}

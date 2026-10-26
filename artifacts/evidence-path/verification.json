@@ -1,0 +1,233 @@
+{
+  "verifiedAt": "2026-10-26T14:14:13.441Z",
+  "expectedReleaseSha": null,
+  "articles": 3,
+  "labRoots": 6,
+  "coverage": [
+    {
+      "kind": "retrievalExplorer",
+      "selectOptions": [
+        "[data-input=\"rank\"]=bad",
+        "[data-input=\"rank\"]=good",
+        "[data-input=\"k\"]=1",
+        "[data-input=\"k\"]=2",
+        "[data-input=\"k\"]=3",
+        "[data-input=\"k\"]=4",
+        "[data-input=\"k\"]=5",
+        "[data-input=\"capacity\"]=1",
+        "[data-input=\"capacity\"]=2",
+        "[data-input=\"capacity\"]=3",
+        "[data-input=\"capacity\"]=4",
+        "[data-input=\"capacity\"]=5",
+        "[data-input=\"policy\"]=evidence",
+        "[data-input=\"policy\"]=wrong",
+        "[data-input=\"policy\"]=miscite",
+        "[data-input=\"policy\"]=abstain"
+      ],
+      "checkboxes": [
+        "[data-input=\"goldComplete\"]"
+      ],
+      "buttons": [
+        "[data-action=\"reset\"]"
+      ],
+      "unlabelled": []
+    },
+    {
+      "kind": "retrievalGame",
+      "selectOptions": [
+        "[data-config=\"challenge\"]=pipeline",
+        "[data-config=\"challenge\"]=unsupported",
+        "[data-config=\"challenge\"]=mixed",
+        "[data-diagnosis=\"time\"]=",
+        "[data-diagnosis=\"time\"]=retrieval",
+        "[data-diagnosis=\"time\"]=context",
+        "[data-diagnosis=\"time\"]=answer",
+        "[data-diagnosis=\"time\"]=both",
+        "[data-diagnosis=\"time\"]=none",
+        "[data-answer=\"time\"]=",
+        "[data-answer=\"time\"]=10:00",
+        "[data-answer=\"time\"]=09:00",
+        "[data-answer=\"time\"]=abstain",
+        "[data-source=\"time\"]=",
+        "[data-source=\"time\"]=D1",
+        "[data-source=\"time\"]=D2",
+        "[data-source=\"time\"]=D3",
+        "[data-source=\"time\"]=D4",
+        "[data-source=\"time\"]=D5",
+        "[data-diagnosis=\"price\"]=",
+        "[data-diagnosis=\"price\"]=retrieval",
+        "[data-diagnosis=\"price\"]=context",
+        "[data-diagnosis=\"price\"]=answer",
+        "[data-diagnosis=\"price\"]=both",
+        "[data-diagnosis=\"price\"]=none",
+        "[data-answer=\"price\"]=",
+        "[data-answer=\"price\"]=50",
+        "[data-answer=\"price\"]=100",
+        "[data-answer=\"price\"]=abstain",
+        "[data-source=\"price\"]=",
+        "[data-source=\"price\"]=D1",
+        "[data-source=\"price\"]=D2",
+        "[data-source=\"price\"]=D3",
+        "[data-source=\"price\"]=D4",
+        "[data-source=\"price\"]=D5"
+      ],
+      "checkboxes": [],
+      "buttons": [
+        "[data-action=\"rerank-time\"]",
+        "[data-action=\"k-time\"]",
+        "[data-action=\"capacity-time\"]",
+        "[data-action=\"evidence-time\"]",
+        "[data-action=\"rerank-price\"]",
+        "[data-action=\"k-price\"]",
+        "[data-action=\"capacity-price\"]",
+        "[data-action=\"grade\"]",
+        "[data-action=\"reset\"]"
+      ],
+      "unlabelled": []
+    },
+    {
+      "kind": "sufficiencyExplorer",
+      "selectOptions": [
+        "[data-input=\"mode\"]=roomOnly",
+        "[data-input=\"mode\"]=routeAndRoom",
+        "[data-input=\"policy\"]=strict",
+        "[data-input=\"policy\"]=ignore-demo"
+      ],
+      "checkboxes": [
+        "[data-fact=\"E1\"]",
+        "[data-fact=\"E2\"]",
+        "[data-fact=\"E3\"]",
+        "[data-fact=\"E4\"]",
+        "[data-fact=\"E5\"]",
+        "[data-fact=\"E6\"]",
+        "[data-fact=\"E7\"]",
+        "[data-fact=\"E8\"]"
+      ],
+      "buttons": [
+        "[data-action=\"copy\"]",
+        "[data-action=\"reset\"]"
+      ],
+      "unlabelled": []
+    },
+    {
+      "kind": "sufficiencyGame",
+      "selectOptions": [
+        "[data-config=\"preset\"]=missingAND",
+        "[data-config=\"preset\"]=mixedBranches",
+        "[data-config=\"preset\"]=scopeChanged",
+        "[data-answer=\"witness\"]=",
+        "[data-answer=\"witness\"]=direct",
+        "[data-answer=\"witness\"]=sun",
+        "[data-answer=\"witness\"]=orbit",
+        "[data-answer=\"witness\"]=cross",
+        "[data-answer=\"witness\"]=draft",
+        "[data-answer=\"room\"]=",
+        "[data-answer=\"room\"]=RoomA3",
+        "[data-answer=\"room\"]=RoomB2",
+        "[data-answer=\"room\"]=abstain",
+        "[data-answer=\"intermediate\"]=",
+        "[data-answer=\"intermediate\"]=SunRoute",
+        "[data-answer=\"intermediate\"]=OrbitBuilding",
+        "[data-answer=\"intermediate\"]=none"
+      ],
+      "checkboxes": [],
+      "buttons": [
+        "[data-fetch=\"E1\"]",
+        "[data-fetch=\"E2\"]",
+        "[data-fetch=\"E3\"]",
+        "[data-fetch=\"E4\"]",
+        "[data-fetch=\"E6\"]",
+        "[data-fetch=\"E7\"]",
+        "[data-fetch=\"E8\"]",
+        "[data-action=\"grade\"]",
+        "[data-action=\"reset\"]"
+      ],
+      "unlabelled": []
+    },
+    {
+      "kind": "claimsExplorer",
+      "selectOptions": [
+        "[data-input=\"strategy\"]=faithful",
+        "[data-input=\"strategy\"]=supportedOnly",
+        "[data-input=\"strategy\"]=addReferencedNovel",
+        "[data-input=\"strategy\"]=duplicateGaming",
+        "[data-input=\"strategy\"]=scopeLost",
+        "[data-input=\"strategy\"]=entityMixed",
+        "[data-input=\"strategy\"]=compound",
+        "[data-input=\"strategy\"]=empty",
+        "[data-input=\"strategy\"]=custom"
+      ],
+      "checkboxes": [
+        "[data-candidate=\"C1\"]",
+        "[data-candidate=\"C2\"]",
+        "[data-candidate=\"C3\"]",
+        "[data-candidate=\"C4\"]",
+        "[data-candidate=\"C5\"]",
+        "[data-candidate=\"C6\"]",
+        "[data-candidate=\"C7\"]",
+        "[data-candidate=\"C8\"]",
+        "[data-candidate=\"C9\"]",
+        "[data-candidate=\"C10\"]",
+        "[data-candidate=\"C11\"]"
+      ],
+      "buttons": [
+        "[data-action=\"reset\"]"
+      ],
+      "unlabelled": []
+    },
+    {
+      "kind": "claimsGame",
+      "selectOptions": [
+        "[data-config=\"preset\"]=supportedOnly",
+        "[data-config=\"preset\"]=qualifierLost",
+        "[data-config=\"preset\"]=entityMixed",
+        "[data-config=\"preset\"]=duplicateGaming",
+        "[data-support=\"C1\"]=",
+        "[data-support=\"C1\"]=SUPPORTED",
+        "[data-support=\"C1\"]=CONTRADICTED",
+        "[data-support=\"C1\"]=NOT_IN_REFERENCE",
+        "[data-support=\"C2\"]=",
+        "[data-support=\"C2\"]=SUPPORTED",
+        "[data-support=\"C2\"]=CONTRADICTED",
+        "[data-support=\"C2\"]=NOT_IN_REFERENCE",
+        "[data-support=\"C3\"]=",
+        "[data-support=\"C3\"]=SUPPORTED",
+        "[data-support=\"C3\"]=CONTRADICTED",
+        "[data-support=\"C3\"]=NOT_IN_REFERENCE"
+      ],
+      "checkboxes": [],
+      "buttons": [
+        "[data-candidate=\"C1\"]",
+        "[data-candidate=\"C2\"]",
+        "[data-candidate=\"C3\"]",
+        "[data-candidate=\"C4\"]",
+        "[data-candidate=\"C5\"]",
+        "[data-candidate=\"C6\"]",
+        "[data-candidate=\"C7\"]",
+        "[data-candidate=\"C8\"]",
+        "[data-candidate=\"C9\"]",
+        "[data-candidate=\"C10\"]",
+        "[data-candidate=\"C11\"]",
+        "[data-action=\"grade\"]",
+        "[data-action=\"reset\"]"
+      ],
+      "unlabelled": []
+    }
+  ],
+  "externalRequests": [],
+  "errors": [],
+  "screenshots": [
+    "C:\\Users\\Administrator\\Documents\\Codex\\2026-10-19\\task\\hybridmind-knowledge-evidence-path\\artifacts\\evidence-path\\1740-retrievalExplorer-desktop.png",
+    "C:\\Users\\Administrator\\Documents\\Codex\\2026-10-19\\task\\hybridmind-knowledge-evidence-path\\artifacts\\evidence-path\\1740-retrievalExplorer-mobile.png",
+    "C:\\Users\\Administrator\\Documents\\Codex\\2026-10-19\\task\\hybridmind-knowledge-evidence-path\\artifacts\\evidence-path\\1740-retrievalGame-desktop.png",
+    "C:\\Users\\Administrator\\Documents\\Codex\\2026-10-19\\task\\hybridmind-knowledge-evidence-path\\artifacts\\evidence-path\\1740-retrievalGame-mobile.png",
+    "C:\\Users\\Administrator\\Documents\\Codex\\2026-10-19\\task\\hybridmind-knowledge-evidence-path\\artifacts\\evidence-path\\1755-sufficiencyExplorer-desktop.png",
+    "C:\\Users\\Administrator\\Documents\\Codex\\2026-10-19\\task\\hybridmind-knowledge-evidence-path\\artifacts\\evidence-path\\1755-sufficiencyExplorer-mobile.png",
+    "C:\\Users\\Administrator\\Documents\\Codex\\2026-10-19\\task\\hybridmind-knowledge-evidence-path\\artifacts\\evidence-path\\1755-sufficiencyGame-desktop.png",
+    "C:\\Users\\Administrator\\Documents\\Codex\\2026-10-19\\task\\hybridmind-knowledge-evidence-path\\artifacts\\evidence-path\\1755-sufficiencyGame-mobile.png",
+    "C:\\Users\\Administrator\\Documents\\Codex\\2026-10-19\\task\\hybridmind-knowledge-evidence-path\\artifacts\\evidence-path\\1770-claimsExplorer-desktop.png",
+    "C:\\Users\\Administrator\\Documents\\Codex\\2026-10-19\\task\\hybridmind-knowledge-evidence-path\\artifacts\\evidence-path\\1770-claimsExplorer-mobile.png",
+    "C:\\Users\\Administrator\\Documents\\Codex\\2026-10-19\\task\\hybridmind-knowledge-evidence-path\\artifacts\\evidence-path\\1770-claimsGame-desktop.png",
+    "C:\\Users\\Administrator\\Documents\\Codex\\2026-10-19\\task\\hybridmind-knowledge-evidence-path\\artifacts\\evidence-path\\1770-claimsGame-mobile.png"
+  ]
+}
