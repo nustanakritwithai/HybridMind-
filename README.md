@@ -1,5 +1,10 @@
 # HYBRID MIND — Modern AI Lifestyle
 
+## Current continuation: evidence learning path
+
+Eight complete public articles, 233 sections, 35 local media files and 12 reviewed lab roots are now included. The additional proposed path orders Retrieval Evaluation (1740), Evidence Sufficiency (1755), and Claim Decomposition (1770), with named topic navigation. All original five source bodies and completion revisions remain intact. See docs/evidence-learning-path.md for current reproduction, provenance, limits and tests. The earlier five-article notes below describe the previous import.
+
+
 **Live Smarter. Live Future.**
 
 Project website: https://hybridmind.online  

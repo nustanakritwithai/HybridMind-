@@ -141,8 +141,15 @@ function renderSearch() {
 function renderBook(out) {
   const pilot = state.catalog.topics.find(t => t.topic_id === 'hm:topic:verify-ai-work');
   const count = pilot ? articlesFor(pilot).filter(a => state.contentById.has(a.article_id)).length : 0;
-  out.append(el('p', 'Hybrid Mind · สารบัญความรู้', 'eyebrow'), el('h1', 'เลือกหัวข้อ แล้วเริ่มอ่าน', 'reader-title'), el('p', count ? `เริ่มจากหัวข้อตรวจสอบงาน AI ที่มีบทความเต็ม ${count} เรื่องพร้อมภาพและแบบทดลอง ส่วนหัวข้ออื่นเป็นโครงสร้างที่เสนอและยังรอทบทวน` : 'สารบัญนี้เป็นโครงสร้างที่เสนอ ยังไม่มีเนื้อหาเต็มที่ผ่านการตรวจในข้อมูลชุดนี้ เปิดหัวข้อเพื่อดูข้อมูลและลิงก์ต้นฉบับ', 'lead'));
+  out.append(el('p', 'Hybrid Mind · สารบัญความรู้', 'eyebrow'), el('h1', 'เลือกหัวข้อ แล้วเริ่มอ่าน', 'reader-title'), el('p', count ? `อ่านบทความเต็ม ${state.contentById.size} เรื่องพร้อมภาพและแบบทดลอง เริ่มจากการตรวจสอบงาน AI หรือเรียนต่อเรื่องหลักฐาน การจัดหัวข้อและลำดับยังเป็นข้อเสนอ` : 'สารบัญนี้เป็นโครงสร้างที่เสนอ ยังไม่มีเนื้อหาเต็มที่ผ่านการตรวจในข้อมูลชุดนี้ เปิดหัวข้อเพื่อดูข้อมูลและลิงก์ต้นฉบับ', 'lead'));
   if (count) out.append(link(route(pilot.topic_id), `เริ่มอ่าน: ${topicLabel(pilot)} →`, 'book-start book-open'));
+  const evidencePath = state.catalog.learning_paths.find(p=>p.path_id==='hm:path:evidence-to-answer');
+  if (evidencePath) {
+    const guide = el('section', undefined, 'evidence-path-guide'); guide.setAttribute('aria-label', 'เส้นทางเรียนเรื่องหลักฐาน');
+    guide.append(el('p','ANALYSIS · ลำดับการเรียนที่เสนอ','eyebrow'),el('h2',evidencePath.title),el('p',evidencePath.goal));
+    guide.append(link(articleRoute('hm:topic:verify-ai-work','hm:article:1077'),'ก่อนเริ่ม: ตรวจข้อเท็จจริง ตัวเลข และอ้างอิง'));
+    const steps = el('ol'); for (const id of evidencePath.ordered_topic_ids) { const topic=state.catalog.topics.find(t=>t.topic_id===id);const item=el('li');item.append(link(route(id,null,evidencePath.path_id),topicLabel(topic)),el('small',({beginner:'พื้นฐาน',intermediate:'ระดับกลาง',advanced:'ขั้นสูง'}[topic?.audience_level]||'รอจัดระดับ')+' · ระดับที่เสนอ'));steps.append(item); } guide.append(steps); out.append(guide);
+  }
   const toc = el('nav', undefined, 'book-toc'); toc.id = 'book-toc'; toc.setAttribute('aria-label', 'สารบัญทั้งเล่ม');
   const filter = $('#filter-topic').value;
   const ordered = state.catalog.topics.filter(t => !t.parent_topic_id).flatMap(t => [t, ...state.catalog.topics.filter(child => child.parent_topic_id === t.topic_id)]);
@@ -190,6 +197,12 @@ function renderReader({ navigateScroll = false } = {}) {
   out.append(el('p', topic.status === 'ready' && topic.editorial_status === 'approved' ? 'หัวข้อที่ผ่านการทบทวน' : 'หัวข้อที่เสนอ | รอทบทวนโดยกองบรรณาธิการ', 'eyebrow'), el('h1', topicLabel(topic), 'reader-title'));
   const description = topicDescription(topic);
   if (description) out.append(el('p', description, 'lead'));
+  const evidencePath = state.catalog.learning_paths.find(p=>p.path_id==='hm:path:evidence-to-answer' && p.ordered_topic_ids.includes(topic.topic_id));
+  if (evidencePath) {
+    const note=el('aside',undefined,'evidence-source-note');note.setAttribute('role','note');
+    note.append(el('strong','ANALYSIS · คำแนะนำการเรียนแยกจากต้นฉบับ'),el('p','ระดับและลำดับหัวข้อนี้เป็นข้อเสนอ เนื้อหาด้านล่างคง FACT / CLAIM / ANALYSIS / SIMULATION และข้อจำกัดตามบทความต้นทาง คะแนนใน Lab เป็นแบบจำลอง ไม่ใช่ผลประเมินโมเดลจริง'));
+    note.append(link(route(topic.topic_id,state.sectionId,evidencePath.path_id),'ใช้เส้นทางนี้เพื่ออ่านหัวข้อก่อนหน้าและถัดไป'));out.append(note);
+  }
   out.append(el('p', state.contentById.size ? 'เนื้อหาและภาพมาจาก snapshot สาธารณะของ WordPress แบบทดลองที่ตรวจทานแล้วทำงานในตำราได้ ส่วนองค์ประกอบที่ยังไม่รองรับจะแสดงคำอธิบายแบบคงที่ ลิงก์ต้นฉบับคงไว้ท้ายแต่ละบทความ' : 'ข้อจำกัดของต้นแบบ: ข้อมูลที่ได้รับมีชื่อเรื่อง บทคัดย่อ และหัวข้อย่อย แต่ไม่มี HTML เนื้อหาเต็ม ไฟล์ภาพ หรือบล็อก Gutenberg ฉบับนี้จึงไม่สร้างบทเรียนทดแทน เปิดบทความต้นฉบับเพื่ออ่านเนื้อหา ภาพ และตัวอย่างโต้ตอบครบถ้วน', 'scope-note'));
   const prior = readProgress(topic), revision = topicContentRevision(topic);
   if (prior?.lastViewedContentRevision) {
@@ -267,6 +280,7 @@ function renderReader({ navigateScroll = false } = {}) {
     pager.append(prev ? link(route(prev.topic_id, null, path.path_id), `← ก่อนหน้า: ${topicLabel(prev)}`) : el('span', `จุดเริ่มต้น · ${path.title}`));
     pager.append(next ? link(route(next.topic_id, null, path.path_id), `ถัดไป: ${topicLabel(next)} →`) : el('span', `สิ้นสุด · ${path.title}`)); finish.append(pager);
   }
+  if (evidencePath && topic.topic_id === evidencePath.ordered_topic_ids.at(-1)) finish.append(link(articleRoute('hm:topic:verify-ai-work','hm:article:2241'),'เรียนต่อขั้นสูง: ตรวจ Citation ให้ตรงรุ่นด้วย SHA-256 และ UTF-8','evidence-next-source'));
   if (state.progressEnabled && !state.progressPaused && (!prior || prior.lastViewedContentRevision === revision)) saveProgress(topic);
 }
 function syncRoute({ userNavigation = false } = {}) {

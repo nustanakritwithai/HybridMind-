@@ -27,7 +27,7 @@ test('server exposes only fixed assets and an explicitly public catalog projecti
   const response = await fetch(`${address}/data/pilot-catalog.json`);
   assert.equal(response.status, 200);
   const catalog = await response.json();
-  assert.equal(catalog.articles.length, 5);
+  assert.equal(catalog.articles.length, 8);
   assert.ok(catalog.articles.every(a => a.status === 'published' && a.visibility === 'public' && a.password_protected === false));
   assert.ok(!JSON.stringify(catalog).includes('hm:article:1053'));
   assert.ok(catalog.sections.every(section => catalog.articles.some(article => article.article_id === section.article_id)));
@@ -47,7 +47,7 @@ test('server exposes only fixed assets and an explicitly public catalog projecti
   const contentResponse = await fetch(`${address}/data/pilot-content-bundle.json`);
   assert.equal(contentResponse.status, 200);
   const bundle = await contentResponse.json();
-  assert.equal(bundle.articles.length, 5);
+  assert.equal(bundle.articles.length, 8);
   assert.ok(bundle.articles.every(entry => entry.blocks[0].html.length > 20000));
   const asset = bundle.articles[0].media[0];
   const image = await fetch(new URL(asset.local_src, `${address}/knowledge-textbook/`));

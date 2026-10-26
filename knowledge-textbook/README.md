@@ -1,31 +1,50 @@
-# Hybrid Mind knowledge textbook pilot
+# Hybrid Mind knowledge textbook
 
-The local pilot now contains complete public REST-rendered bodies for WordPress posts 1077, 1073, 2241, 2310 and 2494, with 18 inline image placements and five featured-image placements backed by 20 local image files. It preserves source URLs, visible captions, alt text and image metadata. Editorial topic mappings remain proposed.
+A local and GitHub Pages reader for **8 complete public HybridMind articles**, **233 stable sections**, **35 local image files**, and **12 reviewed interactive lab roots**. WordPress remains the canonical source; existing article URLs, visible media credits and references are preserved.
 
-Run with Node.js 24 or newer:
+## Read and run
 
-```powershell
+Live book: https://nustanakritwithai.github.io/HybridMind-/knowledge-textbook/
+
+Use Node.js 24 and an installed Chrome/Edge. No dependencies, paid service or credentials are required.
+
+```sh
 npm run lint
 npm test
 npm run evaluate
-npm run build
+npm run build:pages
+npm run test:pages
 npm run serve
 ```
 
-Open http://127.0.0.1:8000/knowledge-textbook/. Set HM_PILOT_PORT for another loopback port. No package installation, credentials, hosting or paid model is required. The ZIP has the same commands. Browser acceptance uses installed Edge on Windows, or the executable named by HM_EDGE_PATH. It launches a unique temporary profile and loopback debugging port; this Windows runner uses --no-sandbox only for that isolated headless test process.
+Open the loopback URL printed by serve. Set HM_PILOT_PORT for another port and HM_EDGE_PATH for another installed browser. Tests use a unique temporary browser profile and loopback debugging endpoint; they do not reuse personal sessions.
 
-The source captures are in reference/source-exports/public-rest-2026-10-25/. This is a new anonymous public REST capture. The original Library ZIP could not be downloaded, and its supplied SHA-256 has not been verified. Each entry records a SHA-256 over the exact UTF-8 content.rendered string, a separate normalized bundle digest, the REST modified_gmt revision, and media-file hashes. These verify bytes and identity, not factual correctness or the original WordPress database serialization.
+## Learning journey
 
-The five-body import is reproducible from the saved files with node scripts/import-public-rest-snapshot.mjs. It validates public publication status, canonical URLs, heading mappings and all downloaded media. It creates an offline content bundle and revision overlay; the original 248-row metadata inventory stays unchanged. Build and serve apply the overlay and verify body and image integrity. The checked-in data/ directory contains only the five public articles and is sufficient for a fresh checkout.
+The book shows available content separately from proposed empty outlines. The original five-article “ตรวจสอบงาน AI” topic and its progress revisions are unchanged. The additional **proposed** path is:
 
-The reader copies allowlisted HTML through an inert parser into new DOM nodes. Imported scripts, inline styles, event handlers and executable embeds are never copied. The six reviewed lab roots in articles 2241/2310/2494 use fixed local modules after verifying the exact source HTML hash, revision and identity. Their 107 original controls, native-canvas scene, prompt/cost simulator and citation/authorization/approval fixtures run in the reader. Unknown or changed source remains static. See docs/interactive-runtime.md for provenance, lifecycle and precise simulation limits. Tables, lists, code, source links, figures and captions remain readable.
+1. Retrieval Evaluation — 1740: distinguish retrieval, effective context, answer accuracy and citation support.
+2. Evidence Sufficiency — 1755: inspect complete applicable proof sets and question scope.
+3. Claim Decomposition — 1770: preserve atomic claims and qualifiers separately from reference support.
 
-All 138 catalog sections map to real headings in this capture. The TOC uses persistent section IDs; available source anchors are reconciled to the current revision. Source IDs are namespaced in the combined reader to prevent collisions. Reordering preserves IDs; heading renames preserve IDs when the original source anchor remains. A rename without a retained source anchor requires editorial remapping and produces a visible fallback instead of a guessed destination.
+Existing article 1077 is linked as preparation, and 2241 as further advanced reading. Each step has named previous/next topic navigation. Article and section bookmarks, topic filters, keyword search, browser Back/Forward and collapsible mobile TOC remain available.
 
-Search is local keyword search across article bodies and section/topic metadata, with filters. It is not semantic search. Existing held-out judgments concern metadata relevance, not body-level factual support; the body tests separately verify retrieval of real code details. Meilisearch and Typesense remain pluggable, unevaluated deployment options.
+Progress is opt-in, device-only and resettable. Completion uses stable topic IDs and explicit topic revisions; content freshness is separate. Labs retain state within a browsing session when changing chapters, and reset independently.
 
-Reading progress is opt-in and stored only in this browser. Reset clears progress and consent. Article revisions affect last-read freshness; explicit topic revisions govern completion history. Topic-path previous/next and source-article/section previous/next show destination names. No-JavaScript fallback links lead to the five canonical articles.
+## Source and runtime integrity
 
-Only these five explicitly public articles enter the server and ZIP. The other 243 inventory rows remain excluded. The original WordPress site is unchanged. The same reader is published at https://nustanakritwithai.github.io/HybridMind-/knowledge-textbook/ through the existing Pages workflow. Taxonomy approval, broader inventory verification, full Thai relevance review, field performance, screen-reader review and production unpublish/purge SLA remain separate decisions. See docs/interactive-runtime.md for current behavior and docs/rest-content-delivery.md for the earlier import evidence.
+The first five bodies were captured anonymously from public WordPress REST on 2026-10-25. Three additional bodies were captured on 2026-10-26. Public status and non-password protection, canonical URLs, source revisions, response/body SHA-256 and local media hashes are checked. This is not verification of the previously inaccessible Library source ZIP or the raw WordPress database.
 
-The textbook root now opens the book overview. Filter without a keyword, open an article at its title, or return to the book at the end of a topic. See docs/reading-journey.md for routes, coverage and limits.
+The data/ directory is sufficient for a fresh checkout. Replay the additional saved sources using `node scripts/import-evidence-batch.mjs`. Source captures, checkpoints and coverage are under reference/source-exports/. The older importer is documented for its original five-source capture and is not the assembly command for this release.
+
+Imported HTML passes through an inert parser and explicit sanitizer. Imported scripts, handlers, active embeds and inline styles never execute. Twelve exact source roots use reviewed fixed local implementations, bound to source hash/revision/URL. They perform deterministic educational simulations, with no new external runtime requests, trackers, model calls or stored lab data.
+
+All source FACT/CLAIM/ANALYSIS/SIMULATION labels and limits are preserved where present. New sequencing guidance is labelled ANALYSIS. Taxonomy, difficulty and sequence remain proposals.
+
+## Evidence and limits
+
+See docs/evidence-learning-path.md and docs/evidence-interactives.md for scope, reproduction, scientific boundaries and test coverage. Earlier phase evidence remains in docs/rest-content-delivery.md, docs/interactive-runtime.md and docs/reading-journey.md.
+
+Search is local keyword search, not semantic search. Vendor adapters remain injected, unevaluated deployment options. The original benchmark uses its five-source scope; the expanded-corpus diagnostics are reported honestly in the evidence path document. This is a bounded pilot, not a migration of all WordPress posts or certification of every device/assistive technology.
+
+The original homepage, WordPress, Affiliate, RAMAGAN and ECC are unchanged.

@@ -36,7 +36,7 @@ const staticRoutes = new Map([
   ['/knowledge-textbook/app.js', 'knowledge-textbook/app.js'],
   ['/knowledge-textbook/content-renderer.mjs', 'knowledge-textbook/content-renderer.mjs'],
   ['/knowledge-textbook/styles.css', 'knowledge-textbook/styles.css'],
-  ...['registry.mjs','helpers.mjs','manager.mjs','video.mjs','citation.mjs','authorization.mjs','approval.mjs','labs.css'].map(name=>['/knowledge-textbook/labs/'+name,'knowledge-textbook/labs/'+name]),
+  ...['registry.mjs','helpers.mjs','manager.mjs','video.mjs','citation.mjs','authorization.mjs','approval.mjs','labs.css','evidence-retrieval-explorer.mjs','evidence-retrieval-game.mjs','evidence-sufficiency-explorer.mjs','evidence-sufficiency-game.mjs','evidence-claims-explorer.mjs','evidence-claims-game.mjs','evidence.css'].map(name=>['/knowledge-textbook/labs/'+name,'knowledge-textbook/labs/'+name]),
   ['/search/local-search.mjs', 'search/local-search.mjs'],
   ['/search/safe-url.mjs', 'search/safe-url.mjs'],
 ]);

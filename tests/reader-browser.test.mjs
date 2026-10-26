@@ -116,7 +116,7 @@ test('responsive reader navigation, search, progress, missing anchors, and safe 
     assert.ok(bodyCoverage.textLength>100000); assert.equal(bodyCoverage.images,23); assert.deepEqual(bodyCoverage.duplicateIds,[]); assert.equal(bodyCoverage.active,0);
     t.diagnostic(JSON.stringify(bodyCoverage));
     assert.equal(await cdp.evaluate(`Array.from(document.querySelectorAll('#reader-content .source-link')).every(a=>new URL(a.href).hostname==='hybridmind.online'&&a.target==='_blank'&&a.rel.includes('noopener'))`, sessionId), true);
-    assert.equal(await cdp.evaluate(`document.querySelectorAll('#learning-paths .learning-path-card').length`, sessionId), 3);
+    assert.equal(await cdp.evaluate(`document.querySelectorAll('#learning-paths .learning-path-card').length`, sessionId), 4, 'two real paths plus the two synthetic browser paths');
     assert.match(await cdp.evaluate(`document.querySelector('#learning-paths').textContent`, sessionId), /เส้นทางการเรียนรู้/);
     assert.equal(await cdp.evaluate(`new URL(location.href).searchParams.has('path')===false&&document.querySelector('.topic-pager')===null&&document.querySelector('.active-path-label').textContent.startsWith('Choose a learning path')`,sessionId),true,'a bare topic route must not auto-select a path');
     assert.equal(await cdp.evaluate(`document.querySelectorAll('.topic-path-choice').length`,sessionId),3);

@@ -1,0 +1,596 @@
+
+<div class="wp-block-group is-layout-flow wp-block-group-is-layout-flow" id="hm-retrieval-article" lang="th">
+
+<style>#hm-retrieval-article{overflow-wrap:anywhere;line-height:1.85}#hm-retrieval-article .wp-block-image img{width:100%;height:auto;display:block}#hm-retrieval-article figcaption{font-size:.92em;line-height:1.7}#hm-retrieval-article .wp-block-table{max-width:100%;overflow-x:auto}#hm-retrieval-article table{width:100%;border-collapse:collapse;min-width:600px}#hm-retrieval-article th,#hm-retrieval-article td{padding:.7em;text-align:left;vertical-align:top;border:1px solid var(--wp--preset--color--theme-3,#bbb)}#hm-retrieval-article pre{white-space:pre-wrap;overflow-wrap:anywhere;padding:1em;border:1px solid var(--wp--preset--color--theme-3,#bbb)}#hm-retrieval-article code{overflow-wrap:anywhere}</style>
+
+
+
+<p class="wp-block-paragraph"><strong>คำตอบโดยตรง:</strong> การค้นพบเอกสารที่เกี่ยวข้องยังไม่รับรองว่า AI Agent จะได้รับข้อความสำคัญครบ ใช้ข้อความนั้นถูก หรือตอบพร้อมหลักฐานที่รองรับ ต้องประเมินแยกอย่างน้อยสามจุด: ชุดที่ retriever ค้นได้ บริบทที่ส่งให้โมเดลจริง และข้อกล่าวอ้างในคำตอบ จากนั้นแยกความถูกต้องตามคำตอบอ้างอิงออกจากความสอดคล้องกับหลักฐาน คะแนนเหล่านี้ช่วยระบุตำแหน่งที่ควรตรวจ แต่ไม่พิสูจน์สาเหตุของความผิดพลาดทั้งหมดด้วยตัวเอง</p>
+
+
+
+<p class="wp-block-paragraph">บทความเปรียบเทียบ gold labels, reference-free judge และผู้ตรวจที่ฝึกพร้อมข้อมูลมนุษย์ มี Interactive และเกม <strong>SIMULATION</strong> แสดง Input, State และ Output แต่ไม่เรียก LLM หรือสร้างผล benchmark ของ AI</p>
+
+
+
+<figure class="wp-block-image size-full"><a href="https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-retrieval-009-01-cover.png?ssl=1"><img data-recalc-dims="1" fetchpriority="high" data-attachment-id="1734" data-permalink="https://hybridmind.online/hm-retrieval-009-01-cover/" data-orig-file="https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-retrieval-009-01-cover.png?fit=1600%2C900&amp;ssl=1" data-orig-size="1600,900" data-comments-opened="1" data-image-title="Retrieval Evaluation: ค้นเจอแล้ว ยังตอบผิดได้ตรงไหน" data-image-description="" data-image-caption="&lt;p&gt;แผนภาพเชิงอธิบายแยก retrieved set ซึ่งคือสิ่งที่ค้นและจัดอันดับมา ออกจาก effective context ซึ่งเป็นข้อมูลที่โมเดลอ่านจริง และ answer/citations ที่ยังต้องตรวจ claim support กับ correctness การค้นพบเอกสารหรือการมี citation ไม่รับรองว่าคำตอบถูก Source อาจเก่าหรือผิดเอง ภาพนี้เป็นปกบทความเชิงกลไก ส่วนภาพ Hook Facebook จัดทำแยก&lt;/p&gt;
+" data-large-file="https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-retrieval-009-01-cover.png?fit=1024%2C576&amp;ssl=1" src="https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-retrieval-009-01-cover.png?resize=1600%2C900&#038;ssl=1" alt="สามกล่องจาก Retrieved Set ไป Effective Context และ Answer Citations แยกการค้นคืน การเลือกบริบท และการตรวจคำตอบ พร้อมย้ำว่าสิ่งที่มี source รองรับอาจไม่จริงในโลก" width="1600" height="900" class="wp-image-1734" loading="eager" decoding="async" srcset="https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-retrieval-009-01-cover.png?w=1600&amp;ssl=1 1600w, https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-retrieval-009-01-cover.png?resize=300%2C169&amp;ssl=1 300w, https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-retrieval-009-01-cover.png?resize=1024%2C576&amp;ssl=1 1024w, https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-retrieval-009-01-cover.png?resize=768%2C432&amp;ssl=1 768w, https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-retrieval-009-01-cover.png?resize=1536%2C864&amp;ssl=1 1536w" sizes="(max-width: 1000px) 100vw, 1000px" /></a><figcaption><strong>Retrieval Evaluation: ค้นเจอแล้ว ยังตอบผิดได้ตรงไหน</strong> — แผนภาพเชิงอธิบายแยก retrieved set ซึ่งคือสิ่งที่ค้นและจัดอันดับมา ออกจาก effective context ซึ่งเป็นข้อมูลที่โมเดลอ่านจริง และ answer/citations ที่ยังต้องตรวจ claim support กับ correctness การค้นพบเอกสารหรือการมี citation ไม่รับรองว่าคำตอบถูก Source อาจเก่าหรือผิดเอง ภาพนี้เป็นปกบทความเชิงกลไก ส่วนภาพ Hook Facebook จัดทำแยก · <a href="https://aclanthology.org/2024.eacl-demo.16/">แหล่งแนวคิด 1</a> · <a href="https://aclanthology.org/2023.emnlp-main.398/">แหล่งแนวคิด 2</a> · <a href="https://datasets-benchmarks-proceedings.neurips.cc/paper/2021/hash/65b9eea6e1cc6bb9f0cd2a47751a186f-Abstract-round2.html">แหล่งแนวคิด 3</a></figcaption></figure>
+
+
+
+<h2 class="wp-block-heading" id="hm-retrieval-section-1">ทำไมคำตอบผิดไม่บอกทันทีว่าต้องเปลี่ยน Retriever</h2>
+
+
+
+<p class="wp-block-paragraph">เมื่อ Agent ตอบผิด ข้อมูลอาจค้นได้แล้วแต่ถูกตัดตอนจัดบริบท หรืออยู่ครบแต่คำตอบดึงตัวเลขจากคนละหัวข้อและอ้างผิดแหล่ง การเพิ่มเอกสารหรือเปลี่ยน embedding จึงอาจไม่แก้ปัญหาในขั้นใช้ข้อมูล</p>
+
+
+
+<p class="wp-block-paragraph">คำตอบที่ถูกอาจมาจากความรู้เดิมหรือการเดาโดยไม่มีหลักฐานที่ค้นมารองรับ หากงานต้องตรวจที่มา คำตอบนั้นยังไม่ผ่าน การดูผลลัพธ์สุดท้ายอย่างเดียวจึงซ่อนข้อผิดพลาดของกระบวนการ</p>
+
+
+
+<p class="wp-block-paragraph">ความจำภายนอกของ Agent อาจมีเหตุการณ์เก่า ข้อเสนอและเงื่อนไขหลายแหล่ง ต้องบันทึกว่ารอบตัดสินใจอ่านอะไร และแต่ละข้อกล่าวอ้างสัมพันธ์กับหลักฐานใด ไม่ใช้เพียงคำบรรยายว่า “ค้นความจำแล้ว”</p>
+
+
+
+<h2 class="wp-block-heading" id="hm-retrieval-section-2">แยกชุดข้อมูลสามชั้นก่อนนับคะแนน</h2>
+
+
+
+<h3 class="wp-block-heading" id="hm-retrieval-section-3">Corpus และ Gold Labels: อะไรควรค้นพบตามเกณฑ์ของงาน</h3>
+
+
+
+<p class="wp-block-paragraph">Corpus คือชุดเอกสารที่ให้ค้น ส่วน gold relevance labels หรือ qrels ระบุความเกี่ยวข้องระหว่างคำถามกับเอกสาร ต้องกำหนด snapshot, query/document ID และเกณฑ์ relevance; ชื่อไฟล์ที่ดูเกี่ยวข้องไม่รับรองเนื้อหา</p>
+
+
+
+<p class="wp-block-paragraph">Gold labels ยังมีขอบเขต ผู้ประเมินอาจไม่เคยอ่านเอกสารที่ retriever ใหม่ค้นพบ เอกสารที่ไม่มี label จึงไม่ควรถูกอธิบายว่า “ไม่เกี่ยวข้องแน่นอน” งาน <strong>BEIR</strong> ศึกษา retrieval หลายโดเมนและวิเคราะห์ผลของ annotation selection bias รวมถึงรายการที่ยังไม่ถูกตัดสิน ข้อนี้ทำให้ต้องแยก known non-relevant ออกจาก unjudged <a href="https://datasets-benchmarks-proceedings.neurips.cc/paper/2021/hash/65b9eea6e1cc6bb9f0cd2a47751a186f-Abstract-round2.html">BEIR</a></p>
+
+
+
+<h3 class="wp-block-heading" id="hm-retrieval-section-4">Retrieved Set: อะไรอยู่ในรายการผลค้น</h3>
+
+
+
+<p class="wp-block-paragraph">Retrieved set คือ document IDs เรียงอันดับพร้อมคะแนน/เวอร์ชัน index ให้เก็บก่อนตัดทอนเป็น prompt เพื่อตรวจว่าเอกสารสำคัญมาถึงหรือยัง คะแนนความคล้ายไม่ใช่โอกาสที่ข้อกล่าวอ้างจริง หรือคะแนนที่เทียบข้ามโมเดลได้ทันที</p>
+
+
+
+<h3 class="wp-block-heading" id="hm-retrieval-section-5">Effective Context: โมเดลได้รับข้อความใดจริง</h3>
+
+
+
+<p class="wp-block-paragraph">หลังค้นอาจกรองสิทธิ์ ลบซ้ำ rerank หรือตัด chunk ให้พอดีงบ จึงต้องเก็บ effective context ที่ส่งจริง การมี ID ในผลค้นไม่รับรองว่าประโยคสำคัญยังอยู่; บันทึก span/source mapping ของช่วงที่ใช้ด้วย</p>
+
+
+
+<p class="wp-block-paragraph">การที่ข้อมูลอยู่ในบริบทก็ยังไม่รับรองการใช้ข้อมูลถูก งาน <strong>Lost in the Middle</strong> ใน TACL 2024 พบความไวต่อตำแหน่งข้อมูลในการทดลอง QA และ key–value ภายใต้โมเดลที่ศึกษา จึงเป็นเหตุผลให้ตรวจขั้นใช้ข้อมูลต่อจากขั้นค้น ไม่ใช่ข้อสรุปว่าทุกโมเดลปัจจุบันผิดแบบเดียวกัน <a href="https://aclanthology.org/2024.tacl-1.9/">Lost in the Middle</a></p>
+
+
+
+<h2 class="wp-block-heading" id="hm-retrieval-section-6">Retrieval Recall กับคุณภาพคำตอบเป็นคนละคำถาม</h2>
+
+
+
+<p class="wp-block-paragraph">หากมี gold relevant set ที่กำหนดครบ สามารถนิยาม <strong>Recall@k</strong> เป็นสัดส่วนเอกสารเกี่ยวข้องที่ปรากฏในผลค้นอันดับแรก k รายการ ให้ G เป็นชุดเอกสารเกี่ยวข้อง และ Rk เป็นชุด ID ที่ไม่ซ้ำของผลค้นเหล่านั้น</p>
+
+
+
+<pre class="wp-block-code"><code>Recall@k = จำนวน ID ใน Rk ที่อยู่ใน G / จำนวน ID ทั้งหมดใน G
+Precision@k = จำนวน ID ที่เกี่ยวข้องในผลอันดับแรก k / k</code></pre>
+
+
+
+<p class="wp-block-paragraph">Recall วัดว่าค้นของที่ควรเจอครบเพียงใด ส่วน precision วัดสัดส่วนผลเกี่ยวข้อง ต้องระบุการนับเมื่อได้ผลน้อยกว่า k และวิธีเฉลี่ยต่อ query ไม่ใช้ similarity เป็น label หรือรวม ID ซ้ำให้เพิ่มคะแนน</p>
+
+
+
+<p class="wp-block-paragraph">เมื่อ G ว่างให้ recall เป็น NA ไม่บังคับเป็นศูนย์หรือหนึ่ง หาก labels ไม่ครบต้องรายงานข้อจำกัดหรือ UNKNOWN; precision ก็ต้องบอกวิธีจัดการเอกสาร unjudged</p>
+
+
+
+<p class="wp-block-paragraph">Recall@k ไม่รับรองหลักฐานเพียงพอตอบ บางเอกสารใช้แทนกันได้ บางงานต้องมีหลายข้อความร่วมกัน จึงนิยาม evidence sufficiency แยกจากความครอบคลุมของเอกสาร ไม่เปลี่ยน recall เป็นคะแนน reasoning</p>
+
+
+
+<h2 class="wp-block-heading" id="hm-retrieval-section-7">แยก Correctness, Faithfulness และ Citation Support</h2>
+
+
+
+<p class="wp-block-paragraph"><strong>Answer Correctness</strong> ตรวจคำตอบกับ reference answer หรือเกณฑ์ตัดสินงานที่เตรียมแยกไว้ ความถูกต้องขึ้นกับคุณภาพของ reference เช่น เวลาที่ถาม ขอบเขตผู้ใช้ และข้อยกเว้น การตรงกับข้อความเก่าใน corpus ไม่ได้ทำให้ตรงกับคำตอบปัจจุบันเสมอ</p>
+
+
+
+<p class="wp-block-paragraph"><strong>Answer Faithfulness</strong> ตรวจว่าข้อกล่าวอ้างอนุมานได้จาก effective context หรือไม่ จึงเป็นความสอดคล้องกับข้อมูลที่ให้ ไม่ใช่การตรวจความจริงภายนอกทั้งหมด หากบริบทมีข้อมูลผิด คำตอบที่ตามบริบทอาจ faithful แต่ไม่ถูกตาม reference อีกด้านหนึ่งคำตอบอาจตรง reference แต่เพิ่มข้อกล่าวอ้างที่ไม่มีหลักฐาน</p>
+
+
+
+<p class="wp-block-paragraph"><strong>Citation Support</strong> ตรวจว่าประโยคที่ผูกกับ citation ได้รับการรองรับจากแหล่งที่อ้างจริงหรือไม่ ไม่ใช่ตรวจว่ามีวงเล็บลิงก์ครบเท่านั้น การมีข้อมูลถูกอยู่ที่อื่นใน context ไม่ช่วยให้ citation ที่ชี้ผิดแหล่งกลายเป็นถูก ต้องแยกความถูกของคำตอบกับความถูกของการอ้างหลักฐาน</p>
+
+
+
+<p class="wp-block-paragraph">งาน <strong>ALCE</strong> ที่ EMNLP 2023 แยก correctness และ citation quality โดยใช้ NLI ประเมินการรองรับข้อความพร้อมเปรียบเทียบกับการตัดสินของมนุษย์ citation recall วัดสัดส่วนข้อความคำตอบที่มี citations รองรับตามเกณฑ์ของงาน ข้อความที่ไม่มี citation อาจไม่ผ่าน ไม่ใช่ document Recall@k ของ retriever ผู้ตรวจ NLI ยังผิดได้และมีข้อจำกัดเรื่อง partial support <a href="https://aclanthology.org/2023.emnlp-main.398/">ALCE</a></p>
+
+
+
+<p class="wp-block-paragraph">ดู <strong>Answer Coverage</strong> ควบคู่: ตอบกี่ข้อจากงานที่ต้องตอบ การงดตอบเมื่อหลักฐานไม่พอมีประโยชน์ แต่ไม่ควรได้เต็มเมื่อไม่ตอบทุกข้อ หากไม่มีคำตอบ/claims ให้คะแนนที่ต้องใช้คำตอบเป็น NA และแสดง coverage ศูนย์</p>
+
+
+
+<h2 class="wp-block-heading" id="hm-retrieval-section-8">งานวิจัยเสนอผู้ตรวจอัตโนมัติแบบใด</h2>
+
+
+
+<p class="wp-block-paragraph"><strong>RAGAS — แยกมิติด้วยผู้ตรวจแบบ reference-free:</strong> งาน EACL 2024 System Demonstrations ประเมิน faithfulness, answer relevance และ context relevance โดยใช้โมเดลช่วยตรวจ ตัวอย่าง faithfulness แยกคำตอบเป็น statements แล้วตรวจการอนุมานจากบริบท ส่วน answer relevance ไม่ใช่การวัด factual correctness โดยตรง แนวทางนี้ช่วยเริ่มประเมินเมื่อไม่มี reference answer ครบ แต่ไม่ได้ทำให้ judge ปราศจากความผิดพลาด <a href="https://aclanthology.org/2024.eacl-demo.16/">RAGAS</a></p>
+
+
+
+<p class="wp-block-paragraph"><strong>ARES — ฝึก Judge และใช้ข้อมูลมนุษย์ช่วยประเมินระดับระบบ:</strong> งาน NAACL 2024 ใช้ synthetic query–passage–answer triples ฝึกผู้ตรวจ แล้วใช้ human-annotated validation set ร่วมกับ prediction-powered inference หรือ PPI เพื่อประมาณคะแนนและช่วงความเชื่อมั่น ข้อมูลมนุษย์เป็นส่วนของวิธี ไม่ใช่ระบบที่ตัด human labels ออกทั้งหมด ผลบนโดเมนที่ทดลองไม่รับรองความแม่นยำในภาษาไทยหรือโจทย์ใหม่โดยอัตโนมัติ <a href="https://aclanthology.org/2024.naacl-long.20/">ARES</a></p>
+
+
+
+<p class="wp-block-paragraph">ต้องแยกการฝึกน้ำหนักของ <strong>evaluator</strong> ใน ARES ออกจากการเขียนความจำของ <strong>Agent ที่ถูกประเมิน</strong> การรัน evaluation หรือบันทึกข้อผิดพลาดไม่ได้หมายความว่า Agent ฝึกตัวเอง หากนำ feedback ไปปรับ prompt, index, memory หรือ model weights ต้องรายงานการเปลี่ยนแต่ละชั้นพร้อมกลไกและการทดสอบแยก</p>
+
+
+
+<h2 class="wp-block-heading" id="hm-retrieval-section-9">สถาปัตยกรรมสำหรับตรวจร่องรอยของ Agent</h2>
+
+
+
+<p class="wp-block-paragraph">สถาปัตยกรรมต่อไปเป็น <strong>Conceptual Architecture / HYPOTHESIS</strong> สำหรับประกอบเครื่องมือประเมิน ไม่ใช่ผังถอดจาก RAGAS, ARES หรือทุกระบบ RAG ภาพรวมจัด Retrieval Evaluator กับ Trace Reporter ไว้ในกล่อง Evaluator + Trace ส่วนตารางแยกเป็นหน้าที่เพื่อให้ตรวจแต่ละจุดได้</p>
+
+
+
+<figure class="wp-block-image size-full"><a href="https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-retrieval-009-02-architecture.png?ssl=1"><img data-recalc-dims="1" data-attachment-id="1735" data-permalink="https://hybridmind.online/hm-retrieval-009-02-architecture/" data-orig-file="https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-retrieval-009-02-architecture.png?fit=1800%2C1150&amp;ssl=1" data-orig-size="1800,1150" data-comments-opened="1" data-image-title="Conceptual Retrieval Evaluation Architecture กับ Trace ของ Context จริง" data-image-description="" data-image-caption="&lt;p&gt;HYPOTHESIS / แบบร่างผู้เขียนประกอบด้วย Query/Corpus Retriever Context Builder Generator Claim Support Check และ Evaluator/Trace แยก qrels/gold ที่มีจริง ranked IDs context ที่ใช้จริง claims citations version ของ model/prompt/judge และ human rubric ไม่ใช่ผังต้นฉบับทุกขั้นตอนของ RAGAS ARES หรือ ALCE Feedback การเก็บ trace หรือปรับ prompt ไม่ฝึกน้ำหนักโมเดลโดยตัวมันเอง ส่วนการฝึก judge ของ ARES เป็นกระบวนการที่ต้องรายงานแยก&lt;/p&gt;
+" data-large-file="https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-retrieval-009-02-architecture.png?fit=1024%2C654&amp;ssl=1" src="https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-retrieval-009-02-architecture.png?resize=1800%2C1150&#038;ssl=1" alt="หกโมดูล Query Corpus Retriever Context Builder Answer Generator Claim Support Check และ Evaluator Trace พร้อมข้อมูลย้อนตรวจจาก corpus version ranked IDs effective context claims citations และ rubric" width="1800" height="1150" class="wp-image-1735" loading="lazy" decoding="async" srcset="https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-retrieval-009-02-architecture.png?w=1800&amp;ssl=1 1800w, https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-retrieval-009-02-architecture.png?resize=300%2C192&amp;ssl=1 300w, https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-retrieval-009-02-architecture.png?resize=1024%2C654&amp;ssl=1 1024w, https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-retrieval-009-02-architecture.png?resize=768%2C491&amp;ssl=1 768w, https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-retrieval-009-02-architecture.png?resize=1536%2C981&amp;ssl=1 1536w" sizes="auto, (max-width: 1000px) 100vw, 1000px" /></a><figcaption><strong>Conceptual Retrieval Evaluation Architecture กับ Trace ของ Context จริง</strong> — HYPOTHESIS / แบบร่างผู้เขียนประกอบด้วย Query/Corpus Retriever Context Builder Generator Claim Support Check และ Evaluator/Trace แยก qrels/gold ที่มีจริง ranked IDs context ที่ใช้จริง claims citations version ของ model/prompt/judge และ human rubric ไม่ใช่ผังต้นฉบับทุกขั้นตอนของ RAGAS ARES หรือ ALCE Feedback การเก็บ trace หรือปรับ prompt ไม่ฝึกน้ำหนักโมเดลโดยตัวมันเอง ส่วนการฝึก judge ของ ARES เป็นกระบวนการที่ต้องรายงานแยก · <a href="https://aclanthology.org/2024.eacl-demo.16/">แหล่งแนวคิด 1</a> · <a href="https://aclanthology.org/2024.naacl-long.20/">แหล่งแนวคิด 2</a> · <a href="https://aclanthology.org/2023.emnlp-main.398/">แหล่งแนวคิด 3</a> · <a href="https://datasets-benchmarks-proceedings.neurips.cc/paper/2021/hash/65b9eea6e1cc6bb9f0cd2a47751a186f-Abstract-round2.html">แหล่งแนวคิด 4</a></figcaption></figure>
+
+
+
+<figure class="wp-block-table"><table><thead><tr><th scope="col">Module</th><th scope="col">Input → Output และหน้าที่</th><th scope="col">State/จุดตรวจ</th><th scope="col">Failure Mode</th></tr></thead><tbody><tr><td>Dataset &amp; Reference Manager</td><td>corpus กับ queries → snapshot และ labels/reference</td><td>query_id, doc_id, version, judged/unjudged; ตรวจสิทธิ์และนิยาม gold</td><td>gold ไม่ครบ reference เก่า หรือ test รั่วไปชุดปรับระบบ</td></tr><tr><td>Retriever</td><td>query กับ index → ranked IDs/scores</td><td>index_version, filters, rank; อ่านผลดิบก่อน packing</td><td>ค้นคนละหัวข้อ กรองหลักฐานออก หรือ index ไม่มีข้อมูล</td></tr><tr><td>Context Assembler</td><td>ranked results กับ budget → effective text/spans</td><td>retained_ids, dropped_ids, spans, order; ตรวจข้อความที่ส่งจริง</td><td>ผลค้นมีข้อมูลแต่ context ตัดประโยคสำคัญ</td></tr><tr><td>Answer Generator</td><td>query กับ effective context → answer/citations</td><td>model/prompt version, output, cited_ids</td><td>ตอบคนละ field เพิ่มข้อความไม่มีหลักฐาน หรืออ้างผิดแหล่ง</td></tr><tr><td>Retrieval Evaluator</td><td>results กับ relevance labels → coverage/rank metrics</td><td>metric definition, G, k, unjudged; ตรวจตัวหารและหน่วยประเมิน</td><td>ให้ label ไม่ทราบเป็นไม่เกี่ยวข้อง หรือปน document/claim recall</td></tr><tr><td>Answer Evaluator</td><td>answer/context/reference → correctness/support/coverage</td><td>claims, source spans, verdict, judge version; ตรวจมนุษย์ในตัวอย่างสำคัญ</td><td>judge เชื่อ source ผิด ให้คะแนนการงดตอบเต็ม หรือไม่เห็น qualifier</td></tr><tr><td>Trace Reporter</td><td>metrics และ run metadata → รายงานแยกขั้น</td><td>run_id, configs, flags, uncertainty; อ่านซ้ำได้</td><td>รวมทุกคะแนนจนซ่อน tradeoff หรืออ้างสาเหตุเกิน trace</td></tr></tbody></table></figure>
+
+
+
+<p class="wp-block-paragraph">แยก retrieved, retained และ cited IDs; Agent หลายรอบเก็บ parent run/tool calls ด้วย นี่คือร่องรอยการดำเนินการที่ตรวจได้ ไม่ใช่คำบรรยาย reasoning ที่โมเดลสร้างเอง</p>
+
+
+
+<h2 class="wp-block-heading" id="hm-retrieval-section-10">Operational Flow: ตรวจแต่ละจุดก่อนสรุปว่าพลาดตรงไหน</h2>
+
+
+
+<ol class="wp-block-list">
+<li>กำหนด queries, corpus snapshot, gold relevance และ answer criteria แยกจากข้อมูลที่ใช้ปรับระบบ</li>
+
+
+<li>รัน retriever และเก็บผลเรียงอันดับพร้อม ID/เวอร์ชัน โดยยังไม่เขียนทับด้วยผลหลังกรอง</li>
+
+
+<li>จัดบริบทแล้วบันทึกข้อความจริง ส่วนที่ตัดออก และ source mapping ของข้อความที่ยังอยู่</li>
+
+
+<li>สร้างคำตอบและเก็บ citations หรือการงดตอบตามสัญญาที่ระบบกำหนด</li>
+
+
+<li>ประเมิน retrieval/context coverage และประเมินคำตอบตาม correctness, support และ coverage แยกกัน</li>
+
+
+<li>ตรวจตัวอย่างที่ไม่ผ่าน พร้อมรายงาน unknowns และ flags หลายประเภทได้ ไม่บังคับทุกกรณีให้เหลือสาเหตุเดียว</li>
+
+
+<li>หากแก้ระบบ ให้เปลี่ยนสิ่งที่ระบุได้แล้วทดลองซ้ำบนชุดทดสอบที่ไม่ใช้ปรับ โดยเก็บเงื่อนไขเปรียบเทียบให้เท่ากัน</li>
+</ol>
+
+
+
+<figure class="wp-block-image size-full"><a href="https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-retrieval-009-03-operational-flow.png?ssl=1"><img data-recalc-dims="1" data-attachment-id="1736" data-permalink="https://hybridmind.online/hm-retrieval-009-03-operational-flow/" data-orig-file="https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-retrieval-009-03-operational-flow.png?fit=1600%2C1120&amp;ssl=1" data-orig-size="1600,1120" data-comments-opened="1" data-image-title="SIMULATION: Recall 100% กับ Context Coverage และ Claim Support 0%" data-image-description="" data-image-caption="&lt;p&gt;SIMULATION / fixture ร่วมกับ Lab: gold G={D1,D2} ของ candidate pool ร่วมสองคำถาม ลำดับ D3,D4,D1,D2 ที่ k=4 ค้น gold ครบจึงได้ Recall@4=2/2=100% แต่ capacity=2 ส่งเฉพาะ D3,D4 จึงมี context gold coverage=0/2 fixed miscite policy คืนค่า 10:00/50 ถูกตามค่าที่ตั้งไว้ แต่ cite D3/D4 ซึ่งไม่รองรับ จึง accuracy=2/2 และ claim support=0/2 แยกกัน ถ้า evidence-only policy งดตอบทั้งสอง accuracy/support เป็น NA ไม่ใช่ 100% ทุกค่าเป็นกฎสมมติ ไม่เรียก LLM ไม่ใช่ ALCE NLI หรือ benchmark จริง และไม่ใช่ macro Recall ต่อ query&lt;/p&gt;
+" data-large-file="https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-retrieval-009-03-operational-flow.png?fit=1024%2C717&amp;ssl=1" src="https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-retrieval-009-03-operational-flow.png?resize=1600%2C1120&#038;ssl=1" alt="หกขั้นตอนของ fixture gold D1 D2 retrieved D3 D4 D1 D2 Recall หนึ่งร้อยเปอร์เซ็นต์ context มี D3 D4 coverage ศูนย์ fixed policy ตอบสิบโมงห้าสิบบาทถูกแต่ cite ผิดจึง accuracy หนึ่งร้อยและ support ศูนย์" width="1600" height="1120" class="wp-image-1736" loading="lazy" decoding="async" srcset="https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-retrieval-009-03-operational-flow.png?w=1600&amp;ssl=1 1600w, https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-retrieval-009-03-operational-flow.png?resize=300%2C210&amp;ssl=1 300w, https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-retrieval-009-03-operational-flow.png?resize=1024%2C717&amp;ssl=1 1024w, https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-retrieval-009-03-operational-flow.png?resize=768%2C538&amp;ssl=1 768w, https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-retrieval-009-03-operational-flow.png?resize=1536%2C1075&amp;ssl=1 1536w" sizes="auto, (max-width: 1000px) 100vw, 1000px" /></a><figcaption><strong>SIMULATION: Recall 100% กับ Context Coverage และ Claim Support 0%</strong> — SIMULATION / fixture ร่วมกับ Lab: gold G={D1,D2} ของ candidate pool ร่วมสองคำถาม ลำดับ D3,D4,D1,D2 ที่ k=4 ค้น gold ครบจึงได้ Recall@4=2/2=100% แต่ capacity=2 ส่งเฉพาะ D3,D4 จึงมี context gold coverage=0/2 fixed miscite policy คืนค่า 10:00/50 ถูกตามค่าที่ตั้งไว้ แต่ cite D3/D4 ซึ่งไม่รองรับ จึง accuracy=2/2 และ claim support=0/2 แยกกัน ถ้า evidence-only policy งดตอบทั้งสอง accuracy/support เป็น NA ไม่ใช่ 100% ทุกค่าเป็นกฎสมมติ ไม่เรียก LLM ไม่ใช่ ALCE NLI หรือ benchmark จริง และไม่ใช่ macro Recall ต่อ query · <a href="https://aclanthology.org/2024.eacl-demo.16/">แหล่งแนวคิด 1</a> · <a href="https://aclanthology.org/2024.naacl-long.20/">แหล่งแนวคิด 2</a> · <a href="https://aclanthology.org/2023.emnlp-main.398/">แหล่งแนวคิด 3</a> · <a href="https://datasets-benchmarks-proceedings.neurips.cc/paper/2021/hash/65b9eea6e1cc6bb9f0cd2a47751a186f-Abstract-round2.html">แหล่งแนวคิด 4</a></figcaption></figure>
+
+
+
+<p class="wp-block-paragraph">ตัวอย่างต่อไปเป็น <strong>pseudocode เชิงแนวคิด ไม่ใช่โค้ด production ที่ทดสอบแล้ว</strong> โค้ดของ Interactive เป็น simulator แยกอีกชุดหนึ่ง</p>
+
+
+
+<pre class="wp-block-code"><code>ranked = retrieve(query, corpus_snapshot, config)
+context = assemble(ranked, policy, budget)
+output = generate(query, context.text, prompt_version)
+retrieval_report = evaluate_relevance(ranked, context, judged_labels)
+answer_report = evaluate_answer(output, context, independent_reference)
+save_trace(ranked, context, output, retrieval_report, answer_report)</code></pre>
+
+
+
+<p class="wp-block-paragraph">Retrieval miss กับ unsupported generation เกิดร่วมกันได้ การเพิ่ม oracle evidence เพื่อทดสอบใหม่ยังต้องควบคุมบริบท token ลำดับข้อมูล prompt และความสุ่ม คะแนนเดียวไม่รับรอง causal attribution ของ LLM</p>
+
+
+
+<h2 class="wp-block-heading" id="hm-retrieval-section-11">เปรียบเทียบสามแนวทางประเมินอย่างเป็นธรรม</h2>
+
+
+
+<figure class="wp-block-image size-full"><a href="https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-retrieval-009-04-comparison.png?ssl=1"><img data-recalc-dims="1" data-attachment-id="1737" data-permalink="https://hybridmind.online/hm-retrieval-009-04-comparison/" data-orig-file="https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-retrieval-009-04-comparison.png?fit=1800%2C1190&amp;ssl=1" data-orig-size="1800,1190" data-comments-opened="1" data-image-title="Manual Gold/Rubric เทียบ RAGAS 2024 และ ARES 2024" data-image-description="" data-image-caption="&lt;p&gt;ANALYSIS / Manual gold ต้องกำหนด relevance labels และเกณฑ์คำตอบ RAGAS ใน paper EACL 2024 เสนอ reference-free proxies ของ faithfulness answer relevance และ context relevance ส่วน ARES NAACL 2024 ฝึก judge ด้วย synthetic data แล้วใช้ human-labeled set และ Prediction-Powered Inference เพื่อรายงาน estimates/confidence intervals ไม่จัดอันดับรับรองว่าแนวทางใดดีที่สุด Judges และ labels มีข้อจำกัด และ ALCE citation recall/precision ไม่ใช่ retrieval Recall@k&lt;/p&gt;
+" data-large-file="https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-retrieval-009-04-comparison.png?fit=1024%2C677&amp;ssl=1" src="https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-retrieval-009-04-comparison.png?resize=1800%2C1190&#038;ssl=1" alt="สามคอลัมน์ Manual Gold Rubric RAGAS EACL 2024 และ ARES NAACL 2024 เปรียบเทียบข้อมูลที่ใช้ สิ่งที่ประเมิน ข้อจำกัด และแยกการฝึก judge ของ ARES ออกจาก Agent memory" width="1800" height="1190" class="wp-image-1737" loading="lazy" decoding="async" srcset="https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-retrieval-009-04-comparison.png?w=1800&amp;ssl=1 1800w, https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-retrieval-009-04-comparison.png?resize=300%2C198&amp;ssl=1 300w, https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-retrieval-009-04-comparison.png?resize=1024%2C677&amp;ssl=1 1024w, https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-retrieval-009-04-comparison.png?resize=768%2C508&amp;ssl=1 768w, https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-retrieval-009-04-comparison.png?resize=1536%2C1015&amp;ssl=1 1536w" sizes="auto, (max-width: 1000px) 100vw, 1000px" /></a><figcaption><strong>Manual Gold/Rubric เทียบ RAGAS 2024 และ ARES 2024</strong> — ANALYSIS / Manual gold ต้องกำหนด relevance labels และเกณฑ์คำตอบ RAGAS ใน paper EACL 2024 เสนอ reference-free proxies ของ faithfulness answer relevance และ context relevance ส่วน ARES NAACL 2024 ฝึก judge ด้วย synthetic data แล้วใช้ human-labeled set และ Prediction-Powered Inference เพื่อรายงาน estimates/confidence intervals ไม่จัดอันดับรับรองว่าแนวทางใดดีที่สุด Judges และ labels มีข้อจำกัด และ ALCE citation recall/precision ไม่ใช่ retrieval Recall@k · <a href="https://aclanthology.org/2024.eacl-demo.16/">แหล่งแนวคิด 1</a> · <a href="https://aclanthology.org/2024.naacl-long.20/">แหล่งแนวคิด 2</a> · <a href="https://aclanthology.org/2023.emnlp-main.398/">แหล่งแนวคิด 3</a> · <a href="https://datasets-benchmarks-proceedings.neurips.cc/paper/2021/hash/65b9eea6e1cc6bb9f0cd2a47751a186f-Abstract-round2.html">แหล่งแนวคิด 4</a></figcaption></figure>
+
+
+
+<figure class="wp-block-table"><table><thead><tr><th scope="col">แนวทาง</th><th scope="col">จุดแข็ง</th><th scope="col">สิ่งที่ต้องเตรียม/ข้อจำกัด</th><th scope="col">สิ่งที่ยังไม่รับรอง</th></tr></thead><tbody><tr><td>Manual Gold &amp; Human Review</td><td>เห็น qualifier และข้อผิดพลาดเฉพาะโดเมน; มีเกณฑ์อ้างอิงชัด</td><td>ใช้แรงงาน มี disagreement และ annotation bias; ต้องจัดการ unjudged</td><td>มนุษย์ถูกทุกกรณีหรือ gold ครบทั้ง corpus</td></tr><tr><td>Reference-free Judge เช่น RAGAS ในงานปี 2024</td><td>เริ่มแยกคุณภาพ context/answer ได้เมื่อไม่มี reference answers ครบ</td><td>ต้องตรวจ suitability และความผิดพลาดของ judge; prompt/model รุ่นต่างกันให้ผลต่าง</td><td>คะแนนสูงเท่ากับข้อเท็จจริงภายนอกหรือ answer completeness</td></tr><tr><td>Trained Judge + PPI Estimates เช่น ARES</td><td>ฝึก judge และใช้ human validation/PPI ประมาณคะแนนระดับระบบ</td><td>ต้องมีข้อมูล/การฝึกและ sample มนุษย์; domain/language shift ต้องทดสอบ</td><td>ช่วงความเชื่อมั่นรับรองคำตอบรายข้อหรือใช้ได้กับทุกภาษา</td></tr></tbody></table></figure>
+
+
+
+<p class="wp-block-paragraph">ไม่มีวิธีชนะทุกงาน เปรียบเทียบภายใต้ query/corpus/label policy รุ่นโมเดล วิธีเฉลี่ยและต้นทุนที่เปิดเผย ไม่จัดอันดับจาก judge หรือ gold คนละชุดโดยไม่บอกเงื่อนไข</p>
+
+
+
+<p class="wp-block-paragraph">อธิบาย paper รุ่นที่อ้าง ไม่รับรองแพ็กเกจปัจจุบัน และไม่ได้ทำซ้ำ benchmark หรือสร้างตัวเลขประสิทธิภาพใหม่</p>
+
+
+
+<h2 class="wp-block-heading" id="hm-retrieval-section-12">Interactive: ผลค้นครบ แต่ข้อความอาจยังมาไม่ครบ</h2>
+
+
+
+<p class="wp-block-paragraph">Lab เป็น <strong>SIMULATION</strong> ของ “พิพิธภัณฑ์โคจร” ที่ผู้เขียนกำหนดขึ้น D1 ระบุว่านิทรรศการเปิดวันเสาร์ 10:00 น. D2 ระบุราคานักเรียน 50 บาทเมื่อแสดงบัตรนักเรียน D3 เป็นเวลาเปิดสำนักงาน 09:00 น. D4 เป็นราคาผู้ใหญ่ 100 บาท และ D5 เป็นสีดอกไม้ ข้อมูลสำนักงานและผู้ใหญ่ไม่ใช่คำตอบของสองคำถามที่เตรียมไว้</p>
+
+
+
+<p class="wp-block-paragraph">Explorer ใช้ <strong>candidate pool ร่วมสำหรับสองคำถาม</strong> โดยกำหนด G={D1,D2} ไม่ใช่ macro-average recall ของการค้นแยกทีละ query ผู้ใช้เปลี่ยนลำดับผลค้น k ความจุบริบท และ answer policy แล้วดู ranked results, effective context และคำตอบ/แหล่งที่มา โค้ดใช้ลำดับที่ผู้เขียนตั้ง ไม่ได้รัน embedding หรือ reranker จริง</p>
+
+
+
+<section id="hm-retrieval-explorer" aria-label="ทดลองวัด retrieval context และคำตอบแยกกัน">
+<style>#hm-retrieval-explorer{box-sizing:border-box;background:#07162d;color:#eef8ff;border:1px solid #2567ae;border-radius:18px;padding:clamp(16px,3vw,28px);margin:32px 0;font-family:system-ui,sans-serif;line-height:1.65;overflow-wrap:anywhere}#hm-retrieval-explorer *{box-sizing:border-box}#hm-retrieval-explorer h2,#hm-retrieval-explorer h3{color:#eef8ff!important;line-height:1.4;margin:16px 0 12px}#hm-retrieval-explorer h2{font-size:clamp(23px,3vw,32px)}#hm-retrieval-explorer h3{font-size:19px}#hm-retrieval-explorer p,#hm-retrieval-explorer li{color:#d5e7fa}#hm-retrieval-explorer .hm-top{display:flex;gap:12px;align-items:center;flex-wrap:wrap;font-size:13px;color:#a9cdea}#hm-retrieval-explorer .hm-badge{display:inline-block;background:#123d68;color:#82efff;border:1px solid #3daee7;border-radius:99px;padding:4px 12px;font-weight:800}#hm-retrieval-explorer .hm-inputs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin:18px 0}#hm-retrieval-explorer label{display:block;font-weight:600}#hm-retrieval-explorer select{display:block;width:100%;background:#102c4d;color:#eef8ff;min-height:46px;padding:9px;border:1px solid #4a82b2;border-radius:8px;font:inherit;font-size:15px}#hm-retrieval-explorer input[type=range]{width:100%;min-height:44px;accent-color:#40d9f2}#hm-retrieval-explorer output{font-size:20px;color:#77e5ff}#hm-retrieval-explorer .hm-rows,#hm-retrieval-explorer .hm-card-grid,#hm-retrieval-explorer .hm-quiz{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}#hm-retrieval-explorer article,#hm-retrieval-explorer .hm-memory{background:#0e2642;border:1px solid #326186;border-radius:12px;padding:14px;min-width:0}#hm-retrieval-explorer .hm-memory p{margin:8px 0}#hm-retrieval-explorer .hm-score{font-size:20px;color:#7bedff!important;font-weight:750}#hm-retrieval-explorer ul,#hm-retrieval-explorer ol{padding-left:22px}#hm-retrieval-explorer li{margin:10px 0;font-size:14px}#hm-retrieval-explorer button{width:100%;min-height:46px;background:#164c80;border:1px solid #419ce2;border-radius:9px;color:#eef8ff;cursor:pointer;font:inherit;font-size:14px;padding:11px 12px;margin:5px 0;white-space:pre-line;text-align:left}#hm-retrieval-explorer .hm-card-grid button{background:#102b49;border-color:#315b82}#hm-retrieval-explorer button[aria-pressed=true]{background:#145365;border:2px solid #78edff}#hm-retrieval-explorer button:focus-visible,#hm-retrieval-explorer select:focus-visible,#hm-retrieval-explorer input:focus-visible{outline:3px solid #82efff;outline-offset:3px}#hm-retrieval-explorer button:disabled{opacity:.5;cursor:not-allowed}#hm-retrieval-explorer [hidden]{display:none!important}#hm-retrieval-explorer .hm-actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:16px 0}#hm-retrieval-explorer .hm-feedback,#hm-retrieval-explorer .hm-result{background:#123859;border-left:3px solid #42daed;border-radius:6px;padding:12px;min-height:44px}#hm-retrieval-explorer .hm-note{font-size:13px;color:#b5cede}#hm-retrieval-explorer details{border:1px solid #31587c;border-radius:8px;padding:12px;margin:16px 0}#hm-retrieval-explorer summary{cursor:pointer;color:#8de8ff;font-weight:700;min-height:28px}#hm-retrieval-explorer pre{white-space:pre-wrap;overflow-wrap:anywhere;font-size:12px;color:#d2e7f7}#hm-retrieval-explorer .hm-quiz label{margin:10px 0} @media(max-width:700px){#hm-retrieval-explorer .hm-inputs,#hm-retrieval-explorer .hm-rows,#hm-retrieval-explorer .hm-card-grid,#hm-retrieval-explorer .hm-quiz,#hm-retrieval-explorer .hm-actions{grid-template-columns:1fr}#hm-retrieval-explorer button{font-size:15px}}#hm-retrieval-explorer .hm-two{grid-template-columns:repeat(2,minmax(0,1fr))}#hm-retrieval-explorer .hm-metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:16px 0}#hm-retrieval-explorer .hm-check{display:flex;gap:12px;align-items:center}#hm-retrieval-explorer input[type=checkbox]{width:24px;min-height:44px;accent-color:#32d9f4}#hm-retrieval-explorer pre{background:#06162a;padding:12px;border-radius:8px;line-height:1.5}#hm-retrieval-explorer [data-task] label{margin:12px 0} @media(max-width:700px){#hm-retrieval-explorer .hm-two,#hm-retrieval-explorer .hm-metrics{grid-template-columns:1fr}}</style><div class="hm-top"><span class="hm-badge">SIMULATION</span><span>Static ranks • ข้อมูลสมมติ • ไม่มี LLM/API จริง</span></div>
+<h2>ทดลอง: ค้นเจอ แต่เข้าถึงบริบทและตอบถูกหรือยัง?</h2>
+<p>สองคำถาม: นิทรรศการวันเสาร์เปิดกี่โมง และนักเรียนที่แสดงบัตรเสียค่าเข้าชมเท่าไร? ตัวอย่างนี้ใช้ candidate pool ร่วมกันหนึ่งชุด ไม่ใช่ค่าเฉลี่ย Recall รายคำถาม</p>
+<div class="hm-inputs"><label>ลำดับ retrieval<select data-input="rank"><option value="bad">Bad: D3,D4,D1,D2,D5</option><option value="good">Good: D1,D2,D3,D4,D5</option></select></label><label>จำนวนที่ค้นคืน k<select data-input="k"><option>1</option><option>2</option><option>3</option><option selected>4</option><option>5</option></select></label><label>ความจุ effective context<select data-input="capacity"><option>1</option><option selected>2</option><option>3</option><option>4</option><option>5</option></select></label><label>กฎสร้างคำตอบจำลอง<select data-input="policy"><option value="evidence">ตอบจาก source ที่รองรับเท่านั้น</option><option value="wrong">ตอบผิดฟิลด์: office/adult</option><option value="miscite" selected>ค่าถูก แต่ cite source ผิด</option><option value="abstain">งดตอบทุกข้อ</option></select></label></div>
+<label class="hm-check"><input type="checkbox" data-input="goldComplete" checked> ป้ายความเกี่ยวข้องของเอกสารครบแล้ว (relevance labels)</label>
+<details><summary>Input: corpus และคำตอบอ้างอิงที่ตรวจได้</summary><ol data-state="corpus"></ol><p>Gold ของโจทย์คู่นี้ G = {D1,D2} คำตอบ:10:00/D1 และ50บาทเมื่อแสดงบัตรนักเรียน/D2 ปิดช่อง gold ครบแล้ว หมายถึงความครบของ relevant documents ยัง UNKNOWN ไม่ใช่ recall0%</p></details>
+<h3>State: Ranked set → Effective context</h3><div class="hm-rows hm-two"><article><h3>Retrieved top-k</h3><p data-state="retrieved"></p></article><article><h3>Effective context</h3><p data-state="context"></p></article></div>
+<p class="hm-note">แต่ละ record ใช้1หน่วยบริบทสมมติ เก็บ prefix ตามลำดับเดิม ความจุไม่ใช่ token ของโมเดล และการที่ document อยู่ในบริบทไม่รับรองว่าโมเดลจริงจะใช้ข้อมูลนั้น</p>
+<h3>Output: คำตอบ / Citation / Support</h3><div class="hm-rows hm-two" data-state="answers"></div>
+<div class="hm-metrics" data-state="metrics"></div><p class="hm-feedback" data-state="feedback" aria-live="polite"></p>
+<details><summary>สูตรและ denominator ของแต่ละตัวชี้วัด</summary><p>Recall@k = gold ที่อยู่ใน retrieved / gold2รายการ เมื่อ labels ครบ • Precision@k = gold ที่พบ / จำนวน retrievedจริง • Context coverage = gold ที่เก็บใน effective context / gold2รายการ</p><p>Answer accuracy = ค่าถูก / จำนวนข้อที่ตอบจริง พร้อมแสดง answer coverage = ข้อที่ตอบ /2 แยกกัน • Claim support = ข้อที่ค่าตรงและ cite source ที่รองรับซึ่งอยู่ใน context / จำนวนข้อที่ตอบจริง งดตอบทุกข้อมี denominator0 จึงเป็น NA ไม่ใช่100% ป้ายความเกี่ยวข้องไม่ครบเป็น UNKNOWN; คำตอบอ้างอิง10:00/50บาทยังทราบในโจทย์สมมติ ผลจำลองนี้ไม่วัด citation recall ของระบบจริง</p></details>
+<button type="button" data-action="reset">Reset — bad k4 / context2 / ค่าถูก citeผิด</button>
+<p class="hm-note">นโยบาย miscitation ใช้ค่าที่กำหนดไว้ล่วงหน้าเพื่อแยกความถูกต้องกับหลักฐาน ไม่ใช่คำตอบจาก AI คะแนนไม่ยืนยันความจริงนอกข้อมูลสมมติ และไม่ใช่ causal proof ของระบบจริง</p>
+<script>(function(){'use strict';const C=(function(){'use strict';
+const DATA={
+  "article": "009",
+  "type": "SIMULATION",
+  "fixture": "พิพิธภัณฑ์โคจร — fictional authored corpus",
+  "corpus": [
+    {"id":"D1","key":"time","text":"นิทรรศการของพิพิธภัณฑ์โคจรเปิดวันเสาร์เวลา10:00 น.","value":"10:00"},
+    {"id":"D2","key":"price","text":"บัตรเข้าชมนิทรรศการสำหรับนักเรียนราคา50บาทเมื่อแสดงบัตรนักเรียน","value":"50"},
+    {"id":"D3","key":"office","text":"สำนักงานพิพิธภัณฑ์เปิด09:00 น. เวลานี้ไม่ใช่เวลาเปิดนิทรรศการ","value":"09:00"},
+    {"id":"D4","key":"adult","text":"บัตรเข้าชมนิทรรศการสำหรับผู้ใหญ่ราคา100บาท ไม่ใช่อัตรานักเรียน","value":"100"},
+    {"id":"D5","key":"decor","text":"ดอกไม้ที่หน้าอาคารมีสีเหลือง","value":"yellow"}
+  ],
+  "questions": [
+    {"id":"Q1","key":"time","question":"นิทรรศการเปิดวันเสาร์กี่โมง?","goldValue":"10:00","goldSource":"D1"},
+    {"id":"Q2","key":"price","question":"ค่าเข้าชมสำหรับนักเรียนที่แสดงบัตรนักเรียนเท่าไร?","goldValue":"50","goldSource":"D2"}
+  ],
+  "ranks": {"bad":["D3","D4","D1","D2","D5"],"good":["D1","D2","D3","D4","D5"]},
+  "explorer": {
+    "id":"hm-retrieval-explorer",
+    "evaluationUnit":"One shared retrieved candidate pool for the two prepared questions together, not macro average of per-query Recall@k",
+    "goldSet":["D1","D2"],
+    "inputs":{"rank":"bad|good","k":"integer1–5","capacity":"integer1–5","answerPolicy":"evidence|wrong|miscite|abstain","goldComplete":"boolean"},
+    "retrieved":"rank.slice(0,k); exactly k unique IDs",
+    "effectiveContext":"retrieved.slice(0,capacity); rank-preserving toy packing of one record per unit; no real tokenization",
+    "recallAtK":"|retrieved intersection G| / |G| only when goldComplete and |G|>0; otherwise UNKNOWN if incomplete or NA if empty",
+    "precisionAtK":"|retrieved intersection G| / |retrieved| only when complete relevance labels; otherwise UNKNOWN",
+    "contextCoverage":"|effectiveContext intersection G| / |G| under the same completeness condition",
+    "answerPolicies":{
+      "evidence":"Answer only if expected source is in effectiveContext, otherwise abstain",
+      "wrong":"Return09:00/100 and cite D3/D4 (wrong field for the prepared question)",
+      "miscite":"Return correct10:00/50 but cite D3/D4, demonstrating correct value without supporting citation",
+      "abstain":"No claim and no citation"
+    },
+    "claimSupport":"For each non-abstained atomic answer, value must match the authored fact and citation must be expected D1/D2 retained in effectiveContext. Empty claims=NA, not100%.",
+    "answerAccuracy":"Correct answered values / answered questions; all abstain=NA. Always show answer coverage answered/2 separately. Not derived from retrieval score.",
+    "groundTruthStatus":"Authored fixed values and source-text rules, not semantic judgment by an LLM or proof of external-world correctness"
+  },
+  "game": {
+    "id":"hm-retrieval-game",
+    "defaultBudget":6,
+    "goal":"Diagnose both original stage failures, repair pipeline within finite toy action budget, then give both correct values and supporting retained source IDs; abstention never counts as full win",
+    "costs":{"rerank":2,"increaseK":1,"increaseCapacity":1,"setEvidencePolicy":1},
+    "diagnosisRules":"retrieval flag if expected source absent from retrieved; context flag only if source retrieved but lost in effective context; answer flag if an active claim is incorrect or unsupported; >=2 flags yields both,0 yields none. These trace rules are not causal attribution of real LLM behavior.",
+    "challenges":{
+      "pipeline":[{"key":"time","rank":"bad","k":2,"capacity":2,"policy":"evidence","diagnosis":"retrieval"},{"key":"price","rank":"good","k":2,"capacity":1,"policy":"evidence","diagnosis":"context"}],
+      "unsupported":[{"key":"time","rank":"good","k":2,"capacity":2,"policy":"miscite","diagnosis":"answer"},{"key":"price","rank":"good","k":2,"capacity":2,"policy":"wrong","diagnosis":"answer"}],
+      "mixed":[{"key":"time","rank":"bad","k":4,"capacity":2,"policy":"miscite","diagnosis":"both"},{"key":"price","rank":"bad","k":1,"capacity":1,"policy":"evidence","diagnosis":"retrieval"}]
+    },
+    "selectors":"data-config challenge; data-action rerank-time|rerank-price|k-time|k-price|capacity-time|capacity-price|evidence-time|evidence-price|grade|reset; data-diagnosis time|price; data-answer time|price; data-source time|price",
+    "state":"Budget remaining/spent, original trace, current rank/k/capacity/policy per question, packed source IDs, diagnosis choices, submitted answers, terminal result"
+  },
+  "reset":true,
+  "qaHook":"Each DOM root hmSnapshot() returns a deep copy; no global state",
+  "scientificLimitations":["No embedding model, reranker, LLM, API calls, training or weight updates","Static ranks are authored; one record equals one toy context unit","Complete gold fixture is not evidence that real corpora have complete qrels","Citation support and answer correctness are explicitly separate and authored","Results do not imply a universal k, context limit or real-system causal explanation"]
+}
+;
+const DOCS=DATA.corpus,QUESTIONS=DATA.questions,RANKS=DATA.ranks;
+const clone=x=>JSON.parse(JSON.stringify(x));
+function fraction(n,d,status='KNOWN'){return {status:d===0?'NA':status,numerator:n,denominator:d,value:[status==='KNOWN',d!==0].every(Boolean)?n/d:null};}
+function coverage(ids,gold=['D1','D2'],complete=true){if(!complete)return fraction(ids.filter(id=>gold.includes(id)).length,gold.length,'UNKNOWN');return fraction(ids.filter(id=>gold.includes(id)).length,gold.length);}
+function pipeline(config){if(!RANKS[config.rank])throw Error('invalid rank');if(!Number.isInteger(config.k)||1>config.k||config.k>5)throw Error('invalid k');if(!Number.isInteger(config.capacity)||1>config.capacity||config.capacity>5)throw Error('invalid capacity');if(!['evidence','wrong','miscite','abstain'].includes(config.policy))throw Error('invalid policy');const retrieved=RANKS[config.rank].slice(0,config.k),context=retrieved.slice(0,config.capacity);return {...clone(config),retrieved,context};}
+function reply(p,q){let value=null,source=null;if(p.policy==='evidence'){if(p.context.includes(q.goldSource)){value=q.goldValue;source=q.goldSource;}}if(p.policy==='wrong'){value=q.key==='time'?'09:00':'100';source=q.key==='time'?'D3':'D4';}if(p.policy==='miscite'){value=q.goldValue;source=q.key==='time'?'D3':'D4';}const claim=value!==null,correct=claim?value===q.goldValue:null,supported=claim?[value===q.goldValue,source===q.goldSource,p.context.includes(source)].every(Boolean):null;return {key:q.key,question:q.question,value,source,claim,correct,supported,retrievedGold:p.retrieved.includes(q.goldSource),contextGold:p.context.includes(q.goldSource)};}
+function inspect(config={rank:'bad',k:4,capacity:2,policy:'miscite',goldComplete:true},gold=['D1','D2']){const p=pipeline(config),answers=QUESTIONS.map(q=>reply(p,q)),claims=answers.filter(a=>a.claim);return {...p,gold:clone(gold),goldComplete:config.goldComplete!==false,answers,metrics:{recall:coverage(p.retrieved,gold,config.goldComplete!==false),precision:gold.length===0?fraction(0,0):fraction(p.retrieved.filter(id=>gold.includes(id)).length,p.retrieved.length,config.goldComplete===false?'UNKNOWN':'KNOWN'),contextCoverage:coverage(p.context,gold,config.goldComplete!==false),answerCoverage:fraction(claims.length,QUESTIONS.length),answerAccuracy:fraction(claims.filter(a=>a.correct).length,claims.length),claimSupport:fraction(claims.filter(a=>a.supported).length,claims.length)}};}
+function diagnose(p,q){const a=reply(p,q),flags=[];if(!a.retrievedGold)flags.push('retrieval');if([a.retrievedGold,!a.contextGold].every(Boolean))flags.push('context');if(a.claim){if(!a.correct||!a.supported)flags.push('answer');}return {flags,label:flags.length>1?'both':flags[0]||'none',answer:a};}
+function makeGame(challenge='pipeline'){if(!DATA.game.challenges[challenge])throw Error('unknown challenge');const tasks=DATA.game.challenges[challenge].map(c=>({key:c.key,original:clone(c),current:clone(c),diagnosis:'',value:'',source:''}));return {challenge,budget:DATA.game.defaultBudget,spent:0,tasks,trace:[],ended:false,result:null,feedback:'อ่านร่องรอยเดิม วินิจฉัยทั้งสองข้อ แล้วซ่อม pipeline ในงบ6หน่วย'};}
+function taskOf(s,key){return s.tasks.find(t=>t.key===key);}
+function questionOf(key){return QUESTIONS.find(q=>q.key===key);}
+function fix(s,key,action){const t=taskOf(s,key);if(!t||s.ended)return {ok:false,reason:'NO_ACTION'};let cost=0;if(action==='rerank'){if(t.current.rank==='good')return {ok:false,reason:'ALREADY_FIXED'};cost=2;}else if(action==='k'){if(t.current.k===5)return {ok:false,reason:'AT_LIMIT'};cost=1;}else if(action==='capacity'){if(t.current.capacity===5)return {ok:false,reason:'AT_LIMIT'};cost=1;}else if(action==='evidence'){if(t.current.policy==='evidence')return {ok:false,reason:'ALREADY_FIXED'};cost=1;}else return {ok:false,reason:'INVALID_ACTION'};if(s.spent+cost>s.budget){s.feedback='งบไม่พอ — pipeline เดิมไม่เปลี่ยน';return {ok:false,reason:'OVER_BUDGET'};}const before=pipeline(t.current);s.spent+=cost;if(action==='rerank')t.current.rank='good';if(action==='k')t.current.k+=1;if(action==='capacity')t.current.capacity+=1;if(action==='evidence')t.current.policy='evidence';const after=pipeline(t.current);s.trace.push({key,action,cost,before:{retrieved:before.retrieved,context:before.context,policy:before.policy},after:{retrieved:after.retrieved,context:after.context,policy:after.policy},spent:s.spent});s.feedback='แก้ '+key+' ด้วย '+action+' ใช้'+cost+'หน่วย ตรวจ context และผลตอบอีกครั้ง';return {ok:true,cost};}
+function setResponse(s,key,field,value){if(s.ended)return {ok:false,reason:'ENDED'};const t=taskOf(s,key);if(!t||!['diagnosis','value','source'].includes(field))return {ok:false,reason:'INVALID_FIELD'};t[field]=value;return {ok:true};}
+function gameView(s){return {...clone(s),remaining:s.budget-s.spent,tasks:s.tasks.map(t=>({...clone(t),originalTrace:pipeline(t.original),originalDiagnosis:diagnose(pipeline(t.original),questionOf(t.key)),currentTrace:pipeline(t.current),currentAnswer:reply(pipeline(t.current),questionOf(t.key))}))};}
+function grade(s){if(s.ended)return {ok:false,reason:'ENDED'};if(!s.tasks.every(t=>[t.diagnosis,t.value,t.source].every(Boolean)))return {ok:false,reason:'ANSWER_ALL'};const rows=s.tasks.map(t=>{const q=questionOf(t.key),original=diagnose(pipeline(t.original),q),p=pipeline(t.current),a=reply(p,q),diagnosisCorrect=t.diagnosis===original.label,answerCorrect=t.value===q.goldValue,sourceCorrect=t.source===q.goldSource,evidenceRetained=p.context.includes(t.source),pipelineCorrect=[a.claim,a.correct,a.supported].every(Boolean);return {key:t.key,diagnosisCorrect,expectedDiagnosis:original.label,answerCorrect,sourceCorrect,evidenceRetained,pipelineCorrect,pass:[diagnosisCorrect,answerCorrect,sourceCorrect,evidenceRetained,pipelineCorrect].every(Boolean)};});s.result={rows,score:rows.filter(r=>r.pass).length,goal:rows.every(r=>r.pass),spent:s.spent,budget:s.budget};s.ended=true;s.feedback=s.result.goal?'ชนะ — วินิจฉัยและซ่อมทั้งสอง pipeline พร้อมคำตอบและหลักฐาน':'ยังไม่สำเร็จ — ตรวจ stage ที่พลาด ผลตอบ และ source ที่อยู่ใน context';return {ok:true,result:clone(s.result)};}
+return {DATA,DOCS,QUESTIONS,RANKS,clone,fraction,coverage,pipeline,reply,inspect,diagnose,makeGame,taskOf,questionOf,fix,setResponse,gameView,grade};
+})();const root=document.getElementById('hm-retrieval-explorer');if(!root)return;const input=n=>root.querySelector('[data-input="'+n+'"]'),node=n=>root.querySelector('[data-state="'+n+'"]');let state;C.DOCS.forEach(d=>{const li=document.createElement('li');li.textContent=d.id+' • '+d.text;node('corpus').append(li);});function metric(m){return m.status==='KNOWN'?m.numerator+'/'+m.denominator+' = '+Math.round(m.value*100)+'%':m.status;}function render(){state=C.inspect({rank:input('rank').value,k:Number(input('k').value),capacity:Number(input('capacity').value),policy:input('policy').value,goldComplete:input('goldComplete').checked});node('retrieved').textContent=state.retrieved.join(' → ');node('context').textContent=state.context.join(' → ');node('answers').replaceChildren();state.answers.forEach(a=>{const box=document.createElement('article'),h=document.createElement('h3'),p=document.createElement('p'),s=document.createElement('p');h.textContent=a.question;p.textContent=a.claim?'คำตอบ '+a.value+' • cite '+a.source:'ABSTAIN — ไม่มี claim และ citation';s.textContent='ค่าตรงอ้างอิง: '+(a.correct===null?'NA':a.correct?'ใช่':'ไม่')+' | หลักฐานรองรับ: '+(a.supported===null?'NA':a.supported?'ใช่':'ไม่');box.append(h,p,s);node('answers').append(box);});node('metrics').replaceChildren();[['recall','Recall@k'],['precision','Precision@k'],['contextCoverage','Gold ใน context'],['answerCoverage','Answer coverage'],['answerAccuracy','Answer accuracy'],['claimSupport','Claim support']].forEach(pair=>{const box=document.createElement('article'),p=document.createElement('p'),n=document.createElement('p');box.setAttribute('data-metric',pair[0]);p.textContent=pair[1];n.className='hm-score';n.textContent=metric(state.metrics[pair[0]]);box.append(p,n);node('metrics').append(box);});node('feedback').textContent=!state.goldComplete?'Relevance labels ไม่ครบ: recall/precision/context coverage เป็น UNKNOWN แม้เห็น D1/D2 บางส่วน ไม่ตีความว่า0%':state.answers.every(a=>!a.claim)?'งดตอบทุกข้อ: accuracy/support = NA และ answer coverage0/2 จึงยังไม่ใช่ผลสำเร็จ':[state.metrics.recall.value===1,state.metrics.contextCoverage.value!==1].every(Boolean)?'ค้นครบ gold แต่ prefix context ตัดหลักฐานออก จึงต้องแยกคะแนน retrieval กับสิ่งที่ส่งให้ระบบตอบ':'ค่าคำตอบและ source support เป็นคนละการตรวจ ลองตอบค่าถูกแต่ citeผิด แล้วเทียบกับ evidence-only';}['rank','k','capacity','policy','goldComplete'].forEach(n=>input(n).addEventListener('change',render));root.querySelector('[data-action="reset"]').addEventListener('click',()=>{input('rank').value='bad';input('k').value='4';input('capacity').value='2';input('policy').value='miscite';input('goldComplete').checked=true;render();});root.hmSnapshot=()=>C.clone(state);render();})();</script>
+</section>
+
+
+
+
+<p class="wp-block-paragraph">เมื่อลำดับเริ่มด้วย D3,D4 และเลือก k=2 เอกสารสำคัญยังไม่อยู่ในผลค้น แต่เมื่อลำดับเริ่มด้วย D1,D2, k=2 และ context capacity=1 ผลค้นครอบคลุม G แล้ว ในบริบทกลับเหลือเพียง D1 ภายใต้ evidence policy จึงตอบเวลาได้แต่ต้องงดตอบราคา คะแนนความถูกต้องเฉพาะคำถามที่ตอบอาจเต็ม จึงต้องอ่าน answer coverage ที่ยังไม่ครบควบคู่กัน</p>
+
+
+
+<p class="wp-block-paragraph">โหมด miscite ให้ค่าถูก 10:00 และ 50 แต่ผูกกับ D3/D4 เพื่อเห็นว่า correct value ไม่เท่ากับ cited support โหมด wrong เลือกค่าจากคนละ field ส่วน abstain ไม่สร้างข้อกล่าวอ้าง คะแนน accuracy/support เมื่อไม่มีคำตอบเป็น NA ไม่ใช่เต็ม</p>
+
+
+
+<p class="wp-block-paragraph">Support ใน Lab เป็น <strong>กฎ citation-grounded ของ fixture</strong>: ค่าต้องตรงแหล่งอ้างอิง D1/D2 ที่กำหนด และแหล่งนั้นยังอยู่ใน effective context ไม่ใช่การรัน NLI หรือการวัด RAGAS faithfulness แบบใช้บริบททั้งหมด กฎนี้ใช้แทนความหมายได้เฉพาะข้อมูลที่กำหนด และไม่พิสูจน์ความจริงของพิพิธภัณฑ์ภายนอก</p>
+
+
+
+<p class="wp-block-paragraph">การปิดสถานะ gold completeness จำลองว่า document relevance labels ไม่ครบ จึงให้ retrieval metrics ที่ต้องใช้ชุดครบเป็น UNKNOWN ไม่ได้หมายความว่าผู้เขียนลืมคำตอบอ้างอิงของ Q1/Q2 หน่วย context เป็นหนึ่ง record ต่อหนึ่งหน่วยสมมติ ไม่ใช่ token จริง</p>
+
+
+
+<h2 class="wp-block-heading" id="hm-retrieval-section-13">ประยุกต์กับความจำและงานของ Agent</h2>
+
+
+
+<p class="wp-block-paragraph">หาก qualifier หายตั้งแต่สรุปความจำก่อนสร้าง index การเปลี่ยน retriever อาจไม่คืนข้อมูลที่ถูกลบ ต้องตรวจ corpus ด้วย ศึกษาขั้นก่อนค้นใน <a href="https://hybridmind.online/2026/10/14/ai-agent-memory-consolidation-lossy-summary-provenance/">Memory Consolidation ของ AI Agent</a></p>
+
+
+
+<p class="wp-block-paragraph">คำถามต่างเวลาต้องมี reference ตรงเวลา/ขอบเขต คำตอบตาม record เก่าอาจผิดสำหรับปัจจุบัน ใช้นโยบาย temporal/authority ที่ชัด ดู <a href="https://hybridmind.online/2026/10/13/ai-agent-bitemporal-memory-valid-system-time/">Bitemporal Memory</a> ไม่ใช้ timestamp ใหม่ที่สุดแทนผู้มีอำนาจ</p>
+
+
+
+<p class="wp-block-paragraph">Semantic representation เป็นหนึ่งส่วนของ pipeline คะแนน retrieval ไม่รับรองคำตอบทั้งระบบ การศึกษาเทคโนโลยีอย่าง <a href="https://hybridmind.online/2026/10/11/resonancedb-wave-based-semantic-memory/">ResonanceDB</a> จึงต้องตามด้วยการประเมิน corpus/query/metric/ข้อจำกัด ไม่ใช้ความใหม่เป็นหลักฐานว่าคำตอบเชื่อถือได้</p>
+
+
+
+<h2 class="wp-block-heading" id="hm-retrieval-section-14">Failure Modes และข้อจำกัดที่ต้องเก็บในรายงาน</h2>
+
+
+
+<ul class="wp-block-list">
+<li><strong>Corpus Gap:</strong> ข้อมูลที่จำเป็นไม่มีอยู่ในชุดค้น ควรแยกจากการจัดอันดับไม่พบข้อมูลที่มีอยู่</li>
+
+
+<li><strong>Relevance Label Gap:</strong> ผลค้นมีเอกสารที่ยังไม่ถูกตัดสิน คะแนนจึงมีข้อจำกัด ไม่ใช้ unjudged เป็นหลักฐานว่าไม่เกี่ยวข้องแน่นอน</li>
+
+
+<li><strong>Context Loss:</strong> เอกสารถูกค้นได้แต่ข้อความสำคัญถูกตัด กรอง หรือไม่ได้ส่งเข้าบริบทจริง</li>
+
+
+<li><strong>Unsupported Claim:</strong> คำตอบเพิ่มหรือเปลี่ยนรายละเอียดที่บริบทไม่รองรับ แม้ส่วนอื่นอาจถูก</li>
+
+
+<li><strong>Citation Mismatch:</strong> ลิงก์มีจริงแต่ชี้คนละ field ไม่รองรับประโยค หรืออ้างแหล่งที่ไม่ได้เปิดให้ใช้ตามสัญญา</li>
+
+
+<li><strong>Abstention Blind Spot:</strong> ดู accuracy เฉพาะข้อที่ตอบแล้วโดยไม่ดู coverage ทำให้ระบบที่แทบไม่ตอบดูดี</li>
+
+
+<li><strong>Judge Error &amp; Drift:</strong> ผู้ตรวจอาจตีความผิดหรือเปลี่ยนตาม prompt/model/API ต้องเก็บรุ่นและตรวจมนุษย์ในตัวอย่างที่เหมาะสม</li>
+</ul>
+
+
+
+<p class="wp-block-paragraph">คะแนนและ flags ช่วยเลือกจุดตรวจ แต่ไม่ใช่การพิสูจน์เหตุทั้งหมด หากยังไม่มี labels หรือ reference ที่พอใช้ให้รายงาน UNKNOWN การใช้โมเดลตรวจคำตอบของตัวเองอีกครั้งไม่ถือว่าเพิ่มหลักฐานอิสระโดยอัตโนมัติ</p>
+
+
+
+<h2 class="wp-block-heading" id="hm-retrieval-section-15">เกมจำลอง: วินิจฉัยร่องรอยเดิม แล้วแก้ Pipeline</h2>
+
+
+
+<p class="wp-block-paragraph">เกมมีสองคำถามและ challenge สามแบบ ให้เลือก diagnosis ของร่องรอยเดิม แล้วใช้ action budget แก้การจัดอันดับ k ความจุ context หรือ evidence policy เป้าหมายสุดท้ายคือ pipeline ที่แก้แล้วให้คำตอบถูก มีแหล่งอ้างที่เก็บอยู่ และผู้เล่นเลือกค่า/ที่มาได้ครบภายในงบ การงดตอบไม่ถือว่าชนะเต็ม</p>
+
+
+
+<section id="hm-retrieval-game" aria-label="เกมวินิจฉัยและแก้ retrieval pipeline"><style>#hm-retrieval-game{box-sizing:border-box;background:#07162d;color:#eef8ff;border:1px solid #2567ae;border-radius:18px;padding:clamp(16px,3vw,28px);margin:32px 0;font-family:system-ui,sans-serif;line-height:1.65;overflow-wrap:anywhere}#hm-retrieval-game *{box-sizing:border-box}#hm-retrieval-game h2,#hm-retrieval-game h3{color:#eef8ff!important;line-height:1.4;margin:16px 0 12px}#hm-retrieval-game h2{font-size:clamp(23px,3vw,32px)}#hm-retrieval-game h3{font-size:19px}#hm-retrieval-game p,#hm-retrieval-game li{color:#d5e7fa}#hm-retrieval-game .hm-top{display:flex;gap:12px;align-items:center;flex-wrap:wrap;font-size:13px;color:#a9cdea}#hm-retrieval-game .hm-badge{display:inline-block;background:#123d68;color:#82efff;border:1px solid #3daee7;border-radius:99px;padding:4px 12px;font-weight:800}#hm-retrieval-game .hm-inputs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin:18px 0}#hm-retrieval-game label{display:block;font-weight:600}#hm-retrieval-game select{display:block;width:100%;background:#102c4d;color:#eef8ff;min-height:46px;padding:9px;border:1px solid #4a82b2;border-radius:8px;font:inherit;font-size:15px}#hm-retrieval-game input[type=range]{width:100%;min-height:44px;accent-color:#40d9f2}#hm-retrieval-game output{font-size:20px;color:#77e5ff}#hm-retrieval-game .hm-rows,#hm-retrieval-game .hm-card-grid,#hm-retrieval-game .hm-quiz{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}#hm-retrieval-game article,#hm-retrieval-game .hm-memory{background:#0e2642;border:1px solid #326186;border-radius:12px;padding:14px;min-width:0}#hm-retrieval-game .hm-memory p{margin:8px 0}#hm-retrieval-game .hm-score{font-size:20px;color:#7bedff!important;font-weight:750}#hm-retrieval-game ul,#hm-retrieval-game ol{padding-left:22px}#hm-retrieval-game li{margin:10px 0;font-size:14px}#hm-retrieval-game button{width:100%;min-height:46px;background:#164c80;border:1px solid #419ce2;border-radius:9px;color:#eef8ff;cursor:pointer;font:inherit;font-size:14px;padding:11px 12px;margin:5px 0;white-space:pre-line;text-align:left}#hm-retrieval-game .hm-card-grid button{background:#102b49;border-color:#315b82}#hm-retrieval-game button[aria-pressed=true]{background:#145365;border:2px solid #78edff}#hm-retrieval-game button:focus-visible,#hm-retrieval-game select:focus-visible,#hm-retrieval-game input:focus-visible{outline:3px solid #82efff;outline-offset:3px}#hm-retrieval-game button:disabled{opacity:.5;cursor:not-allowed}#hm-retrieval-game [hidden]{display:none!important}#hm-retrieval-game .hm-actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:16px 0}#hm-retrieval-game .hm-feedback,#hm-retrieval-game .hm-result{background:#123859;border-left:3px solid #42daed;border-radius:6px;padding:12px;min-height:44px}#hm-retrieval-game .hm-note{font-size:13px;color:#b5cede}#hm-retrieval-game details{border:1px solid #31587c;border-radius:8px;padding:12px;margin:16px 0}#hm-retrieval-game summary{cursor:pointer;color:#8de8ff;font-weight:700;min-height:28px}#hm-retrieval-game pre{white-space:pre-wrap;overflow-wrap:anywhere;font-size:12px;color:#d2e7f7}#hm-retrieval-game .hm-quiz label{margin:10px 0} @media(max-width:700px){#hm-retrieval-game .hm-inputs,#hm-retrieval-game .hm-rows,#hm-retrieval-game .hm-card-grid,#hm-retrieval-game .hm-quiz,#hm-retrieval-game .hm-actions{grid-template-columns:1fr}#hm-retrieval-game button{font-size:15px}}#hm-retrieval-game .hm-two{grid-template-columns:repeat(2,minmax(0,1fr))}#hm-retrieval-game .hm-metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:16px 0}#hm-retrieval-game .hm-check{display:flex;gap:12px;align-items:center}#hm-retrieval-game input[type=checkbox]{width:24px;min-height:44px;accent-color:#32d9f4}#hm-retrieval-game pre{background:#06162a;padding:12px;border-radius:8px;line-height:1.5}#hm-retrieval-game [data-task] label{margin:12px 0} @media(max-width:700px){#hm-retrieval-game .hm-two,#hm-retrieval-game .hm-metrics{grid-template-columns:1fr}}</style>
+<div class="hm-top"><span class="hm-badge">SIMULATION GAME</span><span>Trace ที่กำหนดไว้ • ไม่มีโมเดลหรือ API จริง</span></div>
+<h2>เกม: ซ่อมสองคำถามให้ตอบพร้อมหลักฐาน</h2><p>อ่าน original trace เพื่อวินิจฉัย stage ที่พลาด แล้วเลือกวิธีแก้ในงบ6หน่วย เป้าหมายคือคำตอบทั้งสองถูกและ citeหลักฐานที่ยังอยู่ใน context พร้อมวินิจฉัยกรณีเริ่มต้นให้ตรงร่องรอย</p>
+<div class="hm-inputs"><label>ชุดปัญหา (เปลี่ยนแล้วเริ่มใหม่)<select data-config="challenge"><option value="pipeline">ค้นไม่เจอ + บริบทตัดหลักฐาน</option><option value="unsupported">ตอบไม่มีหลักฐานรองรับ</option><option value="mixed">หลาย stage พลาดพร้อมกัน</option></select></label><p class="hm-note">Rerank2หน่วย • เพิ่มk1หน่วย • เพิ่มcontext1หน่วย • เปลี่ยนเป็นevidence-only1หน่วย เป็นงบการกระทำสมมติ ไม่ใช่เงิน token หรือ latency</p></div>
+<p class="hm-score" data-state="budget"></p><div class="hm-rows hm-two" data-state="tasks"></div><p class="hm-feedback" data-state="feedback" aria-live="polite"></p>
+<div class="hm-actions"><button type="button" data-action="grade">ตรวจผลซ่อมและคำตอบทั้งสอง</button><button type="button" data-action="reset">Reset — เริ่มชุดปัญหาเดิมใหม่</button></div><div class="hm-result" data-state="result" hidden aria-live="polite"></div>
+<details><summary>Input corpus / กติกา / Trace</summary><ol data-state="corpus"></ol><p>retrieval miss = sourceที่ต้องการไม่อยู่ใน retrieved; context loss = พบsourceแล้วแต่ไม่อยู่ในeffective context; answer issue = มีclaimแต่ค่าผิดหรือcitationไม่รองรับ ถ้ามีมากกว่าหนึ่งflagเลือกหลายstage นี่คือกติกาวินิจฉัยร่องรอยจำลอง ไม่ใช่การพิสูจน์สาเหตุของ LLM</p><pre data-state="trace"></pre></details>
+<p class="hm-note">ชนะเมื่อทั้งสองคำตอบที่ pipeline สร้างหลังซ่อมถูกและรองรับด้วยหลักฐาน คุณเลือกค่าถูกและsourceตรงที่ยังอยู่ใน context วินิจฉัยoriginal traceถูก และไม่เกินงบ ABSTAINไม่ถือว่าทำสำเร็จ Stateอยู่เฉพาะหน้าเว็บ ไม่เปลี่ยนน้ำหนักโมเดล</p>
+<script>(function(){'use strict';const C=(function(){'use strict';
+const DATA={
+  "article": "009",
+  "type": "SIMULATION",
+  "fixture": "พิพิธภัณฑ์โคจร — fictional authored corpus",
+  "corpus": [
+    {"id":"D1","key":"time","text":"นิทรรศการของพิพิธภัณฑ์โคจรเปิดวันเสาร์เวลา10:00 น.","value":"10:00"},
+    {"id":"D2","key":"price","text":"บัตรเข้าชมนิทรรศการสำหรับนักเรียนราคา50บาทเมื่อแสดงบัตรนักเรียน","value":"50"},
+    {"id":"D3","key":"office","text":"สำนักงานพิพิธภัณฑ์เปิด09:00 น. เวลานี้ไม่ใช่เวลาเปิดนิทรรศการ","value":"09:00"},
+    {"id":"D4","key":"adult","text":"บัตรเข้าชมนิทรรศการสำหรับผู้ใหญ่ราคา100บาท ไม่ใช่อัตรานักเรียน","value":"100"},
+    {"id":"D5","key":"decor","text":"ดอกไม้ที่หน้าอาคารมีสีเหลือง","value":"yellow"}
+  ],
+  "questions": [
+    {"id":"Q1","key":"time","question":"นิทรรศการเปิดวันเสาร์กี่โมง?","goldValue":"10:00","goldSource":"D1"},
+    {"id":"Q2","key":"price","question":"ค่าเข้าชมสำหรับนักเรียนที่แสดงบัตรนักเรียนเท่าไร?","goldValue":"50","goldSource":"D2"}
+  ],
+  "ranks": {"bad":["D3","D4","D1","D2","D5"],"good":["D1","D2","D3","D4","D5"]},
+  "explorer": {
+    "id":"hm-retrieval-explorer",
+    "evaluationUnit":"One shared retrieved candidate pool for the two prepared questions together, not macro average of per-query Recall@k",
+    "goldSet":["D1","D2"],
+    "inputs":{"rank":"bad|good","k":"integer1–5","capacity":"integer1–5","answerPolicy":"evidence|wrong|miscite|abstain","goldComplete":"boolean"},
+    "retrieved":"rank.slice(0,k); exactly k unique IDs",
+    "effectiveContext":"retrieved.slice(0,capacity); rank-preserving toy packing of one record per unit; no real tokenization",
+    "recallAtK":"|retrieved intersection G| / |G| only when goldComplete and |G|>0; otherwise UNKNOWN if incomplete or NA if empty",
+    "precisionAtK":"|retrieved intersection G| / |retrieved| only when complete relevance labels; otherwise UNKNOWN",
+    "contextCoverage":"|effectiveContext intersection G| / |G| under the same completeness condition",
+    "answerPolicies":{
+      "evidence":"Answer only if expected source is in effectiveContext, otherwise abstain",
+      "wrong":"Return09:00/100 and cite D3/D4 (wrong field for the prepared question)",
+      "miscite":"Return correct10:00/50 but cite D3/D4, demonstrating correct value without supporting citation",
+      "abstain":"No claim and no citation"
+    },
+    "claimSupport":"For each non-abstained atomic answer, value must match the authored fact and citation must be expected D1/D2 retained in effectiveContext. Empty claims=NA, not100%.",
+    "answerAccuracy":"Correct answered values / answered questions; all abstain=NA. Always show answer coverage answered/2 separately. Not derived from retrieval score.",
+    "groundTruthStatus":"Authored fixed values and source-text rules, not semantic judgment by an LLM or proof of external-world correctness"
+  },
+  "game": {
+    "id":"hm-retrieval-game",
+    "defaultBudget":6,
+    "goal":"Diagnose both original stage failures, repair pipeline within finite toy action budget, then give both correct values and supporting retained source IDs; abstention never counts as full win",
+    "costs":{"rerank":2,"increaseK":1,"increaseCapacity":1,"setEvidencePolicy":1},
+    "diagnosisRules":"retrieval flag if expected source absent from retrieved; context flag only if source retrieved but lost in effective context; answer flag if an active claim is incorrect or unsupported; >=2 flags yields both,0 yields none. These trace rules are not causal attribution of real LLM behavior.",
+    "challenges":{
+      "pipeline":[{"key":"time","rank":"bad","k":2,"capacity":2,"policy":"evidence","diagnosis":"retrieval"},{"key":"price","rank":"good","k":2,"capacity":1,"policy":"evidence","diagnosis":"context"}],
+      "unsupported":[{"key":"time","rank":"good","k":2,"capacity":2,"policy":"miscite","diagnosis":"answer"},{"key":"price","rank":"good","k":2,"capacity":2,"policy":"wrong","diagnosis":"answer"}],
+      "mixed":[{"key":"time","rank":"bad","k":4,"capacity":2,"policy":"miscite","diagnosis":"both"},{"key":"price","rank":"bad","k":1,"capacity":1,"policy":"evidence","diagnosis":"retrieval"}]
+    },
+    "selectors":"data-config challenge; data-action rerank-time|rerank-price|k-time|k-price|capacity-time|capacity-price|evidence-time|evidence-price|grade|reset; data-diagnosis time|price; data-answer time|price; data-source time|price",
+    "state":"Budget remaining/spent, original trace, current rank/k/capacity/policy per question, packed source IDs, diagnosis choices, submitted answers, terminal result"
+  },
+  "reset":true,
+  "qaHook":"Each DOM root hmSnapshot() returns a deep copy; no global state",
+  "scientificLimitations":["No embedding model, reranker, LLM, API calls, training or weight updates","Static ranks are authored; one record equals one toy context unit","Complete gold fixture is not evidence that real corpora have complete qrels","Citation support and answer correctness are explicitly separate and authored","Results do not imply a universal k, context limit or real-system causal explanation"]
+}
+;
+const DOCS=DATA.corpus,QUESTIONS=DATA.questions,RANKS=DATA.ranks;
+const clone=x=>JSON.parse(JSON.stringify(x));
+function fraction(n,d,status='KNOWN'){return {status:d===0?'NA':status,numerator:n,denominator:d,value:[status==='KNOWN',d!==0].every(Boolean)?n/d:null};}
+function coverage(ids,gold=['D1','D2'],complete=true){if(!complete)return fraction(ids.filter(id=>gold.includes(id)).length,gold.length,'UNKNOWN');return fraction(ids.filter(id=>gold.includes(id)).length,gold.length);}
+function pipeline(config){if(!RANKS[config.rank])throw Error('invalid rank');if(!Number.isInteger(config.k)||1>config.k||config.k>5)throw Error('invalid k');if(!Number.isInteger(config.capacity)||1>config.capacity||config.capacity>5)throw Error('invalid capacity');if(!['evidence','wrong','miscite','abstain'].includes(config.policy))throw Error('invalid policy');const retrieved=RANKS[config.rank].slice(0,config.k),context=retrieved.slice(0,config.capacity);return {...clone(config),retrieved,context};}
+function reply(p,q){let value=null,source=null;if(p.policy==='evidence'){if(p.context.includes(q.goldSource)){value=q.goldValue;source=q.goldSource;}}if(p.policy==='wrong'){value=q.key==='time'?'09:00':'100';source=q.key==='time'?'D3':'D4';}if(p.policy==='miscite'){value=q.goldValue;source=q.key==='time'?'D3':'D4';}const claim=value!==null,correct=claim?value===q.goldValue:null,supported=claim?[value===q.goldValue,source===q.goldSource,p.context.includes(source)].every(Boolean):null;return {key:q.key,question:q.question,value,source,claim,correct,supported,retrievedGold:p.retrieved.includes(q.goldSource),contextGold:p.context.includes(q.goldSource)};}
+function inspect(config={rank:'bad',k:4,capacity:2,policy:'miscite',goldComplete:true},gold=['D1','D2']){const p=pipeline(config),answers=QUESTIONS.map(q=>reply(p,q)),claims=answers.filter(a=>a.claim);return {...p,gold:clone(gold),goldComplete:config.goldComplete!==false,answers,metrics:{recall:coverage(p.retrieved,gold,config.goldComplete!==false),precision:gold.length===0?fraction(0,0):fraction(p.retrieved.filter(id=>gold.includes(id)).length,p.retrieved.length,config.goldComplete===false?'UNKNOWN':'KNOWN'),contextCoverage:coverage(p.context,gold,config.goldComplete!==false),answerCoverage:fraction(claims.length,QUESTIONS.length),answerAccuracy:fraction(claims.filter(a=>a.correct).length,claims.length),claimSupport:fraction(claims.filter(a=>a.supported).length,claims.length)}};}
+function diagnose(p,q){const a=reply(p,q),flags=[];if(!a.retrievedGold)flags.push('retrieval');if([a.retrievedGold,!a.contextGold].every(Boolean))flags.push('context');if(a.claim){if(!a.correct||!a.supported)flags.push('answer');}return {flags,label:flags.length>1?'both':flags[0]||'none',answer:a};}
+function makeGame(challenge='pipeline'){if(!DATA.game.challenges[challenge])throw Error('unknown challenge');const tasks=DATA.game.challenges[challenge].map(c=>({key:c.key,original:clone(c),current:clone(c),diagnosis:'',value:'',source:''}));return {challenge,budget:DATA.game.defaultBudget,spent:0,tasks,trace:[],ended:false,result:null,feedback:'อ่านร่องรอยเดิม วินิจฉัยทั้งสองข้อ แล้วซ่อม pipeline ในงบ6หน่วย'};}
+function taskOf(s,key){return s.tasks.find(t=>t.key===key);}
+function questionOf(key){return QUESTIONS.find(q=>q.key===key);}
+function fix(s,key,action){const t=taskOf(s,key);if(!t||s.ended)return {ok:false,reason:'NO_ACTION'};let cost=0;if(action==='rerank'){if(t.current.rank==='good')return {ok:false,reason:'ALREADY_FIXED'};cost=2;}else if(action==='k'){if(t.current.k===5)return {ok:false,reason:'AT_LIMIT'};cost=1;}else if(action==='capacity'){if(t.current.capacity===5)return {ok:false,reason:'AT_LIMIT'};cost=1;}else if(action==='evidence'){if(t.current.policy==='evidence')return {ok:false,reason:'ALREADY_FIXED'};cost=1;}else return {ok:false,reason:'INVALID_ACTION'};if(s.spent+cost>s.budget){s.feedback='งบไม่พอ — pipeline เดิมไม่เปลี่ยน';return {ok:false,reason:'OVER_BUDGET'};}const before=pipeline(t.current);s.spent+=cost;if(action==='rerank')t.current.rank='good';if(action==='k')t.current.k+=1;if(action==='capacity')t.current.capacity+=1;if(action==='evidence')t.current.policy='evidence';const after=pipeline(t.current);s.trace.push({key,action,cost,before:{retrieved:before.retrieved,context:before.context,policy:before.policy},after:{retrieved:after.retrieved,context:after.context,policy:after.policy},spent:s.spent});s.feedback='แก้ '+key+' ด้วย '+action+' ใช้'+cost+'หน่วย ตรวจ context และผลตอบอีกครั้ง';return {ok:true,cost};}
+function setResponse(s,key,field,value){if(s.ended)return {ok:false,reason:'ENDED'};const t=taskOf(s,key);if(!t||!['diagnosis','value','source'].includes(field))return {ok:false,reason:'INVALID_FIELD'};t[field]=value;return {ok:true};}
+function gameView(s){return {...clone(s),remaining:s.budget-s.spent,tasks:s.tasks.map(t=>({...clone(t),originalTrace:pipeline(t.original),originalDiagnosis:diagnose(pipeline(t.original),questionOf(t.key)),currentTrace:pipeline(t.current),currentAnswer:reply(pipeline(t.current),questionOf(t.key))}))};}
+function grade(s){if(s.ended)return {ok:false,reason:'ENDED'};if(!s.tasks.every(t=>[t.diagnosis,t.value,t.source].every(Boolean)))return {ok:false,reason:'ANSWER_ALL'};const rows=s.tasks.map(t=>{const q=questionOf(t.key),original=diagnose(pipeline(t.original),q),p=pipeline(t.current),a=reply(p,q),diagnosisCorrect=t.diagnosis===original.label,answerCorrect=t.value===q.goldValue,sourceCorrect=t.source===q.goldSource,evidenceRetained=p.context.includes(t.source),pipelineCorrect=[a.claim,a.correct,a.supported].every(Boolean);return {key:t.key,diagnosisCorrect,expectedDiagnosis:original.label,answerCorrect,sourceCorrect,evidenceRetained,pipelineCorrect,pass:[diagnosisCorrect,answerCorrect,sourceCorrect,evidenceRetained,pipelineCorrect].every(Boolean)};});s.result={rows,score:rows.filter(r=>r.pass).length,goal:rows.every(r=>r.pass),spent:s.spent,budget:s.budget};s.ended=true;s.feedback=s.result.goal?'ชนะ — วินิจฉัยและซ่อมทั้งสอง pipeline พร้อมคำตอบและหลักฐาน':'ยังไม่สำเร็จ — ตรวจ stage ที่พลาด ผลตอบ และ source ที่อยู่ใน context';return {ok:true,result:clone(s.result)};}
+return {DATA,DOCS,QUESTIONS,RANKS,clone,fraction,coverage,pipeline,reply,inspect,diagnose,makeGame,taskOf,questionOf,fix,setResponse,gameView,grade};
+})();const root=document.getElementById('hm-retrieval-game');if(!root)return;const node=n=>root.querySelector('[data-state="'+n+'"]'),button=n=>root.querySelector('[data-action="'+n+'"]'),config=root.querySelector('[data-config="challenge"]');let state;C.DOCS.forEach(d=>{const li=document.createElement('li');li.textContent=d.id+' • '+d.text;node('corpus').append(li);});function makeSelect(labelText,attribute,key,options,handler){const l=document.createElement('label'),s=document.createElement('select');l.textContent=labelText;s.setAttribute(attribute,key);const blank=document.createElement('option');blank.value='';blank.textContent='เลือก';s.append(blank);options.forEach(pair=>{const o=document.createElement('option');o.value=pair[0];o.textContent=pair[1];s.append(o);});s.addEventListener('change',()=>{handler(s.value);render();});l.append(s);return l;}C.QUESTIONS.forEach(q=>{const a=document.createElement('article'),h=document.createElement('h3'),original=document.createElement('pre'),current=document.createElement('pre'),buttons=document.createElement('div');a.setAttribute('data-task',q.key);h.textContent=q.question;original.setAttribute('data-original',q.key);current.setAttribute('data-current',q.key);[['rerank','Rerankเป็นgood —2'],['k','เพิ่มkทีละ1 —1'],['capacity','เพิ่มcontextทีละ1 —1'],['evidence','ตอบจากevidence-only —1']].forEach(pair=>{const b=document.createElement('button');b.type='button';b.setAttribute('data-action',pair[0]+'-'+q.key);b.textContent=pair[1];b.addEventListener('click',()=>{C.fix(state,q.key,pair[0]);render();});buttons.append(b);});const diag=makeSelect('วินิจฉัยoriginal trace','data-diagnosis',q.key,[['retrieval','Retrieval miss —ค้นไม่เจอ'],['context','Context loss —ค้นเจอแต่ตัดออก'],['answer','Answer issue —ค่าหรือcitationไม่รองรับ'],['both','หลายstageพลาด'],['none','ไม่มีปัญหาตามกติกา']],v=>C.setResponse(state,q.key,'diagnosis',v)),ans=makeSelect('คำตอบสุดท้าย','data-answer',q.key,q.key==='time'?[['10:00','10:00 น. —นิทรรศการ'],['09:00','09:00 น. —สำนักงาน'],['abstain','ABSTAIN —งดตอบ']]:[['50','50บาทเมื่อแสดงบัตรนักเรียน'],['100','100บาท —ผู้ใหญ่'],['abstain','ABSTAIN —งดตอบ']],v=>C.setResponse(state,q.key,'value',v)),src=makeSelect('sourceที่รองรับคำตอบ','data-source',q.key,C.DOCS.map(d=>[d.id,d.id]),v=>C.setResponse(state,q.key,'source',v));a.append(h,original,diag,current,buttons,ans,src);node('tasks').append(a);});function traceText(p,q){const a=C.reply(p,q);return 'rank '+p.rank+' | k'+p.k+' | context capacity'+p.capacity+'\nretrieved: '+p.retrieved.join(', ')+'\ncontext: '+p.context.join(', ')+'\npolicy: '+p.policy+'\nanswer: '+(a.claim?a.value+' cite '+a.source:'ABSTAIN')+'\nvalue correct: '+(a.correct===null?'NA':String(a.correct))+' | support: '+(a.supported===null?'NA':String(a.supported));}function reset(){state=C.makeGame(config.value);root.querySelectorAll('[data-diagnosis],[data-answer],[data-source]').forEach(s=>{s.value='';});render();}function render(){const v=C.gameView(state);node('budget').textContent='งบเหลือ '+v.remaining+' / '+v.budget+' • ใช้แล้ว'+v.spent;v.tasks.forEach(t=>{const q=C.questionOf(t.key);root.querySelector('[data-original="'+t.key+'"]').textContent='ORIGINAL TRACE\n'+traceText(t.originalTrace,q);root.querySelector('[data-current="'+t.key+'"]').textContent='CURRENT TRACE\n'+traceText(t.currentTrace,q);['rerank','k','capacity','evidence'].forEach(action=>{const b=button(action+'-'+t.key),cost=action==='rerank'?2:1,atLimit=action==='rerank'?t.current.rank==='good':action==='k'?t.current.k===5:action==='capacity'?t.current.capacity===5:t.current.policy==='evidence';b.disabled=[v.ended,atLimit,cost>v.remaining].some(Boolean);});});root.querySelectorAll('[data-diagnosis],[data-answer],[data-source]').forEach(s=>{s.disabled=v.ended;});config.disabled=[v.spent!==0,!v.ended].every(Boolean);button('grade').disabled=v.ended;node('feedback').textContent=v.feedback;node('result').hidden=!v.result;node('result').replaceChildren();if(v.result){const h=document.createElement('h3');h.textContent=(v.result.goal?'ชนะ':'ยังไม่สำเร็จ')+' • '+v.result.score+'/2 คำถามผ่านครบ';node('result').append(h);v.result.rows.forEach(r=>{const p=document.createElement('p');p.textContent=r.key+': diagnosis '+(r.diagnosisCorrect?'ถูก':'ผิด')+' | pipeline '+(r.pipelineCorrect?'ผ่าน':'ไม่ผ่าน')+' | ค่า/source/context '+([r.answerCorrect,r.sourceCorrect,r.evidenceRetained].every(Boolean)?'ผ่าน':'ไม่ผ่าน');node('result').append(p);});}node('trace').textContent=JSON.stringify(v.trace,null,2);}button('reset').addEventListener('click',reset);config.addEventListener('change',reset);button('grade').addEventListener('click',()=>{const r=C.grade(state);if(r.reason==='ANSWER_ALL')state.feedback='เลือกdiagnosis คำตอบและsourceให้ครบทั้งสองข้อ';render();});root.hmSnapshot=()=>C.gameView(state);reset();})();</script></section>
+
+
+
+
+<p class="wp-block-paragraph">Challenge เริ่มต้นแยกให้เห็นเวลาเป็น retrieval miss และราคาเป็น context loss: ขั้นค้นของคำถามราคามี D2 แต่ packing ทำให้หลุดออก ทดลองแก้ที่ขั้นจริงตาม trace แทนเพิ่ม k ทุกกรณี ส่วน challenge อื่นแสดงคำตอบหรือ citation ที่ไม่รองรับ และกรณีที่มี flags มากกว่าหนึ่งชนิด</p>
+
+
+
+<p class="wp-block-paragraph">งบเริ่มต้นหกหน่วยเป็น <strong>ต้นทุน action ที่ผู้เขียนตั้ง</strong>: rerank สองหน่วย เพิ่ม k หนึ่ง เพิ่ม context capacity หนึ่ง และเปลี่ยนเป็น evidence policy หนึ่ง ไม่ใช่ราคา API, token หรือเวลา inference ค่าต้นทุนใช้ทำให้เห็นการเลือกแก้ระบบภายใต้ทรัพยากรจำกัดเท่านั้น</p>
+
+
+
+<p class="wp-block-paragraph">Diagnosis ในเกมตรวจ ID/ผลลัพธ์ตามกฎ deterministic; หลาย flags ใช้หมวด both ไม่ได้ทดสอบ causal reasoning ของ LLM ผู้เล่นควรอ่าน original trace กับ current state แยกกัน กด Reset เพื่อเริ่มใหม่และเปรียบเทียบผลโดยไม่เปลี่ยนความจำหรือ weights ของโมเดลใด</p>
+
+
+
+<h2 class="wp-block-heading" id="hm-retrieval-section-16">งานวิจัยต่อไปและสิ่งที่เริ่มตรวจได้ทันที</h2>
+
+
+
+<p class="wp-block-paragraph">งานต่อไปคือ evidence sets ที่มีหลายทางตอบ, relevance judgments ครอบคลุม retrievers ต่างชนิด และ judge บนภาษา/โดเมนผู้ใช้ ตรวจข้อผิดพลาดรายกลุ่มและ source spans ของ claims ร่วมกับคะแนนรวม</p>
+
+
+
+<p class="wp-block-paragraph">สำหรับผู้พัฒนา เริ่มจาก query set เล็กที่นิยาม gold/reference ได้ เก็บ ranked IDs กับ effective text แยกกัน แล้วสร้างรายงาน correctness, cited support และ answer coverage แยกช่อง ตรวจ raw examples ของแต่ละ failure flag ก่อนปรับระบบ เก็บ held-out queries ไม่ให้รั่วไปขั้นปรับ prompt หรือฝึก judge</p>
+
+
+
+<figure class="wp-block-image size-full"><a href="https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-retrieval-009-05-takeaways.png?ssl=1"><img data-recalc-dims="1" data-attachment-id="1738" data-permalink="https://hybridmind.online/hm-retrieval-009-05-takeaways/" data-orig-file="https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-retrieval-009-05-takeaways.png?fit=1600%2C1030&amp;ssl=1" data-orig-size="1600,1030" data-comments-opened="1" data-image-title="หกหลักการวัด Retrieval และคำตอบของ AI Agent" data-image-description="" data-image-caption="&lt;p&gt;แยกทุก stage ของ pipeline ใช้ Recall@k เฉพาะเมื่อรู้ gold relevance รายงาน labels ที่ไม่ครบ/UNKNOWN ตรวจ source freshness และ version ตรวจ passage support แทนการนับ citation เฉย ๆ เก็บ trace ของ context ที่ใช้จริง และตรวจ judge เทียบ human rubric ซึ่งอาจมี bias ไม่อ้าง source support เป็น world truth ไม่อ้างการฝึก judge เป็นการอัปเดต memory ของ Agent&lt;/p&gt;
+" data-large-file="https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-retrieval-009-05-takeaways.png?fit=1024%2C659&amp;ssl=1" src="https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-retrieval-009-05-takeaways.png?resize=1600%2C1030&#038;ssl=1" alt="หกกล่อง Evaluate Each Stage Unknown Qrels Source Freshness Citation ไม่เท่ากับ Truth Trace Actual Context และ Human Rubrics Limits" width="1600" height="1030" class="wp-image-1738" loading="lazy" decoding="async" srcset="https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-retrieval-009-05-takeaways.png?w=1600&amp;ssl=1 1600w, https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-retrieval-009-05-takeaways.png?resize=300%2C193&amp;ssl=1 300w, https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-retrieval-009-05-takeaways.png?resize=1024%2C659&amp;ssl=1 1024w, https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-retrieval-009-05-takeaways.png?resize=768%2C494&amp;ssl=1 768w, https://i0.wp.com/hybridmind.online/wp-content/uploads/2026/10/hm-retrieval-009-05-takeaways.png?resize=1536%2C989&amp;ssl=1 1536w" sizes="auto, (max-width: 1000px) 100vw, 1000px" /></a><figcaption><strong>หกหลักการวัด Retrieval และคำตอบของ AI Agent</strong> — แยกทุก stage ของ pipeline ใช้ Recall@k เฉพาะเมื่อรู้ gold relevance รายงาน labels ที่ไม่ครบ/UNKNOWN ตรวจ source freshness และ version ตรวจ passage support แทนการนับ citation เฉย ๆ เก็บ trace ของ context ที่ใช้จริง และตรวจ judge เทียบ human rubric ซึ่งอาจมี bias ไม่อ้าง source support เป็น world truth ไม่อ้างการฝึก judge เป็นการอัปเดต memory ของ Agent · <a href="https://aclanthology.org/2024.eacl-demo.16/">แหล่งแนวคิด 1</a> · <a href="https://aclanthology.org/2024.naacl-long.20/">แหล่งแนวคิด 2</a> · <a href="https://aclanthology.org/2023.emnlp-main.398/">แหล่งแนวคิด 3</a> · <a href="https://datasets-benchmarks-proceedings.neurips.cc/paper/2021/hash/65b9eea6e1cc6bb9f0cd2a47751a186f-Abstract-round2.html">แหล่งแนวคิด 4</a></figcaption></figure>
+
+
+
+<p class="wp-block-paragraph">เมื่อทดลองวิธีใหม่ให้ตรึง corpus snapshot, query set, budget และ generation settings เท่าที่ทำได้ รายงานสิ่งที่เปลี่ยนและค่าใช้จ่ายที่วัดจริง การเปลี่ยน rank, context, prompt หรือ external memory ไม่เท่ากับการฝึกน้ำหนัก และผลของ simulator นี้ไม่ใช่คำรับรองประสิทธิภาพของ Agent production</p>
+
+
+
+<h2 class="wp-block-heading" id="hm-retrieval-section-17">FAQ</h2>
+
+
+
+<h3 class="wp-block-heading" id="hm-retrieval-section-18">Recall@k สูงแล้วรับรองว่าคำตอบถูกหรือไม่</h3>
+
+
+
+<p class="wp-block-paragraph">ไม่รับรอง ยังต้องตรวจ effective context การใช้ข้อมูล คำตอบอ้างอิงและแหล่งที่ผูกกับ claims เอกสารเกี่ยวข้องหลายชิ้นอาจยังไม่พอสำหรับเงื่อนไขทั้งหมดของคำถาม</p>
+
+
+
+<h3 class="wp-block-heading" id="hm-retrieval-section-19">Faithfulness เหมือน Factual Correctness หรือไม่</h3>
+
+
+
+<p class="wp-block-paragraph">ต่างกัน Faithfulness ตรวจความสอดคล้องกับบริบท ส่วน correctness ตรวจตาม reference/เกณฑ์งาน คำตอบที่ตามเอกสารผิดอาจ faithful แต่ไม่ถูกตามสิ่งที่ต้องตอบ</p>
+
+
+
+<h3 class="wp-block-heading" id="hm-retrieval-section-20">Reference-free Evaluation ไม่ต้องใช้มนุษย์เลยหรือไม่</h3>
+
+
+
+<p class="wp-block-paragraph">หมายถึงบาง metric ไม่ต้องมี reference answer สำหรับทุกตัวอย่าง ไม่ได้ทำให้ judge ถูกเสมอ ยังต้องตรวจความเหมาะสมและประเมินข้อผิดพลาดของผู้ตรวจ ส่วน ARES มีข้อมูลมนุษย์เป็นส่วนของการประเมินด้วย</p>
+
+
+
+<h3 class="wp-block-heading" id="hm-retrieval-section-21">ข้อมูล unjudged นับเป็นไม่เกี่ยวข้องได้ทันทีหรือไม่</h3>
+
+
+
+<p class="wp-block-paragraph">ไม่ควรอ้างว่าไม่เกี่ยวข้องแน่นอน ต้องรายงาน label coverage และ convention ที่ใช้คำนวณคะแนน หากข้อมูลไม่พอหาตัวหารตามนิยาม ให้ใช้ UNKNOWN หรือ NA พร้อมเหตุผล</p>
+
+
+
+<h3 class="wp-block-heading" id="hm-retrieval-section-22">งดตอบทุกข้อทำให้ Support เต็มหรือไม่</h3>
+
+
+
+<p class="wp-block-paragraph">ไม่ควรให้คะแนนเต็มโดยไม่มี claims ให้ตรวจ Lab ให้ accuracy/support เป็น NA เมื่อไม่ตอบ และแสดง answer coverage ศูนย์ เป้าหมายเกมยังต้องตอบพร้อมหลักฐานครบ</p>
+
+
+
+<h3 class="wp-block-heading" id="hm-retrieval-section-23">เกมนี้ทดสอบ RAGAS, ARES หรือโมเดลจริงหรือไม่</h3>
+
+
+
+<p class="wp-block-paragraph">ไม่ได้ เป็น corpus/อันดับ/กฎคำตอบที่ผู้เขียนกำหนด ไม่มี LLM, embedding, NLI หรือการฝึก evaluator เป็นการสำรวจความต่างของขั้นค้น ขั้นจัดบริบท และขั้นตอบตาม fixture นี้</p>
+
+
+
+<h2 class="wp-block-heading" id="hm-retrieval-section-24">References</h2>
+
+
+
+<ol class="wp-block-list">
+<li><a href="https://datasets-benchmarks-proceedings.neurips.cc/paper/2021/hash/65b9eea6e1cc6bb9f0cd2a47751a186f-Abstract-round2.html">BEIR: A Heterogeneous Benchmark for Zero-shot Evaluation of Information Retrieval Models</a>, NeurIPS 2021 Datasets and Benchmarks; peer-reviewed, retrieval/qrels และ annotation bias</li>
+
+
+<li><a href="https://aclanthology.org/2024.eacl-demo.16/">RAGAS: Automated Evaluation of Retrieval Augmented Generation</a>, EACL 2024 System Demonstrations, มีนาคม 2024; peer-reviewed, reference-free dimensions และ judge limitations</li>
+
+
+<li><a href="https://aclanthology.org/2024.naacl-long.20/">ARES: An Automated Evaluation Framework for Retrieval-Augmented Generation Systems</a>, NAACL 2024 Long Papers, มิถุนายน 2024; peer-reviewed, trained judges/human validation/PPI</li>
+
+
+<li><a href="https://aclanthology.org/2023.emnlp-main.398/">Enabling Large Language Models to Generate Text with Citations — ALCE</a>, EMNLP 2023, ธันวาคม 2023; peer-reviewed, correctness กับ citation quality/NLI limitations</li>
+
+
+<li><a href="https://aclanthology.org/2024.tacl-1.9/">Lost in the Middle: How Language Models Use Long Contexts</a>, TACL 2024; peer-reviewed, information position/use ภายใต้โมเดลและงานทดลองที่ระบุ</li>
+</ol>
+
+</div>

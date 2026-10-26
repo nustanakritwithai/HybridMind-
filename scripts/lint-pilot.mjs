@@ -13,7 +13,8 @@ const files = [
   'tests/fetch-public-wp-inventory.test.mjs', 'tests/search.test.mjs', 'tests/evaluate-search.mjs', 'tests/catalog.test.mjs', 'tests/reader-browser.test.mjs', 'tests/server.test.mjs', 'tests/content-renderer.test.mjs', 'tests/public-rest-content.test.mjs',
   'knowledge-textbook/app.js', 'scripts/build-pages.mjs', 'tests/pages-build.test.mjs',
   ...['registry','helpers','manager','video','citation','authorization','approval'].map(name=>'knowledge-textbook/labs/'+name+'.mjs'),
-  'tests/interactive-browser.test.mjs', 'tests/interactive-registry.test.mjs', 'tests/reading-journey-browser.test.mjs', 'tests/browser-endpoint.mjs',
+  'scripts/capture-evidence-batch.mjs', 'scripts/import-evidence-batch.mjs', 'knowledge-textbook/labs/evidence-retrieval-explorer.mjs','knowledge-textbook/labs/evidence-retrieval-game.mjs','knowledge-textbook/labs/evidence-sufficiency-explorer.mjs','knowledge-textbook/labs/evidence-sufficiency-game.mjs','knowledge-textbook/labs/evidence-claims-explorer.mjs','knowledge-textbook/labs/evidence-claims-game.mjs',
+  'tests/interactive-browser.test.mjs', 'tests/interactive-registry.test.mjs', 'tests/reading-journey-browser.test.mjs', 'tests/browser-endpoint.mjs', 'tests/evidence-content.test.mjs', 'tests/evidence-path-browser.test.mjs',
 ];
 for (const file of files) {
   const result = spawnSync(process.execPath, ['--check', file], { cwd: root, encoding: 'utf8' });
@@ -32,6 +33,6 @@ const errors = validateCatalog(catalog, schema);
 if (errors.length) throw new Error(errors.join('\n'));
 const verified = catalog.articles.filter(article => article.password_protected === false && article.visibility === 'public').length;
 const unknown = catalog.articles.filter(article => article.password_protected === null && article.visibility === 'unknown').length;
-if (catalog.articles.length > 5 && (verified !== 5 || unknown !== 243)) throw new Error(`Expected 5 verified and 243 unknown visibility rows, got ${verified} / ${unknown}`);
-if (catalog.articles.length <= 5 && (verified !== catalog.articles.length || unknown !== 0)) throw new Error('Client catalog must contain only explicitly verified public rows.');
+if (existsSync(offlinePath) && (verified !== 8 || unknown !== 240)) throw new Error(`Expected 8 verified and 240 unknown visibility rows, got ${verified} / ${unknown}`);
+if (!existsSync(offlinePath) && (verified !== catalog.articles.length || unknown !== 0)) throw new Error('Client catalog must contain only explicitly verified public rows.');
 process.stdout.write(`Lint passed (${files.length} JavaScript files); schema and reference checks passed.\n`);

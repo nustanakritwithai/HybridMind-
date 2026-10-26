@@ -47,7 +47,7 @@ await writeFile(resolve(target, 'data/pilot-catalog.json'), `${JSON.stringify(pu
 if (publicContentBundle) await writeFile(resolve(target, 'data/pilot-content-bundle.json'), `${JSON.stringify(publicContentBundle, null, 2)}\n`, 'utf8');
 await copyFile(resolve(root, 'knowledge-textbook/README.md'), resolve(target, 'README.md'));
 await cp(resolve(root,'reference/source-exports/public-rest-2026-10-25'), resolve(target,'reference/source-exports/public-rest-2026-10-25'), {recursive:true});
-for (const path of ['reference/source-exports/interactive-runtime-2026-10-25','artifacts/interactive','artifacts/reading-journey']) {
+for (const path of ['reference/source-exports/interactive-runtime-2026-10-25','reference/source-exports/public-rest-2026-10-26','artifacts/interactive','artifacts/reading-journey','artifacts/evidence-path']) {
   if (existsSync(resolve(root,path))) await cp(resolve(root,path),resolve(target,path),{recursive:true});
 }
 for (const name of ['browser-content-evidence.json','interactive-browser-evidence.json','test-20261025.txt','search-evaluation-20261025.txt','interactive-validation-20261025.txt','reading-journey-validation.txt']) {

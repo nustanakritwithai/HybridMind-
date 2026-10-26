@@ -3,8 +3,14 @@ import {mountVideoLab} from './video.mjs';
 import {mountCitationLab} from './citation.mjs';
 import {mountAuthorizationLab} from './authorization.mjs';
 import {mountApprovalLab} from './approval.mjs';
+import {mountRetrievalExplorer} from './evidence-retrieval-explorer.mjs';
+import {mountRetrievalGame} from './evidence-retrieval-game.mjs';
+import {mountSufficiencyExplorer} from './evidence-sufficiency-explorer.mjs';
+import {mountSufficiencyGame} from './evidence-sufficiency-game.mjs';
+import {mountClaimsExplorer} from './evidence-claims-explorer.mjs';
+import {mountClaimsGame} from './evidence-claims-game.mjs';
 
-const constructors = Object.freeze({video:mountVideoLab,citation:mountCitationLab,authorization:mountAuthorizationLab,approval:mountApprovalLab});
+const constructors = Object.freeze({video:mountVideoLab,citation:mountCitationLab,authorization:mountAuthorizationLab,approval:mountApprovalLab,retrievalExplorer:mountRetrievalExplorer,retrievalGame:mountRetrievalGame,sufficiencyExplorer:mountSufficiencyExplorer,sufficiencyGame:mountSufficiencyGame,claimsExplorer:mountClaimsExplorer,claimsGame:mountClaimsGame});
 const mounted = new Map(), stateByRevision = new Map();
 export function disposeInteractiveLabs(container) {
   for (const [node,record] of mounted) {

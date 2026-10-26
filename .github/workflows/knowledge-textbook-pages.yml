@@ -32,7 +32,7 @@ jobs:
       - run: npm test
       - run: npm run evaluate
       - name: Verify repository-prefixed navigation
-        run: node --test tests/reader-browser.test.mjs tests/interactive-browser.test.mjs tests/reading-journey-browser.test.mjs
+        run: node --test tests/reader-browser.test.mjs tests/interactive-browser.test.mjs tests/reading-journey-browser.test.mjs tests/evidence-path-browser.test.mjs
         env:
           HM_PILOT_BASE_PATH: /HybridMind-
       - run: npm run build:pages

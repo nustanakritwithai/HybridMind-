@@ -4,9 +4,9 @@ import {readFile} from 'node:fs/promises';
 import {prepareInteractiveEntries,approvedLabRoots,labMarkupIdentity} from '../knowledge-textbook/labs/registry.mjs';
 
 const load=async()=>JSON.parse(await readFile(new URL('../data/pilot-content-bundle.json',import.meta.url),'utf8')).articles;
-test('only the three exact reviewed article HTML hashes activate known local labs',async()=>{
+test('only the six exact reviewed article HTML hashes activate known local labs',async()=>{
  const entries=await load();
- assert.deepEqual(await prepareInteractiveEntries(entries),['hm:article:2241','hm:article:2310','hm:article:2494']);
+ assert.deepEqual(await prepareInteractiveEntries(entries),['hm:article:2241','hm:article:2310','hm:article:2494','hm:article:1740','hm:article:1755','hm:article:1770']);
  for(const entry of entries)assert.equal(Object.keys(approvedLabRoots(entry)??{}).length,entry.article_id.endsWith('1077')||entry.article_id.endsWith('1073')?0:2);
 });
 test('copied source metadata cannot authorize altered HTML or a different source identity',async()=>{
@@ -34,7 +34,7 @@ test('mutating verification status or block type revokes a previously approved e
  }
 });
 test('reviewed runtime does not contain imported script execution, networking or persistence',async()=>{
- for(const name of ['manager','helpers','video','citation','authorization','approval']){
+ for(const name of ['manager','helpers','video','citation','authorization','approval','evidence-retrieval-explorer','evidence-retrieval-game','evidence-sufficiency-explorer','evidence-sufficiency-game','evidence-claims-explorer','evidence-claims-game']){
   const code=await readFile(new URL('../knowledge-textbook/labs/'+name+'.mjs',import.meta.url),'utf8');
   assert.doesNotMatch(code,/\b(?:eval|fetch|XMLHttpRequest|WebSocket|Function)\s*\(|\b(?:localStorage|sessionStorage)\b|\.innerHTML\s*=/,name);
  }

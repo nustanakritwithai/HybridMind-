@@ -19,7 +19,7 @@ const files = [
   'knowledge-textbook/content-renderer.mjs', 'knowledge-textbook/styles.css',
   'search/local-search.mjs', 'search/safe-url.mjs',
   'data/pilot-catalog.json', 'data/pilot-content-bundle.json',
-  ...['registry.mjs','helpers.mjs','manager.mjs','video.mjs','citation.mjs','authorization.mjs','approval.mjs','labs.css'].map(name=>'knowledge-textbook/labs/'+name),
+  ...['registry.mjs','helpers.mjs','manager.mjs','video.mjs','citation.mjs','authorization.mjs','approval.mjs','labs.css','evidence-retrieval-explorer.mjs','evidence-retrieval-game.mjs','evidence-sufficiency-explorer.mjs','evidence-sufficiency-game.mjs','evidence-claims-explorer.mjs','evidence-claims-game.mjs','evidence.css'].map(name=>'knowledge-textbook/labs/'+name),
 ];
 for (const file of files) {
   await mkdir(resolve(target, file, '..'), { recursive: true });
@@ -36,8 +36,8 @@ if (git.status !== 0 || !/^[a-f0-9]{40}$/.test(commit)) throw new Error('A Git c
 if (process.env.HM_RELEASE_SHA && process.env.HM_RELEASE_SHA !== commit) throw new Error('Release SHA differs from checked-out source');
 await writeFile(resolve(target, 'release.json'), JSON.stringify({
   schema_version: 1, source_commit: commit, reader_path: 'knowledge-textbook/',
-  source_capture: 'public-rest-2026-10-25', articles: 5, sections: 138,
-  unique_media: 20, interactive_parity: false, interactive_mode: 'reviewed-local-modules', reviewed_lab_roots: 6, sha256: hashes,
+  source_capture: ['public-rest-2026-10-25','public-rest-2026-10-26'], articles: 8, sections: 233,
+  unique_media: 35, interactive_parity: false, interactive_mode: 'reviewed-local-modules', reviewed_lab_roots: 12, sha256: hashes,
 }, null, 2) + '\n');
 await writeFile(resolve(target, '.nojekyll'), '');
 console.log(`Pages artifact: ${target}; source commit ${commit}; ${files.length} public runtime files.`);

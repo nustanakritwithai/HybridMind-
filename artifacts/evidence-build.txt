@@ -1,0 +1,20 @@
+
+> hybridmind-knowledge-textbook-phase1@1.0.0 build:pages
+> node scripts/build-pages.mjs
+
+Lint passed (49 JavaScript files); schema and reference checks passed.
+Runnable public-only build written to C:\Users\Administrator\Documents\Codex\2026-10-19\task\hybridmind-knowledge-evidence-path\dist\hybridmind-knowledge-phase1 (8 articles, 233 sections).
+Pages artifact: C:\Users\Administrator\Documents\Codex\2026-10-19\task\hybridmind-knowledge-evidence-path\dist\pages; source commit 30caf8d412ccf7e5ed71bb9afd83b871fb16a96f; 59 public runtime files.
+
+> hybridmind-knowledge-textbook-phase1@1.0.0 test:pages
+> node --test tests/pages-build.test.mjs
+
+โ” Pages artifact preserves the existing root and contains only the public runtime (246.636ms)
+โน tests 1
+โน suites 0
+โน pass 1
+โน fail 0
+โน cancelled 0
+โน skipped 0
+โน todo 0
+โน duration_ms 410.1136

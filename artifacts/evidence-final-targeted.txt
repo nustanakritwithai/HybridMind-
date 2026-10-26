@@ -1,0 +1,16 @@
+โ” new three article capture is public, complete and byte-for-byte attributable (255.6486ms)
+โ” original five article metadata, sections, topics, path and bodies retain their revisions (8.8282ms)
+โ” proposed three-step sequence and difficulty remain explicit and separate from source approval (2.1765ms)
+โ” new title/body keyword queries, topic and level filters resolve real source entries (575.0035ms)
+โ” expanded corpus keeps all seven historical expected sections in top five (120.4342ms)
+โ” new source mutations cannot enable reviewed local runtime and no imported script is evaluated (21.3141ms)
+โ” evidence learning path, six source simulations, mobile accessibility and revision-safe navigation (11221.6747ms)
+โน Evidence path proof: C:\Users\Administrator\Documents\Codex\2026-10-19\task\hybridmind-knowledge-evidence-path\artifacts\evidence-path\verification.json
+โน tests 7
+โน suites 0
+โน pass 7
+โน fail 0
+โน cancelled 0
+โน skipped 0
+โน todo 0
+โน duration_ms 12543.1135
