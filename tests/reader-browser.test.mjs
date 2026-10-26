@@ -1,3 +1,4 @@
+import { browserEndpoint } from './browser-endpoint.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { spawn } from 'node:child_process';
@@ -68,6 +69,13 @@ function serverAddress(server) {
   });
 }
 
+async function reloadAndWait(client, expression, sessionId) {
+  const priorDocument = await client.evaluate('performance.timeOrigin', sessionId);
+  await client.evaluate(expression, sessionId);
+  // A matching control can still belong to the old document just after reload().
+  await waitFor(client, `performance.timeOrigin !== ${priorDocument} && document.readyState !== 'loading'`, sessionId);
+}
+
 test('responsive reader navigation, search, progress, missing anchors, and safe text', { skip: !edgePath && 'Microsoft Edge is not available; set HM_EDGE_PATH to run the local browser acceptance test.' }, async t => {
   const server = spawn(process.execPath, ['scripts/serve-pilot.mjs'], { cwd: root, env: { ...process.env, HM_PILOT_PORT: '0' }, stdio: ['ignore', 'pipe', 'inherit'] });
   let browser;
@@ -77,10 +85,7 @@ test('responsive reader navigation, search, progress, missing anchors, and safe 
     const profile = join(tmpdir(), `hm-reader-e2e-${process.pid}-${Date.now()}`);
     browser = spawn(edgePath, ["--headless=new", "--no-sandbox", "--disable-gpu", "--disable-background-networking", "--no-first-run", "--no-default-browser-check", "--remote-debugging-address=127.0.0.1", "--remote-debugging-port=0", "--user-data-dir="+profile, "about:blank"], { stdio: ["ignore","ignore","pipe"], windowsHide: true });
     let launchError=""; browser.stderr.on("data",chunk=>{launchError+=chunk.toString()});
-    const portFile = join(profile,"DevToolsActivePort"), deadline=Date.now()+15000;
-    while (!existsSync(portFile) && Date.now()<deadline && (browser.exitCode===null || browser.exitCode===0)) await delay(100);
-    if (!existsSync(portFile)) throw new Error("Test browser exited "+browser.exitCode+" without a loopback endpoint: "+launchError);
-    const [port,path] = readFileSync(portFile,"utf8").trim().split(/\r?\n/);
+    const [port,path] = await browserEndpoint(join(profile,'DevToolsActivePort'), browser);
     const socket = new WebSocket("ws://127.0.0.1:"+port+path);
     await new Promise((resolveOpen,reject)=>{socket.addEventListener("open",resolveOpen,{once:true});socket.addEventListener("error",reject,{once:true});});
     cdp = new PipeClient(socket);
@@ -139,18 +144,18 @@ test('responsive reader navigation, search, progress, missing anchors, and safe 
     assert.equal(await cdp.evaluate('localStorage.getItem(\'hm-reading:consent\')===\'yes\'&&Array.isArray(' + progressValue + '.completionEvents)&&Object.hasOwn(' + progressValue + ',\'lastViewedSectionId\')', sessionId), true);
     await cdp.evaluate('document.querySelector(\'.complete-topic\').click()', sessionId);
     assert.equal(await cdp.evaluate(progressValue + '.completionEvents.length===1&&' + progressValue + '.completionEvents[0].topicRevision===\'1\'&&document.querySelector(\'.complete-topic\').getAttribute(\'aria-pressed\')===\'true\'', sessionId), true);
-    await cdp.evaluate('localStorage.setItem(\'hm-test-revision-overrides\',JSON.stringify({articleRevision:\'browser-article-revision-2\'}));location.reload()', sessionId);
+    await reloadAndWait(cdp, 'localStorage.setItem(\'hm-test-revision-overrides\',JSON.stringify({articleRevision:\'browser-article-revision-2\'}));location.reload()', sessionId);
     await waitFor(cdp, 'document.querySelector(\'.complete-topic\')?.getAttribute(\'aria-pressed\')||\'\'', sessionId, value => value === 'true');
     assert.equal(await cdp.evaluate('document.querySelector(\'.updated-note\')!==null&&document.querySelector(\'.completion-note\').textContent.includes(\'topic revision 1\')&&' + progressValue + '.completionEvents.length===1', sessionId), true, 'article revision changes must not invalidate topic-revision completion');
-    await cdp.evaluate('localStorage.setItem(\'hm-test-revision-overrides\',JSON.stringify({articleRevision:\'browser-article-revision-2\',topicRevision:2}));location.reload()', sessionId);
+    await reloadAndWait(cdp, 'localStorage.setItem(\'hm-test-revision-overrides\',JSON.stringify({articleRevision:\'browser-article-revision-2\',topicRevision:2}));location.reload()', sessionId);
     await waitFor(cdp, 'document.querySelector(\'.review-needed\')?.textContent||\'\'', sessionId, value => value.includes('previously completed at topic revision 1'));
     assert.equal(await cdp.evaluate('document.querySelector(\'.complete-topic\').getAttribute(\'aria-pressed\')===\'false\'&&' + progressValue + '.completionEvents.length===1', sessionId), true);
-    await cdp.evaluate('(()=>{const p=JSON.parse(localStorage.getItem(' + progressKeyJson + '));p.completionEvents.push({topicRevision:\'1\',status:\'incomplete\',changedAt:new Date().toISOString()});localStorage.setItem(' + progressKeyJson + ',JSON.stringify(p));location.reload()})()', sessionId);
+    await reloadAndWait(cdp, '(()=>{const p=JSON.parse(localStorage.getItem(' + progressKeyJson + '));p.completionEvents.push({topicRevision:\'1\',status:\'incomplete\',changedAt:new Date().toISOString()});localStorage.setItem(' + progressKeyJson + ',JSON.stringify(p));location.reload()})()', sessionId);
     await waitFor(cdp, 'document.querySelector(\'.complete-topic\')?.getAttribute(\'aria-pressed\')||\'\'', sessionId, value => value === 'false');
     assert.equal(await cdp.evaluate('document.querySelector(\'.review-needed\')===null&&' + progressValue + '.completionEvents.length===2&&' + progressValue + '.completionEvents[0].status===\'completed\'&&' + progressValue + '.completionEvents[1].status===\'incomplete\'', sessionId), true, 'a later incomplete event must clear the older completion for that revision');
     await cdp.evaluate('document.querySelector(\'.complete-topic\').click();document.querySelector(\'.complete-topic\').click();document.querySelector(\'.complete-topic\').click()', sessionId);
     assert.equal(await cdp.evaluate('(()=>{const e=' + progressValue + '.completionEvents;return e.length===5&&e.map(x=>x.status).join(\',\')===\'completed,incomplete,completed,incomplete,completed\'&&e.map(x=>x.topicRevision).join(\',\')===\'1,1,2,2,2\'&&document.querySelector(\'.complete-topic\').getAttribute(\'aria-pressed\')===\'true\'})()', sessionId), true, 'completion toggles must append revision-stamped history events');
-    await cdp.evaluate('localStorage.setItem(' + progressKeyJson + ',JSON.stringify({revision:\'old-revision\',sectionId:\'legacy-section\',savedAt:new Date().toISOString()}));location.reload()', sessionId);
+    await reloadAndWait(cdp, 'localStorage.setItem(' + progressKeyJson + ',JSON.stringify({revision:\'old-revision\',sectionId:\'legacy-section\',savedAt:new Date().toISOString()}));location.reload()', sessionId);
     await waitFor(cdp, 'document.querySelector(\'#progress-opt-in\')?.checked', sessionId);
     assert.equal(await cdp.evaluate('document.querySelector(\'.updated-note\')!==null&&' + progressValue + '.lastViewedSectionId===\'legacy-section\'&&Array.isArray(' + progressValue + '.completionEvents)&&' + progressValue + '.completionEvents.length===0&&!Object.hasOwn(' + progressValue + ',\'sectionId\')&&!Object.hasOwn(' + progressValue + ',\'completed\')', sessionId), true);
     await cdp.evaluate('document.querySelector(\'.reset-progress\').click()', sessionId);

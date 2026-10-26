@@ -1,3 +1,4 @@
+import { browserEndpoint } from './browser-endpoint.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { spawn } from 'node:child_process';
@@ -66,10 +67,7 @@ test('article interactive controls, responsive state, remounts, and source safet
     const profile = join(tmpdir(), `hm-interactive-e2e-${process.pid}-${Date.now()}`);
     browser = spawn(edgePath, ['--headless=new', '--no-sandbox', '--disable-gpu', '--disable-background-networking', '--no-first-run', '--no-default-browser-check', '--remote-debugging-address=127.0.0.1', '--remote-debugging-port=0', `--user-data-dir=${profile}`, 'about:blank'], { stdio: ['ignore', 'ignore', 'pipe'], windowsHide: true });
     let launchError = ''; browser.stderr.on('data', chunk => { launchError += chunk.toString(); });
-    const portFile = join(profile, 'DevToolsActivePort'), deadline = Date.now() + 15000;
-    while (!existsSync(portFile) && Date.now() < deadline && (browser.exitCode === null || browser.exitCode === 0)) await delay(100);
-    if (!existsSync(portFile)) throw new Error(`Browser exited ${browser.exitCode} without loopback endpoint: ${launchError}`);
-    const [port, path] = readFileSync(portFile, 'utf8').trim().split(/\r?\n/);
+    const [port,path] = await browserEndpoint(join(profile,'DevToolsActivePort'), browser);
     const socket = new WebSocket(`ws://127.0.0.1:${port}${path}`);
     await new Promise((resolveOpen, reject) => { socket.addEventListener('open', resolveOpen, { once: true }); socket.addEventListener('error', reject, { once: true }); });
     cdp = new PipeClient(socket);

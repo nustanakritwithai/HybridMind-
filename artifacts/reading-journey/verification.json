@@ -1,0 +1,25 @@
+{
+  "testedUrl": "http://127.0.0.1:56349/knowledge-textbook/",
+  "expectedReleaseSha": null,
+  "verifiedAt": "2026-10-26T11:11:30.872Z",
+  "assertedCoverage": [
+    "bare and explicit book routes",
+    "9 topic cards with available/proposed distinction",
+    "empty-keyword topic filter and filter Back/Forward",
+    "result article deep link and missing bookmark fallback",
+    "pilot article start landing, repeated Back/Forward, bookmark reload, and all source articles",
+    "six existing pilot interactive labs",
+    "completion opt-in, stored complete/incomplete status, no scroll jump/remount, and progress reset",
+    "390x844 and 1440x1000 overflow checks"
+  ],
+  "screenshots": [
+    "C:\\Users\\Administrator\\Documents\\Codex\\2026-10-19\\task\\hybridmind-knowledge-phase1\\artifacts\\reading-journey\\book-desktop.png",
+    "C:\\Users\\Administrator\\Documents\\Codex\\2026-10-19\\task\\hybridmind-knowledge-phase1\\artifacts\\reading-journey\\book-mobile.png",
+    "C:\\Users\\Administrator\\Documents\\Codex\\2026-10-19\\task\\hybridmind-knowledge-phase1\\artifacts\\reading-journey\\book-filtered-desktop.png",
+    "C:\\Users\\Administrator\\Documents\\Codex\\2026-10-19\\task\\hybridmind-knowledge-phase1\\artifacts\\reading-journey\\book-filtered-mobile.png",
+    "C:\\Users\\Administrator\\Documents\\Codex\\2026-10-19\\task\\hybridmind-knowledge-phase1\\artifacts\\reading-journey\\article-start-desktop.png",
+    "C:\\Users\\Administrator\\Documents\\Codex\\2026-10-19\\task\\hybridmind-knowledge-phase1\\artifacts\\reading-journey\\article-start-mobile.png",
+    "C:\\Users\\Administrator\\Documents\\Codex\\2026-10-19\\task\\hybridmind-knowledge-phase1\\artifacts\\reading-journey\\article-end-desktop.png",
+    "C:\\Users\\Administrator\\Documents\\Codex\\2026-10-19\\task\\hybridmind-knowledge-phase1\\artifacts\\reading-journey\\article-end-mobile.png"
+  ]
+}
